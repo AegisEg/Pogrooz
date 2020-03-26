@@ -1,0 +1,78 @@
+/* App */
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap');
+
+.wrapper {
+    display: grid;
+}
+.fill-btn {
+    height: 42px;
+    width: max-content;
+    padding: 0 25px 0 25px;
+    background-color: #FFDC1C;
+    border-radius: 50px;
+    display: inline-block;
+    align-content: center;
+    font-size: 17px;
+}
+.empty-btn {
+    height: 40px;
+    width: max-content;
+    padding: 0 24px 0 24px;
+    border: 1px solid #6C6C6C;
+    border-radius: 50px;
+    display: inline-block;
+    align-content: center;
+    font-size: 17px;
+}
+/* App end */
+
+/* Header */
+.header {
+    height: 105px;
+}
+.header-content {
+    height: 100%;
+}
+.header-logo {
+    margin: 0 35px 0 35px;
+    height: 100%;
+    display: grid;
+    align-content: center;
+}
+.header-navigation {
+    flex: 1;
+    display: grid;
+    align-content: center;
+}
+.header-navigation ul {
+    padding: 0;
+    margin: 0;
+    height: 105px;
+}
+.header-navigation ul li {
+    display: inline-block;
+    padding: 0 10px 0 10px;
+}
+.header-navigation ul li a {
+    font-family: Roboto;
+    font-size: 14px;
+    color: #322F2F;
+    transition: 0.2s;
+    height: 105px;
+    display: block;
+    display: grid;
+    align-content: center;
+}
+.header-navigation ul li a:hover {
+    color: #A038E3;
+}
+.header-sign-up {
+    display: block;
+    align-content: center;
+    flex: 1;
+}
+.header-sign-up-btn {
+    margin: 31px auto;
+    width: max-content;
+}
+/* Header end */
