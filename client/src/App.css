@@ -1,48 +1,41 @@
 /* App */
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap');
 
+body {
+    font-family: Roboto;
+    margin: 0;
+    line-height: 1.5;
+}
 .wrapper {
     display: grid;
 }
-.fill-btn {
-    height: 42px;
-    width: max-content;
-    padding: 0 25px 0 25px;
-    background-color: #FFDC1C;
-    border-radius: 50px;
-    display: inline-block;
-    align-content: center;
-    font-size: 17px;
-}
-.empty-btn {
-    height: 40px;
-    width: max-content;
-    padding: 0 24px 0 24px;
-    border: 1px solid #6C6C6C;
-    border-radius: 50px;
-    display: inline-block;
-    align-content: center;
-    font-size: 17px;
+*, ::after, ::before {
+    box-sizing: border-box;
+    outline: none;
 }
 /* App end */
 
 /* Header */
 .header {
     height: 105px;
+    padding: 0 50px;
 }
 .header-content {
     height: 100%;
+    display: flex;
 }
 .header-logo {
-    margin: 0 35px 0 35px;
-    height: 100%;
-    display: grid;
+    padding: 12px 0;
+    text-align: center;
     align-content: center;
+    display: grid;
+    width: 190px;
+}
+.header-logo-img {
+    margin: 0 auto;
 }
 .header-navigation {
     flex: 1;
-    display: grid;
-    align-content: center;
 }
 .header-navigation ul {
     padding: 0;
@@ -54,7 +47,6 @@
     padding: 0 10px 0 10px;
 }
 .header-navigation ul li a {
-    font-family: Roboto;
     font-size: 14px;
     color: #322F2F;
     transition: 0.2s;
@@ -62,17 +54,129 @@
     display: block;
     display: grid;
     align-content: center;
+    text-decoration: none;
 }
 .header-navigation ul li a:hover {
     color: #A038E3;
 }
-.header-sign-up {
-    display: block;
-    align-content: center;
-    flex: 1;
+.active-header-link {
+    color: #A038E3!important;
 }
-.header-sign-up-btn {
-    margin: 31px auto;
+.header-feedback {
+    margin-right: 15px;
+    cursor: pointer;
+    width: max-content;
+    display: grid;
+    align-content: center;
+}
+.header-feedback-number {
+    color: #3F3C3C;
+    font-size: 20px;
+    display: block;
+}
+.header-feedback-label {
+    color: #A038E3;
+    font-size: 14px;
+    display: block;
+}
+.header-sign-up {
+    width: max-content;
+    display: block;
+    text-align: center;
     width: max-content;
 }
+.header-sign-up-btn {
+    display: inline-block;
+    margin: 31px 0;
+    width: max-content;
+}
+.header-register {
+    height: 40px;
+    width: max-content;
+    padding: 5px 24px 0 24px;
+    background-color: #FFDC1C;
+    border: 1px solid #FFDC1C;
+    border-radius: 50px;
+    display: inline-block;
+    align-content: center;
+    font-size: 17px;
+    margin-right: 20px;
+    color: #171717;
+    text-decoration: none;
+}
+.header-login {
+    height: 40px;
+    width: max-content;
+    padding: 5px 24px 0 24px;
+    border: 1px solid #6C6C6C;
+    border-radius: 50px;
+    display: inline-block;
+    align-content: center;
+    font-size: 17px;
+    color: #171717;
+    text-decoration: none;
+}
 /* Header end */
+
+/* Main page */
+.main-page {
+    background-color: #EEEEEE;
+    height: 100px;
+}
+/* Main end */
+
+/* Login page */
+.login-page {
+    border-top: 1px solid #6C6C6C;
+}
+.login-title {
+    font-size: 24px;
+    color: #171717;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 35px;
+}
+.login-form {
+    width: max-content;
+    margin: 0 auto;
+}
+.input-login {
+    width: 420px;
+    display: block;
+    height: 40px;
+    border: 1px solid #B9B9B9;
+    border-radius: 50px;
+    font-size: 16px;
+    padding: 0 20px;
+    margin-bottom: 22px;
+}
+/* Login end */
+
+/* Register page */
+.register-page {
+    border-top: 1px solid #6C6C6C;
+}
+.register-title {
+    font-size: 24px;
+    color: #171717;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 35px;
+}
+.register-form {
+    width: max-content;
+    margin: 0 auto;
+}
+.input-register {
+    width: 420px;
+    display: block;
+    height: 40px;
+    border: 1px solid #B9B9B9;
+    border-radius: 50px;
+    font-size: 16px;
+    padding: 0 20px;
+    margin-bottom: 22px;
+}
+/* Register end */

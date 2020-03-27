@@ -1,16 +1,24 @@
-// App imports
+// App
 import React from 'react'
 import './App.css'
 
-// Partials imports
+// Router
+import AppRouter from './Router'
+import {
+    BrowserRouter as Router,
+} from "react-router-dom"
+
+// Partials
 import Header from './Partials/Header'
 
 class App extends React.Component {
     render() {
         return (
-            <div className="App">
+            <Router>
                 <Header />
-            </div>
+
+                <AppRouter />
+            </Router>
         )
     }
 }
