@@ -20,7 +20,7 @@ const questions = [
                 id: 1
             },
             {
-                title: 'Шаблон данных об автомобиле',
+                title: 'Рандом',
                 url: '',
                 id: 2
             }
@@ -107,18 +107,46 @@ class FAQ extends React.Component {
                     <div className="col">
                         <Input type="text" placeholder="Напишите ваш вопрос..." value={this.state.q} onChange={(e) => {this.setState({q: e.target.value})}} />
                     </div>
-
-                    <Button type="fill" margin={"0 0 0 10px"} paddingVertical={"6px"} paddingHorizontal={"80px"}>Поиск</Button>
                 </div>
 
                 <div className="faq-questions row">
                     {questions.map((question) => {
-                        return (
+                        let view = false
+
+                        let q = this.state.q.split(' ')
+                        
+                        for (let i = 0; i < q.length; i++) {
+                            for (let j = 0; j < question.questions.length; j++) {
+                                if(~question.questions[j].title.toLowerCase().indexOf(q[i].toLowerCase()) && !!q[i].length) {
+                                    view = true
+                                    break
+                                }
+                            }
+                        }
+
+                        if(this.state.q.length == 0) {
+                            view = true
+                        }
+
+                        return view && (
                             <div className="faq-question col-md-3" key={question.id}>
                                 <h4>{question.title}</h4>
                                 <ul>
                                     {question.questions.map((question) => {
-                                        return (
+                                        let view = false
+                                        let q = this.state.q.split(' ')
+                                        
+                                        for (let i = 0; i < q.length; i++) {
+                                            if(~question.title.toLowerCase().indexOf(q[i].toLowerCase()) && !!q[i].length) {
+                                                view = true
+                                            }
+                                        }
+                
+                                        if(this.state.q.length == 0) {
+                                            view = true
+                                        }
+
+                                        return view && (
                                             <li key={question.id}><Link to="/">{question.title}</Link></li>
                                         )
                                     })}
