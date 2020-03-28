@@ -8,6 +8,9 @@ import {
     Link
 } from "react-router-dom"
 
+// Elements
+import Button from '../Elements/Button'
+
 class Header extends React.Component {
     render() {
         return (
@@ -21,10 +24,10 @@ class Header extends React.Component {
                         <nav>
                             <ul>
                                 <li>
-                                    <a>Грузовладельцам</a>
+                                    <NavLink to="/faq" activeClassName="active-header-link">Грузовладельцам</NavLink>
                                 </li>
                                 <li>
-                                    <a>Перевозчикам</a>
+                                    <NavLink to="/faq" activeClassName="active-header-link">Перевозчикам</NavLink>
                                 </li>
                                 <li>
                                     <NavLink to="/faq" activeClassName="active-header-link">FAQ</NavLink>
@@ -40,8 +43,8 @@ class Header extends React.Component {
 
                     <div className="header-sign-up">
                         <div className="header-sign-up-btn">
-                            <Link to="/register" className="header-register">Регистрация</Link>
-                            <Link to="/login" className="header-login">Вход</Link>
+                            <Link to="/register"><Button type="fill" margin={"0 15px 0 0"} paddingVertical={"6px"}>Регистрация</Button></Link>
+                            <Link to="/login"><Button type="empty" paddingVertical={"6px"}>Вход</Button></Link>
                         </div>
                     </div>
                 </div>
