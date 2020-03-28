@@ -14,23 +14,23 @@ import Button from '../Elements/Button'
 class Header extends React.Component {
     render() {
         return (
-            <header className="header">
-                <div className="row header-content">
-                    <div className="header-logo col-2">
+            <header className="header container-fluid">
+                <div className="header-content row">
+                    <div className="header-logo">
                         <Link to="/"><img src={logo} className="header-logo-img" alt="Pogrooz" /></Link>
                     </div>
 
-                    <div className="header-navigation">
+                    <div className="header-navigation col">
                         <nav>
                             <ul>
                                 <li>
-                                    <NavLink to="/faq" activeClassName="active-header-link">Грузовладельцам</NavLink>
+                                    <NavLink to="/grooz" activeClassName="active">Грузовладельцам</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/faq" activeClassName="active-header-link">Перевозчикам</NavLink>
+                                    <NavLink to="/perev" activeClassName="active">Перевозчикам</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/faq" activeClassName="active-header-link">FAQ</NavLink>
+                                    <NavLink to="/faq" activeClassName="active">FAQ</NavLink>
                                 </li>
                             </ul>
                         </nav>

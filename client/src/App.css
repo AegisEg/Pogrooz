@@ -19,6 +19,9 @@ a {
     box-sizing: border-box;
     outline: none;
 }
+.container-fluid {
+    padding: 0 50px!important;
+}
 /* App end */
 
 /* Elements */
@@ -45,10 +48,78 @@ a {
     text-decoration: none;
     color: #171717;
 }
+.input-text {
+    border-radius: 50px;
+    height: 48px;
+    border: 1px solid #B9B9B9;
+    padding: 0 22px;
+    font-size: 16px;
+    color: #171717;
+    width: 100%;
+}
 /* Elements end */
 
 /* Header */
-
+.header {
+    height: 95px;
+}
+.header-content {
+    height: 100%;
+}
+.header-logo {
+    padding: 7px 0;
+}
+.header-logo-img {
+    margin: 0 auto;
+    display: block;
+}
+.header-navigation {
+    height: 100%;
+    padding: 0!important;
+}
+.header-navigation nav {
+    height: 100%;
+}
+.header-navigation ul {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.header-navigation ul li {
+    display: inline-block;
+    height: 100%;
+}
+.header-navigation ul li a {
+    display: inline-block;
+    color: #322F2F;
+    padding: 34px 10px;
+    height: 100%;
+    transition: 0.2s;
+}
+.header-navigation ul li a:hover {
+    color: #AD2DFF;
+}
+.header-navigation ul li a.active {
+    color: #AD2DFF;
+}
+.header-feedback {
+    width: 230px;
+    padding: 22px 0;
+}
+.header-feedback-number {
+    display: inline-block;
+    color: #3F3C3C;
+    font-size: 20;
+}
+.header-feedback-label {
+    display: inline-block;
+    color: #A038E3;
+    font-size: 14;
+}
+.header-sign-up {
+    width: 250px;
+    padding: 25px 0;
+}
 /* Header end */
 
 /* Footer */
@@ -115,6 +186,38 @@ a {
     display: block;
 }
 /* Main end */
+
+/* FAQ */
+.faq-page {
+    border-top: 1px solid #6C6C6C;
+}
+.faq-title {
+    margin-top: 50px;
+    margin-bottom: 40px;
+    font-size: 24px;
+    font-weight: 500;
+}
+.faq-question {
+    margin-top: 60px;
+}
+.faq-question h4 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: normal;
+}
+.faq-question ul {
+    margin: 0;
+    padding: 0;
+}
+.faq-question ul li {
+    list-style: none;
+}
+.faq-question ul li a {
+    font-size: 16px;
+    color: #9509EF;
+}
+/* FAQ end */
 
 /* Login page */
 .login-page {

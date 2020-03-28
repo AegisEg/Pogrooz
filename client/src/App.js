@@ -1,6 +1,7 @@
 // App
 import React from 'react'
 import './App.css'
+import './css/grid.min.css'
 
 // Router
 import AppRouter from './Router'
