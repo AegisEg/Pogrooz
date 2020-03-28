@@ -52,6 +52,40 @@ a {
 /* Header end */
 
 /* Footer */
+.footer
+{
+    background: #F7F7F7;  
+}
+.footer_menu
+{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+.download_block
+{
+    margin-top: 60px;
+}
+.footer_list ul
+{
+    list-style: none;
+    padding-left: 0;
+}
+.footer_list ul a:not(.mail){
+    color: #6C6C6C;
+}
+.footer_list a:not(.mail){
+    text-decoration: none;
+    color: #000;
+}
+a.mail
+{
+    color: #A038E3;
+}
+.postscript
+{
+    color: #6C6C6C;
+    font-size: 12px;
+}
 
 /* footer end */
 
