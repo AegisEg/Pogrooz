@@ -15,8 +15,7 @@ class App extends React.Component {
     render() {
         return (
             <Router>
-                <Header />
-
+                <Header />                
                 <AppRouter />
             </Router>
         )
