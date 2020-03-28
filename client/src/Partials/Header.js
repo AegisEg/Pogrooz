@@ -15,8 +15,8 @@ class Header extends React.Component {
     render() {
         return (
             <header className="header">
-                <div className="header-content">
-                    <div className="header-logo">
+                <div className="row header-content">
+                    <div className="header-logo col-2">
                         <Link to="/"><img src={logo} className="header-logo-img" alt="Pogrooz" /></Link>
                     </div>
 
