@@ -11,7 +11,6 @@ import {
 
 // Partials
 import Header from './Partials/Header'
-import Footer from './Partials/Footer'
 
 class App extends React.Component {
     render() {
@@ -19,7 +18,6 @@ class App extends React.Component {
             <Router>
                 <Header />                
                 <AppRouter />
-                <Footer /> 
             </Router>
         )
     }
