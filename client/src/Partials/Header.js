@@ -1,17 +1,19 @@
 // App
 import React from 'react'
 import logo from '../logo.svg'
-
 // Router
 import {
-    NavLink,
     Link
 } from "react-router-dom"
 
 // Elements
 import Button from '../Elements/Button'
+import MenuNav from './MenuNav'
 
 class Header extends React.Component {
+    onResize(size){
+        console.log(size);
+    }
     render() {
         return (
             <header className="header container-fluid">
@@ -19,23 +21,7 @@ class Header extends React.Component {
                     <div className="header-logo">
                         <Link to="/"><img src={logo} className="header-logo-img" alt="Pogrooz" /></Link>
                     </div>
-
-                    <div className="header-navigation col">
-                        <nav>
-                            <ul>
-                                <li>
-                                    <NavLink to="/grooz" activeClassName="active">Грузовладельцам</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/perev" activeClassName="active">Перевозчикам</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/faq" activeClassName="active">FAQ</NavLink>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-
+                    <MenuNav/>
                     <div className="header-feedback">
                         <span className="header-feedback-number">8 800 000 00 00</span>
                         <span className="header-feedback-label">Заказать обратный звонок</span>

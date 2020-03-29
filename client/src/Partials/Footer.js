@@ -16,7 +16,7 @@ import {
 class Footer extends React.Component {
     render() {
         return (
-            <footer className="footer   py-4">
+            <footer className="footer container-fluid  py-4">
               <div className="row mx-0">
                   <div className="d-none d-md-block col-2 text-left">
                     <img src={logo} className="footer-logo-img" alt="Pogrooz" />
