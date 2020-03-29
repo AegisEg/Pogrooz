@@ -8,7 +8,6 @@ import {
 
 // Elemnts
 import Input from '../Elements/Input'
-import Button from '../Elements/Button'
 
 const questions = [
     {
