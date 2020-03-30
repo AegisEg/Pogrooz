@@ -253,6 +253,8 @@ a {
 .more-menu
 {
     cursor: pointer;
+    padding: 34px 10px;
+    display: inline-block;
     /* display: none; */
 }
 .more-menu img
@@ -387,6 +389,7 @@ a.mail
 /* FAQ */
 .faq-page {
     border-top: 1px solid #6C6C6C;
+    margin-bottom: 50px;
 }
 .faq-title {
     margin-top: 50px;

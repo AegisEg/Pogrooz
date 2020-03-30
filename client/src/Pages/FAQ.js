@@ -123,7 +123,7 @@ class FAQ extends React.Component {
                             }
                         }
 
-                        if(this.state.q.length == 0) {
+                        if(this.state.q.length === 0) {
                             view = true
                         }
 
@@ -141,7 +141,7 @@ class FAQ extends React.Component {
                                             }
                                         }
                 
-                                        if(this.state.q.length == 0) {
+                                        if(this.state.q.length === 0) {
                                             view = true
                                         }
 
