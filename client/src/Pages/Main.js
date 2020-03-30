@@ -14,7 +14,7 @@ class Main extends React.Component {
     render() {
         return (
             <div className="main-page">
-                 <div className="main-preview">
+                 <div className="main-preview row">
                     <div className="row col-12">
                         <div className="main-text-block">
                             <h1 className="main-title">Pogrooz</h1>
@@ -35,8 +35,9 @@ class Main extends React.Component {
                     </div>
 
                     <div className="main-advantages row col-12">
-                        <div className="main-advantage">
-
+                        <div className="main-advantage col-md-4">
+                            <h4>Быстро</h4>
+                            <p>Быстро и просто, никаких звонков. <br></br>Вся организация перевозки онлайн.</p>
                         </div>
                     </div>
                 </div>

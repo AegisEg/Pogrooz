@@ -189,6 +189,8 @@ a {
 .more-menu
 {
     cursor: pointer;
+    padding: 34px 10px;
+    display: inline-block;
     /* display: none; */
 }
 .more-menu img

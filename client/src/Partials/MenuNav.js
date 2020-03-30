@@ -34,8 +34,8 @@ class MenuNav extends React.Component {
             },
             {
                 id:4,
-                name:'Грузовладельцам',
-                href:"/perev",
+                name:'FAQ',
+                href:"/faq",
                 type:"menu",
                 width:0
             }
@@ -64,7 +64,7 @@ class MenuNav extends React.Component {
     }
 
     render() {
-        let menu = this.state.menu,width=41      
+        let menu = this.state.menu,width=61      
         for (let i = 0; i < menu.length; i++) {
             width+=menu[i].width
             if(width>=this.state.menuWidth)
@@ -83,7 +83,7 @@ class MenuNav extends React.Component {
                         {menu.map((item)=>{
                             return item.type === 'menu' && (                             
                                 <li key={item.id} style={{opacity:item.width?1:0}}>
-                                <NavLink to="/grooz" activeClassName="active">Грузовладельцам</NavLink>
+                                <NavLink to={item.href} activeClassName="active">{item.name}</NavLink>
                                 <ReactResizeDetector handleWidth handleHeight onResize={(width) => {this.onResizeItem(width, item.id)}} />
                                 </li>
                         )})}
@@ -96,7 +96,7 @@ class MenuNav extends React.Component {
                                     {menu.map((item)=>{
                                         return item.type === 'submenu' && (                             
                                         <li key={item.id}>
-                                        <NavLink to="/grooz" activeClassName="active">Грузовладельцам</NavLink>                                        
+                                        <NavLink to={item.href} activeClassName="active">{item.name}</NavLink>                                        
                                         </li>
                                     )})}
                                     </ul>

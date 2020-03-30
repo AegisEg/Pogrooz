@@ -21,7 +21,9 @@ class Header extends React.Component {
                     <div className="header-logo">
                         <Link to="/"><img src={logo} className="header-logo-img" alt="Pogrooz" /></Link>
                     </div>
+
                     <MenuNav/>
+                    
                     <div className="header-feedback">
                         <span className="header-feedback-number">8 800 000 00 00</span>
                         <span className="header-feedback-label">Заказать обратный звонок</span>
