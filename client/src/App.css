@@ -30,6 +30,17 @@ a {
     }
     
 }
+@media (min-width:1024px)
+{
+    .register
+    {
+        margin-right: 15px;
+    }
+    .register span:after,.login span:after
+    {
+        display: none;
+    }
+}
 @media (max-width:959px)
 {
     .d-premd-none
