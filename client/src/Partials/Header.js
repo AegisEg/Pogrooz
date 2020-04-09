@@ -2,6 +2,7 @@
 import React from 'react'
 import logo from '../logo.svg'
 import burger from '../img/burger.png'
+import minilogo from '../img/minilogo.png'
 // Router
 import {
     Link
@@ -19,10 +20,12 @@ class Header extends React.Component {
         return (
             <header className="header container-fluid">
                 <div className="header-content row">
-                    <div className="header-logo">
+                    <div className="header-logo d-none d-md-block">
                         <Link to="/"><img src={logo} className="header-logo-img" alt="Pogrooz" /></Link>
                     </div>
-
+                    <div className="header-logo d-flex d-md-none">
+                        <Link to="/"  className="m-auto"><img src={minilogo} className="header-logo-img" alt="Pogrooz" /></Link>
+                    </div>
                     <MenuNav/> 
                     <div className="d-premd-block col d-postmd-none"></div>               
                     <div className="header-feedback d-640-none">

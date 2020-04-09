@@ -73,6 +73,10 @@ a {
 }
 @media screen and (max-width:479px)
 {
+    .header-sign-up
+    {
+        display: none;
+    }
     .col-380-12
     {
         flex: 0 0 100%;
@@ -128,6 +132,11 @@ a {
     align-items: center;
     text-decoration: none;
 }
+.button-fill.submit
+{
+    padding: 10px 35px;
+    font-size: 1.4em;
+}
 .button-empty {
     color: #171717;
     width: max-content;
@@ -149,6 +158,35 @@ a {
     font-size: 16px;
     color: #171717;
     width: 100%;
+}
+input[type="checkbox"]
+{
+    visibility: hidden;
+    position: absolute;
+}
+input[type="checkbox"]~label{
+    position: relative;
+    display: block;
+    height: 20px;
+    width: 20px;
+    border: 1px solid #B9B9B9;
+    border-radius: 7px;
+}
+input[type="checkbox"]:checked~label::after{
+    content: "";
+    top: -3px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    width: 7px;
+    height: 10px;
+    border: solid #9509EF;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg)
 }
 /* Elements end */
 
@@ -189,6 +227,9 @@ a {
     padding: 34px 10px;
     height: 100%;
     transition: 0.2s;
+}
+header~div {
+    min-height: 55vh;
 }
 .register span
 {
@@ -258,8 +299,8 @@ a {
     font-size: 14;
 }
 .header-sign-up {
-    width: 250px;
     padding: 25px 0;
+    padding-right: 20px;
 }
 .more-menu
 {
@@ -592,9 +633,9 @@ a.mail
     margin-top: 50px;
     margin-bottom: 35px;
 }
-.login-form {
-    width: 420px;
-    margin: 0 auto;
+.login-form .bottom
+{
+    border-bottom: 1px solid #DDDDDD;
 }
 .input-login {
     width: 420px;
