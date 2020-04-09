@@ -7,13 +7,16 @@ import prevQuestEnable from '../img/prevQuestEnable.png'
 import nextQuest from '../img/nextQuest.png'
 import nextQuestEnable from '../img/nextQuestEnable.png'
 
+// Img for slider
+import sliderPreviewImg from '../img/sliderPreviewImg.png'
+
 class Questions extends React.Component {
     state = {
         questions: [
-            {title: 'jakolsdkoajsklod aklsjdkl askldj klasdlk aksljd jklasd', id: 0},
-            {title: 'jakolsdkoajsklod aklsjdkl askldj klasdlk aksljd jklasd', id: 1},
-            {title: 'jakolsdkoajsklod aklsjdkl askldj klasdlk aksljd jklasd', id: 2},
-            {title: 'jakolsdkoajsklod aklsjdkl askldj klasdlk aksljd jklasd', id: 3},
+            {title: 'Что такое PoGrooz?', id: 0},
+            {title: 'Как откликнуться на заказ?', id: 1},
+            {title: 'Как откликнуться на предложение?', id: 2},
+            {title: 'Действительно ли сервис бесплатный?', id: 3},
             {title: 'jakolsdkoajsklod aklsjdkl askldj klasdlk aksljd jklasd', id: 4},
             {title: 'jakolsdkoajsklod aklsjdkl askldj klasdlk aksljd jklasd', id: 5},
             {title: 'jakolsdkoajsklod aklsjdkl askldj klasdlk aksljd jklasd', id: 6},
@@ -29,8 +32,14 @@ class Questions extends React.Component {
                 <SliderQuestions>
                     {this.state.questions.map(question => {
                         return (
-                            <div key={question.id} className="child">
-                                {question.title}
+                            <div key={question.id} className="child-questions">
+                                <div className="child-question">
+                                    {question.title}
+                                </div>
+
+                                <div className="child-preview-img">
+                                    <img src={sliderPreviewImg} />
+                                </div>
                             </div>
                         );
                     })}
