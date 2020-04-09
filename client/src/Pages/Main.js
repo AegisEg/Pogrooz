@@ -58,7 +58,7 @@ class Main extends React.Component {
                 <div className="main-profitably">
                     <hr></hr>
 
-                    <h3>Почему с нами выгодно? </h3>
+                    <h3>Почему с нами выгодно?</h3>
 
                     <div className="row">
                         <div className="main-profitably-block col-md-6">
@@ -75,6 +75,10 @@ class Main extends React.Component {
                 </div>
 
                 <Questions/>
+
+                <div className="main-cities">
+                    <h3>Мы работаем по всей России</h3>
+                </div>
             </div>
         )
     }

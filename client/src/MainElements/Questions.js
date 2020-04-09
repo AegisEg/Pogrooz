@@ -34,11 +34,11 @@ class Questions extends React.Component {
                         return (
                             <div key={question.id} className="child-questions">
                                 <div className="child-question">
-                                    {question.title}
-                                </div>
-
-                                <div className="child-preview-img">
-                                    <img src={sliderPreviewImg} />
+                                    <p className="child-question-title">{question.title}</p>
+                                    <p className="child-question-text">Попутные грузоперевозки с PoGrooz – это шаг в будущее удобных грузоперевозок.</p>
+                                    <div className="child-preview-img">
+                                        <img src={sliderPreviewImg} />
+                                    </div>
                                 </div>
                             </div>
                         );
