@@ -503,6 +503,16 @@ a.mail
 .register-page {
     border-top: 1px solid #6C6C6C;
 }
+.tabs .tab.active
+{
+    text-decoration: underline;
+    color: #000;
+}
+.tabs .tab
+{
+    color: #909090;
+    cursor: pointer;
+}
 .register-title {
     font-size: 24px;
     color: #171717;
@@ -511,9 +521,12 @@ a.mail
     margin-top: 50px;
     margin-bottom: 35px;
 }
-.register-form {
-    width: 420px;
-    margin: 0 auto;
+.simple_select_city
+{
+    padding: 10px 35px;
+    background-color: #F9F8F8;
+    border-radius: 20px;
+    border: 1px solid #EEEEEE;
 }
 .input-register {
     width: 420px;
