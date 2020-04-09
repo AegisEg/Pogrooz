@@ -16,6 +16,7 @@ import Button from '../Elements/Button'
 // Main elements
 import Questions from '../MainElements/Questions'
 import Cities from '../MainElements/Cities'
+import Articles from '../Catalog/Articles'
 
 class Main extends React.Component {
     render() {
@@ -56,6 +57,8 @@ class Main extends React.Component {
                         </div>
                     </div>
                 </div>
+
+                <Articles />
 
                 <div className="main-profitably">
                     <hr></hr>

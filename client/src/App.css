@@ -671,6 +671,28 @@ a.mail
 }
 /* Main end */
 
+/* Articles */
+.articles-block {
+    padding: 0 50px;
+}
+.articles-block .row {
+    margin: 0;
+}
+.articles-header {
+    background-color: #F7F7F7;
+    height: 50px;
+    border-top: 1px solid #ddd;
+    padding: 6px 0;
+}
+.articles-header span {
+    font-size: 24px;
+    color: #909090;
+}
+.article-block {
+    border-top: 1px solid #ddd;
+}
+/* Articles end */
+
 /* FAQ */
 .faq-page {
     border-top: 1px solid #6C6C6C;
