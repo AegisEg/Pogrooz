@@ -131,11 +131,32 @@ a {
     display: inline-flex;
     align-items: center;
     text-decoration: none;
+    position: relative;
+    overflow:hidden;
+    z-index: 1;
 }
 .button-fill.submit
 {
     padding: 10px 35px;
     font-size: 1.4em;
+}
+.button-fill::before {
+    transition: all 0.4s;
+    content:'';
+    position:absolute;
+    top:-20px;
+    left:50%;
+    -webkit-transform:translate(-50%, -50%) scale(1);
+    transform:translate(-50%, -50%) scale(1);
+    display:block;
+    width:40px;
+    height:40px;
+    background:#fff;
+    border-radius:50px;
+}
+.button-fill:hover::before{
+      -webkit-transform:scale(8.3);
+      transform:scale(8.3);
 }
 .button-empty {
     color: #171717;
@@ -145,6 +166,27 @@ a {
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
+    position: relative;
+    overflow:hidden;
+    z-index: 1;
+}
+.button-empty::before {
+    transition: all 0.4s;
+    content:'';
+    position:absolute;
+    top:-20px;
+    left:50%;
+    -webkit-transform:translate(-50%, -50%) scale(1);
+    transform:translate(-50%, -50%) scale(1);
+    display:block;
+    width:40px;
+    height:40px;
+    background:#FFDC1C;
+    border-radius:50px;
+}
+.button-empty:hover::before{
+      -webkit-transform:scale(8.3);
+      transform:scale(8.3);
 }
 .button-fill a, .button-empty a {
     text-decoration: none;
@@ -603,6 +645,30 @@ a.mail
             margin: auto;
         }
     /* Main slider end */
+.main-cities {
+    height: 620px;
+    position: relative;
+    padding: 0 15px;
+}
+.main-cities h3 {
+    font-weight: normal;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 80px;
+}
+.main-cities-background {
+    position: absolute;
+    bottom: 56px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.main-cities ul li {
+    list-style: none;
+    color: #171717;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
 /* Main end */
 
 /* FAQ */

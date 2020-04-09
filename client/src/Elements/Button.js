@@ -8,7 +8,7 @@ class Button extends React.Component {
                 padding: `${this.props.paddingVertical?this.props.paddingVertical:'10px'} ${this.props.paddingHorizontal ? this.props.paddingHorizontal : '15px'}`, 
                 margin: this.props.margin ? this.props.margin : '',
                 fontSize: this.props.fontSize ? this.props.fontSize : ''}}>
-                {this.props.children}
+                <span style={{zIndex: 2}}>{this.props.children}</span>
             </span>
         )
     }
