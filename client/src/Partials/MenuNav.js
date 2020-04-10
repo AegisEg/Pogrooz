@@ -14,14 +14,14 @@ class MenuNav extends React.Component {
             {
                 id: 1,
                 name:'Грузовладельцам',
-                href:"/perev",
+                href:"/cargo",
                 type:"menu",
                 width:0
             },
             {
                 id: 2,
                 name:'Перевозчикам',
-                href:"/perev",
+                href:"/carrier",
                 type:"menu",
                 width:0
             },
