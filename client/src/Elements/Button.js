@@ -4,7 +4,7 @@ import React from 'react'
 class Button extends React.Component {
     render() {
         return (
-            <span className={`button-${this.props.type}`} style={{
+            <span className={`button-${this.props.type} ${this.props.className?this.props.className:""}`} style={{
                 padding: `${this.props.paddingVertical?this.props.paddingVertical:'10px'} ${this.props.paddingHorizontal ? this.props.paddingHorizontal : '15px'}`, 
                 margin: this.props.margin ? this.props.margin : '',
                 fontSize: this.props.fontSize ? this.props.fontSize : ''}}>

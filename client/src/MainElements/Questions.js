@@ -37,7 +37,7 @@ class Questions extends React.Component {
                                     <p className="child-question-title">{question.title}</p>
                                     <p className="child-question-text">Попутные грузоперевозки с PoGrooz – это шаг в будущее удобных грузоперевозок.</p>
                                     <div className="child-preview-img">
-                                        <img src={sliderPreviewImg} />
+                                        <img src={sliderPreviewImg}  alt="sliderPreviewImg"/>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@ class SliderQuestions extends React.Component {
                             this.checkButtons(offsetWidthValue, scrollWidthValue);
                         }}
                     >
-                        {this.state.prevDisable ? <img src={prevQuest} /> : <img src={prevQuestEnable} />}
+                        {this.state.prevDisable ? <img src={prevQuest} alt="prevQuest" /> : <img src={prevQuestEnable} alt="prevQuestEnable"/>}
                     </div>
                 
                     <div
@@ -102,7 +102,7 @@ class SliderQuestions extends React.Component {
                             this.checkButtons(offsetWidthValue, scrollWidthValue);
                         }}
                     >
-                        {this.state.nextDisable ? <img src={nextQuest} /> : <img src={nextQuestEnable} />}
+                        {this.state.nextDisable ? <img src={nextQuest} alt="nextQuest" /> : <img src={nextQuestEnable} alt="nextQuestEnable"/>}
                     </div>
                 </div>}
 

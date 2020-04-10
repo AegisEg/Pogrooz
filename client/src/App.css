@@ -278,9 +278,9 @@ header~div {
     position: relative;
     z-index: 1;
 }
-.register span:after
+.register>span:after
 {
-    content: "";
+    /* content: ""; */
     padding: 19px 24px;
     z-index: -1;
     height: unset;
@@ -294,14 +294,15 @@ header~div {
     -ms-transform: translate(9px, 0px) skew(-15deg, 0deg);
     transform: translate(9px, 0px) skew(-15deg, 0deg);
 }
+
 .login span
 {
     position: relative;
     z-index: 1;
 }
-.login span:after
+.login>span:after
 {
-    content: "";
+    /* content: ""; */
     padding: 18px 24px;
     z-index: -1;
     left: -13px;
@@ -795,6 +796,14 @@ a.mail
 }
 .select>div
 {
-    border-radius: 20px;
+    /* border-radius: 20px; */
+}
+.select>div>div:first-child
+{
+    padding: 6px 15px;
+}
+a.href
+{
+    color:#9509EF;
 }
 /* Register end */

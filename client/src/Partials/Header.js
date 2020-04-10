@@ -40,7 +40,7 @@ class Header extends React.Component {
                         </div>
                     </div>
                     <div className="toogle-burger">
-                        <img src={burger}/>
+                        <img src={burger} alt="burger"/>
                     </div>                    
                 </div>
             </header>
