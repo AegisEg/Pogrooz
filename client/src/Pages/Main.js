@@ -3,6 +3,7 @@ import React from 'react'
 import ImagePreview from '../img/main-preview.png'
 import ImageCheck from '../img/check.png'
 import ImageRub from '../img/rub.png'
+import ImgMainCities from '../img/main-cities.png'
 
 // Router
 import {
@@ -14,6 +15,8 @@ import Button from '../Elements/Button'
 
 // Main elements
 import Questions from '../MainElements/Questions'
+import Cities from '../MainElements/Cities'
+import Articles from '../Catalog/Articles'
 
 class Main extends React.Component {
     render() {
@@ -55,6 +58,8 @@ class Main extends React.Component {
                     </div>
                 </div>
 
+                <Articles />
+
                 <div className="main-profitably">
                     <hr></hr>
 
@@ -74,10 +79,14 @@ class Main extends React.Component {
                     </div>
                 </div>
 
-                <Questions/>
+                <Questions />
 
                 <div className="main-cities">
                     <h3>Мы работаем по всей России</h3>
+
+                    <img className="main-cities-background" src={ImgMainCities} />
+
+                    <Cities />
                 </div>
             </div>
         )
