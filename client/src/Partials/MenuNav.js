@@ -54,7 +54,7 @@ class MenuNav extends React.Component {
     onResizeItem(itemWidth, id) {
         let menu = this.state.menu
         for (let i = 0; i < menu.length; i++) {
-            if(menu[i].id==id)
+            if(menu[i].id===id)
             {
                 menu[i].width =itemWidth
                 break

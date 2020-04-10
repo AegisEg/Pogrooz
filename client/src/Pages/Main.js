@@ -84,7 +84,7 @@ class Main extends React.Component {
                 <div className="main-cities">
                     <h3>Мы работаем по всей России</h3>
 
-                    <img className="main-cities-background" src={ImgMainCities} />
+                    <img className="main-cities-background" src={ImgMainCities} alt="ImgMainCities" />
 
                     <Cities />
                 </div>
