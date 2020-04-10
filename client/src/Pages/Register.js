@@ -37,6 +37,7 @@ class Register extends React.Component {
                         <div className="col-6">
                         <Select
                             value={this.state.selectedOption}
+                            className="select"
                             onChange={this.handleChange}
                             options={options}
                         />
