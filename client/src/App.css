@@ -685,12 +685,26 @@ a.mail
     border-top: 1px solid #ddd;
     padding: 6px 0;
 }
+.articles-header div {
+    padding: 0;
+}
 .articles-header span {
     font-size: 24px;
     color: #909090;
 }
 .article-block {
     border-top: 1px solid #ddd;
+    padding: 12px 0;
+}
+.article-block span {
+    color: #171717;
+    font-size: 14px;
+}
+.article-block div {
+    padding: 0;
+}
+.article-actions {
+    text-align: right;
 }
 /* Articles end */
 
@@ -807,3 +821,56 @@ a.href
     color:#9509EF;
 }
 /* Register end */
+
+/* About */
+.about-page {
+    border-top: 1px solid #6C6C6C;
+    padding: 50px;
+}
+.about-page h1 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #171717;
+    font-weight: normal;
+}
+.about-page ul {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 45px;
+}
+.about-page ul li {
+    list-style: none;
+}
+.about-page ul li a {
+    font-size: 16px;
+    color: #9509EF;
+}
+.about-page h3 {
+    font-size: 16px;
+    color: #171717;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 15px;
+}
+.about-page h4 {
+    font-size: 14px;
+    color: #171717;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 3px;
+}
+.about-page p {
+    font-size: 14px;
+    color: #6C6C6C;
+    font-weight: normal;
+    margin: 0;
+}
+.about-page p span {
+    color: #171717;
+}
+.about-page hr {
+    border-top: 1px solid #DDDDDD;
+    height: 0;
+    margin: 30px 0;
+}
+/* About end */

@@ -31,8 +31,11 @@ class Article extends React.Component {
                             <span>{this.props.article.price}</span>
                         </div>
                         <div className="col-md-3">
-                            <span></span>
+                            <span>Рейтинг: {this.props.article.rating}</span>
                         </div>
+                    </div>
+                    <div className="col-md-12 article-actions">
+                        <Link to="/register"><Button type="fill" paddingVertical={"5px"} paddingHorizontal={"25px"} fontSize={"14px"}>ВЗЯТЬ</Button></Link>
                     </div>
                 </div>
             </div>
