@@ -4,6 +4,9 @@ import ImagePreview from '../img/main-preview.png'
 import ImageCheck from '../img/check.png'
 import ImageRub from '../img/rub.png'
 import ImgMainCities from '../img/main-cities.png'
+import ImgPreviewTimer from '../img/preview-timer.png'
+import ImgPreviewGeo from '../img/preview-geo.png'
+import ImgPreviewRub from '../img/preview-rub.png'
 
 // Router
 import {
@@ -24,7 +27,7 @@ class Main extends React.Component {
             <div className="main-page">
                  <div className="main-preview row">
                     <div className="row col-12">
-                        <div className="main-text-block col-md-6">
+                        <div className="main-text-block col-12 col-sm-7 col-md-8 col-xl-6">
                             <h1 className="main-title">Pogrooz</h1>
                             <h2 className="main-subtitle">Куда угодно. Что угодно.</h2>
 
@@ -32,27 +35,27 @@ class Main extends React.Component {
                             <p className="main-description-subtitle">Срочные объявления по грузоперевозкам от владельцев по России и СНГ</p>
 
                             <div className="main-preview-register">
-                                <Link to="/register"><Button type="fill" margin={"0 35px 0 0"} paddingVertical={"15px"}>Я владелец груза</Button></Link>
+                                <Link to="/register"><Button type="fill" margin={"0 5% 0 0"} paddingVertical={"15px"}>Я владелец груза</Button></Link>
                                 <Link to="/register"><Button type="empty" paddingVertical={"15px"}>Я перевозчик</Button></Link>
                             </div>
                         </div>
 
-                        <div className="main-image-block col-md-6">
+                        <div className="main-image-block col-0 col-sm-5 col-md-4 col-xl-6">
                             <img src={ImagePreview} className="main-previewimage" alt="Pogrooz" />
                         </div>
                     </div>
 
                     <div className="main-advantages row col-12">
-                        <div className="main-advantage col-md-4">
-                            <h4 className="main-advantage-title">Быстро</h4>
+                        <div className="main-advantage col-4">
+                            <h4 className="main-advantage-title"><img src={ImgPreviewTimer} /> Быстро</h4>
                             <p className="main-advantage-label">Быстро и просто, никаких звонков. <br></br>Вся организация перевозки онлайн.</p>
                         </div>
-                        <div className="main-advantage col-md-4">
-                            <h4 className="main-advantage-title">Удобно</h4>
+                        <div className="main-advantage col-4">
+                            <h4 className="main-advantage-title"><img src={ImgPreviewGeo} /> Удобно</h4>
                             <p className="main-advantage-label">Отслеживание местонахождения <br></br>груза он-лайн.</p>
                         </div>
-                        <div className="main-advantage col-md-4">
-                            <h4 className="main-advantage-title">Выгодно</h4>
+                        <div className="main-advantage col-4">
+                            <h4 className="main-advantage-title"><img src={ImgPreviewRub} /> Выгодно</h4>
                             <p className="main-advantage-label">Никаких процентов и комиссий. <br></br>Только прямая работа с исполнителем</p>
                         </div>
                     </div>
@@ -60,7 +63,7 @@ class Main extends React.Component {
 
                 <Articles />
 
-                <div className="main-profitably">
+                <div className="main-profitably d-none d-md-block">
                     <hr></hr>
 
                     <h3>Почему с нами выгодно?</h3>

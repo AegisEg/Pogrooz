@@ -5,6 +5,7 @@ import React from 'react'
 import Button from '../Elements/Button'
 import CheckBox from '../Elements/CheckBox'
 import Input from '../Elements/Input'
+import { Link } from 'react-router-dom'
 
 class Login extends React.Component {
     render() {
@@ -21,7 +22,7 @@ class Login extends React.Component {
                             </span>  
                             <div className="ml-3">
                                 <span>Запомнить меня</span>
-                                <span className="d-block mt-2"><a href="/">Забыли пароль</a></span>
+                                <span className="d-block mt-2"><Link to="/">Забыли пароль</Link></span>
                             </div>                          
                         </div>
                         <div className="col-12 col-sm-6 text-center text-sm-right mt-2">
@@ -29,7 +30,7 @@ class Login extends React.Component {
                         </div>
                     </div>                    
                     <p className="text-center mb-0">Еще не зарегистрированы?</p>
-                    <p className="text-center my-0 pb-4">Перейти <a href="/register">страницу регистрации</a></p>
+                    <p className="text-center my-0 pb-4">Перейти <Link to="/register">страницу регистрации</Link></p>
                 </div>
             </div>
         )

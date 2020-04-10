@@ -364,6 +364,7 @@ header~div {
 {
     position: absolute;
     display: none;
+    z-index: 1;
     width: auto;
     background-color: #F9F8F8;
     padding: 19px 14px;
@@ -470,9 +471,57 @@ a.mail
     display: inline-block;
     height: 60px;
 }
+.main-image-block {
+    align-items: center;
+    display: flex;
+}
+@media screen and (max-width: 576px) {
+    .main-image-block {
+        display: none;
+    }
+    .main-advantage-label {
+        display: none;
+    }
+    .main-preview {
+        text-align: center;
+    }
+    .main-description-title {
+        margin-top: 15px;
+    }
+}
+@media screen and (max-width: 401px) {
+    .main-preview-register span {
+        margin: 0!important;
+    }
+}
+@media screen and (max-width: 356px) {
+    .main-preview-register span.button-fill,  .main-preview-register span.button-empty{
+        margin-bottom: 15px!important;
+    }
+}
+@media screen and (max-width: 992px) {
+    .main-description-title {
+        font-size: 16px;
+    }
+    .main-subtitle {
+        font-size: 24px;
+    }
+    .main-preview {
+        padding: 0 0px 50px 0px;
+    }
+    .main-preview .row.col-12 {
+        margin: 0!important;
+    }
+}
 .main-previewimage {
     margin: 0 auto;
     display: block;
+    margin-top: 40px;
+    width: 100%;
+    max-width: 470px;
+    align-self: center;
+}
+.main-advantage {
     margin-top: 40px;
 }
 .main-advantage-title {
@@ -606,12 +655,13 @@ a.mail
             height: 100px;
             display: flex;
             align-items: center;
+            box-shadow: 4px 4px 0px 0px #DDDDDD;
         }
         .child-question-text {
             display: none;
         }
         .child-questions:hover .child-question {
-            height: 164px;
+            height: 160px;
             padding: 0 20px;
         }
         .child-questions:hover .child-question-text {
@@ -647,9 +697,22 @@ a.mail
         }
     /* Main slider end */
 .main-cities {
-    height: 620px;
+    height: max-content;
+    min-height: 620px;
     position: relative;
-    padding: 0 15px;
+    padding: 0 50px;
+}
+@media screen and (max-width: 576px) {
+    .main-cities {
+        text-align: center;
+        padding: 0 15px!important;
+    }
+    .main-cities-background {
+        position: unset!important;
+    }
+    .main-cities h3 {
+        margin-bottom: 24px!important;
+    }
 }
 .main-cities h3 {
     font-weight: normal;
@@ -663,6 +726,10 @@ a.mail
     left: 0;
     right: 0;
     margin: auto;
+    max-width: 100%;
+}
+.main-cities ul  {
+    padding: 0;
 }
 .main-cities ul li {
     list-style: none;

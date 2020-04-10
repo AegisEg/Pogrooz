@@ -6,7 +6,7 @@ class Cities extends React.Component {
         return (
             <>
                 <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-6 col-sm-3 col-md-2">
                         <ul>
                             <li>Казань</li>
                             <li>Волгоград</li>
@@ -21,7 +21,7 @@ class Cities extends React.Component {
                             <li>МО, Долгопрудный</li>
                         </ul>
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-6 col-sm-3 col-md-2">
                         <ul>
                             <li>Барнаул</li>
                             <li>Смоленск</li>
@@ -35,7 +35,7 @@ class Cities extends React.Component {
                             <li>Орел</li>
                         </ul>
                     </div>
-                    <div className="col-md-2 offset-md-4">
+                    <div className="col-6 col-sm-3 col-md-2 offset-md-4 offset-sm-0">
                         <ul>
                             <li>Краснодар</li>
                             <li>Самара</li>
@@ -52,7 +52,7 @@ class Cities extends React.Component {
 
                         </ul>
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-6 col-sm-3 col-md-2">
                         <ul>
                             <li>Калуга</li>
                             <li>Рязань</li>

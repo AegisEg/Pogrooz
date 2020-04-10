@@ -26,13 +26,13 @@ class Questions extends React.Component {
     }
     render() {
         return (
-            <div className="main-questions">
+            <div className="main-questions d-none d-sm-block">
                 <h3>Часто задаваемые вопросы</h3>
 
                 <SliderQuestions>
                     {this.state.questions.map(question => {
                         return (
-                            <div key={question.id} className="child-questions">
+                            <div key={question.id} className="child-questions col-12 col-sm-6 col-md-4 col-xl-3">
                                 <div className="child-question">
                                     <p className="child-question-title">{question.title}</p>
                                     <p className="child-question-text">Попутные грузоперевозки с PoGrooz – это шаг в будущее удобных грузоперевозок.</p>
