@@ -12,30 +12,30 @@ class MenuNav extends React.Component {
     state = {
         menu:[
             {
-                id:1,
+                id: 1,
                 name:'Грузовладельцам',
                 href:"/perev",
                 type:"menu",
                 width:0
             },
             {
-                id:2,
-                name:'Грузовладельцам',
+                id: 2,
+                name:'Перевозчикам',
                 href:"/perev",
                 type:"menu",
                 width:0
             },
             {
-                id:3,
-                name:'Грузовладельцам',
-                href:"/perev",
-                type:"menu",
-                width:0
-            },
-            {
-                id:4,
+                id: 3,
                 name:'FAQ',
                 href:"/faq",
+                type:"menu",
+                width:0
+            },
+            {
+                id: 4,
+                name:'О портале',
+                href:"/about",
                 type:"menu",
                 width:0
             }
