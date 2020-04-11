@@ -65,11 +65,15 @@ a {
     {
         text-align: right;
     }
+    
+    
+}
+@media screen and (min-width:959px)
+{
     .toogle-burger
     {
         display: none;
     }
-    
 }
 @media screen and (max-width:479px)
 {
@@ -875,9 +879,26 @@ a.mail
     padding: 0 20px;
     margin-bottom: 22px;
 }
-.select>div
+.simple_select_city 
 {
-    /* border-radius: 20px; */
+    cursor: pointer;
+    position: relative;
+}
+.simple_select_city.active::before
+{
+    content: "";
+    top: -3px;
+    left: 20px;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    width: 7px;
+    height: 10px;
+    border: solid #9509EF;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 .select>div>div:first-child
 {
