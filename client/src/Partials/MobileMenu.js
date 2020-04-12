@@ -7,7 +7,9 @@ import burger from "../img/burger.png";
 import { Link } from "react-router-dom";
 
 var styles = {
-  bmBurgerButton: {},
+  bmBurgerButton: {
+    position: 'relative'
+  },
   bmBurgerBars: {
     background: "#373a47",
   },

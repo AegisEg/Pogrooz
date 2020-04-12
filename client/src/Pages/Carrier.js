@@ -15,6 +15,8 @@ import ImgHistory from "../img/history.png";
 import ImgPhone from "../img/phone.png";
 import Imgtamplate from "../img/tamplate.png";
 
+import questions from '../config/questions'
+
 class Carrier extends React.Component {
   render() {
     return (
@@ -149,70 +151,21 @@ class Carrier extends React.Component {
             </div>
           </div>
         </div>
-        <div className="carrier-div d-none d-sm-block">
-          <hr />
-          <div className="row list_href">
-            <div className="col-sm-6 col-md-5 col-lg-6">
-              <h4 className=" my-2  font-weight-normal">Часто задаваемые вопросы</h4>
-              <div className="row">
-                <div className="col-md-12 col-lg-6">
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                </div>
-                <div className="col-md-12 col-lg-6">
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-7 col-lg-6">
-              <div className="row">
-                <div className="col-sm-12 col-md-8 col-lg-6">
-                  <h4 className=" my-2  font-weight-normal">
-                    Сообщения и уведомления
-                  </h4>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                  <p className="m-0">
-                    <Link to="/">Шаблон данных об автомобиле</Link>
-                  </p>
-                </div>
-                <div className="col-sm-12 col-md-4 col-lg-6">
-                  <h4 className=" my-2  font-weight-normal">Отзывы</h4>
-                  <p className="m-0">
-                    <Link to="/">Переводчик</Link>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="faq-questions row">
+            {questions.map((question) => {
+                return (
+                    <div className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left" key={question.id}>
+                        <h4>{question.title}</h4>
+                        <ul>
+                            {question.questions.map((question) => {
+                                return (
+                                    <li key={question.id}><Link to="/">{question.title}</Link></li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                )
+            })}
         </div>
       </div>
     );
