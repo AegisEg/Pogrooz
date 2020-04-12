@@ -53,6 +53,7 @@ a {
     }
 }
 /* App end */
+
 /* Media */
 @media screen and (min-width:768px)
 {
@@ -125,6 +126,7 @@ a {
     }
 }
 /* Media */
+
 /* Elements */
 .button-fill {
     color: #171717;
@@ -198,12 +200,11 @@ a {
 }
 .input-text {
     border-radius: 50px;
-    height: 48px;
+    height: 42px;
     border: 1px solid #B9B9B9;
     padding: 0 22px;
     font-size: 16px;
     color: #171717;
-    width: 100%;
 }
 input[type="checkbox"]
 {
@@ -233,6 +234,24 @@ input[type="checkbox"]:checked~label::after{
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg)
+}
+.filter {
+    padding: 20px 50px;
+}
+.filter-input-title {
+    line-height: 16px;
+    padding: 7px 10px 0 0;
+}
+.filter-open {
+    display: inline;
+    color: #A038E3;
+}
+.filter-actions {
+    text-align: right;
+    margin: 0!important;
+}
+.filter-line {
+    margin-top: 15px;
 }
 /* Elements end */
 
@@ -968,9 +987,18 @@ a.href
 .cargo-page {
     border-top: 1px solid #6C6C6C;
 }
+.cargo-page h1 {
+    font-size: 24px;
+    color: #171717;
+    font-weight: normal;
+    margin: 0;
+    padding: 10px 50px;
+    margin-top: 40px;
+}
 .cargo-pros {
     padding: 24px 50px 8px 50px;
     background-color: #EEEEEE;
+    margin: 0!important;
 }
 .cargo-pros-image-block {
     width: 80px;
@@ -1052,5 +1080,6 @@ a.href
     padding: 0 0px 0 75px;
     margin: 0;
     height: max-content;
+    line-height: 16px;
 }
 /* Cargo end */
