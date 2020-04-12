@@ -22,7 +22,7 @@ class Footer extends React.Component {
                     <img src={logo} className="footer-logo-img" alt="Pogrooz" />
                   </div>
                   <div className="col-presm-8 col-sm-6 col-md-6 footer_menu row align-content-start">
-                    <div className="footer_list col-6">
+                    <div className="footer_list col-min380-12 col-576px-6  col-sm-6">
                         <p><Link to="/faq" >Грузовладельцам</Link></p>
                         <ul>
                             <li>
@@ -33,7 +33,7 @@ class Footer extends React.Component {
                             </li>
                         </ul>
                     </div>
-                    <div className="footer_list col-6">
+                    <div className="footer_list col-min380-12 col-576px-6  col-sm-6">
                         <p><Link to="/faq" >Грузовладельцам</Link></p>
                         <ul>
                             <li>
@@ -44,7 +44,7 @@ class Footer extends React.Component {
                             </li>
                         </ul>
                     </div>
-                    <div className="footer_list col-6">
+                    <div className="footer_list col-min380-12 col-576px-6  col-sm-6">
                         <p><Link to="/faq" >Грузовладельцам</Link></p>
                         <ul>
                             <li>
@@ -55,7 +55,7 @@ class Footer extends React.Component {
                             </li>
                         </ul>
                     </div>
-                    <div className="footer_list col-6">
+                    <div className="footer_list col-min380-12 col-576px-6  col-sm-6">
                         <p><Link to="/faq" >Грузовладельцам</Link></p>
                         <ul>
                             <li>
@@ -67,7 +67,7 @@ class Footer extends React.Component {
                         </ul>
                     </div>                    
                   </div>
-                  <div className=".col-380-12 col-presm-4 col-sm-6 col-md-4 text-right">
+                  <div className="col-380-12 col-presm-4 col-sm-6 col-md-4 text-right">
                     <div className="row">
                         <div className="text-lg-left footer_list col-380-6 col-premd-12 col-lg-6 text-380-left text-premd-right">
                             <p>Контакты</p>

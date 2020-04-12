@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../Elements/Button";
+import Filter from "../Elements/Filter";
 
 // Images
 import Imgtophone from "../img/tophone.png";
@@ -21,6 +22,8 @@ class Carrier extends React.Component {
   render() {
     return (
       <div className="carrier-page">
+        <h1>Перевозчикам</h1>
+        <Filter />
         <div className="carrier-pros row">
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
