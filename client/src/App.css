@@ -215,7 +215,7 @@ input[type="checkbox"]:checked~label::after{
 }
 .filter-input-title {
     line-height: 16px;
-    padding: 7px 10px 0 0;
+    padding: 0 10px 0 0;
 }
 .filter-open {
     display: inline;
@@ -227,6 +227,10 @@ input[type="checkbox"]:checked~label::after{
 }
 .filter-line {
     margin-top: 15px;
+}
+.filter-line h5 {
+    font-size: 14px;
+    font-weight: normal;
 }
 /* Elements end */
 
@@ -963,6 +967,7 @@ a.href {
 .cargo-pros {
   padding: 24px 50px 8px 50px;
   background-color: #eeeeee;
+  margin: 0!important;
 }
 .cargo-pros-image-block {
   width: 80px;
