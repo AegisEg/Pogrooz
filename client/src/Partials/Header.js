@@ -33,8 +33,9 @@ const customStyles = {
 
 class Header extends React.Component {
   state = {
-    showModel: false,
-  };
+    showModal: false,
+  }
+  
   render() {
     return (
       <header className="header container-fluid">
@@ -54,7 +55,7 @@ class Header extends React.Component {
           <div
             className="header-feedback d-640-none"
             onClick={() => {
-              this.setState({ showModel: true });
+              this.setState({ showModal: true });
             }}
           >
             <span className="header-feedback-number">8 800 000 00 00</span>
@@ -81,9 +82,9 @@ class Header extends React.Component {
           </div>
         </div>
         <Modal
-          isOpen={this.state.showModel}
+          isOpen={this.state.showModal}
           onRequestClose={() => {
-            this.setState({ showModel: false });
+            this.setState({ showModal: false });
           }}
           className="col-10 col-md-6 col-lg-4 col-xl-3 col-md-6"
           style={customStyles}
