@@ -75,7 +75,11 @@ class Select extends React.Component {
           }}
           className="select"
           onChange={this.props.onChange}
-          placeholder={"Другая"}
+          placeholder={this.props.placeholder}
+          ref={(ref) => {
+            this.select = ref;
+            this.props.getRef(ref);
+          }}
           styles={colourStyles}
           options={this.props.options}
         />
