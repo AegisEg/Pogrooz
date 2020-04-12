@@ -16,11 +16,15 @@ import ImgChat from '../img/chat.png'
 import ImgGeo from '../img/geo.png'
 import ImgPhone from '../img/phone.png'
 import ImgBigStar from '../img/big-star.png'
+import Filter from '../Elements/Filter'
 
 class Cargo extends React.Component {
     render() {
         return (
             <div className="cargo-page">
+                <h1>Владельцам груза</h1>
+                
+                <Filter />
                 <div className="cargo-pros row">
                     <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                         <div className="cargo-pros-image-block">
@@ -41,7 +45,7 @@ class Cargo extends React.Component {
                             <img className="cargo-pros-image" src={ImgChat} />
                         </div>
 
-                        <p className="cargo-pros-label">Система оповещений и сообщений  </p>
+                        <p className="cargo-pros-label">Система оповещений и сообщений</p>
                     </div>
                     <div className="col-12 col-sm-6 col-md-4 col-lg-2">
                         <div className="cargo-pros-image-block">
