@@ -18,6 +18,8 @@ import ImgPhone from '../img/phone.png'
 import ImgBigStar from '../img/big-star.png'
 import Filter from '../Elements/Filter'
 
+import questions from '../config/questions'
+
 class Cargo extends React.Component {
     render() {
         return (
@@ -103,8 +105,27 @@ class Cargo extends React.Component {
                             <p className="cargo-step-label">Создайте заказ</p>
                         </div>
 
-                        <Link to="/register"><Button type="fill" paddingVertical={'11px'} paddingHorizontal={'20px'} margin={'0 0 0 35px'} lineHeight={'18px'}>Поробовать<br></br>БЕСПЛАТНО</Button></Link>
+                        <div className="col" style={{textAlign: 'center'}}>
+                            <Link to="/register"><Button type="fill" paddingVertical={'11px'} paddingHorizontal={'20px'} margin={'0 0 0 35px'} lineHeight={'18px'}>Поробовать<br></br>БЕСПЛАТНО</Button></Link>
+                        </div>
                     </div>
+                </div>
+
+                <div className="faq-questions row">
+                    {questions.map((question) => {
+                        return (
+                            <div className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left" key={question.id}>
+                                <h4>{question.title}</h4>
+                                <ul>
+                                    {question.questions.map((question) => {
+                                        return (
+                                            <li key={question.id}><Link to="/">{question.title}</Link></li>
+                                        )
+                                    })}
+                                </ul>
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         )

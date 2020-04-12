@@ -18,6 +18,11 @@ const colourStyles = {
   indicatorsContainer: (base, state) => ({
     ...base,
     transform: state.selectProps.menuIsOpen ? "scale(1,-1)" : "",
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    margin: 'auto'
   }),
   menu: (base) => ({
     ...base,
@@ -29,8 +34,14 @@ const colourStyles = {
     borderTopLeftRadius: "0",
     borderTopRightRadius: "0",
   }),
-  valueContainer: (base, state) => ({
+  valueContainer: (base) => ({
     ...base,
+    maxHeight: 42,
+  }),
+  container: (base, state) => ({
+    ...base,
+    maxHeight: 42,
+    flexGrow: 1
   }),
   control: (base, state) => ({
     ...base,
