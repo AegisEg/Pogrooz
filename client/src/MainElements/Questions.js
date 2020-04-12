@@ -63,23 +63,20 @@ class SliderQuestions extends React.Component {
     }
    
     componentDidMount() {
-        this.checkButtons(this.refs.offsetWidth, this.refs.scrollWidth);
+        this.checkButtons(this.refs.offsetWidth, this.refs.scrollLeft);
     }
 
-    checkButtons = (offsetWidthValue, scrollWidthValue) => {
-        setTimeout(() => {
-            this.setState({
-                prevDisable: this.refs.scrollLeft <= 0 ? true : false,
-                nextDisable:
-                this.refs.scrollLeft + offsetWidthValue >= scrollWidthValue ? true : false
-            });
-        }, 350)
+    checkButtons = (offsetWidthValue, scrollLeftValue) => {
+        this.setState({
+            prevDisable: scrollLeftValue <= 0 ? true : false,
+            nextDisable: (scrollLeftValue + offsetWidthValue) >= this.refs.scrollWidth ? true : false
+        })
     }
    
-    render() {
-        const offsetWidthValue = this.refs.offsetWidth,
-            scrollWidthValue = this.refs.scrollWidth
-            
+    render() {   
+        let offsetWidthValue = this.refs.offsetWidth,
+            scrollLeftValue = this.refs.scrollLeft
+
         return (
             <>
                 {(!this.state.nextDisable || !this.state.prevDisable) && <div className="btn-block">
@@ -87,8 +84,9 @@ class SliderQuestions extends React.Component {
                         className={`btn-prev`}
                         disabled={this.state.prevDisable}
                         onClick={() => {
-                            this.refs.scrollLeft -= offsetWidthValue / 2;
-                            this.checkButtons(offsetWidthValue, scrollWidthValue);
+                            scrollLeftValue = this.refs.scrollLeft - this.refs.offsetWidth
+                            this.refs.scrollLeft -= this.refs.offsetWidth
+                            this.checkButtons(offsetWidthValue, scrollLeftValue)
                         }}
                     >
                         {this.state.prevDisable ? <img src={prevQuest} alt="prevQuest" /> : <img src={prevQuestEnable} alt="prevQuestEnable"/>}
@@ -98,8 +96,9 @@ class SliderQuestions extends React.Component {
                         className={`btn-next`}
                         disabled={this.state.nextDisable}
                         onClick={() => {
-                            this.refs.scrollLeft += offsetWidthValue / 2;
-                            this.checkButtons(offsetWidthValue, scrollWidthValue);
+                            scrollLeftValue = this.refs.scrollLeft + this.refs.offsetWidth
+                            this.refs.scrollLeft += this.refs.offsetWidth
+                            this.checkButtons(offsetWidthValue, scrollLeftValue)
                         }}
                     >
                         {this.state.nextDisable ? <img src={nextQuest} alt="nextQuest" /> : <img src={nextQuestEnable} alt="nextQuestEnable"/>}

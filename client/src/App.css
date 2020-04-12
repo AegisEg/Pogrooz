@@ -583,6 +583,7 @@ a.mail
     height: 350px;
     background-color: #EEEEEE;
     position: relative;
+    padding: 0 35px;
 }
 .main-questions h3 {
     color: #171717;
@@ -962,3 +963,94 @@ a.href
     margin: 30px 0;
 }
 /* About end */
+
+/* Cargo */
+.cargo-page {
+    border-top: 1px solid #6C6C6C;
+}
+.cargo-pros {
+    padding: 24px 50px 8px 50px;
+    background-color: #EEEEEE;
+}
+.cargo-pros-image-block {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border: 2px solid #322F2F;
+    border-radius: 50px;
+    position: relative;
+}
+.cargo-pros-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+.cargo-pros-label {
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+}
+.cargo-steps {
+    padding: 50px;
+}
+.cargo-steps h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: normal;
+}
+.cargo-steps-block {
+    margin: 35px 0;
+}
+.cargo-step {
+    background-color: #F7F7F7;
+    height: 60px;
+    background-clip: content-box;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    padding: 0!important;
+    margin: 0 45px 0 15px;
+    display: flex;
+    align-items: center;
+}
+.cargo-step::after {
+    content: '';
+    width: 0; 
+    height: 0; 
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 40px solid #F7F7F7;
+    position: absolute;
+    top: 0;
+    right: -40px;
+}
+.cargo-step-number {
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+    position: absolute;
+    border: 1px solid #DDDDDD;
+    box-shadow: 10px 3px 10px -14px #000;
+    display: inline-block;
+}
+.cargo-step-number span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: max-content;
+    height: max-content;
+    font-size: 36px;
+    color: #B9B9B9;
+    font-weight: 900;
+}
+.cargo-step-label {
+    padding: 0 0px 0 75px;
+    margin: 0;
+    height: max-content;
+}
+/* Cargo end */

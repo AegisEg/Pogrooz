@@ -6,14 +6,6 @@ import {
     Link
 } from "react-router-dom"
 
-// Elements
-import Button from '../Elements/Button'
-
-// Main elements
-import Questions from '../MainElements/Questions'
-import Cities from '../MainElements/Cities'
-import Articles from '../Catalog/Articles'
-
 let questions = [
     {
         title: 'Вопросы о PoGrooz»',
@@ -32,7 +24,7 @@ let questions = [
     }
 ]
 
-class Main extends React.Component {
+class About extends React.Component {
     render() {
         return (
             <div className="about-page">
@@ -92,4 +84,4 @@ class Main extends React.Component {
     }
 }
 
-export default Main
+export default About

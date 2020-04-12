@@ -47,15 +47,15 @@ class Main extends React.Component {
 
                     <div className="main-advantages row col-12">
                         <div className="main-advantage col-4">
-                            <h4 className="main-advantage-title"><img src={ImgPreviewTimer} /> Быстро</h4>
+                            <h4 className="main-advantage-title"><img src={ImgPreviewTimer} alt="Fasted working" /> Быстро</h4>
                             <p className="main-advantage-label">Быстро и просто, никаких звонков. <br></br>Вся организация перевозки онлайн.</p>
                         </div>
                         <div className="main-advantage col-4">
-                            <h4 className="main-advantage-title"><img src={ImgPreviewGeo} /> Удобно</h4>
+                            <h4 className="main-advantage-title"><img src={ImgPreviewGeo} alt="Usebillity" /> Удобно</h4>
                             <p className="main-advantage-label">Отслеживание местонахождения <br></br>груза он-лайн.</p>
                         </div>
                         <div className="main-advantage col-4">
-                            <h4 className="main-advantage-title"><img src={ImgPreviewRub} /> Выгодно</h4>
+                            <h4 className="main-advantage-title"><img src={ImgPreviewRub} alt="Free" /> Выгодно</h4>
                             <p className="main-advantage-label">Никаких процентов и комиссий. <br></br>Только прямая работа с исполнителем</p>
                         </div>
                     </div>

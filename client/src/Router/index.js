@@ -13,6 +13,8 @@ import FAQ from '../Pages/FAQ'
 import Login from '../Pages/Login'
 import Register from '../Pages/Register'
 import About from '../Pages/About'
+import Cargo from '../Pages/Cargo'
+import Carrier from '../Pages/Carrier'
 
 class AppRouter extends React.Component {
     render() {
@@ -32,6 +34,12 @@ class AppRouter extends React.Component {
                 </Route>
                 <Route exact path="/about">
                     <About />
+                </Route>
+                <Route exact path="/cargo">
+                    <Cargo />
+                </Route>
+                <Route exact path="/carrier">
+                    <Carrier />
                 </Route>
             </Switch>
         )
