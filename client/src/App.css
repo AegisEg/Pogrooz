@@ -126,7 +126,7 @@ a {
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  z-index: 1;
+  z-index: 0;
 }
 .button-fill.submit {
   padding: 10px 35px;
@@ -160,7 +160,7 @@ a {
   align-items: center;
   position: relative;
   overflow: hidden;
-  z-index: 1;
+  z-index: 0;
 }
 .button-empty::before {
   transition: all 0.4s;
