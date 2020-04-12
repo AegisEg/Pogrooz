@@ -36,7 +36,7 @@ const colourStyles = {
     ...base,
     borderColor: "#B9B9B9",
     borderBottomLeftRadius: state.menuIsOpen ? "0" : "",
-    borderBottom: state.menuIsOpen ? "none" : "",
+    borderBottomColor: state.menuIsOpen ? "transparent" : "",
     borderBottomRightRadius: state.menuIsOpen ? "0" : "",
     boxShadow: "0 0 0 0px #B9B9B9",
     transition: "none",

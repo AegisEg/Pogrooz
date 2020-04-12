@@ -29,10 +29,10 @@ a {
     display: none;
   }
 }
-@media (min-width: 1024px) {
-  .register {
-    margin-right: 15px;
-  }
+.register {
+  margin-right: 15px;
+}
+@media (min-width: 1024px) {  
   .register span:after,
   .login span:after {
     display: none;
@@ -61,6 +61,18 @@ a {
 @media screen and (min-width: 959px) {
   .toogle-burger {
     display: none;
+  }
+}
+@media screen and (max-width: 380px) {
+  .col-min380-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+@media screen and (min-width: 380px) and (max-width: 576px) {
+  .col-576px-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
   }
 }
 @media screen and (max-width: 479px) {
@@ -174,63 +186,62 @@ a {
   color: #171717;
 }
 .input-text {
-    border-radius: 50px;
-    height: 42px;
-    border: 1px solid #B9B9B9;
-    padding: 0 22px;
-    font-size: 16px;
-    color: #171717;
+  border-radius: 50px;
+  height: 42px;
+  border: 1px solid #b9b9b9;
+  padding: 0 22px;
+  font-size: 16px;
+  color: #171717;
 }
-input[type="checkbox"]
-{
-    visibility: hidden;
-    position: absolute;
+input[type="checkbox"] {
+  visibility: hidden;
+  position: absolute;
 }
-input[type="checkbox"]~label{
-    position: relative;
-    display: block;
-    height: 20px;
-    width: 20px;
-    border: 1px solid #B9B9B9;
-    border-radius: 7px;
+input[type="checkbox"] ~ label {
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 20px;
+  border: 1px solid #b9b9b9;
+  border-radius: 7px;
 }
-input[type="checkbox"]:checked~label::after{
-    content: "";
-    top: -3px;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-    position: absolute;
-    width: 7px;
-    height: 10px;
-    border: solid #9509EF;
-    border-width: 0 2px 2px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg)
+input[type="checkbox"]:checked ~ label::after {
+  content: "";
+  top: -3px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  position: absolute;
+  width: 7px;
+  height: 10px;
+  border: solid #9509ef;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .filter {
-    padding: 20px 50px;
+  padding: 20px 50px;
 }
 .filter-input-title {
-    line-height: 16px;
-    padding: 0 10px 0 0;
+  line-height: 16px;
+  padding: 0 10px 0 0;
 }
 .filter-open {
-    display: inline;
-    color: #A038E3;
+  display: inline;
+  color: #a038e3;
 }
 .filter-actions {
-    text-align: right;
-    margin: 0!important;
+  text-align: right;
+  margin: 0 !important;
 }
 .filter-line {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 .filter-line h5 {
-    font-size: 14px;
-    font-weight: normal;
+  font-size: 14px;
+  font-weight: normal;
 }
 /* Elements end */
 
@@ -318,7 +329,8 @@ header ~ div {
 .toogle-burger {
   padding: 35px 0;
 }
-.header-navigation ul li a:hover {
+.header-navigation ul li a:hover,
+.footer_list ul li a:hover {
   color: #ad2dff;
 }
 .header-navigation ul li a.active {
@@ -327,6 +339,7 @@ header ~ div {
 .header-feedback {
   width: 230px;
   padding: 22px 0;
+  cursor: pointer;
 }
 .header-feedback-number {
   display: inline-block;
@@ -430,8 +443,8 @@ a.mail {
   white-space: nowrap;
 }
 .list_href a:after {
-    content: "»";
-    margin-left: 3px;
+  content: "»";
+  margin-left: 3px;
 }
 .main-description-title {
   font-size: 24px;
@@ -957,17 +970,17 @@ a.href {
   border-top: 1px solid #6c6c6c;
 }
 .cargo-page h1 {
-    font-size: 24px;
-    color: #171717;
-    font-weight: normal;
-    margin: 0;
-    padding: 10px 50px;
-    margin-top: 40px;
+  font-size: 24px;
+  color: #171717;
+  font-weight: normal;
+  margin: 0;
+  padding: 10px 50px;
+  margin-top: 40px;
 }
 .cargo-pros {
   padding: 24px 50px 8px 50px;
   background-color: #eeeeee;
-  margin: 0!important;
+  margin: 0 !important;
 }
 .cargo-pros-image-block {
   width: 80px;
@@ -1054,6 +1067,14 @@ a.href {
 /* carrier */
 .carrier-page {
   border-top: 1px solid #6c6c6c;
+}
+.carrier-page h1 {
+  font-size: 24px;
+  color: #171717;
+  font-weight: normal;
+  margin: 0;
+  padding: 10px 50px;
+  margin-top: 40px;
 }
 .carrier-pros {
   padding: 24px 50px 8px 50px;
