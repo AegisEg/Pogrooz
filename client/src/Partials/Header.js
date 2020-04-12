@@ -3,15 +3,16 @@ import React from "react";
 import Modal from "react-modal";
 //IMG
 import logo from "../logo.svg";
-import burger from "../img/burger.png";
 import minilogo from "../img/minilogo.png";
 // Router
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 // Elements
 import Button from "../Elements/Button";
 import Input from "../Elements/Input";
 import MenuNav from "./MenuNav";
+import MobileMenu from "./MobileMenu";
 
 const customStyles = {
   content: {
@@ -27,16 +28,39 @@ const customStyles = {
     boxSizing: "border-box",
     boxShadow: "3px 2px 15px rgba(0, 0, 0, 0.13)",
     borderRadius: "10px",
-    padding:"20px"
+    padding: "20px",
   },
 };
 
 class Header extends React.Component {
   state = {
     showModal: false,
-  }
-  
+    menu: [
+      {
+        id: 1,
+        name: "Грузовладельцам",
+        href: "/cargo",
+        type: "menu",
+      },
+      {
+        id: 2,
+        name: "Перевозчикам",
+        href: "/carrier",
+      },
+      {
+        id: 3,
+        name: "FAQ",
+        href: "/faq",
+      },
+      {
+        id: 4,
+        name: "О портале",
+        href: "/about",
+      },
+    ],
+  };
   render() {
+    let menu = this.state.menu
     return (
       <header className="header container-fluid">
         <div className="header-content row">
@@ -78,7 +102,15 @@ class Header extends React.Component {
             </div>
           </div>
           <div className="toogle-burger">
-            <img src={burger} alt="burger" />
+            <MobileMenu>
+              {menu.map((item) => {
+                return (
+                  <NavLink to={item.href} activeClassName="active">
+                    {item.name}
+                  </NavLink>
+                );
+              })}
+            </MobileMenu>
           </div>
         </div>
         <Modal
@@ -89,14 +121,16 @@ class Header extends React.Component {
           className="col-10 col-md-6 col-lg-4 col-xl-3 col-md-6"
           style={customStyles}
         >
-          <h3 className="m-0 font-weight-normal text-center">Заказать звонок</h3>
+          <h3 className="m-0 font-weight-normal text-center">
+            Заказать звонок
+          </h3>
           <Input
             type="text"
             className="my-2"
             placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
           />
           <Input type="text" className="my-2" placeholder="Имя" />
-          <p  className="text-right">
+          <p className="text-right">
             <Button type="fill" paddingVertical={"6px"}>
               Отправить
             </Button>
