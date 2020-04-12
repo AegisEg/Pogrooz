@@ -1,51 +1,109 @@
 // App
-import React from 'react'
-import logo from '../logo.svg'
-import burger from '../img/burger.png'
-import minilogo from '../img/minilogo.png'
+import React from "react";
+import Modal from "react-modal";
+//IMG
+import logo from "../logo.svg";
+import burger from "../img/burger.png";
+import minilogo from "../img/minilogo.png";
 // Router
-import {
-    Link
-} from "react-router-dom"
+import { Link } from "react-router-dom";
 
 // Elements
-import Button from '../Elements/Button'
-import MenuNav from './MenuNav'
+import Button from "../Elements/Button";
+import Input from "../Elements/Input";
+import MenuNav from "./MenuNav";
+
+const customStyles = {
+  content: {
+    top: "0",
+    position: "absolute",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    margin: "auto",
+    height: "max-content",
+    background: "#FFFFFF",
+    border: "1px solid #DDDDDD",
+    boxSizing: "border-box",
+    boxShadow: "3px 2px 15px rgba(0, 0, 0, 0.13)",
+    borderRadius: "10px",
+    padding:"20px"
+  },
+};
 
 class Header extends React.Component {
-    onResize(size){
-        console.log(size);
-    }
-    render() {
-        return (
-            <header className="header container-fluid">
-                <div className="header-content row">
-                    <div className="header-logo d-none d-md-block">
-                        <Link to="/"><img src={logo} className="header-logo-img" alt="Pogrooz" /></Link>
-                    </div>
-                    <div className="header-logo d-flex d-md-none">
-                        <Link to="/"  className="m-auto"><img src={minilogo} className="header-logo-img" alt="Pogrooz" /></Link>
-                    </div>
-                    <MenuNav/> 
-                    <div className="d-premd-block col d-postmd-none"></div>               
-                    <div className="header-feedback d-640-none">
-
-                        <span className="header-feedback-number">8 800 000 00 00</span>
-                        <span className="header-feedback-label">Заказать обратный звонок</span>
-                    </div>
-                    <div className="header-sign-up">
-                        <div className="header-sign-up-btn">
-                            <Link to="/register" className="register"><Button type="fill" paddingVertical={"6px"}>Регистрация</Button></Link>
-                            <Link to="/login" className="login"><Button type="empty" paddingVertical={"6px"}>Вход</Button></Link>
-                        </div>
-                    </div>
-                    <div className="toogle-burger">
-                        <img src={burger} alt="burger"/>
-                    </div>                    
-                </div>
-            </header>
-        )
-    }
+  state = {
+    showModel: false,
+  };
+  render() {
+    return (
+      <header className="header container-fluid">
+        <div className="header-content row">
+          <div className="header-logo d-none d-md-block">
+            <Link to="/">
+              <img src={logo} className="header-logo-img" alt="Pogrooz" />
+            </Link>
+          </div>
+          <div className="header-logo d-flex d-md-none">
+            <Link to="/" className="m-auto">
+              <img src={minilogo} className="header-logo-img" alt="Pogrooz" />
+            </Link>
+          </div>
+          <MenuNav />
+          <div className="d-premd-block col d-postmd-none"></div>
+          <div
+            className="header-feedback d-640-none"
+            onClick={() => {
+              this.setState({ showModel: true });
+            }}
+          >
+            <span className="header-feedback-number">8 800 000 00 00</span>
+            <span className="header-feedback-label">
+              Заказать обратный звонок
+            </span>
+          </div>
+          <div className="header-sign-up">
+            <div className="header-sign-up-btn">
+              <Link to="/register" className="register">
+                <Button type="fill" paddingVertical={"6px"}>
+                  Регистрация
+                </Button>
+              </Link>
+              <Link to="/login" className="login">
+                <Button type="empty" paddingVertical={"6px"}>
+                  Вход
+                </Button>
+              </Link>
+            </div>
+          </div>
+          <div className="toogle-burger">
+            <img src={burger} alt="burger" />
+          </div>
+        </div>
+        <Modal
+          isOpen={this.state.showModel}
+          onRequestClose={() => {
+            this.setState({ showModel: false });
+          }}
+          className="col-10 col-md-6 col-lg-4 col-xl-3 col-md-6"
+          style={customStyles}
+        >
+          <h3 className="m-0 font-weight-normal text-center">Заказать звонок</h3>
+          <Input
+            type="text"
+            className="my-2"
+            placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
+          />
+          <Input type="text" className="my-2" placeholder="Имя" />
+          <p  className="text-right">
+            <Button type="fill" paddingVertical={"6px"}>
+              Отправить
+            </Button>
+          </p>
+        </Modal>
+      </header>
+    );
+  }
 }
 
-export default Header
+export default Header;
