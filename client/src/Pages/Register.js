@@ -52,6 +52,7 @@ class Register extends React.Component {
                 } ml-3`}
                 onClick={(val) => {
                   this.setState({ city: 1 });
+                  this.select.select.commonProps.setValue(null);
                 }}
               >
                 Россия
@@ -60,9 +61,11 @@ class Register extends React.Component {
             <div className="col-12 mt-2 col-sm-6">
               <Select
                 options={options}
+                placeholder="Другая"
                 onChange={(val) => {
-                  this.setState({ city: val.value });
+                  if (val) this.setState({ city: val.value });
                 }}
+                getRef={(ref) => (this.select = ref)}
               />
             </div>
           </div>
@@ -99,8 +102,8 @@ class Register extends React.Component {
             .
           </p>
           <div className="text-right">
-            <Button type="fill" margin={"0 0 0 auto"} paddingVertical={"15px"}>
-              Я владелец груза
+            <Button type="fill" margin={"0 0 0 auto"} paddingHorizontal={"15px"} paddingVertical={"8px"}>
+              Отправить
             </Button>
           </div>
         </div>
