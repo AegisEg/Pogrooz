@@ -27,14 +27,16 @@ class Login extends React.Component {
               </div>
             </div>
             <div className="col-12 col-sm-6 px-0 text-center text-sm-right mt-2">
-              <Button
-                type="fill"
-                paddingVertical={"10px"}
-                fontSize={"17px"}
-                paddingHorizontal={"35px"}
-              >
-                Войти
-              </Button>
+              <Link to={false}>
+                <Button
+                  type="fill"
+                  paddingVertical={"10px"}
+                  fontSize={"17px"}
+                  paddingHorizontal={"35px"}
+                >
+                  Войти
+                </Button>
+              </Link>
             </div>
           </div>
           <p className="text-center mb-0">Еще не зарегистрированы?</p>

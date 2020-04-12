@@ -12,8 +12,12 @@ import {
 // Partials
 import Header from './Partials/Header'
 import Footer from './Partials/Footer'
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 class App extends React.Component {
+    
     render() {
         return (
             <Router>
