@@ -15,6 +15,10 @@ const colourStyles = {
   placeholder: (base) => ({
     color: "#909090",
   }),
+  indicatorsContainer: (base, state) => ({
+    ...base,
+    transform: state.selectProps.menuIsOpen ? "scale(1,-1)" : "",
+  }),
   menu: (base) => ({
     ...base,
     zIndex: 9999,
@@ -80,6 +84,11 @@ class Select extends React.Component {
             this.select = ref;
             this.props.getRef(ref);
           }}
+          noOptionsMessage={
+            this.props.noOptionsMessage
+              ? this.props.noOptionsMessage
+              : () => "Нет элементов"
+          }
           styles={colourStyles}
           options={this.props.options}
         />

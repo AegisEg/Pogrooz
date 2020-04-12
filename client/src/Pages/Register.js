@@ -78,9 +78,11 @@ class Register extends React.Component {
               />
             </div>
             <div className="col-12 col-sm-4 align-item-center text-center text-sm-right">
-              <Button type="empty" className="mt-2">
-                Отправить
-              </Button>
+              <Link to={false}>
+                <Button type="empty" className="mt-2">
+                  Отправить
+                </Button>
+              </Link>
             </div>
           </div>
           <Input type="text" className="my-2" placeholder="Фамилия" />
@@ -102,9 +104,16 @@ class Register extends React.Component {
             .
           </p>
           <div className="text-right">
-            <Button type="fill" margin={"0 0 0 auto"} paddingHorizontal={"15px"} paddingVertical={"8px"}>
-              Отправить
-            </Button>
+            <Link to={false}>
+              <Button
+                type="fill"
+                margin={"0 0 0 auto"}
+                paddingHorizontal={"15px"}
+                paddingVertical={"8px"}
+              >
+                Отправить
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
