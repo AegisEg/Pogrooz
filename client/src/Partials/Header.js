@@ -57,6 +57,16 @@ class Header extends React.Component {
         name: "О портале",
         href: "/about",
       },
+      {
+        id: 5,
+        name: "Тарифы",
+        href: "/tariffs",
+      },
+      {
+        id: 6,
+        name: "Скачать приложение",
+        href: "/download-app",
+      },
     ],
   };
   render() {
@@ -90,12 +100,12 @@ class Header extends React.Component {
           <div className="header-sign-up">
             <div className="header-sign-up-btn">
               <Link to="/register" className="register">
-                <Button type="fill" paddingVertical={"6px"}>
+                <Button type="fill" paddingVertical={"8px"} paddingHorizontal={'27px'}>
                   Регистрация
                 </Button>
               </Link>
               <Link to="/login" className="login">
-                <Button type="empty" paddingVertical={"6px"}>
+                <Button type="empty" paddingVertical={"8px"} paddingHorizontal={'27px'}>
                   Вход
                 </Button>
               </Link>

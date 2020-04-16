@@ -36,6 +36,16 @@ class MenuNav extends React.Component {
         type: "menu",
         width: 0,
       },
+      {
+        id: 5,
+        name: "Тарифы",
+        href: "/tariffs",
+      },
+      {
+        id: 6,
+        name: "Скачать приложение",
+        href: "/download-app",
+      },
     ],
     menuWidth: 0,
   };

@@ -53,6 +53,7 @@ const colourStyles = {
     transition: "none",
     "&:hover": {
       borderColor: "#B9B9B9",
+      borderBottomColor: state.menuIsOpen ? "transparent" : "",
     },
     "&::after": state.menuIsOpen
       ? {
