@@ -10,7 +10,7 @@ import CheckBox from './CheckBox'
 
 class Filter extends React.Component {
     state = {
-        show: true
+        show: false
     }
 
     render() {
