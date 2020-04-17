@@ -75,35 +75,35 @@ class Carrier extends React.Component {
           <h3>Как это работает?</h3>
 
           <div className="carrier-steps-block row">
-            <div className="carrier-step col">
+            <div className="carrier-step">
               <div className="carrier-step-number">
                 <span>1</span>
               </div>
 
               <p className="carrier-step-label">Пройдите регистрацию</p>
             </div>
-            <div className="carrier-step col">
+            <div className="carrier-step">
               <div className="carrier-step-number">
                 <span>2</span>
               </div>
 
               <p className="carrier-step-label">Добавляйте предложения</p>
             </div>
-            <div className="carrier-step col">
+            <div className="carrier-step">
               <div className="carrier-step-number">
                 <span>3</span>
               </div>
 
               <p className="carrier-step-label">Смотрите заказы</p>
             </div>
-            <div className="carrier-step col">
+            <div className="carrier-step">
               <div className="carrier-step-number">
                 <span>4</span>
               </div>
 
               <p className="carrier-step-label">Откликайтесь на заказы</p>
             </div>
-            <div className="carrier-step col">
+            <div className="carrier-step">
               <div className="carrier-step-number">
                 <span>5</span>
               </div>
@@ -113,10 +113,10 @@ class Carrier extends React.Component {
         </div>
         <div className="carrier-div">
           <hr />
-          <h3 className="font-weight-normal">
+          <h3 className="font-weight-normal f-20">
             Тариф для подключения перевозчиков к порталу PoGrooz
           </h3>
-          <div className="row">
+          <div className="row f-12">
             <div className="col-12 col-sm-6 col-lg-3 order-0 col-xl-2 d-flex">
               <span className="w-85px">Стоимость:</span>
               <div className="pl-3">
@@ -144,8 +144,9 @@ class Carrier extends React.Component {
               <Button
                 type="fill"
                 margin={"0 0 0 auto"}
-                paddingHorizontal={"15px"}
-                paddingVertical={"8px"}
+                paddingHorizontal={"25px"}
+                paddingVertical={"15px"}
+                className="f-17"
               >
                 Попробовать
                 <br />
