@@ -32,7 +32,7 @@ a {
 .register {
   margin-right: 15px;
 }
-@media (min-width: 1024px) {  
+@media (min-width: 1024px) {
   .register span:after,
   .login span:after {
     display: none;
@@ -392,6 +392,10 @@ header ~ div {
 .footer {
   background: #f7f7f7;
 }
+.social_link hover {
+  filter: invert(98%) sepia(42%) saturate(0%) hue-rotate(312deg)
+    brightness(120%) contrast(98%);
+}
 .footer_list {
   height: fit-content;
 }
@@ -730,7 +734,7 @@ a.mail {
     padding: 50px 15px;
   }
   .cargo-page h1 {
-    padding: 10px 15px!important;
+    padding: 10px 15px !important;
   }
 }
 .main-cities h3 {
@@ -983,7 +987,7 @@ a.href {
 }
 .cargo-page .faq-questions {
   padding: 0 50px;
-  margin: 0!important;
+  margin: 0 !important;
   padding-bottom: 50px;
 }
 .cargo-page h1 {
@@ -1042,7 +1046,7 @@ a.href {
   display: flex;
   align-items: center;
   min-width: 260px;
-  max-width: 300px!important;
+  max-width: 300px !important;
   position: relative;
   margin-bottom: 15px;
 }
@@ -1099,7 +1103,7 @@ a.href {
 }
 .carrier-page .faq-questions {
   padding: 0 50px;
-  margin: 0!important;
+  margin: 0 !important;
   padding-bottom: 50px;
 }
 .carrier-pros {
@@ -1169,7 +1173,7 @@ hr {
   display: flex;
   align-items: center;
   min-width: 260px;
-  max-width: 300px!important;
+  max-width: 300px !important;
   position: relative;
   margin-bottom: 15px;
 }
