@@ -22,7 +22,7 @@ class Register extends React.Component {
     return (
       <div className="register-page">
         <h1 className="register-title">Регистрация</h1>
-        <div className="register-form col-12 col-sm-9 col-md-6 col-lg-6 col-xl-4 mb-4 mx-auto">
+        <div className="register-form col-12 col-sm-9 col-md-6 col-lg-6 col-xl-3 mb-4 mx-auto">
           <div className="row tabs ">
             <div
               className={`tab col-6 ${!this.state.role ? "active" : ""}`}
@@ -43,11 +43,11 @@ class Register extends React.Component {
               Я Владелец груза
             </div>
           </div>
-          <div className="row my-3">
-            <div className="col-12 col-sm-6 mt-2 d-flex align-items-center">
+          <div className="row">
+            <div className="col-12 col-sm-6 d-flex align-items-center">
               Страна:
               <span
-                className={`simple_select_city ${
+                className={`simple_select_city col text-center ${
                   this.state.city == 1 ? `active` : ``
                 } ml-3`}
                 onClick={(val) => {
@@ -58,7 +58,7 @@ class Register extends React.Component {
                 Россия
               </span>
             </div>
-            <div className="col-12 mt-2 col-sm-6">
+            <div className="col-12 col-sm-6">
               <Select
                 options={options}
                 placeholder="Другая"
@@ -71,31 +71,35 @@ class Register extends React.Component {
           </div>
           <div className="row">
             <div className="col-12 col-sm-8">
-              <Input
-                type="text"
-                className="my-2"
-                placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
-              />
+              <Input type="text" placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
             </div>
             <div className="col-12 col-sm-4 align-item-center text-center text-sm-right">
               <Link to={false}>
-                <Button type="empty" className="mt-2">
-                  Отправить
+                <Button type="empty" className="w-100" paddingVertical={"8px"}>
+                  Полчить код
                 </Button>
               </Link>
             </div>
           </div>
-          <Input type="text" className="my-2" placeholder="Фамилия" />
           <div className="row">
-            <div className="col-12 col-sm-6">
-              <Input type="text" className="my-2" placeholder="Имя" />
-            </div>
-            <div className="col-12 col-sm-6">
-              <Input type="text" className="my-2" placeholder="Отчество" />
+            <div className="col-12">
+              <Input type="text" className="col-12" placeholder="Фамилия" />
             </div>
           </div>
-          <Input type="text" className="my-2" placeholder="Пароль" />
-          <p className="text-right">
+          <div className="row">
+            <div className="col-12 col-sm-6">
+              <Input type="text" placeholder="Имя" />
+            </div>
+            <div className="col-12 col-sm-6">
+              <Input type="text" placeholder="Отчество" />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <Input type="text" className="isHover" placeholder="Пароль" />
+            </div>
+          </div>
+          <p className="text-right f-12">
             Регистрируясь, Вы соглашаетесь с&nbsp;
             <Link to="/" className="href">
               политикой конфиденциальности и соглашением об обработке

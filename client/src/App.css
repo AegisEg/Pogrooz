@@ -12,6 +12,23 @@ body {
 a {
   text-decoration: none;
 }
+.f-12
+{
+  font-size: 12px;
+}
+.f-14
+{
+  font-size: 14px;
+}
+.f-20
+{
+  font-size: 20px;
+}
+.f-17
+{
+  font-size: 17px;
+  line-height: 18px;
+}
 .wrapper {
   display: grid;
 }
@@ -32,7 +49,7 @@ a {
 .register {
   margin-right: 15px;
 }
-@media (min-width: 1024px) {  
+@media (min-width: 1024px) {
   .register span:after,
   .login span:after {
     display: none;
@@ -47,7 +64,11 @@ a {
   }
 }
 /* App end */
-
+@media (min-width: 800px) {
+  .download_block {
+    margin-top: 60px;
+  }
+}
 /* Media */
 @media screen and (min-width: 768px) {
   .col-premd-12 {
@@ -65,7 +86,7 @@ a {
 }
 @media screen and (max-width: 959px) {
   .header-sign-up {
-    padding-right: 20px!important;
+    padding-right: 20px !important;
   }
 }
 @media screen and (max-width: 380px) {
@@ -123,7 +144,7 @@ a {
 .button-fill {
   color: #171717;
   width: max-content;
-  border: 1px solid #E6CE76;
+  border: 1px solid #e6ce76;
   background-color: #ffdc1c;
   border-radius: 50px;
   display: inline-flex;
@@ -140,8 +161,8 @@ a {
 .button-fill::before {
   -webkit-transition: 0.5s;
   transition: 0.5s;
-  -webkit-transition-delay: .1s;
-  transition-delay: .1s;
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
   content: "";
   position: absolute;
   top: -20px;
@@ -151,7 +172,7 @@ a {
   display: block;
   width: 40px;
   height: 40px;
-  background: #FFEDAF;
+  background: #ffedaf;
   border-radius: 50px;
 }
 .button-fill:hover::before {
@@ -161,7 +182,7 @@ a {
 .button-empty {
   color: #171717;
   width: max-content;
-  border: 1px solid #6C6C6C;
+  border: 1px solid #6c6c6c;
   background-color: #fff;
   border-radius: 50px;
   display: inline-flex;
@@ -173,8 +194,8 @@ a {
 .button-empty::before {
   -webkit-transition: 0.5s;
   transition: 0.5s;
-  -webkit-transition-delay: .1s;
-  transition-delay: .1s;
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
   content: "";
   position: absolute;
   top: -20px;
@@ -184,7 +205,7 @@ a {
   display: block;
   width: 40px;
   height: 40px;
-  background: #F9F8F8;
+  background: #f9f8f8;
   border-radius: 50px;
 }
 .button-empty:hover::before {
@@ -305,6 +326,17 @@ header ~ div {
   position: relative;
   z-index: 1;
 }
+.register-form .row>div{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.register-form > .tabs {
+  margin-bottom: 10px;
+}
+.register-form > *:not(.tabs) {
+  margin-bottom: 19px;
+  margin-top: 0;
+}
 .register > span:after {
   /* content: ""; */
   padding: 19px 24px;
@@ -363,7 +395,7 @@ header ~ div {
 }
 .header-feedback-label {
   display: inline-block;
-  color: #A038E3;
+  color: #a038e3;
   font-size: 14px;
 }
 .header-sign-up {
@@ -402,19 +434,25 @@ header ~ div {
 /* Footer */
 .footer {
   background: #f7f7f7;
+  font-size: 12px;
+}
+.social_link hover {
+  filter: invert(98%) sepia(42%) saturate(0%) hue-rotate(312deg)
+    brightness(120%) contrast(98%);
 }
 .footer_list {
   height: fit-content;
 }
-.download_block {
-  margin-top: 60px;
-}
+
 .footer_list ul {
   list-style: none;
   padding-left: 0;
 }
+.footer_list .title-ul {
+  font-weight: 500;
+}
 .footer_list ul a:not(.mail) {
-  color: #6c6c6c;
+  color: #4f4f4f;
 }
 .footer_list a:not(.mail) {
   text-decoration: none;
@@ -434,7 +472,7 @@ a.mail {
 
 /* Main page */
 .main-preview {
-  background-color: #F9F8F8;
+  background-color: #f9f8f8;
   height: max-content;
   padding: 0 35px 50px;
   margin: 0 !important;
@@ -507,11 +545,14 @@ a.mail {
   }
 }
 @media screen and (max-width: 991px) {
+  .footer-logo-img {
+    width: 100%;
+  }
   .main-description-title {
     font-size: 18px;
   }
   .pl-custom {
-    padding-left: 95px !important;
+    padding-left: 80px !important;
   }
   .main-subtitle {
     font-size: 24px;
@@ -587,7 +628,7 @@ a.mail {
 }
 .main-questions {
   height: 350px;
-  background-color: #F9F8F8;
+  background-color: #f9f8f8;
   position: relative;
   padding: 0 35px;
   border-top: 1px solid #eee;
@@ -731,7 +772,7 @@ a.mail {
     padding: 50px 15px;
   }
   .cargo-page h1 {
-    padding: 10px 15px!important;
+    padding: 10px 15px !important;
   }
 }
 .main-cities h3 {
@@ -843,6 +884,11 @@ a.mail {
   text-align: center;
   margin-top: 50px;
   margin-bottom: 35px;
+}
+.login-form>*
+{
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 .login-form .bottom {
   border-bottom: 1px solid #dddddd;
@@ -985,7 +1031,7 @@ a.href {
 }
 .cargo-page .faq-questions {
   padding: 0 50px;
-  margin: 0!important;
+  margin: 0 !important;
   padding-bottom: 50px;
 }
 .cargo-page h1 {
@@ -1034,6 +1080,7 @@ a.href {
 }
 .cargo-steps-block {
   margin: 35px 0;
+  justify-content: center;
 }
 .cargo-step {
   background-color: #f7f7f7;
@@ -1046,7 +1093,7 @@ a.href {
   display: flex;
   align-items: center;
   min-width: 260px;
-  max-width: 300px!important;
+  max-width: 300px !important;
   position: relative;
   margin-bottom: 15px;
 }
@@ -1103,7 +1150,7 @@ a.href {
 }
 .carrier-page .faq-questions {
   padding: 0 50px;
-  margin: 0!important;
+  margin: 0 !important;
   padding-bottom: 50px;
 }
 .carrier-pros {
@@ -1163,6 +1210,7 @@ hr {
 }
 .carrier-steps-block {
   margin: 35px 0;
+  justify-content: center;
 }
 .carrier-step {
   background-color: #f7f7f7;
@@ -1175,7 +1223,7 @@ hr {
   display: flex;
   align-items: center;
   min-width: 260px;
-  max-width: 300px!important;
+  max-width: 300px !important;
   position: relative;
   margin-bottom: 15px;
 }
