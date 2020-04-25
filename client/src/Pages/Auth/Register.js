@@ -1,9 +1,9 @@
 // App
 import React from "react";
-import Input from "../Elements/Input";
+import Input from "../../Elements/Input";
 // Elements
-import Button from "../Elements/Button";
-import Select from "../Elements/Select";
+import Button from "../../Elements/Button";
+import Select from "../../Elements/Select";
 // Router
 import { Link } from "react-router-dom";
 
@@ -25,7 +25,7 @@ class Register extends React.Component {
     password: '',
     error: false,
     errors: []
-  };
+  }
 
   register() {
     this.setState({isFetching: true})
@@ -65,14 +65,14 @@ class Register extends React.Component {
         <div className="register-form col-12 col-sm-9 col-md-6 col-lg-6 col-xl-3 mb-4 mx-auto">
           <div className="row tabs ">
             <div
-              className={`tab col-6 ${this.state.type == 'carrier' ? "active" : ""}`}
+              className={`tab col-6 ${this.state.type === 'carrier' ? "active" : ""}`}
               onClick={() => {
                 this.setState({ type: 'carrier' });
               }}
             >Я Перевозчик</div>
             <div
               className={`tab col-6 text-right ${
-                this.state.type == 'cargo' ? "active" : ""
+                this.state.type === 'cargo' ? "active" : ""
               }`}
               onClick={() => {
                 this.setState({ type: 'cargo' });
@@ -84,7 +84,7 @@ class Register extends React.Component {
               Страна:
               <span
                 className={`simple_select_city col text-center ${
-                  this.state.country == 1 ? `active` : ``
+                  this.state.country === 1 ? `active` : ``
                 } ml-3`}
                 onClick={(val) => {
                   this.setState({ country: 1 });
@@ -106,38 +106,31 @@ class Register extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-sm-8">
-              <Input type="text" value={this.state.phone} onChange={(e) => {this.setState({phone: e.target.value})}} placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
-            </div>
-            <div className="col-12 col-sm-4 align-item-center text-center text-sm-right">
-              <Link to={false}>
-                <Button type="empty" className="w-100" paddingVertical={"8px"}>
-                  Полчить код
-                </Button>
-              </Link>
+            <div className="col-12 col-sm-12">
+              <Input type="text" error={this.state.errors.find(value => value.param === 'phone')} value={this.state.phone} onChange={(e) => {this.setState({phone: e.target.value})}} placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
             </div>
           </div>
           <div className="row">
             <div className="col-12">
-              <Input type="text" value={this.state.email} onChange={(e) => {this.setState({email: e.target.value})}} className="col-12" placeholder="Email" />
+              <Input type="text" error={this.state.errors.find(value => value.param === 'email')} value={this.state.email} onChange={(e) => {this.setState({email: e.target.value})}} className="col-12" placeholder="Email" />
             </div>
           </div>
           <div className="row">
             <div className="col-12">
-              <Input type="text" value={this.state.lastName} onChange={(e) => {this.setState({lastName: e.target.value})}} className="col-12" placeholder="Фамилия" />
+              <Input type="text" error={this.state.errors.find(value => value.param === 'lastName')} value={this.state.lastName} onChange={(e) => {this.setState({lastName: e.target.value})}} className="col-12" placeholder="Фамилия" />
             </div>
           </div>
           <div className="row">
             <div className="col-12 col-sm-6">
-              <Input type="text" value={this.state.firstName} onChange={(e) => {this.setState({firstName: e.target.value})}} placeholder="Имя" />
+              <Input type="text" error={this.state.errors.find(value => value.param === 'firstName')} value={this.state.firstName} onChange={(e) => {this.setState({firstName: e.target.value})}} placeholder="Имя" />
             </div>
             <div className="col-12 col-sm-6">
-              <Input type="text" value={this.state.middleName} onChange={(e) => {this.setState({middleName: e.target.value})}} placeholder="Отчество" />
+              <Input type="text" error={this.state.errors.find(value => value.param === 'middleName')} value={this.state.middleName} onChange={(e) => {this.setState({middleName: e.target.value})}} placeholder="Отчество" />
             </div>
           </div>
           <div className="row">
             <div className="col-12">
-              <Input type="text" value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}} className="isHover" placeholder="Пароль" />
+              <Input type="password" error={this.state.errors.find(value => value.param === 'password')} value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}} className="isHover" placeholder="Пароль" />
             </div>
           </div>
           <p className="text-right f-12">
@@ -149,16 +142,15 @@ class Register extends React.Component {
             .
           </p>
           <div className="text-right">
-            <Link to={false} onClick={() => {this.register()}}>
               <Button
                 type="fill"
                 margin={"0 0 0 auto"}
                 paddingHorizontal={"15px"}
                 paddingVertical={"8px"}
+                onClick={() => {this.register()}}
               >
                 Регистрация
               </Button>
-            </Link>
           </div>
         </div>
       </div>

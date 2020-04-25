@@ -13,7 +13,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const historyApiFallback = require('connect-history-api-fallback');
 // const errors = require('./middleware/errors');
+
+// Routes
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 // Use Express as our web server
 const app = express();
@@ -30,6 +33,7 @@ app
   .use(morgan('dev'))
   // Enable routes
   .use('/auth', authRoutes)
+  .use('/api', userRoutes)
   // Serve static files
   .use(express.static(path.join(__dirname, '../client')))
   // Enable history API

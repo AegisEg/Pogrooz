@@ -96,12 +96,15 @@ class User extends Model {
   // Renders the User as JSON. By default, this returns a shallow version.
   // This method accepts an options object:
   //    from the database and includes it in the JSON output.
-  async toJSON() {
+  toJSON() {
     // Note: we omit the password field from the JSON representation
-    const json = {
-      id: this.user.id,
-      email: this.user.email,
-    };
+    const json = this.user
+
+    delete json.password
+    delete json.verifiedToken
+    delete json.verifiedTokenExpires
+    delete json.resetPasswordToken
+    delete json.resetPasswordExpires
 
     return json;
   }

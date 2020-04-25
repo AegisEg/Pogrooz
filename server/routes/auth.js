@@ -20,7 +20,7 @@ router.post('/register', [
 
 // Log in an existing user
 router.post('/login', [
-  check('email').isEmail().withMessage('Неверный Email'),
+  check('phone').notEmpty().withMessage('Телефон не может быть пустым'),
   check('password').isLength({ min: 8 }).withMessage('Пароль должен содержать минимум 8 символов')
 ], AuthController.login);
 

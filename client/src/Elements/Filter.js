@@ -79,7 +79,7 @@ class Filter extends React.Component {
                             type="text"
                             placeholder=""
                         />
-                        <img src={ImgActiveStar} style={{marginLeft: '7px'}} />
+                        <img src={ImgActiveStar} style={{marginLeft: '7px'}} alt="Рейтинг" />
                     </div>
                 </div>}
 

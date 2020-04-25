@@ -54,7 +54,7 @@ module.exports = {
         // This route expects the body parameters:
         //  - email: username's email
         //  - password: username's password
-        const {email, password} = req.body;
+        const {phone, password} = req.body;
       
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -63,19 +63,15 @@ module.exports = {
       
         try {
             // Get the user for this email address
-            const user = await User.getByEmail(email);
+            const user = await User.getByPhone(phone);
             if (user) {
                 const verifiedPassword = await user.comparePassword(password);
         
                 if (verifiedPassword) {
-                    // Success: generate and respond with the JWT
-                    let user = {
-                        id: user.id,
-                        email: user.email,
-                    }
-            
+                    // Success: generate and respond with the JWT            
                     let token = generateToken(user.id)
-                    return res.json({token, user: user.toJSON()});
+
+                    return res.json({token, user: user.toJSON()})
                 }
             }
         } catch (e) {

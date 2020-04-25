@@ -55,7 +55,7 @@ class About extends React.Component {
 
                 <h3>Вопросы о PoGrooz</h3>
 
-                <h4 ref={questions.find(question => question.id == 1).ref}>Что такое PoGrooz?</h4>
+                <h4 ref={questions.find(question => question.id === 1).ref}>Что такое PoGrooz?</h4>
 
                 <p>
                     Попутные грузоперевозки с PoGrooz – это шаг в будущее удобных грузоперевозок.
@@ -67,7 +67,7 @@ class About extends React.Component {
 
                 <h3>Использование PoGrooz</h3>
 
-                <h4 ref={questions.find(question => question.id == 2).ref}>Могу ли я использовать PoGrooz за границей?</h4>
+                <h4 ref={questions.find(question => question.id === 2).ref}>Могу ли я использовать PoGrooz за границей?</h4>
 
                 <p>
                     Да, определённо! Вы можете публиковать или искать предложения и заказы в любой точке мира. В которых есть зарегистрированные на сайте PoGrooz Грузовладельцы и Перевозчики.
@@ -77,7 +77,7 @@ class About extends React.Component {
 
                 <h3>PoGrooz на мобильном телефоне</h3>
 
-                <h4 ref={questions.find(question => question.id == 3).ref}>Как скачать приложение?</h4>
+                <h4 ref={questions.find(question => question.id === 3).ref}>Как скачать приложение?</h4>
 
                 <p>
                     Загляните в магазины App Store или Google Play и скачайте приложение оттуда.
@@ -88,7 +88,7 @@ class About extends React.Component {
 
                 <h3>Доверие и безопасность</h3>
 
-                <h4 ref={questions.find(question => question.id == 4).ref}>Что ожидается от участников перевозки?</h4>
+                <h4 ref={questions.find(question => question.id === 4).ref}>Что ожидается от участников перевозки?</h4>
 
                 <p>
                     <span>Перевозчики:</span> Опишите подробно и точно марку, модель и параметры вашего автомобиля. Заботьтесь о своем грузе. Ведите автомобиль безопасно и спокойно, фокусируйтесь на дороге, будьте внимательны. Приезжайте на оговоренное место встречи вовремя, Для обеспечения безопасности не перегружайте автомобиль. Страхование груза и договор на грузоперевозку - документы, которые стоит оформить перед выполнением заказа на перевозку.<br></br>

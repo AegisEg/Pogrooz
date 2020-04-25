@@ -56,7 +56,7 @@ class Articles extends React.Component {
 
                 {articles.map((article) => {
                     return (
-                        <Article article={article} />
+                        <Article article={article} key={article.id} />
                     )
                 })}
             </div>

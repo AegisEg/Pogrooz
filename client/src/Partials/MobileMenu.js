@@ -3,8 +3,6 @@ import React from "react";
 import { slide as Menu } from "react-burger-menu";
 
 import burger from "../img/burger.png";
-// Router
-import { Link } from "react-router-dom";
 
 var styles = {
   bmBurgerButton: {
@@ -53,7 +51,7 @@ class MobileMenu extends React.Component {
   render() {
     return (
       <>
-        <Menu styles={styles} customBurgerIcon={<img src={burger} />} right>
+        <Menu styles={styles} customBurgerIcon={<img src={burger} alt="Мобильное меню" />} right>
           {this.props.children}
         </Menu>
       </>

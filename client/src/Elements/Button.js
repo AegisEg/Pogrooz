@@ -10,7 +10,9 @@ class Button extends React.Component {
                 fontSize: this.props.fontSize ? this.props.fontSize : '',
                 lineHeight: this.props.lineHeight ? this.props.lineHeight : '',
                 width: this.props.width ? this.props.width : '',
-                textAlign: 'center'}}>
+                textAlign: 'center'}}
+                onClick={() => {if(this.props.onClick){this.props.onClick()}}}
+            >
                 <span style={{zIndex: 2, textAlign: 'center', width: '100%'}}>{this.props.children}</span>
             </span>
         )

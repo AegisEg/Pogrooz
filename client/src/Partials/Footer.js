@@ -142,8 +142,6 @@ class Footer extends React.Component {
                         onMouseLeave={() => {
                           this.setState({ isHoverfacebook: false });
                         }}
-                        F
-                        onhove
                         alt="facebook"
                       />
                     </Link>

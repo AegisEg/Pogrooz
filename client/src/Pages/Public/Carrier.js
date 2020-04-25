@@ -5,18 +5,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // Elements
-import Button from "../Elements/Button";
-import Filter from "../Elements/Filter";
+import Button from "../../Elements/Button";
+import Filter from "../../Elements/Filter";
 
 // Images
-import Imgtophone from "../img/tophone.png";
-import ImgLk from "../img/lk.png";
-import ImgChat from "../img/chat.png";
-import ImgHistory from "../img/history.png";
-import ImgPhone from "../img/phone.png";
-import Imgtamplate from "../img/tamplate.png";
+import Imgtophone from "../../img/tophone.png";
+import ImgLk from "../../img/lk.png";
+import ImgChat from "../../img/chat.png";
+import ImgHistory from "../../img/history.png";
+import ImgPhone from "../../img/phone.png";
+import Imgtamplate from "../../img/tamplate.png";
 
-import questions from '../config/questions'
+import questions from '../../config/questions'
 
 class Carrier extends React.Component {
   render() {
@@ -30,44 +30,40 @@ class Carrier extends React.Component {
               <img
                 className="carrier-pros-image"
                 src={Imgtophone}
-                alt="Imgtophone"
+                alt="Прямые заказы"
               />
             </div>
             <p className="carrier-pros-label">Прямые заказы</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={ImgChat} />
+              <img className="carrier-pros-image" src={ImgChat} alt="Удобная коммуникация" />
             </div>
             <p className="carrier-pros-label">Удобная коммуникация</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={ImgPhone} />
+              <img className="carrier-pros-image" src={ImgPhone} alt="Вся информация у вас в телефоне" />
             </div>
-            <p className="carrier-pros-label">
-              Вся информация у вас в телефоне
-            </p>
+            <p className="carrier-pros-label">Вся информация у вас в телефоне</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={ImgHistory} />
+              <img className="carrier-pros-image" src={ImgHistory} alt="История заказов" />
             </div>
             <p className="carrier-pros-label">История заказов</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={Imgtamplate} />
+              <img className="carrier-pros-image" src={Imgtamplate} alt="Возможность добавления шаблона" />
             </div>
             <p className="carrier-pros-label">Возможность добавления шаблона</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={ImgLk} />
+              <img className="carrier-pros-image" src={ImgLk} alt="Простой и удобный личный кабинет" />
             </div>
-            <p className="carrier-pros-label">
-              Простой и удобный личный кабинет
-            </p>
+            <p className="carrier-pros-label">Простой и удобный личный кабинет</p>
           </div>
         </div>
 

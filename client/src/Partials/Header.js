@@ -115,7 +115,7 @@ class Header extends React.Component {
             <MobileMenu>
               {menu.map((item) => {
                 return (
-                  <NavLink to={item.href} activeClassName="active">
+                  <NavLink to={item.href} key={item.id} activeClassName="active">
                     {item.name}
                   </NavLink>
                 );

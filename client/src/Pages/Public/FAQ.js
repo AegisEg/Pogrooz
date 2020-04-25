@@ -7,8 +7,8 @@ import {
 } from "react-router-dom"
 
 // Elemnts
-import Input from '../Elements/Input'
-import questions from '../config/questions'
+import Input from '../../Elements/Input'
+import questions from '../../config/questions'
 
 class FAQ extends React.Component {
     state = {

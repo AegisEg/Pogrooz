@@ -1,12 +1,12 @@
 // App
 import React from 'react'
-import ImagePreview from '../img/main-preview.png'
-import ImageCheck from '../img/check.png'
-import ImageRub from '../img/rub.png'
-import ImgMainCities from '../img/main-cities.png'
-import ImgPreviewTimer from '../img/preview-timer.png'
-import ImgPreviewGeo from '../img/preview-geo.png'
-import ImgPreviewRub from '../img/preview-rub.png'
+import ImagePreview from '../../img/main-preview.png'
+import ImageCheck from '../../img/check.png'
+import ImageRub from '../../img/rub.png'
+import ImgMainCities from '../../img/main-cities.png'
+import ImgPreviewTimer from '../../img/preview-timer.png'
+import ImgPreviewGeo from '../../img/preview-geo.png'
+import ImgPreviewRub from '../../img/preview-rub.png'
 
 // Router
 import {
@@ -14,12 +14,12 @@ import {
 } from "react-router-dom"
 
 // Elements
-import Button from '../Elements/Button'
+import Button from '../../Elements/Button'
 
 // Main elements
-import Questions from '../MainElements/Questions'
-import Cities from '../MainElements/Cities'
-import Articles from '../Catalog/Articles'
+import Questions from '../../MainElements/Questions'
+import Cities from '../../MainElements/Cities'
+import Articles from '../../Catalog/Articles'
 
 class Main extends React.Component {
     render() {

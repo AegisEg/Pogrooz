@@ -28,7 +28,7 @@ module.exports = (req, res, next) => {
     }
 
     // Failed: no account found in decoded data
-    if (!user.data.user) {
+    if (!user.data.userId) {
         const err = new Error('JWT is missing user data.')
         err.authFailed = true
         return next(err)
