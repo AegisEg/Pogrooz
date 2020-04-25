@@ -8,16 +8,56 @@ import Select from "../Elements/Select";
 import { Link } from "react-router-dom";
 
 const options = [
-  { value: "4", label: "Америка" },
-  { value: "2", label: "Китай" },
-  { value: "3", label: "Австралия" },
+  { value: 4, label: "Америка" },
+  { value: 2, label: "Китай" },
+  { value: 3, label: "Австралия" },
 ];
 
 class Register extends React.Component {
   state = {
-    role: 0,
-    city: 1,
+    type: 'cargo',
+    country: 0,
+    email: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    phone: '',
+    password: '',
+    error: false,
+    errors: []
   };
+
+  register() {
+    this.setState({isFetching: true})
+    fetch(`http://localhost:8000/auth/register`, {
+        method: "post",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: this.state.email,
+            phone: this.state.phone,
+            country: this.state.country,
+            type: this.state.type,
+            firstName: this.state.firstName,
+            middleName: this.state.middleName,
+            lastName: this.state.middleName,
+            password: this.state.password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.error) {
+        this.setState({error: true, errors: data.errors})
+      } else {
+        console.log(data)
+      }
+
+      this.setState({isFetching: false})
+    })
+  }
+
   render() {
     return (
       <div className="register-page">
@@ -25,33 +65,29 @@ class Register extends React.Component {
         <div className="register-form col-12 col-sm-9 col-md-6 col-lg-6 col-xl-3 mb-4 mx-auto">
           <div className="row tabs ">
             <div
-              className={`tab col-6 ${!this.state.role ? "active" : ""}`}
+              className={`tab col-6 ${this.state.type == 'carrier' ? "active" : ""}`}
               onClick={() => {
-                this.setState({ role: 0 });
+                this.setState({ type: 'carrier' });
               }}
-            >
-              Я Перевозчик
-            </div>
+            >Я Перевозчик</div>
             <div
               className={`tab col-6 text-right ${
-                this.state.role ? "active" : ""
+                this.state.type == 'cargo' ? "active" : ""
               }`}
               onClick={() => {
-                this.setState({ role: 1 });
+                this.setState({ type: 'cargo' });
               }}
-            >
-              Я Владелец груза
-            </div>
+            >Я Владелец груза</div>
           </div>
           <div className="row">
             <div className="col-12 col-sm-6 d-flex align-items-center">
               Страна:
               <span
                 className={`simple_select_city col text-center ${
-                  this.state.city == 1 ? `active` : ``
+                  this.state.country == 1 ? `active` : ``
                 } ml-3`}
                 onClick={(val) => {
-                  this.setState({ city: 1 });
+                  this.setState({ country: 1 });
                   this.select.select.commonProps.setValue(null);
                 }}
               >
@@ -63,7 +99,7 @@ class Register extends React.Component {
                 options={options}
                 placeholder="Другая"
                 onChange={(val) => {
-                  if (val) this.setState({ city: val.value });
+                  if (val) this.setState({ country: val.value });
                 }}
                 getRef={(ref) => (this.select = ref)}
               />
@@ -71,7 +107,7 @@ class Register extends React.Component {
           </div>
           <div className="row">
             <div className="col-12 col-sm-8">
-              <Input type="text" placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
+              <Input type="text" value={this.state.phone} onChange={(e) => {this.setState({phone: e.target.value})}} placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
             </div>
             <div className="col-12 col-sm-4 align-item-center text-center text-sm-right">
               <Link to={false}>
@@ -83,20 +119,25 @@ class Register extends React.Component {
           </div>
           <div className="row">
             <div className="col-12">
-              <Input type="text" className="col-12" placeholder="Фамилия" />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12 col-sm-6">
-              <Input type="text" placeholder="Имя" />
-            </div>
-            <div className="col-12 col-sm-6">
-              <Input type="text" placeholder="Отчество" />
+              <Input type="text" value={this.state.email} onChange={(e) => {this.setState({email: e.target.value})}} className="col-12" placeholder="Email" />
             </div>
           </div>
           <div className="row">
             <div className="col-12">
-              <Input type="text" className="isHover" placeholder="Пароль" />
+              <Input type="text" value={this.state.lastName} onChange={(e) => {this.setState({lastName: e.target.value})}} className="col-12" placeholder="Фамилия" />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12 col-sm-6">
+              <Input type="text" value={this.state.firstName} onChange={(e) => {this.setState({firstName: e.target.value})}} placeholder="Имя" />
+            </div>
+            <div className="col-12 col-sm-6">
+              <Input type="text" value={this.state.middleName} onChange={(e) => {this.setState({middleName: e.target.value})}} placeholder="Отчество" />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <Input type="text" value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}} className="isHover" placeholder="Пароль" />
             </div>
           </div>
           <p className="text-right f-12">
@@ -108,14 +149,14 @@ class Register extends React.Component {
             .
           </p>
           <div className="text-right">
-            <Link to={false}>
+            <Link to={false} onClick={() => {this.register()}}>
               <Button
                 type="fill"
                 margin={"0 0 0 auto"}
                 paddingHorizontal={"15px"}
                 paddingVertical={"8px"}
               >
-                Отправить
+                Регистрация
               </Button>
             </Link>
           </div>
