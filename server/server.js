@@ -14,6 +14,17 @@ const path = require('path');
 const historyApiFallback = require('connect-history-api-fallback');
 // const errors = require('./middleware/errors');
 
+// If produciton
+if(process.env.MODE == 'production') {
+  const https = require("https")
+  const fs = require("fs")
+
+  const sslCerts = {
+    key: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/privkey.pem"),
+    cert: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/fullchain.pem")
+  }
+}
+
 // Routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
@@ -56,15 +67,21 @@ async function startServer() {
   }
 
   // Start the Express server
-  app.listen(process.env.PORT, err => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    console.log(
-      `⚡️ HYPER10N server started: http://localhost:${process.env.PORT}`
-    );
-  });
+  if(process.env.MODE == 'development') {
+    app.listen(process.env.PORT, err => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log(
+        `⚡️ POGROOZ server started: http://localhost:${process.env.PORT}`
+      );
+    });
+  }
+
+  if(process.env.MODE == 'production') {
+    https.createServer(sslCerts, app).listen(8080);
+  }
 }
 
 // Run the async function to start our server
