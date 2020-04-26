@@ -89,7 +89,7 @@ class Select extends React.Component {
             IndicatorSeparator: () => null,
             DropdownIndicator,
           }}
-          className="select"
+          className="select f-17-only"
           onChange={this.props.onChange}
           placeholder={this.props.placeholder}
           ref={(ref) => {

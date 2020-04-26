@@ -9,7 +9,7 @@ class Input extends React.Component {
         <div style={{display: 'contents', position: 'relative', paddingBottom: this.props.error ? '10px' : '0px'}}>
         <InputPhone
           type={this.props.type}
-          maxlength="16"
+          maxLength="16"
           value={this.props.value}
           name={this.props.name}
           style={this.props.style}
