@@ -11,17 +11,8 @@ const app = express();
  */
 'use strict';
 
-function redirectHttps(req, res, next) {
-  // If we're in production mode and we received a request via HTTP, redirect them to HTTPS
-  if (req.get('X-Forwarded-Proto') === 'http') {
-    res.redirect(`https://${req.host}${req.url}`);
-    return;
-  }
-  return next();
-};
 
 app.use(express.static(path.join(__dirname, 'build')));
-app.use(redirectHttps)
 
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -33,3 +24,13 @@ const sslCerts = {
 }
 
 https.createServer(sslCerts, app).listen(443);
+<<<<<<< HEAD
+=======
+
+// Redirect from http port 80 to https
+var http = require('http');
+http.createServer(function (req, res) {
+    res.redirect(`https://${req.host}${req.url}`);
+    return;
+}).listen(80);
+>>>>>>> c9dd43e0af2e1b547ba3043c8215e8e63ea51712
