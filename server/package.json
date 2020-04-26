@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "POGROOZ express server",
   "author": "Roman Shuvalov",
-  "main": "server.js",
+  "main": "index.js",
   "engines": {
     "node": ">=8.0.0"
   },
@@ -53,8 +53,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "setup": "node setup.js",
-    "start": "nodemon server.js",
-    "production": "NODE_ENV=production node server.js",
-    "inspect": "nodemon --inspect server.js"
+    "start": "nodemon index.js",
+    "production": "NODE_ENV=production node index.js",
+    "inspect": "nodemon --inspect index.js"
   }
 }
