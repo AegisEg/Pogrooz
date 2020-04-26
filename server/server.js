@@ -80,7 +80,7 @@ async function startServer() {
   }
 
   if(process.env.MODE == 'production') {
-    https.createServer(sslCerts, app).listen(8000);
+    exports.app = https.createServer(sslCerts, app);
   }
 }
 
