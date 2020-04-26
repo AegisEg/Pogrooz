@@ -21,6 +21,6 @@ https.createServer(sslCerts, app).listen(443);
 // Redirect from http port 80 to https
 const http = require('http');
 http.createServer(function (req, res) {
-    res.redirect(`https://${req.host}${req.url}`);
-    return;
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
 }).listen(80);
