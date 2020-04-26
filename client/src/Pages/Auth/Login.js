@@ -58,10 +58,10 @@ class Login extends React.Component {
           <div className="row">
             <div className="col-12">
               <Input
-                type="text"
+                type="phone"
                 error={this.state.errors.find(value => value.param === 'phone')} 
                 value={this.state.phone} 
-                onChange={(e) => {this.setState({phone: e.target.value})}}
+                onChange={(phone) => {this.setState({phone})}}
                 placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
               />
             </div>
