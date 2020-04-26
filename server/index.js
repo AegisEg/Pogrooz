@@ -16,10 +16,10 @@ const historyApiFallback = require('connect-history-api-fallback');
 
 // If produciton
 if(process.env.MODE == 'production') {
-  const https = require("https")
+  var https = require("https")
   const fs = require("fs")
 
-  const sslCerts = {
+  var sslCerts = {
     key: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/privkey.pem"),
     cert: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/fullchain.pem")
   }
