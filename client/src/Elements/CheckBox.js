@@ -17,7 +17,7 @@ class CheckBox extends React.Component {
         <span
           className="ml-3"          
         >
-          <label htmlFor={this.props.id} style={{ display: "inline-block" }}>
+          <label htmlFor={this.props.id} className="f-12" style={{ display: "inline-block" }}>
             {this.props.text}
           </label>
         </span>

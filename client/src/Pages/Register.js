@@ -25,7 +25,7 @@ class Register extends React.Component {
         <div className="register-form col-12 col-sm-9 col-md-6 col-lg-6 col-xl-3 mb-4 mx-auto">
           <div className="row tabs ">
             <div
-              className={`tab col-6 ${!this.state.role ? "active" : ""}`}
+              className={`tab f-16 col-6 ${!this.state.role ? "active" : ""}`}
               onClick={() => {
                 this.setState({ role: 0 });
               }}
@@ -33,7 +33,7 @@ class Register extends React.Component {
               Я Перевозчик
             </div>
             <div
-              className={`tab col-6 text-right ${
+              className={`tab col-6 f-16 text-right ${
                 this.state.role ? "active" : ""
               }`}
               onClick={() => {
@@ -47,7 +47,7 @@ class Register extends React.Component {
             <div className="col-12 col-sm-6 d-flex align-items-center">
               Страна:
               <span
-                className={`simple_select_city col text-center ${
+                className={`simple_select_city f-17-only col text-center ${
                   this.state.city == 1 ? `active` : ``
                 } ml-3`}
                 onClick={(val) => {
@@ -71,7 +71,7 @@ class Register extends React.Component {
           </div>
           <div className="row">
             <div className="col-12 col-sm-8">
-              <Input type="text" placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
+              <Input type="phone" placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
             </div>
             <div className="col-12 col-sm-4 align-item-center text-center text-sm-right">
               <Link to={false}>
@@ -101,7 +101,7 @@ class Register extends React.Component {
           </div>
           <p className="text-right f-12">
             Регистрируясь, Вы соглашаетесь с&nbsp;
-            <Link to="/" className="href">
+            <Link to="/" className="href f-12">
               политикой конфиденциальности и соглашением об обработке
               персональных данных
             </Link>

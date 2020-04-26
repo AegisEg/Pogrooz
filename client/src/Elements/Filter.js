@@ -185,7 +185,7 @@ class Filter extends React.Component {
                 </div>}
 
                 <div className="filter-actions">
-                    <Link to={false} onClick={() => {this.setState({show: !this.state.show})}} className="filter-open">{this.state.show ? 'Скрыть' : 'Открыть'} параметры поиска</Link>
+                    <Link to={false} onClick={() => {this.setState({show: !this.state.show})}} className="filter-open f-14">{this.state.show ? 'Скрыть' : 'Открыть'} параметры поиска</Link>
                 </div>
             </div>
         )

@@ -12,20 +12,19 @@ body {
 a {
   text-decoration: none;
 }
-.f-12
-{
+.f-12 {
   font-size: 12px;
 }
-.f-14
-{
+.f-14 {
   font-size: 14px;
 }
-.f-20
-{
+.f-20 {
   font-size: 20px;
 }
-.f-17
-{
+.f-17-only {
+  font-size: 17px;
+}
+.f-17 {
   font-size: 17px;
   line-height: 18px;
 }
@@ -217,7 +216,8 @@ a {
   text-decoration: none;
   color: #171717;
 }
-.input-text {
+.input-text,
+.input-phone {
   border-radius: 50px;
   height: 42px;
   border: 1px solid #b9b9b9;
@@ -254,7 +254,7 @@ input[type="checkbox"]:checked ~ label::after {
   transform: rotate(45deg);
 }
 .filter {
-  padding: 20px 50px;
+  padding: 10px 50px;
 }
 .filter-input-title {
   line-height: 16px;
@@ -276,7 +276,7 @@ input[type="checkbox"]:checked ~ label::after {
   font-weight: normal;
 }
 .filter div.col-md-4 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 /* Elements end */
 
@@ -326,9 +326,9 @@ header ~ div {
   position: relative;
   z-index: 1;
 }
-.register-form .row>div{
-  padding-left: 5px;
-  padding-right: 5px;
+.register-form .row > div {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .register-form > .tabs {
   margin-bottom: 10px;
@@ -376,9 +376,11 @@ header ~ div {
 .toogle-burger {
   padding: 35px 0;
 }
-.header-navigation ul li a:hover,
-.footer_list ul li a:hover {
+.header-navigation ul li a:hover {
   color: #ad2dff;
+}
+.footer_list ul li a:hover {
+  text-decoration: underline;
 }
 .header-navigation ul li a.active {
   color: #ad2dff;
@@ -769,7 +771,7 @@ a.mail {
     margin-bottom: 24px !important;
   }
   .filter {
-    padding: 50px 15px;
+    padding: 10px 15px;
   }
   .cargo-page h1 {
     padding: 10px 15px !important;
@@ -857,6 +859,7 @@ a.mail {
 .faq-question h4 {
   margin: 0;
   margin-bottom: 10px;
+  min-height: 25px;
   font-size: 18px;
   font-weight: normal;
 }
@@ -885,8 +888,13 @@ a.mail {
   margin-top: 50px;
   margin-bottom: 35px;
 }
-.login-form>*
-{
+@media (max-width: 1412px) and (min-width: 1200px) {
+  .login-form {
+    flex: 0 0 30%!important;
+    max-width: 30%!important;
+  }
+}
+.login-form > * {
   margin-top: 0;
   margin-bottom: 20px;
 }
@@ -1180,11 +1188,6 @@ a.href {
   text-align: center;
   font-size: 16px;
   color: #000;
-}
-hr {
-  color: #b9b9b9; /* Цвет линии для остальных браузеров */
-  background-color: #b9b9b9; /* Цвет линии для браузера Firefox и Opera */
-  height: 2px;
 }
 .yellow-text {
   color: #ffdc1c;

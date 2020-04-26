@@ -22,10 +22,10 @@ class Login extends React.Component {
             <div className="col-12 col-sm-6 px-0">
               <CheckBox id="remember" text="Запомнить меня"></CheckBox>
               <div className="d-block" style={{ marginLeft: "35px" }}>
-                <Link to="/" className="href">Забыли пароль?</Link>
+                <Link to="/" className="href f-12">Забыли пароль?</Link>
               </div>
             </div>
-            <div className="col-12 col-sm-6 px-0 text-center text-sm-right mt-2">
+            <div className="col-12 col-sm-6 px-0 text-center text-sm-right">
               <Link to={false}>
                 <Button
                   type="fill"
@@ -38,8 +38,8 @@ class Login extends React.Component {
               </Link>
             </div>
           </div>
-          <p className="text-center mb-0">Еще не зарегистрированы?</p>
-          <p className="text-center my-0 pb-4">
+          <p className="text-center mb-0 f-12">Еще не зарегистрированы?</p>
+          <p className="text-center my-0 pb-4 f-12">
             Перейти <Link to="/register" className="href">страницу регистрации</Link>
           </p>
         </div>
