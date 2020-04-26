@@ -16,4 +16,4 @@ app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-https.createServer(sslCerts, app).listen(80);
+https.createServer(sslCerts, app).listen(443);
