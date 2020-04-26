@@ -425,11 +425,13 @@ header ~ div {
   display: inline-block;
   color: #3f3c3c;
   font-size: 20px;
+  line-height: 20px;
 }
 .header-feedback-label {
   display: inline-block;
   color: #a038e3;
   font-size: 14px;
+  line-height: 14px;
 }
 .header-sign-up {
   padding: 25px 0;

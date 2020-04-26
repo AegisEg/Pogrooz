@@ -1,6 +1,7 @@
 // App
 import React from "react"
 import { withCookies } from 'react-cookie'
+import configApi from '../../config/api'
 
 // Elements
 import Button from "../../Elements/Button"
@@ -23,7 +24,7 @@ class Login extends React.Component {
 
   login() {
     this.setState({isFetching: true})
-    fetch(`http://localhost:8000/auth/login`, {
+    fetch(`${configApi.urlApi}/auth/login`, {
         method: "post",
         headers: {
             'Accept': 'application/json',
