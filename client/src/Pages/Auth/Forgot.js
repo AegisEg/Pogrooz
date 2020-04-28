@@ -38,9 +38,9 @@ class Forgot extends React.Component {
             );
           } else if (data.status == "waiting") {
             let time =
-              data.time > 60
-                ? Math.round(data.time / 3600) + "часов"
-                : Math.round(data.time / 60) + "минут";
+              data.time > 3600000
+                ? Math.round(data.time / 3600000) + "часов"
+                : Math.round(data.time / 60000) + "минут";
             toast(
               "Сообщение со сбросом пароля уже отправлено на почту " +
                 data.email +
