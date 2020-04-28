@@ -3,7 +3,7 @@ import React from 'react'
 import { CookiesProvider } from 'react-cookie'
 import './App.css'
 import './css/grid.min.css'
-
+import 'react-toastify/dist/ReactToastify.css';
 // Router
 import AppRouter from './Router'
 import {

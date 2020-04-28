@@ -2,12 +2,12 @@
  * User.js
  * Author: Roman Shuvalov
  */
-'use strict';
+"use strict";
 
-const bcrypt = require('bcryptjs');
-const Model = require('./Model');
-const db = require('../database');
-const crypto = require('crypto');
+const bcrypt = require("bcryptjs");
+const Model = require("./Model");
+const db = require("../database");
+const crypto = require("crypto");
 
 // The number of rounds to use when hashing a password with bcrypt
 const NUM_ROUNDS = 12;
@@ -15,7 +15,7 @@ const NUM_ROUNDS = 12;
 class User extends Model {
   // Database table name for User
   static get table() {
-    return 'users';
+    return "users";
   }
 
   // Create a new User instance
@@ -24,13 +24,12 @@ class User extends Model {
     this.id = opts.id;
     this.user = opts;
 
-    this.table = 'users';
+    this.table = "users";
   }
-
   // Get an User by id from the database
   static async getById(id) {
     try {
-      const [user] = await db(this.table).where('id', id);
+      const [user] = await db(this.table).where("id", id);
       // User not found: return null
       if (!user) {
         return null;
@@ -44,7 +43,7 @@ class User extends Model {
   // Get an User by email from the database
   static async getByEmail(email) {
     try {
-      const [user] = await db(this.table).where('email', email);
+      const [user] = await db(this.table).where("email", email);
       if (!user) {
         return null;
       }
@@ -56,7 +55,7 @@ class User extends Model {
 
   static async getByPhone(phone) {
     try {
-      const [user] = await db(this.table).where('phone', phone);
+      const [user] = await db(this.table).where("phone", phone);
       if (!user) {
         return null;
       }
@@ -69,8 +68,10 @@ class User extends Model {
   // Get an User by resetPasswordToken from the database
   static async getByResetPasswordToken(token) {
     try {
-      const [user] = await db(this.table).where('resetPasswordToken', token).where('resetPasswordExpires', '>', Date.now());
-      
+      const [user] = await db(this.table)
+        .where("resetPasswordToken", token)
+        .where("resetPasswordExpires", ">", Date.now());
+
       if (!user) {
         return null;
       }
@@ -82,8 +83,10 @@ class User extends Model {
 
   static async getByVerifiedToken(token) {
     try {
-      const [user] = await db(this.table).where('verifiedToken', token).where('verifiedTokenExpires', '>', Date.now());
-      
+      const [user] = await db(this.table)
+        .where("verifiedToken", token)
+        .where("verifiedTokenExpires", ">", Date.now());
+
       if (!user) {
         return null;
       }
@@ -98,13 +101,13 @@ class User extends Model {
   //    from the database and includes it in the JSON output.
   toJSON() {
     // Note: we omit the password field from the JSON representation
-    const json = this.user
+    const json = this.user;
 
-    delete json.password
-    delete json.verifiedToken
-    delete json.verifiedTokenExpires
-    delete json.resetPasswordToken
-    delete json.resetPasswordExpires
+    delete json.password;
+    delete json.verifiedToken;
+    delete json.verifiedTokenExpires;
+    delete json.resetPasswordToken;
+    delete json.resetPasswordExpires;
 
     return json;
   }
@@ -116,14 +119,14 @@ class User extends Model {
   static async create(user) {
     // Make sure we've included a password field
     if (!user.email || !user.password) {
-      throw new Error('Missing a required parameter: email, password');
+      throw new Error("Missing a required parameter: email, password");
     }
     try {
       // Hash the password using bcrypt before saving it
       const hashed = await bcrypt.hash(user.password, NUM_ROUNDS);
 
       // DB: Insert the new User, and get back the id of the created object
-      user.password = hashed
+      user.password = hashed;
 
       const [userId] = await this.insert(user);
       user.id = userId;
@@ -138,11 +141,15 @@ class User extends Model {
   async updatePassword(password) {
     const hashed = await bcrypt.hash(password, NUM_ROUNDS);
 
-    return await db(this.table).where('email', this.user.email).update({password: hashed, resetPasswordExpires: 0});
+    return await db(this.table)
+      .where("email", this.user.email)
+      .update({ password: hashed, resetPasswordExpires: 0 });
   }
 
   async verifiedUser() {
-    return await db(this.table).where('email', this.user.email).update({isVerified: 1, verifiedToken: '', verifiedTokenExpires: ''});
+    return await db(this.table)
+      .where("email", this.user.email)
+      .update({ isVerified: 1, verifiedToken: "", verifiedTokenExpires: "" });
   }
 
   // Compare the given password to the stored hash using bcrypt
@@ -152,18 +159,22 @@ class User extends Model {
   }
 
   static async generatePasswordReset(email) {
-    const resetPasswordToken = crypto.randomBytes(20).toString('hex');
-    const resetPasswordExpires = Date.now() + 3600000;
+    const resetPasswordToken = crypto.randomBytes(20).toString("hex");
+    const resetPasswordExpires = parseInt(Date.now()) + 86400000;
 
-    await db(this.table).where('email', email).update({resetPasswordToken, resetPasswordExpires});
+    await db(this.table)
+      .where("email", email)
+      .update({ resetPasswordToken, resetPasswordExpires });
     return resetPasswordToken;
   }
 
   static async generateVerifiedToken(email) {
-    const verifiedToken = crypto.randomBytes(20).toString('hex');
-    const verifiedTokenExpires = Date.now() + 3600000;
+    const verifiedToken = crypto.randomBytes(20).toString("hex");
+    const verifiedTokenExpires = parseInt(Date.now()) + 86400000;
 
-    await db(this.table).where('email', email).update({verifiedToken, verifiedTokenExpires});
+    await db(this.table)
+      .where("email", email)
+      .update({ verifiedToken, verifiedTokenExpires });
     return verifiedToken;
   }
 }

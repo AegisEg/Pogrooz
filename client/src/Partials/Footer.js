@@ -1,5 +1,6 @@
 // App
 import React from "react";
+
 import logo from "../img/footer_logo.png";
 //Иконки соцсетей
 import vk from "../img/vk.png";
@@ -146,7 +147,7 @@ class Footer extends React.Component {
                       />
                     </Link>
                   </span>
-                  <span className="mx-2">
+                  <span className="ml-2">
                     <Link to="/">
                       <img
                         src={
@@ -172,7 +173,7 @@ class Footer extends React.Component {
               <div className="download_link">
                 <Link to="/">
                   <img
-                    className="px-1"
+                    className="pr-1"
                     width="107"
                     src={this.state.isHoveriosapp ? iosapphover : iosapp}
                     onMouseEnter={() => {
@@ -186,7 +187,7 @@ class Footer extends React.Component {
                 </Link>
                 <Link to="/">
                   <img
-                    className="px-1"
+                    className="pl-1"
                     width="107"
                     src={
                       this.state.isHovergoogleapp ? googleapphover : googleapp
