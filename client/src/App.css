@@ -12,16 +12,13 @@ body {
 a {
   text-decoration: none;
 }
-.f-12
-{
+.f-12 {
   font-size: 12px;
 }
-.f-14
-{
+.f-14 {
   font-size: 14px;
 }
-.f-20
-{
+.f-20 {
   font-size: 20px;
 }
 .f-17-only {
@@ -222,7 +219,8 @@ a {
   text-decoration: none;
   color: #171717;
 }
-.input-text {
+.input-text,
+.input-phone {
   border-radius: 50px;
   height: 42px;
   border: 1px solid #b9b9b9;
@@ -897,6 +895,7 @@ a.mail {
 .faq-question h4 {
   margin: 0;
   margin-bottom: 10px;
+  min-height: 25px;
   font-size: 18px;
   font-weight: normal;
 }
@@ -931,8 +930,7 @@ a.mail {
     max-width: 30%!important;
   }
 }
-.login-form>*
-{
+.login-form > * {
   margin-top: 0;
   margin-bottom: 20px;
 }
@@ -1226,11 +1224,6 @@ a.href {
   text-align: center;
   font-size: 16px;
   color: #000;
-}
-hr {
-  color: #b9b9b9; /* Цвет линии для остальных браузеров */
-  background-color: #b9b9b9; /* Цвет линии для браузера Firefox и Opera */
-  height: 2px;
 }
 .yellow-text {
   color: #ffdc1c;
