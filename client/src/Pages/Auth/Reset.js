@@ -1,14 +1,14 @@
 // App
 import React from "react";
 import configApi from "../../config/api";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 // Elements
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
 import { Link } from "react-router-dom";
 
-class ResetPassword extends React.Component {
+class Reset extends React.Component {
   state = {
     token: "",
     password: "",
@@ -27,18 +27,20 @@ class ResetPassword extends React.Component {
       body: JSON.stringify({
         password: this.state.password,
         passwordConfirm: this.state.passwordConfirm,
-        token: this.props.match.params.resetToken,
+        token: this.props.match.params.token,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
           this.setState({ error: true, errors: data.errors });
-          if(data.errors[0].param=="token")
-            toast("Ссылка для сброса пароля устарела");
+          if(data.errors[0].param === "all") {
+            toast.error("Ссылка для сброса пароля устарела");
+          }
         } else {
-          if (data.status == "success") 
-            toast("Пароль успешно сброшен");
+          if (data.status === "success") {
+            toast.success("Пароль успешно сброшен");
+          }
         }
         this.setState({ isFetching: false });
       });
@@ -113,4 +115,4 @@ class ResetPassword extends React.Component {
   }
 }
 
-export default ResetPassword;
+export default Reset;

@@ -1,13 +1,12 @@
 // App
 import React from "react";
 import configApi from "../../config/api";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 // Elements
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
 import { Link } from "react-router-dom";
-toast.configure();
-console.log(Date.now());
+
 class Forgot extends React.Component {
   state = {
     email: "",
@@ -32,20 +31,17 @@ class Forgot extends React.Component {
         if (data.error) {
           this.setState({ error: true, errors: data.errors });
         } else {
-          if (data.status == "sended") {
-            toast(
+          if (data.status === "sended") {
+            toast.success(
               "Сообщение со сбросом пароля отправлено на почту " + data.email
             );
-          } else if (data.status == "waiting") {
+          } else if (data.status === "waiting") {
             let time =
               data.time > 3600000
-                ? Math.round(data.time / 3600000) + "часов"
-                : Math.round(data.time / 60000) + "минут";
-            toast(
-              "Сообщение со сбросом пароля уже отправлено на почту " +
-                data.email +
-                "; Следующее сообщение будет возможно отправить через " +
-                time
+                ? Math.round(data.time / 3600000) + " часов"
+                : Math.round(data.time / 60000) + " минут";
+            toast.error(
+              "Сообщение со сбросом пароля уже отправлено на почту " + data.email + ". Следующее сообщение будет возможно отправить через " + time
             );
           }
         }
@@ -69,7 +65,7 @@ class Forgot extends React.Component {
                 onChange={(e) => {
                   this.setState({ email: e.target.value });
                 }}
-                placeholder="Ваш E-mail"
+                placeholder="Email"
               />
             </div>
           </div>

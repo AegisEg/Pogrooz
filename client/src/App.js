@@ -4,6 +4,8 @@ import { CookiesProvider } from 'react-cookie'
 import './App.css'
 import './css/grid.min.css'
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+
 // Router
 import AppRouter from './Router'
 import {
@@ -27,6 +29,7 @@ class App extends React.Component {
             <CookiesProvider>
                 <Provider store={store}>
                     <Router>
+                        <ToastContainer />
                         <Header />                
                         <AppRouter />
                         <Footer /> 

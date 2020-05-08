@@ -160,7 +160,7 @@ class User extends Model {
 
   static async generatePasswordReset(email) {
     const resetPasswordToken = crypto.randomBytes(20).toString("hex");
-    const resetPasswordExpires = parseInt(Date.now()) + 86400000;
+    const resetPasswordExpires = Date.now() + 86400000;
 
     await db(this.table)
       .where("email", email)
@@ -170,7 +170,7 @@ class User extends Model {
 
   static async generateVerifiedToken(email) {
     const verifiedToken = crypto.randomBytes(20).toString("hex");
-    const verifiedTokenExpires = parseInt(Date.now()) + 86400000;
+    const verifiedTokenExpires = Date.now() + 86400000;
 
     await db(this.table)
       .where("email", email)

@@ -96,7 +96,7 @@ module.exports = {
       // Make sure there is an existing user in our database
       const existingUserEmail = await User.getByEmail(email);
       if (existingUserEmail) {
-        if (existingUserEmail.resetPasswordExpires > Date.now()) {
+        if (existingUserEmail.user.resetPasswordExpires < Date.now()) {
           let ResetToken = User.generatePasswordReset(email);
           //Отправка на почту письма
           return res.json({
@@ -105,12 +105,13 @@ module.exports = {
           });
         }
         //Уже отправлено
-        else
+        else {
           return res.json({
             status: "waiting",
             email: email,
             time: existingUserEmail.user.resetPasswordExpires - Date.now(),
           });
+        }
       } else {
         // Conflict: the resource already exists (HTTP 409)
         const err = {};
@@ -144,7 +145,7 @@ module.exports = {
       } else {
         // Conflict: the resource already exists (HTTP 409)
         const err = {};
-        err.param = `token`;
+        err.param = `all`;
         err.msg = `Неверный токен`;
         return res.status(409).json({ error: true, errors: [err] });
       }

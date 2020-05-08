@@ -1,6 +1,8 @@
 // App
 import React from "react";
 import Input from "../../Elements/Input";
+import configApi from '../../config/api'
+
 // Elements
 import Button from "../../Elements/Button";
 import Select from "../../Elements/Select";
@@ -29,7 +31,7 @@ class Register extends React.Component {
 
   register() {
     this.setState({isFetching: true})
-    fetch(`http://localhost:8000/auth/register`, {
+    fetch(`${configApi.urlApi}/auth/register`, {
         method: "post",
         headers: {
             'Accept': 'application/json',
@@ -42,7 +44,7 @@ class Register extends React.Component {
             type: this.state.type,
             firstName: this.state.firstName,
             middleName: this.state.middleName,
-            lastName: this.state.middleName,
+            lastName: this.state.lastName,
             password: this.state.password
         })
     })
