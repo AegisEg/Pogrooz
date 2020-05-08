@@ -256,6 +256,17 @@ a {
   font-size: 16px;
   color: #171717;
 }
+.input {
+  position: relative;
+}
+.input .toggle-show-password {
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
 .input-error {
   border: 1px solid #F9C8C8;
   margin-bottom: 15px;
@@ -1503,6 +1514,11 @@ a.href {
 .lk-page .title {
   color: #171717;
   font-size: 20px;
+  font-weight: normal;
+}
+.lk-page .subtitle {
+  color: #171717;
+  font-size: 16px;
   font-weight: normal;
 }
 /* Lk end */

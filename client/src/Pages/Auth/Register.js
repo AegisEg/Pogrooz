@@ -132,7 +132,7 @@ class Register extends React.Component {
           </div>
           <div className="row">
             <div className="col-12">
-              <Input type="password" error={this.state.errors.find(value => value.param === 'password')} value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}} className="isHover" placeholder="Пароль" />
+              <Input type="password" style={{paddingRight: 50}} error={this.state.errors.find(value => value.param === 'password')} value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}} className="isHover" placeholder="Пароль" />
             </div>
           </div>
           <p className="text-right f-12">

@@ -73,6 +73,7 @@ class Login extends React.Component {
                 type="password"  
                 error={this.state.errors.find(value => value.param === 'password')} 
                 value={this.state.password} 
+                style={{paddingRight: 50}}
                 onChange={(e) => {this.setState({password: e.target.value})}}
                 placeholder="Пароль" 
               />

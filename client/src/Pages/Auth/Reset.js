@@ -62,6 +62,7 @@ class Reset extends React.Component {
                 onChange={(e) => {
                   this.setState({ password: e.target.value });
                 }}
+                style={{paddingRight: 50}}
                 placeholder="Новый пароль"
               />
             </div>
@@ -77,6 +78,7 @@ class Reset extends React.Component {
                 onChange={(e) => {
                   this.setState({ passwordConfirm: e.target.value });
                 }}
+                style={{paddingRight: 50}}
                 placeholder="Подтверждение пароля"
               />
             </div>
