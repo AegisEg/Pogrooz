@@ -1,6 +1,6 @@
 // App
 import React from 'react'
-import InputPhone from "react-phone-number-input/input"
+import InputMask from "react-input-mask"
 import EyeOpen from '../img/eye-open.png'
 import EyeClose from'../img/eye-close.png'
 
@@ -13,9 +13,9 @@ class Input extends React.Component {
     if (this.props.type === "phone")
       return (
         <div style={{display: 'contents', position: 'relative', paddingBottom: this.props.error ? '10px' : '0px'}}>
-          <InputPhone
-            type={this.props.type}
-            maxLength="16"
+          <InputMask
+            type={this.props.type}            
+            mask="+9 (999) 999-99-99"
             value={this.props.value}
             name={this.props.name}
             style={this.props.style}

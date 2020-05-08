@@ -82,7 +82,7 @@ class Register extends React.Component {
             >Я Владелец груза</div>
           </div>
           <div className="row">
-            <div className="col-12 col-sm-6 d-flex align-items-center">
+            <div className="col-12 col-sm-6 d-flex mb-custom align-items-center">
               Страна:
               <span
                 className={`simple_select_city f-17-only col text-center ${
@@ -109,7 +109,7 @@ class Register extends React.Component {
           </div>
           <div className="row">
             <div className="col-12 col-sm-12">
-              <Input type="phone" error={this.state.errors.find(value => value.param === 'phone')} value={this.state.phone} onChange={(phone) => {this.setState({phone})}} placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
+              <Input type="phone" error={this.state.errors.find(value => value.param === 'phone')} value={this.state.phone} onChange={(e) => {this.setState({phone: e.target.value})}} placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _" />
             </div>
           </div>
           <div className="row">

@@ -19,6 +19,7 @@ import Cargo from "../Pages/Public/Cargo";
 import Carrier from "../Pages/Public/Carrier";
 import Profile from '../Pages/User/Profile'
 import MyOrders from '../Pages/User/MyOrders'
+import Notifications from '../Pages/User/Notifications'
 
 // Redux
 import { connect } from "react-redux";
@@ -90,6 +91,9 @@ class AppRouter extends React.Component {
         {/* Private routes */}
         <this.PrivateRoute exact path="/profile">
           <Profile />
+        </this.PrivateRoute>
+        <this.PrivateRoute exact path="/notifications">
+          <Notifications />
         </this.PrivateRoute>
         <this.PrivateRoute exact path="/my-orders">
           <MyOrders />
