@@ -21,7 +21,7 @@ class Input extends React.Component {
             style={this.props.style}
             className={`col input-text ${this.props.className} ${this.props.error ? 'input-error' : ''}`}
             placeholder={this.props.placeholder}
-            onChange={this.props.onChange}
+            onChange={(e)=>{this.props.onChange("+" + e.target.value.replace(/[^\d]/g, ''))}}
           />
           {this.props.error && <span className="input-error-label">
             {this.props.error.msg}    

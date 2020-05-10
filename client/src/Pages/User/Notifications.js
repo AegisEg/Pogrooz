@@ -1,31 +1,36 @@
 // App
 import React from "react";
-import configApi from "../../config/api";
-import { toast } from "react-toastify";
 
-// Elements
-import Button from "../../Elements/Button";
-import Input from "../../Elements/Input";
-import { Link } from "react-router-dom";
-import SideNav from "../../Partials/SideNav";
+import Notification from "../../Elements/Notification";
 
 // Redux
 import { connect } from "react-redux";
-import CheckBox from "../../Elements/CheckBox";
-import Select from "../../Elements/Select";
-
+var notifications = [
+  {
+    id: 1,
+    idItem: "",
+    type: "system",
+    date:"10.05.2020 12:36",
+    readble:1
+  },
+  {
+    id: 2,
+    idItem: "",
+    type: "system",
+    date:"10.05.2020 12:36",
+    readble:1
+  },
+];
 class Notifications extends React.Component {
-  state = {
-   
-  };
+  state = {};
 
   render() {
     return (
       <div>
-        <h2 className="title">Уведомления</h2>
-        <div className="row">
-          фывфыв
-        </div>
+        <h2 className="title">Уведомления</h2>        
+          {notifications.map((item) => {
+            return <Notification notification={item} />;
+          })}
       </div>
     );
   }

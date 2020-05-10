@@ -136,8 +136,9 @@ module.exports = {
     try {
       // Make sure there is an existing user in our database
       const existingUserEmail = await User.getByResetPasswordToken(token);
+      
       if (existingUserEmail) {
-        existingUserEmail.user.updatePassword(password);
+        existingUserEmail.updatePassword(password);
         // Сообщение о сбросе пароля
         return res.json({
           status: "success"
