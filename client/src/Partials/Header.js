@@ -90,6 +90,18 @@ class Header extends React.Component {
         name: "Скачать приложение",
         href: "/download-app",
       },
+      {
+        id: 7,
+        name: "Вход",
+        href: "/login",
+        notIsAuth:true
+      },
+      {
+        id: 8,
+        name: "Регистрация",
+        href: "/register",
+        notIsAuth:true
+      },
     ],
   };
   
@@ -191,13 +203,14 @@ class Header extends React.Component {
           <div className="toogle-burger">
             <MobileMenu>
               {menu.map((item, i) => {
+                if((item.notIsAuth && !this.props.user.isAuth) || !item.notIsAuth)
                 return (
                   <div>
                     <NavLink to={item.href} key={item.id} activeClassName="active">
                       {item.name}
                     </NavLink>
                     {i+1 !== menu.length && <div className="seperator"></div>}
-                    </div>
+                  </div>
                 );
               })}
             </MobileMenu>
