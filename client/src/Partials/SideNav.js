@@ -8,6 +8,7 @@ import acceptedOrders from "../img/accepted-orders.png";
 import geoDetect from "../img/geo-detect.png";
 import messages from "../img/messages.png";
 import raiting from "../img/raiting.png";
+import gear from "../img/gear.png";
 import notifications from "../img/notifications.png";
 
 import { NavLink } from 'react-router-dom';
@@ -27,6 +28,7 @@ class SideNav extends React.Component {
                 <NavLink to="/reviews" activeClassName="active"><div className='side-nav-item'><img src={raiting} alt="Отзывы" />Отзывы</div></NavLink>
                 <NavLink to="/profile" activeClassName="active"><div className='side-nav-item'><img src={profile} alt="Профиль" />Профиль</div></NavLink>
                 <NavLink to="/notifications" activeClassName="active"><div className='side-nav-item'><img src={notifications} alt="Уведомления" />Уведомления</div></NavLink>
+                <NavLink to="/notifications-settings" activeClassName="active"><div className='side-nav-item'><img src={gear} alt="Настройки уведомлений" />Настройки уведомлений</div></NavLink>
             </div>
         )
     }

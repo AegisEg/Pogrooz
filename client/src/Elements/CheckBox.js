@@ -13,11 +13,16 @@ class CheckBox extends React.Component {
           className={`input-${this.props.type}`}
           onChange={this.props.onChange}
         />
-        <label htmlFor={this.props.id} style={{ display: "inline-block", verticalAlign: "sub" }}></label>
-        <span
-          className="ml-3"          
-        >
-          <label htmlFor={this.props.id} className="f-14" style={{ display: "inline-block" }}>
+        <label
+          htmlFor={this.props.id}
+          style={{ display: "inline-block", verticalAlign: "sub" }}
+        ></label>
+        <span className={`${this.props.labelClass ? this.props.labelClass : "ml-3"}`}>
+          <label
+            htmlFor={this.props.id}
+            className="f-14"
+            style={{ display: "inline-block" }}
+          >
             {this.props.text}
           </label>
         </span>

@@ -342,15 +342,31 @@ input[type="checkbox"]:checked ~ label::after {
 .filter div.col-md-4 {
   margin-bottom: 10px;
 }
-.notification-item
-{  
+.notification-item {
   padding-bottom: 12px;
+  font-size: 14px;
 }
-.notification-item .border-top
-{
+.notification-item .border-top {
   border-top: 1px solid #dddddd;
   width: 100%;
   margin-bottom: 12px;
+}
+.notification-item .date,
+.notification-item .readble {
+  color: #6c6c6c;
+}
+.notification-item.unreadble .action-read
+{
+  cursor: pointer;
+}
+.notification-item.unreadble .text-notification {
+  font-weight: bold;
+}
+.notification-item .time {
+  margin-left: 11px;
+}
+.notification-item * {
+  display: inline-block;
 }
 /* Elements end */
 
@@ -727,7 +743,7 @@ a.mail {
   display: flex;
 }
 @media screen and (max-width: 575px) {
-  .header-sign-up{
+  .header-sign-up {
     display: none;
   }
 }
@@ -1541,3 +1557,34 @@ a.href {
   font-weight: normal;
 }
 /* Lk end */
+
+/* Notifications */
+.notification_groups {
+  margin-bottom: 20px;
+}
+.readble_col {
+  float: right;
+}
+.notification_groups .notification_group.active
+{
+  background-color: #FFDC1C;
+}
+.notification_groups .notification_group:first-child {
+  margin-left: 0;
+}
+.notification_groups .notification_group {
+  background: #eeeeee;
+  display: inline-block;
+  border-radius: 20px;
+  font-size: 12px;
+  line-height: 13px;
+  cursor: pointer;
+  padding: 10px 20px;
+  min-width: 90px;
+  text-align: center;
+  margin: 0 15px;
+}
+/* End Notifications */
+/* NotificationSettings */
+
+/* End NotificationSettings */

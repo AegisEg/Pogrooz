@@ -4,13 +4,14 @@ import yellowAngle from "../img/yellowAngle.png";
 class Notification extends React.Component {
   render() {
     var text;
-    switch (this.props.notification.type) {
+    switch (this.props.notification.code) {
       case "system":
         text = "Системное сообщение";
         break;
       //Уведомления по предложениям
       case "offer_new_request":
         //Новая заявка
+        text=`Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem`;
         break;
       case "offer_status":
         //Смена статуса
@@ -52,15 +53,31 @@ class Notification extends React.Component {
       //Уведомления по заказам
     }
     return (
-      <div className="row notification-item"> 
-        <span className="border-top"></span>   
-        <div className="col-2">{this.props.notification.date}</div>
-        <div className="col-8">{text}</div>
-        <div className="col-2">
+      <div
+        className={`notification-item ${
+          this.props.notification.readble ? "" : "unreadble"
+        } row mx-0`}
+      >
+        <div className="border-top"></div>
+        <div className>
+          <div className="date">{this.props.notification.date}</div>
+          <div className="time">{this.props.notification.time}</div>
+        </div>
+        <div className="col text-notification">{text}</div>
+        <div className="readble_col">
           {this.props.notification.readble ? (
-            <span><img src={yellowAngle} className="mr-3"/> Просмотрено</span>
+            <span className="readble">
+              <img src={yellowAngle} className="mr-3" /> Просмотрено
+            </span>
           ) : (
-            <span>Отметить как просмотрено</span>
+            <span
+              className="action-read"
+              onClick={() => {
+                alert("read");
+              }}
+            >
+              Отметить как просмотрено
+            </span>
           )}
         </div>
       </div>

@@ -20,6 +20,7 @@ import Carrier from "../Pages/Public/Carrier";
 import Profile from '../Pages/User/Profile'
 import MyOrders from '../Pages/User/MyOrders'
 import Notifications from '../Pages/User/Notifications'
+import NotificationsSettings from '../Pages/User/NotificationsSettings'
 
 // Redux
 import { connect } from "react-redux";
@@ -94,6 +95,9 @@ class AppRouter extends React.Component {
         </this.PrivateRoute>
         <this.PrivateRoute exact path="/notifications">
           <Notifications />
+        </this.PrivateRoute>
+        <this.PrivateRoute exact path="/notifications-settings">
+          <NotificationsSettings />
         </this.PrivateRoute>
         <this.PrivateRoute exact path="/my-orders">
           <MyOrders />
