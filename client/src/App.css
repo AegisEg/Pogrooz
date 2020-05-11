@@ -355,8 +355,7 @@ input[type="checkbox"]:checked ~ label::after {
 .notification-item .readble {
   color: #6c6c6c;
 }
-.notification-item.unreadble .action-read
-{
+.notification-item.unreadble .action-read {
   cursor: pointer;
 }
 .notification-item.unreadble .text-notification {
@@ -1565,9 +1564,8 @@ a.href {
 .readble_col {
   float: right;
 }
-.notification_groups .notification_group.active
-{
-  background-color: #FFDC1C;
+.notification_groups .notification_group.active {
+  background-color: #ffdc1c;
 }
 .notification_groups .notification_group:first-child {
   margin-left: 0;
@@ -1586,5 +1584,39 @@ a.href {
 }
 /* End Notifications */
 /* NotificationSettings */
-
+.user-settings {
+  margin-bottom: 21px;
+}
+.user-settings .filed-label {
+  width: 195px;
+  font-size: 14px;
+  line-height: 16px;
+}
+.user-settings .gray {
+  color: #6c6c6c;
+}
+.user-settings .fields-checkbox > *:last-child {
+  margin-left: 28px;
+}
+.common-settings
+{
+  border-top: 1px solid #DDDDDD; 
+}
+.common-settings .setting-title
+{
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+.setting-title {
+  font-size: 16px;
+  line-height: 19px;
+  height: 19px;
+  font-weight: normal;
+  margin-top: 10px;
+  margin-bottom: 21px;
+}
+.float-right
+{
+  float: right;
+}
 /* End NotificationSettings */
