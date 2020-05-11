@@ -11,7 +11,7 @@ class Notification extends React.Component {
       //Уведомления по предложениям
       case "offer_new_request":
         //Новая заявка
-        text=`Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem`;
+        text = `Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem`;
         break;
       case "offer_status":
         //Смена статуса
@@ -25,11 +25,14 @@ class Notification extends React.Component {
       case "offer_you_executor":
         //Выбрали исполнителем
         break;
-      case "offer_succsess_moderation":
-        //Выбрали исполнителем
+      case "offer_new_message":
+        //Новое сообщение
         break;
       //Уведомления по предложениям
       //Уведомления по заказам
+      case "order_new_request":
+        //Новая заявка
+        break;
       case "order_you_executor":
         //Выбрали исполнителем
         break;
@@ -37,20 +40,34 @@ class Notification extends React.Component {
         //Смена статуса
         break;
       case "order_new_review":
-        //Смена статуса
+        //Новый отзыв
         break;
       case "order_new_message":
         //Новое сообщение
         break;
+      case "order_tracking":
+        //Уведомления отслеживания
+        break;
       //Уведомления по заказам
       //Уведомления по тарифам
       case "tarif_ends":
-        //Выбрали исполнителем
+        //Остаток тарифа
         break;
       case "tarif_payed":
-        //Смена статуса
+        //Зачисление оплаты
         break;
-      //Уведомления по заказам
+      //Уведомления по тарифам
+      //Уведомления общие
+      case "user_new_message":
+        //Новое сообщение
+        break;
+      case "order_moderation":
+        //Моджерация заказов
+        break;
+      case "offer_moderation":
+        //Моджерация заказов
+        break;
+      //Уведомления общие
     }
     return (
       <div

@@ -17,10 +17,10 @@ class CheckBox extends React.Component {
           htmlFor={this.props.id}
           style={{ display: "inline-block", verticalAlign: "sub" }}
         ></label>
-        <span className={`${this.props.labelClass ? this.props.labelClass : "ml-3"}`}>
+        <span className={`${this.props.wrapperlabelClass ? this.props.wrapperlabelClass : "ml-3"}`}>
           <label
             htmlFor={this.props.id}
-            className="f-14"
+            className={`${this.props.labelClass ? this.props.labelClass : "f-14"}`}
             style={{ display: "inline-block" }}
           >
             {this.props.text}

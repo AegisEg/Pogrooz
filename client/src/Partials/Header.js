@@ -205,7 +205,7 @@ class Header extends React.Component {
               {menu.map((item, i) => {
                 if((item.notIsAuth && !this.props.user.isAuth) || !item.notIsAuth)
                 return (
-                  <div>
+                  <div key={item.id}>
                     <NavLink to={item.href} key={item.id} activeClassName="active">
                       {item.name}
                     </NavLink>
