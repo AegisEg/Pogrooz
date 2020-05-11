@@ -1,6 +1,8 @@
 // App
 import React from "react";
 import Input from "../../Elements/Input";
+import configApi from '../../config/api'
+
 // Elements
 import Button from "../../Elements/Button";
 import Select from "../../Elements/Select";
@@ -29,7 +31,7 @@ class Register extends React.Component {
 
   register() {
     this.setState({isFetching: true})
-    fetch(`http://localhost:8000/auth/register`, {
+    fetch(`${configApi.urlApi}/auth/register`, {
         method: "post",
         headers: {
             'Accept': 'application/json',
@@ -42,7 +44,7 @@ class Register extends React.Component {
             type: this.state.type,
             firstName: this.state.firstName,
             middleName: this.state.middleName,
-            lastName: this.state.middleName,
+            lastName: this.state.lastName,
             password: this.state.password
         })
     })
@@ -80,7 +82,7 @@ class Register extends React.Component {
             >Я Владелец груза</div>
           </div>
           <div className="row">
-            <div className="col-12 col-sm-6 d-flex align-items-center">
+            <div className="col-12 col-sm-6 d-flex mb-custom align-items-center">
               Страна:
               <span
                 className={`simple_select_city f-17-only col text-center ${
@@ -130,7 +132,7 @@ class Register extends React.Component {
           </div>
           <div className="row">
             <div className="col-12">
-              <Input type="password" error={this.state.errors.find(value => value.param === 'password')} value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}} className="isHover" placeholder="Пароль" />
+              <Input type="password" style={{paddingRight: 50}} error={this.state.errors.find(value => value.param === 'password')} value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}} className="isHover" placeholder="Пароль" />
             </div>
           </div>
           <p className="text-right f-12">
