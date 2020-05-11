@@ -123,7 +123,7 @@ class Register extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-sm-6">
+            <div className="col-12 col-sm-6 mb-custom">
               <Input type="text" error={this.state.errors.find(value => value.param === 'firstName')} value={this.state.firstName} onChange={(e) => {this.setState({firstName: e.target.value})}} placeholder="Имя" />
             </div>
             <div className="col-12 col-sm-6">
