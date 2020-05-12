@@ -20,7 +20,7 @@ class CheckBox extends React.Component {
         <span className={`${this.props.wrapperlabelClass ? this.props.wrapperlabelClass : "ml-3"}`}>
           <label
             htmlFor={this.props.id}
-            className={`${this.props.labelClass ? this.props.labelClass : "f-14"}`}
+            className={`${this.props.labelClass ? this.props.labelClass : "f-12"}`}
             style={{ display: "inline-block" }}
           >
             {this.props.text}
