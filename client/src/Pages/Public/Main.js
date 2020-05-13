@@ -30,7 +30,7 @@ class Main extends React.Component {
       <div className="main-page">
         <div className="main-preview row">
           <div className="row col-12">
-            <div className="main-text-block col-12 col-sm-7 col-md-8 col-xl-6">
+            <div className="main-text-block  col-md-8 col-xl-6">
               <h1 className="main-title">
                 <img src={logoName} alt="logoName" />{" "}
               </h1>
@@ -50,7 +50,7 @@ class Main extends React.Component {
                     type="fill"
                     margin={"0 5% 0 0"}
                     paddingVertical={"15px"}
-                    paddingHorizontal={"32px"}
+                    paddingHorizontal={"0px"}
                   >
                     Я владелец груза
                     <div className="text-uppercase">Заказать</div>
@@ -60,7 +60,7 @@ class Main extends React.Component {
                   <Button
                     type="empty"
                     paddingVertical={"15px"}
-                    paddingHorizontal={"32px"}
+                    paddingHorizontal={"0px"}
                   >
                     Я перевозчик
                     <div className="text-uppercase">Найти груз</div>

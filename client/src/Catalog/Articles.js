@@ -15,7 +15,8 @@ let articles = [
     fromLocation:
       "Россия, Московская область, Лобня, улица Лейтенанта Бойко, 104",
     toLocation: "Россия, Ленинградская  область, г Пушкин, улица  Бойко, 123",
-    cargo: "10 кг / 2 м 3 шт Мебель Коммерческие грузы",
+    cargo: ["Мебель", "Коммерческие грузы"],
+    parametrs: "10 кг / 2 м 3 шт",
     price: "20 000 руб",
     rating: 3.1,
     date: {
@@ -43,7 +44,8 @@ let articles = [
     fromLocation:
       "Россия, Московская область, Лобня, улица Лейтенанта Бойко, 104",
     toLocation: "Россия, Ленинградская  область, г Пушкин, улица  Бойко, 123",
-    cargo: "10 кг / 2 м 3 шт Мебель Коммерческие грузы",
+    cargo: ["Мебель", "Коммерческие грузы"],
+    parametrs: "10 кг / 2 м 3 шт",
     price: "20 000 руб",
     rating: 3.1,
     date: {
@@ -68,7 +70,7 @@ class Articles extends React.Component {
   render() {
     return (
       <div className="articles-block">
-        <div className="articles-header">
+        <div className="articles-header d-none d-md-block">
           <div className="row">
             <div className="col-md-6 row">
               <div className="col-md-1">
@@ -85,13 +87,13 @@ class Articles extends React.Component {
               </div>
             </div>
             <div className="col-md-6 row">
-              <div className="col-md-3">
+              <div className="col-md-4">
                 <span>Груз</span>
               </div>
               <div className="col-md-3">
                 <span>Загрузка</span>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-2">
                 <span>Цена</span>
               </div>
               <div className="col-md-3">
@@ -103,16 +105,18 @@ class Articles extends React.Component {
         {articles.map((article, i) => {
           return <Article key={i} article={article} key={article.id} />;
         })}
-        <Pagination pageCount="10" perPage="1" />
-        <Button
-          type="empty"
-          margin="auto 0 70px auto"
-          className="mx-auto d-block"
-          paddingVertical={"13px"}
-          paddingHorizontal={"35px"}
-        >
-          Перейти на страницу поиска
-        </Button>
+        <Pagination pageCount={10} perPage="1" />
+        <div className="text-center">
+          <Button
+            type="empty"
+            margin="auto 0 70px auto"
+            className="mx-auto bg-gray"
+            paddingVertical={"13px"}
+            paddingHorizontal={"35px"}
+          >
+            Перейти на страницу поиска
+          </Button>
+        </div>
       </div>
     );
   }
