@@ -26,7 +26,7 @@ class Questions extends React.Component {
     }
     render() {
         return (
-            <div className="main-questions d-none d-sm-block">
+            <div className="main-questions d-sm-block">
                 <h3>Часто задаваемые вопросы</h3>
 
                 <SliderQuestions>
