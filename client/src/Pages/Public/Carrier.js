@@ -16,7 +16,7 @@ import ImgHistory from "../../img/history.png";
 import ImgPhone from "../../img/phone.png";
 import Imgtamplate from "../../img/tamplate.png";
 
-import questions from '../../config/questions'
+import questions from "../../config/questions";
 
 class Carrier extends React.Component {
   render() {
@@ -37,33 +37,57 @@ class Carrier extends React.Component {
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={ImgChat} alt="Удобная коммуникация" />
+              <img
+                className="carrier-pros-image"
+                src={ImgChat}
+                alt="Удобная коммуникация"
+              />
             </div>
             <p className="carrier-pros-label">Удобная коммуникация</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={ImgPhone} alt="Вся информация у вас в телефоне" />
+              <img
+                className="carrier-pros-image"
+                src={ImgPhone}
+                alt="Вся информация у вас в телефоне"
+              />
             </div>
-            <p className="carrier-pros-label">Вся информация у вас в телефоне</p>
+            <p className="carrier-pros-label">
+              Вся информация у вас в телефоне
+            </p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={ImgHistory} alt="История заказов" />
+              <img
+                className="carrier-pros-image"
+                src={ImgHistory}
+                alt="История заказов"
+              />
             </div>
             <p className="carrier-pros-label">История заказов</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={Imgtamplate} alt="Возможность добавления шаблона" />
+              <img
+                className="carrier-pros-image"
+                src={Imgtamplate}
+                alt="Возможность добавления шаблона"
+              />
             </div>
             <p className="carrier-pros-label">Возможность добавления шаблона</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
-              <img className="carrier-pros-image" src={ImgLk} alt="Простой и удобный личный кабинет" />
+              <img
+                className="carrier-pros-image"
+                src={ImgLk}
+                alt="Простой и удобный личный кабинет"
+              />
             </div>
-            <p className="carrier-pros-label">Простой и удобный личный кабинет</p>
+            <p className="carrier-pros-label">
+              Простой и удобный личный кабинет
+            </p>
           </div>
         </div>
 
@@ -112,60 +136,77 @@ class Carrier extends React.Component {
           <h3 className="font-weight-normal f-20">
             Тариф для подключения перевозчиков к порталу PoGrooz
           </h3>
-          <div className="row f-12">
-            <div className="col-12 col-sm-6 col-lg-3 order-0 col-xl-2 d-flex">
-              <span className="w-85px">Стоимость:</span>
-              <div className="pl-3">
-                <span className="yellow-text">200</span>
-                <p className="m-0">руб в неделю</p>
+          <div className="row">
+            <div className="row px-0 mx-0 col-12 col-lg-6">
+              <div className="px-3 d-flex mt-3 fixed760">
+                <span className="w-85px f-16">Стоимость:</span>
+                <div className="pl-3">
+                  <span className="yellow-text">от 16</span>
+                  <p className="m-0 f-16">руб в день*</p>
+                </div>
+              </div>
+              <div className="mt-3 px-3 d-flex d-md-none justify-content-end">
+                <span className="f-16">Демо режим:</span>
+                <div className="pl-3">
+                  <span className="yellow-text">7 дней</span>
+                  <p className="m-0 f-16">после регистрации</p>
+                </div>
+              </div>
+              <div className="col-xl col-lg col-md col-sm-12 col-12 d-flex mt-3">
+                <div className="f-12">
+                  <b>Понедельная тарификация.</b> После оплаты тарифа профиль и
+                  предложения перевозчика становятся доступны всем
+                  пользователям. Полные условия читайте в разделе Тарифы&nbsp;
+                  <Link to="/" className="href">
+                    Тарифы
+                  </Link>
+                </div>
               </div>
             </div>
-            <div className="col-12 col-sm-6 col-lg-3 mt-2 order-md-2 order-lg-0 order-xl-2-1 col-xl-2 d-flex">
-              <span className="w-85px">Демо режим:</span>
-              <div className="pl-3">
-                <span className="yellow-text">7 дней</span>
-                <p className="m-0">после регистрации</p>
+            <div className="row mx-0 col-12 col-lg-6">
+              <div className="fixed760 ml-md-0 ml-lg-auto pr-lg-0 d-none d-md-flex pr-xl-3 mt-3 justify-content-end">
+                <span className="f-16">Демо режим:</span>
+                <div className="pl-3">
+                  <span className="yellow-text">7 дней</span>
+                  <p className="m-0 f-16">после регистрации</p>
+                </div>
               </div>
-            </div>
-            <div className="col-12 col-md-6 col-lg-4 mt-2 order-md-1 order-lg-1 order-xl-2-2 col-xl-6 d-flex">
-              <span>Условия:</span>
-              <div className="pl-3">
-                Понедельная тарификация, при отключении тарифа анкета и
-                предложения перевозчика скрываются из общаего поиска. Полные
-                условия читайте в разделе&nbsp;
-                <Link to="/">Тарифы</Link>
+              <div className="px-2 pl-custom text-md-left text-xl-right mt-3">
+                <Button
+                  type="fill"
+                  margin={"0 0 0 auto"}
+                  paddingHorizontal={"25px"}
+                  paddingVertical={"15px"}
+                  className="f-17"
+                >
+                  Попробовать
+                  <br />
+                  БЕСПЛАТНО
+                </Button>
               </div>
-            </div>
-            <div className="col-12 col-md-6 col-lg-2 pl-custom col-xl-2 mt-2 order-md-3 order-lg-2 order-xl-2-3 text-md-left text-xl-right">
-              <Button
-                type="fill"
-                margin={"0 0 0 auto"}
-                paddingHorizontal={"25px"}
-                paddingVertical={"15px"}
-                className="f-17"
-              >
-                Попробовать
-                <br />
-                БЕСПЛАТНО
-              </Button>
             </div>
           </div>
         </div>
         <div className="faq-questions row">
-            {questions.map((question) => {
-                return (
-                    <div className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left" key={question.id}>
-                        <h4>{question.title}</h4>
-                        <ul>
-                            {question.questions.map((question) => {
-                                return (
-                                    <li key={question.id}><Link to="/">{question.title}</Link></li>
-                                )
-                            })}
-                        </ul>
-                    </div>
-                )
-            })}
+          {questions.map((question) => {
+            return (
+              <div
+                className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
+                key={question.id}
+              >
+                <h4>{question.title}</h4>
+                <ul>
+                  {question.questions.map((question) => {
+                    return (
+                      <li key={question.id}>
+                        <Link to="/">{question.title}</Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
