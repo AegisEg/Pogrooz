@@ -189,23 +189,32 @@ class Carrier extends React.Component {
         </div>
         <div className="faq-questions row">
           {questions.map((question) => {
-            return (
-              <div
-                className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
-                key={question.id}
-              >
-                <h4>{question.title}</h4>
-                <ul>
-                  {question.questions.map((question) => {
-                    return (
-                      <li key={question.id}>
-                        <Link to="/">{question.title}</Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
+            if (
+              question.questions.filter((item) => {
+                return item.type == "carrier" || item.type == "all";
+              }).length
+            )
+              return (
+                <div
+                  className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
+                  key={question.id}
+                >
+                  <h4>{question.title}</h4>
+                  <ul>
+                    {question.questions
+                      .filter((item) => {
+                        return item.type == "carrier" || item.type == "all";
+                      })
+                      .map((question) => {
+                        return (
+                          <li key={question.id}>
+                            <Link to="/">{question.title}</Link>
+                          </li>
+                        );
+                      })}
+                  </ul>
+                </div>
+              );
           })}
         </div>
       </div>

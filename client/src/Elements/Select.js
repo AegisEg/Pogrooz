@@ -14,15 +14,19 @@ const DropdownIndicator = (props) => {
 const colourStyles = {
   placeholder: (base) => ({
     color: "#909090",
+    padding: "5px 15px",
+  }),
+  singleValue: (base) => ({
+    padding: "5px 15px",
   }),
   indicatorsContainer: (base, state) => ({
     ...base,
     transform: state.selectProps.menuIsOpen ? "scale(1,-1)" : "",
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     top: 0,
     bottom: 0,
-    margin: 'auto'
+    margin: "auto",
   }),
   menu: (base) => ({
     ...base,
@@ -41,7 +45,7 @@ const colourStyles = {
   container: (base, state) => ({
     ...base,
     maxHeight: 42,
-    flexGrow: 1
+    flexGrow: 1,
   }),
   control: (base, state) => ({
     ...base,
@@ -70,12 +74,11 @@ const colourStyles = {
       : "",
   }),
   option: (base, state) => ({
-    padding: "5px 0",
+    padding: "5px 15px",
     cursor: "pointer",
     color: state.isSelected ? "#A038E3" : "",
-    fontWeight: state.isSelected ? "bold" : "",
     "&:hover": {
-      textDecoration: "underline",
+      backgroundColor: state.isSelected ? "" : "#EEEEEE",
     },
   }),
 };

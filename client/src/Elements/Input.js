@@ -126,7 +126,7 @@ class Input extends React.Component {
         <div
           className="input"
           style={{
-            display: this.props.type === "password" ? "block" : "contents",
+            display: "contents",
             position: "relative",
             paddingBottom: this.props.error ? "10px" : "0px",
           }}

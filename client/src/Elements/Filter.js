@@ -8,6 +8,7 @@ import Select from "../Elements/Select";
 import ImgActiveStar from "../img/active-star.png";
 import closePng from "../img/close.png";
 import filter from "../img/filter.png";
+import filterHover from "../img/filter-hover.png";
 import CheckBox from "./CheckBox";
 
 class Filter extends React.Component {
@@ -17,6 +18,7 @@ class Filter extends React.Component {
     volumeH: 0,
     volumeW: 0,
     volumeWh: 0,
+    finterImg: filter,
   };
   render() {
     return (
@@ -59,7 +61,7 @@ class Filter extends React.Component {
               <Button
                 width={"100%"}
                 type="fill"
-                className="lh-20"
+                className="lh-20 search-button"
                 paddingVertical={"10px"}
                 margin={"0 15px 0 0"}
               >
@@ -68,10 +70,16 @@ class Filter extends React.Component {
             </Link>
             {!this.state.show ? (
               <img
-                src={filter}
+                src={this.state.finterImg}
                 className="ml-3"
                 onClick={() => {
                   this.setState({ show: true });
+                }}
+                onMouseLeave={() => {
+                  this.setState({ finterImg: filter });
+                }}
+                onMouseEnter={() => {
+                  this.setState({ finterImg: filterHover });
                 }}
                 alt=""
                 width="26"
