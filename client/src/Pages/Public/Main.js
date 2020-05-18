@@ -52,8 +52,13 @@ class Main extends React.Component {
                     paddingVertical={"15px"}
                     paddingHorizontal={"0px"}
                   >
-                    Я владелец груза
-                    <div className="text-uppercase">Заказать</div>
+                    <span style={{ lineHeight: "14px" }}>Я владелец груза</span>
+                    <div
+                      className="text-uppercase"
+                      style={{ fontSize: "22px", marginTop: "3px" }}
+                    >
+                      Заказать
+                    </div>
                   </Button>
                 </Link>
                 <Link to="/register">
@@ -62,8 +67,13 @@ class Main extends React.Component {
                     paddingVertical={"15px"}
                     paddingHorizontal={"0px"}
                   >
-                    Я перевозчик
-                    <div className="text-uppercase">Найти груз</div>
+                    <span style={{ lineHeight: "14px" }}>Я перевозчик</span>
+                    <div
+                      className="text-uppercase"
+                      style={{ fontSize: "22px", marginTop: "3px" }}
+                    >
+                      Найти груз
+                    </div>
                   </Button>
                 </Link>
               </div>
@@ -107,13 +117,13 @@ class Main extends React.Component {
             </div>
           </div>
         </div>
-        <div className="row mx-0 search-tabs background-gray-768 tabs justify-content-center">
+        <div className="row mx-0 search-tabs background-gray-768 tabs mb-lg-0 mb-xl-3 justify-content-center">
           <div
             className={`tab mx-3 text-uppercase ${
               this.state.searchType == "offer" ? "active" : ""
             }`}
-            onClick={()=>{
-                this.setState({searchType:"offer"});
+            onClick={() => {
+              this.setState({ searchType: "offer" });
             }}
           >
             Услуги <span className="d-380 d-sm-inline-block">перевозчиков</span>
@@ -122,8 +132,8 @@ class Main extends React.Component {
             className={`tab mx-3 text-uppercase ${
               this.state.searchType == "order" ? "active" : ""
             }`}
-            onClick={()=>{
-                this.setState({searchType:"order"});
+            onClick={() => {
+              this.setState({ searchType: "order" });
             }}
           >
             Заказы <span className="d-380 d-sm-inline-block">на перевозку</span>
@@ -131,7 +141,19 @@ class Main extends React.Component {
         </div>
         <Filter className="background-gray-768 filter-main" />
         <Articles />
-
+        <div className="text-center">
+          <Link to="/" className="href">
+            <Button
+              type="empty"
+              margin="auto 0 70px auto"
+              className="mx-auto bg-gray"
+              paddingVertical={"13px"}
+              paddingHorizontal={"35px"}
+            >
+              Перейти на страницу поиска
+            </Button>
+          </Link>
+        </div>
         <div className="main-profitably d-none d-md-block">
           <hr></hr>
 
@@ -156,8 +178,9 @@ class Main extends React.Component {
               <Link to="/register">
                 <Button
                   type="fill"
-                  paddingVertical={"6px"}
+                  paddingVertical={"13px"}
                   paddingHorizontal={"25px"}
+                  className="f-17"
                 >
                   Регистрация
                 </Button>
@@ -181,8 +204,9 @@ class Main extends React.Component {
               <Link to="/register">
                 <Button
                   type="fill"
-                  paddingVertical={"6px"}
+                  paddingVertical={"13px"}
                   paddingHorizontal={"25px"}
+                  className="f-17"
                 >
                   Регистрация
                 </Button>

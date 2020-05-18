@@ -1,14 +1,29 @@
 // App
 import React from "react";
+//PHONE
 import InputMask from "react-input-mask";
+//DATE
+import {
+  DatePicker,
+  TimePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+//DATE
 import EyeOpen from "../img/eye-open.png";
 import EyeClose from "../img/eye-close.png";
 
 class Input extends React.Component {
   state = {
     showPassword: false,
+    isFocus: false,
   };
-
+  detectType() {
+    if (this.props.type === "password")
+      if (this.state.showPassword) return "text";
+      else return "password";
+    else return this.props.type;
+  }
   render() {
     if (this.props.type === "phone")
       return (
@@ -38,7 +53,7 @@ class Input extends React.Component {
           )}
         </div>
       );
-    else
+    if (this.props.type === "time") {
       return (
         <div
           className="input"
@@ -48,16 +63,86 @@ class Input extends React.Component {
             paddingBottom: this.props.error ? "10px" : "0px",
           }}
         >
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <TimePicker
+              onFocus={() => {
+                this.setState({ isFocus: true });
+              }}
+              ampm={false}
+              onBlur={() => {
+                this.setState({ isFocus: false });
+              }}
+              InputProps={{
+                className: "input-time fixed-width",
+              }}
+              format="HH:mm"
+              value={this.props.value}
+              placeholder={this.props.placeholder}
+              minDate={this.props.minDate}
+              onChange={this.props.onChange ? this.props.onChange : () => {}}
+            />
+          </MuiPickersUtilsProvider>
+          {this.props.error && (
+            <span className="input-error-label">{this.props.error.msg}</span>
+          )}
+        </div>
+      );
+    }
+    if (this.props.type === "date") {
+      return (
+        <div
+          className="input"
+          style={{
+            display: this.props.type === "password" ? "block" : "contents",
+            position: "relative",
+            paddingBottom: this.props.error ? "10px" : "0px",
+          }}
+        >
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+              onFocus={() => {
+                this.setState({ isFocus: true });
+              }}
+              onBlur={() => {
+                this.setState({ isFocus: false });
+              }}
+              InputProps={{
+                className: "input-date",
+              }}
+              format="MM.dd.yyyy"
+              value={this.props.value}
+              placeholder={this.props.placeholder}
+              minDate={this.props.minDate}
+              onChange={this.props.onChange ? this.props.onChange : () => {}}
+            />
+          </MuiPickersUtilsProvider>
+          {this.props.error && (
+            <span className="input-error-label">{this.props.error.msg}</span>
+          )}
+        </div>
+      );
+    } else
+      return (
+        <div
+          className="input"
+          style={{
+            display: "contents",
+            position: "relative",
+            paddingBottom: this.props.error ? "10px" : "0px",
+          }}
+        >
           <input
-            type={
-              this.props.type === "password"
-                ? this.state.showPassword
-                  ? "text"
-                  : "password"
-                : this.props.type
-            }
+            type={this.detectType()}
+            onFocus={() => {
+              this.setState({ isFocus: true });
+            }}
+            onBlur={() => {
+              this.setState({ isFocus: false });
+            }}
             value={this.props.value}
             name={this.props.name}
+            min={this.props.min}
+            max={this.props.max}
             style={this.props.style}
             className={`col input-${this.props.type} ${this.props.className} ${
               this.props.error ? "input-error" : ""

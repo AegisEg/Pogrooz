@@ -1,5 +1,6 @@
 // App
 import React from "react";
+import { CSSTransitionGroup } from "react-transition-group";
 import ImgActiveStar from "../img/active-star.png";
 import ArrowDown from "../img/arrowDown.png";
 import payIco from "../img/pay-ico.png";
@@ -29,6 +30,7 @@ class Article extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
   }
+  componentDidUpdate() {}
   render() {
     return (
       <div className="article-block">
@@ -41,41 +43,68 @@ class Article extends React.Component {
                 </div>
                 <div className="col-md-3">
                   <span>{this.props.article.carName}</span>
-                  {this.state.showMore && (
-                    <img
-                      className="w-100 moreinfo"
-                      src={this.props.article.carImg}
-                      alt=""
-                    />
-                  )}
+                  <CSSTransitionGroup
+                    transitionName="height-animation-item"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}
+                    style={{
+                      display: "contents",
+                    }}
+                  >
+                    {this.state.showMore && (
+                      <img
+                        className="w-100  moreinfo"
+                        src={this.props.article.carImg}
+                        alt=""
+                      />
+                    )}
+                  </CSSTransitionGroup>
                 </div>
                 <div className="col-md-4">
                   <span>{this.props.article.fromLocation}</span>
-                  <div
-                    className={`moreinfo ${
-                      this.state.showMore ? "" : "d-none"
-                    }`}
+
+                  <CSSTransitionGroup
+                    transitionName="height-animation-item"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}
+                    style={{
+                      display: "contents",
+                    }}
                   >
-                    <Map
-                      defaultState={{ center: [55.75, 37.57], zoom: 15 }}
-                      width="100%"
-                      height="100px"
-                    />
-                  </div>
+                    {this.state.showMore && (
+                      <div className="moreinfo" style={{ height: "100px" }}>
+                        <Map
+                          defaultState={{ center: [55.75, 37.57], zoom: 15 }}
+                          width="100%"
+                          height="100px"
+                          instanceRef={(ref) => {
+                            console.log(ref);
+                          }}
+                        />
+                      </div>
+                    )}
+                  </CSSTransitionGroup>
                 </div>
                 <div className="col-md-4">
                   <span>{this.props.article.toLocation}</span>
-                  <div
-                    className={`moreinfo ${
-                      this.state.showMore ? "" : "d-none"
-                    }`}
+                  <CSSTransitionGroup
+                    transitionName="height-animation-item"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}
+                    style={{
+                      display: "contents",
+                    }}
                   >
-                    <Map
-                      defaultState={{ center: [55.75, 37.57], zoom: 15 }}
-                      width="100%"
-                      height="100px"
-                    />
-                  </div>
+                    {this.state.showMore && (
+                      <div className="moreinfo" style={{ height: "100px" }}>
+                        <Map
+                          defaultState={{ center: [55.75, 37.57], zoom: 15 }}
+                          width="100%"
+                          height="100px"
+                        />
+                      </div>
+                    )}
+                  </CSSTransitionGroup>
                 </div>
               </div>
               <div className="col-md-6 row">
@@ -83,7 +112,10 @@ class Article extends React.Component {
                   <span>
                     <span className="d-block">
                       {this.props.article.parametrs}
+                      <br />
+                      {this.props.article.count}
                     </span>
+                    <br />
                     {this.props.article.cargo.map((item) => {
                       return <span className="d-block">{item}</span>;
                     })}
@@ -92,6 +124,7 @@ class Article extends React.Component {
                 <div className="col-md-3">
                   <span>
                     {this.props.article.date.date}
+                    <br />
                     <br />
                     {this.props.article.date.time}
                   </span>
@@ -110,54 +143,59 @@ class Article extends React.Component {
                 </div>
               </div>
             </div>
-
-            {this.state.showMore && (
-              <div className="row moreinfo_block">
-                <div className="col-12 mb-3">
-                  {this.props.article.tags.map((item, i) => {
-                    return (
-                      <span key={i} className="position-relative left-angle">
-                        {item}
-                      </span>
-                    );
-                  })}
-                </div>
-                <div className="col-5 row">
-                  <img
-                    src={this.props.article.user.avatar}
-                    width="50px"
-                    height="50px"
-                    alt="avatar"
-                  />
-                  <div className="col">
-                    <div className="fio">{this.props.article.user.fio}</div>
-                    <div className="mt-2">
-                      {this.props.article.user.passport && (
-                        <span className="property-user d-block">
-                          <img src={passport} alt="passport" />
-                          Пасспорт загружен
+            <CSSTransitionGroup
+              transitionName="height-animation"
+              transitionEnterTimeout={300}
+              transitionLeaveTimeout={300}
+            >
+              {this.state.showMore && (
+                <div className="row moreinfo_block">
+                  <div className="col-12 mb-3">
+                    {this.props.article.tags.map((item, i) => {
+                      return (
+                        <span key={i} className="position-relative left-angle">
+                          {item}
                         </span>
-                      )}
-                      {this.props.article.user.dogovor && (
-                        <span className="property-user">
-                          <img src={dogovor} alt="dogovor" />
-                          Договор с ИП, ООО
-                        </span>
-                      )}
-                      {this.props.article.user.paynal && (
-                        <span className="property-user">
-                          <img src={payIco} alt="payIco" />
-                          Оплата наличными, на р/c
-                        </span>
-                      )}
+                      );
+                    })}
+                  </div>
+                  <div className="col-5 row">
+                    <img
+                      src={this.props.article.user.avatar}
+                      width="50px"
+                      height="50px"
+                      alt="avatar"
+                    />
+                    <div className="col">
+                      <div className="fio">{this.props.article.user.fio}</div>
+                      <div className="mt-2">
+                        {this.props.article.user.passport && (
+                          <span className="property-user d-block">
+                            <img src={passport} alt="passport" />
+                            Пасспорт загружен
+                          </span>
+                        )}
+                        {this.props.article.user.dogovor && (
+                          <span className="property-user">
+                            <img src={dogovor} alt="dogovor" />
+                            Договор с ИП, ООО
+                          </span>
+                        )}
+                        {this.props.article.user.paynal && (
+                          <span className="property-user">
+                            <img src={payIco} alt="payIco" />
+                            Оплата наличными, на р/c
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
+                  <div className="col-7">
+                    <b>Комментарий:</b> {this.props.article.comments}
+                  </div>
                 </div>
-                <div className="col-7">
-                  <b>Комментарий:</b> {this.props.article.comments}
-                </div>
-              </div>
-            )}
+              )}
+            </CSSTransitionGroup>
             <div className="row">
               <div className="col-md-12 article-actions">
                 <Link
@@ -184,8 +222,9 @@ class Article extends React.Component {
                 <Link to="/register">
                   <Button
                     type="fill"
-                    paddingVertical={"5px"}
-                    paddingHorizontal={"25px"}
+                    className="get-article"
+                    paddingVertical={"15px"}
+                    paddingHorizontal={"35px"}
                     fontSize={"14px"}
                   >
                     ВЗЯТЬ

@@ -28,7 +28,11 @@ class Cargo extends React.Component {
         <div className="cargo-pros row">
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="cargo-pros-image-block">
-              <img className="cargo-pros-image" src={ImgFree} alt="Беcплатно. Без процентов и комиссий" />
+              <img
+                className="cargo-pros-image"
+                src={ImgFree}
+                alt="Беcплатно. Без процентов и комиссий"
+              />
             </div>
 
             <p className="cargo-pros-label">
@@ -37,35 +41,55 @@ class Cargo extends React.Component {
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="cargo-pros-image-block">
-              <img className="cargo-pros-image" src={ImgLk} alt="Простой и удобный личный кабинет" />
+              <img
+                className="cargo-pros-image"
+                src={ImgLk}
+                alt="Простой и удобный личный кабинет"
+              />
             </div>
 
             <p className="cargo-pros-label">Простой и удобный личный кабинет</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="cargo-pros-image-block">
-              <img className="cargo-pros-image" src={ImgChat} alt="Система оповещений и сообщений" />
+              <img
+                className="cargo-pros-image"
+                src={ImgChat}
+                alt="Система оповещений и сообщений"
+              />
             </div>
 
             <p className="cargo-pros-label">Система оповещений и сообщений</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="cargo-pros-image-block">
-              <img className="cargo-pros-image" src={ImgGeo} alt="Отслеживание груза в пути" />
+              <img
+                className="cargo-pros-image"
+                src={ImgGeo}
+                alt="Отслеживание груза в пути"
+              />
             </div>
 
             <p className="cargo-pros-label">Отслеживание груза в пути</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="cargo-pros-image-block">
-              <img className="cargo-pros-image" src={ImgPhone} alt="Прямое общение с перевозчиком" />
+              <img
+                className="cargo-pros-image"
+                src={ImgPhone}
+                alt="Прямое общение с перевозчиком"
+              />
             </div>
 
             <p className="cargo-pros-label">Прямое общение с перевозчиком</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="cargo-pros-image-block">
-              <img className="cargo-pros-image" src={ImgBigStar} alt="Честная система рейтинга" />
+              <img
+                className="cargo-pros-image"
+                src={ImgBigStar}
+                alt="Честная система рейтинга"
+              />
             </div>
 
             <p className="cargo-pros-label">Честная система рейтинга</p>
@@ -121,27 +145,37 @@ class Cargo extends React.Component {
               </Link>
             </div>
           </div>
+          <hr />
         </div>
 
         <div className="faq-questions row">
           {questions.map((question) => {
-            return (
-              <div
-                className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
-                key={question.id}
-              >
-                <h4>{question.title}</h4>
-                <ul>
-                  {question.questions.map((question) => {
-                    return (
-                      <li key={question.id}>
-                        <Link to="/">{question.title}</Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
+            if (
+              question.questions.filter((item) => {
+                return item.type == "cargo" || item.type == "all";
+              }).length
+            )
+              return (
+                <div
+                  className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
+                  key={question.id}
+                >
+                  <h4>{question.title}</h4>
+                  <ul>
+                    {question.questions
+                      .filter((item) => {
+                        return item.type == "cargo" || item.type == "all";
+                      })
+                      .map((question) => {
+                        return (
+                          <li key={question.id}>
+                            <Link to="/">{question.title}</Link>
+                          </li>
+                        );
+                      })}
+                  </ul>
+                </div>
+              );
           })}
         </div>
       </div>
