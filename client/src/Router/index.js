@@ -2,7 +2,8 @@
 import React from "react";
 import { withCookies } from "react-cookie";
 
-import SideNav from '../Partials/SideNav'
+import SideNav from "../Partials/SideNav";
+import Footer from "../Partials/Footer";
 
 // Router
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -17,10 +18,10 @@ import Reset from "../Pages/Auth/Reset";
 import About from "../Pages/Public/About";
 import Cargo from "../Pages/Public/Cargo";
 import Carrier from "../Pages/Public/Carrier";
-import Profile from '../Pages/User/Profile'
-import MyOrders from '../Pages/User/MyOrders'
-import Notifications from '../Pages/User/Notifications'
-import NotificationsSettings from '../Pages/User/NotificationsSettings'
+import Profile from "../Pages/User/Profile";
+import MyOrders from "../Pages/User/MyOrders";
+import Notifications from "../Pages/User/Notifications";
+import NotificationsSettings from "../Pages/User/NotificationsSettings";
 
 // Redux
 import { connect } from "react-redux";
@@ -29,8 +30,8 @@ import { bindActionCreators } from "redux";
 
 class AppRouter extends React.Component {
   state = {
-    isRender: false
-  }
+    isRender: false,
+  };
 
   componentDidMount() {
     const { cookies } = this.props;
@@ -48,62 +49,64 @@ class AppRouter extends React.Component {
         .then((response) => response.json())
         .then((user) => {
           this.props.userActions.loginUser(user);
-          this.setState({isRender: true})
+          this.setState({ isRender: true });
         });
     } else {
-      this.setState({isRender: true})
+      this.setState({ isRender: true });
     }
   }
 
   render() {
-    return this.state.isRender && (
-      <Switch>
-        {/* Auth routes */}
-        <this.AuthRoute exact path="/login">
-          <Login />
-        </this.AuthRoute>
-        <this.AuthRoute exact path="/register">
-          <Register />
-        </this.AuthRoute>
-        <this.AuthRoute exact path="/forgot">
-          <Forgot />
-        </this.AuthRoute>
-        <this.AuthRoute exact path="/reset/:token" component={Reset}/>
-        {/* Auth routes end */}
+    return (
+      this.state.isRender && (
+        <Switch>
+          {/* Auth routes */}
+          <this.AuthRoute exact path="/login">
+            <Login />
+          </this.AuthRoute>
+          <this.AuthRoute exact path="/register">
+            <Register />
+          </this.AuthRoute>
+          <this.AuthRoute exact path="/forgot">
+            <Forgot />
+          </this.AuthRoute>
+          <this.AuthRoute exact path="/reset/:token" component={Reset} />
+          {/* Auth routes end */}
 
-        {/* Public routes */}
-        <Route exact path="/">
-          <Main />
-        </Route>
-        <Route exact path="/faq">
-          <FAQ />
-        </Route>
-        <Route exact path="/about">
-          <About />
-        </Route>
-        <Route exact path="/cargo">
-          <Cargo />
-        </Route>
-        <Route exact path="/carrier">
-          <Carrier />
-        </Route>
-        {/* Public routes end */}
+          {/* Public routes */}
+          <this.PublicRoute exact path="/">
+            <Main />
+          </this.PublicRoute>
+          <this.PublicRoute exact path="/faq">
+            <FAQ />
+          </this.PublicRoute>
+          <this.PublicRoute exact path="/about">
+            <About />
+          </this.PublicRoute>
+          <this.PublicRoute exact path="/cargo">
+            <Cargo />
+          </this.PublicRoute>
+          <this.PublicRoute exact path="/carrier">
+            <Carrier />
+          </this.PublicRoute>
+          {/* Public routes end */}
 
-        {/* Private routes */}
-        <this.PrivateRoute exact path="/profile">
-          <Profile />
-        </this.PrivateRoute>
-        <this.PrivateRoute exact path="/notifications">
-          <Notifications />
-        </this.PrivateRoute>
-        <this.PrivateRoute exact path="/notifications-settings">
-          <NotificationsSettings />
-        </this.PrivateRoute>
-        <this.PrivateRoute exact path="/my-orders">
-          <MyOrders />
-        </this.PrivateRoute>
-        {/* Private routes end */}
-      </Switch>
+          {/* Private routes */}
+          <this.PrivateRoute exact path="/profile">
+            <Profile />
+          </this.PrivateRoute>
+          <this.PrivateRoute exact path="/notifications">
+            <Notifications />
+          </this.PrivateRoute>
+          <this.PrivateRoute exact path="/notifications-settings">
+            <NotificationsSettings />
+          </this.PrivateRoute>
+          <this.PrivateRoute exact path="/my-orders">
+            <MyOrders />
+          </this.PrivateRoute>
+          {/* Private routes end */}
+        </Switch>
+      )
     );
   }
 
@@ -113,12 +116,17 @@ class AppRouter extends React.Component {
         {...rest}
         render={() =>
           this.props.user.isAuth ? (
-            <div className="lk-page row">
-              <SideNav />
-              <div className="col">
-                {children}
+            <>
+              <div className="row mx-0">
+                <SideNav />
+                <div className="content px-0 col">
+                  <div className="lk-page  row">
+                    <div className="col">{children}</div>
+                  </div>
+                  <Footer />
+                </div>
               </div>
-            </div>
+            </>
           ) : (
             <Redirect
               to={{
@@ -137,7 +145,10 @@ class AppRouter extends React.Component {
         {...rest}
         render={() =>
           !this.props.user.isAuth ? (
-            children
+            <>
+              {children}
+              <Footer />
+            </>
           ) : (
             <Redirect
               to={{
@@ -146,6 +157,19 @@ class AppRouter extends React.Component {
             />
           )
         }
+      />
+    );
+  };
+  PublicRoute = ({ children, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={() => (
+          <>
+            {children}
+            <Footer />
+          </>
+        )}
       />
     );
   };

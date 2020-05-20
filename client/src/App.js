@@ -31,7 +31,6 @@ class App extends React.Component {
               <ToastContainer />
               <Header />
               <AppRouter />
-              <Footer />
             </Router>
           </YMaps>
         </Provider>

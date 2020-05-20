@@ -22,7 +22,7 @@ class FAQ extends React.Component {
           <div className="col">
             <Input
               type="text"
-              placeholder="Напишите ваш вопрос..."
+              placeholder="Что ищем?"
               value={this.state.q}
               onChange={(e) => {
                 this.setState({ q: e.target.value });

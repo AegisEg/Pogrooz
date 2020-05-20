@@ -134,7 +134,7 @@ class Article extends React.Component {
                 </div>
                 <div className="col-md-3">
                   <span>
-                    Рейтинг:
+                    Рейтинг: &nbsp;
                     <span className="d-inline-block">
                       {this.props.article.rating}
                       <img src={ImgActiveStar} alt="ImgActiveStar" />

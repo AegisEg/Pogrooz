@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { withCookies } from "react-cookie";
 //IMG
 import logo from "../logo.svg";
-import minilogo from "../img/minilogo.png";
+import minilogo from "../img/logoMobile.svg";
 import profile from "../img/profile.png";
 import myOrders from "../img/my-orders.png";
 import add from "../img/add.png";
@@ -53,14 +53,19 @@ const customStyles = {
 class Header extends React.Component {
   constructor() {
     super();
-
     this.showProfileMenu = this.showProfileMenu.bind(this);
     this.hideProfileMenu = this.hideProfileMenu.bind(this);
+    this.showNotificationsPop = this.showNotificationsPop.bind(this);
+    this.hideNotificationsPop = this.hideNotificationsPop.bind(this);
+    this.showMessagesPop = this.showMessagesPop.bind(this);
+    this.hideMessagesPop = this.hideMessagesPop.bind(this);
   }
 
   state = {
     showModal: false,
     showProfileMenu: false,
+    showNotificationsPop: false,
+    showMessagesPop: false,
     menu: [
       {
         id: 1,
@@ -116,6 +121,24 @@ class Header extends React.Component {
   hideProfileMenu() {
     this.setState({ showProfileMenu: false });
     document.removeEventListener("click", this.hideProfileMenu);
+  }
+  showNotificationsPop() {
+    this.setState({ showNotificationsPop: true });
+    document.addEventListener("click", this.hideNotificationsPop);
+  }
+
+  hideNotificationsPop() {
+    this.setState({ showNotificationsPop: false });
+    document.removeEventListener("click", this.hideNotificationsPop);
+  }
+  showMessagesPop() {
+    this.setState({ showMessagesPop: true });
+    document.addEventListener("click", this.hideMessagesPop);
+  }
+
+  hideMessagesPop() {
+    this.setState({ showMessagesPop: false });
+    document.removeEventListener("click", this.hideMessagesPop);
   }
 
   logout() {
@@ -182,17 +205,49 @@ class Header extends React.Component {
 
           {this.props.user.isAuth && (
             <div className="header-fast-access">
-              <div className="fast-access-btn">
+              <div
+                className="fast-access-btn  notifications not-empty"
+                onClick={() => {
+                  this.showNotificationsPop();
+                }}
+              >
                 <img src={notificationsFill} alt="Уведомления" />
                 <div className="action-counter">
                   <span>3</span>
                 </div>
+                {this.state.showNotificationsPop && (
+                  <div className="pop-block">
+                    <div className="pop-block-item">
+                      В личном кабинете произошли изменения
+                    </div>
+                    <div className="pop-block-item">
+                      В личном кабинете произошли изменения
+                    </div>
+                    <div className="pop-block-additionally">Скрыть</div>
+                  </div>
+                )}
               </div>
-              <div className="fast-access-btn">
+              <div
+                className="fast-access-btn messages not-empty"
+                onClick={() => {
+                  this.showMessagesPop();
+                }}
+              >
                 <img src={support} alt="Тех. Поддержка" />
                 <div className="action-counter">
                   <span>3</span>
                 </div>
+                {this.state.showMessagesPop && (
+                  <div className="pop-block">
+                    <div className="pop-block-item">
+                      В личном кабинете произошли изменения
+                    </div>
+                    <div className="pop-block-item">
+                      В личном кабинете произошли изменения
+                    </div>
+                    <div className="pop-block-additionally">Скрыть</div>
+                  </div>
+                )}
               </div>
             </div>
           )}

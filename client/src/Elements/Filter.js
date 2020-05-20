@@ -22,10 +22,14 @@ class Filter extends React.Component {
   };
   render() {
     return (
-      <div className={`filter ${this.props.className}`}>
+      <div
+        className={`filter ${this.state.show ? "background-gray" : ""} ${
+          this.props.className
+        }`}
+      >
         {this.state.show && (
           <Link to="/" className="f-14 mb-2 go-to-pro mr-4 d-inline d-lg-none">
-            Пенрейти в режим PRO
+            Перейти в режим PRO
           </Link>
         )}
         <div className="row filter-line">
@@ -80,6 +84,9 @@ class Filter extends React.Component {
                 }}
                 onMouseEnter={() => {
                   this.setState({ finterImg: filterHover });
+                }}
+                style={{
+                  cursor: "pointer",
                 }}
                 alt=""
                 width="26"
@@ -312,7 +319,7 @@ class Filter extends React.Component {
                 <span className="filter-input-title">
                   Желаемый<br></br>бюджет, руб
                 </span>
-                <Input type="number" placeholder="до 20 000" max="20000" />
+                <Input type="number" placeholder="0" max="20000" />
               </div>
             </>
           )}
@@ -333,7 +340,7 @@ class Filter extends React.Component {
                   </Button>
                 </Link>
                 <Link to="/" className="f-14 go-to-pro mr-4 d-none d-lg-inline">
-                  Пенрейти в режим PRO
+                  Перейти в режим PRO
                 </Link>
                 <Link
                   to={false}

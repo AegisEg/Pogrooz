@@ -1,5 +1,5 @@
 // App
-import React from 'react'
+import React from "react";
 
 // Images
 import profile from "../img/profile.png";
@@ -10,28 +10,104 @@ import messages from "../img/messages.png";
 import raiting from "../img/raiting.png";
 import gear from "../img/gear.png";
 import notifications from "../img/notifications.png";
+import sidebarOpen from "../img/sidebarOpen.png";
+import sidebarAngleOpen from "../img/sidebarAngleOpen.png";
 
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 class SideNav extends React.Component {
-    state = {
-        show: false
-    }
-
-    render() {
-        return (
-            <div className="side-nav">
-                <NavLink to="/my-orders" activeClassName="active"><div className='side-nav-item'><img src={myOrders} alt="Мои заказы" />Мои заказы</div></NavLink>
-                <NavLink to="/taken-orders" activeClassName="active"><div className='side-nav-item'><img src={acceptedOrders} alt="Взятые  предложения" />Взятые  предложения</div></NavLink>
-                <NavLink to="/geo-detect" activeClassName="active"><div className='side-nav-item'><img src={geoDetect} alt="Отслеживание" />Отслеживание</div></NavLink>
-                <NavLink to="/messages" activeClassName="active"><div className='side-nav-item'><img src={messages} alt="Сообщения" />Сообщения</div></NavLink>
-                <NavLink to="/reviews" activeClassName="active"><div className='side-nav-item'><img src={raiting} alt="Отзывы" />Отзывы</div></NavLink>
-                <NavLink to="/profile" activeClassName="active"><div className='side-nav-item'><img src={profile} alt="Профиль" />Профиль</div></NavLink>
-                <NavLink to="/notifications" activeClassName="active"><div className='side-nav-item'><img src={notifications} alt="Уведомления" />Уведомления</div></NavLink>
-                <NavLink to="/notifications-settings" activeClassName="active"><div className='side-nav-item'><img src={gear} alt="Настройки уведомлений" />Настройки уведомлений</div></NavLink>
-            </div>
-        )
-    }
+  state = {
+    isOpen: false,
+    height: "auto",
+  };
+  updateDimensions = () => {
+    let height = document.getElementsByClassName("content")[0].offsetHeight;
+    console.log(height);
+    if (window.innerWidth <= 1024)
+      this.setState({
+        height: height,
+      });
+    else this.setState({ height: "auto" });
+  };
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions);
+  }
+  render() {
+    return (
+      <div
+        className={`side-nav ${this.state.isOpen ? "open" : ""}`}
+        style={{
+          height: this.state.height,
+        }}
+      >
+        <NavLink to="/my-orders" activeClassName="active">
+          <div className="side-nav-item">
+            <img src={myOrders} alt="Мои заказы" />
+            <span>Мои заказы</span>
+          </div>
+        </NavLink>
+        <NavLink to="/taken-orders" activeClassName="active">
+          <div className="side-nav-item">
+            <img src={acceptedOrders} alt="Взятые  предложения" />
+            <span>Взятые предложения</span>
+          </div>
+        </NavLink>
+        <NavLink to="/geo-detect" activeClassName="active">
+          <div className="side-nav-item">
+            <img src={geoDetect} alt="Отслеживание" />
+            <span>Отслеживание</span>
+          </div>
+        </NavLink>
+        <NavLink to="/messages" activeClassName="active">
+          <div className="side-nav-item">
+            <img src={messages} alt="Сообщения" />
+            <span>Сообщения</span>
+          </div>
+        </NavLink>
+        <NavLink to="/reviews" activeClassName="active">
+          <div className="side-nav-item">
+            <img src={raiting} alt="Отзывы" />
+            <span>Отзывы</span>
+          </div>
+        </NavLink>
+        <NavLink to="/profile" activeClassName="active">
+          <div className="side-nav-item">
+            <img src={profile} alt="Профиль" />
+            <span>Профиль</span>
+          </div>
+        </NavLink>
+        <NavLink to="/notifications" activeClassName="active">
+          <div className="side-nav-item">
+            <img src={notifications} alt="Уведомления" />
+            <span>Уведомления</span>
+          </div>
+        </NavLink>
+        <NavLink to="/notifications-settings" activeClassName="active">
+          <div className="side-nav-item">
+            <img src={gear} alt="Настройки уведомлений" />
+            <span>Настройки уведомлений</span>
+          </div>
+        </NavLink>
+        <span
+          className="toogle-sideBar"
+          onClick={() => {
+            this.setState({ isOpen: !this.state.isOpen });
+          }}
+        >
+          <img src={sidebarOpen} alt="sidebarOpen" />
+          <img
+            src={sidebarAngleOpen}
+            className="angle"
+            alt="sidebarAngleOpen"
+          />
+        </span>
+      </div>
+    );
+  }
 }
 
-export default SideNav
+export default SideNav;
