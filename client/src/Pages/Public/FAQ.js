@@ -17,7 +17,6 @@ class FAQ extends React.Component {
     return (
       <div className="faq-page container-fluid">
         <h1 className="faq-title">Часто задаваемые вопросы</h1>
-
         <div className="row">
           <div className="col">
             <Input

@@ -41,7 +41,10 @@ class Forgot extends React.Component {
                 ? Math.round(data.time / 3600000) + " часов"
                 : Math.round(data.time / 60000) + " минут";
             toast.error(
-              "Сообщение со сбросом пароля уже отправлено на почту " + data.email + ". Следующее сообщение будет возможно отправить через " + time
+              "Сообщение со сбросом пароля уже отправлено на почту " +
+                data.email +
+                ". Следующее сообщение будет возможно отправить через " +
+                time
             );
           }
         }
@@ -52,7 +55,7 @@ class Forgot extends React.Component {
   render() {
     return (
       <div className="login-page">
-        <h1 className="login-title">Вход</h1>
+        <h1 className="login-title">Забыли пароль?</h1>
         <div className="login-form col-12 col-sm-9 col-md-6 col-lg-6 col-xl-3 mx-auto">
           <div className="row">
             <div className="col-12">
@@ -80,7 +83,7 @@ class Forgot extends React.Component {
                 fontSize={"17px"}
                 paddingHorizontal={"35px"}
               >
-                Войти
+                Отправить письмо на почту
               </Button>
             </div>
           </div>

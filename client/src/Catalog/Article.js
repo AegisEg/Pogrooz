@@ -52,11 +52,14 @@ class Article extends React.Component {
                     }}
                   >
                     {this.state.showMore && (
-                      <img
-                        className="w-100  moreinfo"
-                        src={this.props.article.carImg}
-                        alt=""
-                      />
+                      <div>
+                        <img
+                          className="w-100  moreinfo"
+                          src={this.props.article.carImg}
+                          style={{ height: "100%" }}
+                          alt=""
+                        />
+                      </div>
                     )}
                   </CSSTransitionGroup>
                 </div>

@@ -50,9 +50,9 @@ class MenuNav extends React.Component {
     menuWidth: 0,
   };
 
-  onResizeItem = this.onResizeItem.bind(this)
-  onResize = this.onResize.bind(this)
-  
+  onResizeItem = this.onResizeItem.bind(this);
+  onResize = this.onResize.bind(this);
+
   onResize(menuWidth) {
     this.setState({ menuWidth });
   }
@@ -61,8 +61,8 @@ class MenuNav extends React.Component {
     let menu = this.state.menu;
     for (let i = 0; i < menu.length; i++) {
       if (menu[i].id === id) {
-        menu[i].width = itemWidth
-        break
+        menu[i].width = itemWidth;
+        break;
       }
     }
 
@@ -70,8 +70,9 @@ class MenuNav extends React.Component {
   }
 
   render() {
-    let menu = this.state.menu, width = 61
-    
+    let menu = this.state.menu,
+      width = 61;
+
     for (let i = 0; i < menu.length; i++) {
       width += menu[i].width;
       if (width >= this.state.menuWidth) {
@@ -87,7 +88,10 @@ class MenuNav extends React.Component {
               return (
                 item.type === "menu" && (
                   <li key={item.id} style={{ opacity: item.width ? 1 : 0 }}>
-                    <NavLink to={item.href} activeClassName="active">
+                    <NavLink
+                      to={item.href}
+                      activeClassName="active"
+                    >
                       {item.name}
                     </NavLink>
                     <ReactResizeDetector

@@ -7,8 +7,7 @@ import Select from "../Elements/Select";
 
 import ImgActiveStar from "../img/active-star.png";
 import closePng from "../img/close.png";
-import filter from "../img/filter.png";
-import filterHover from "../img/filter-hover.png";
+import { ReactComponent as FilterImg } from "../img/filter.svg";
 import CheckBox from "./CheckBox";
 
 class Filter extends React.Component {
@@ -18,7 +17,6 @@ class Filter extends React.Component {
     volumeH: 0,
     volumeW: 0,
     volumeWh: 0,
-    finterImg: filter,
   };
   render() {
     return (
@@ -73,24 +71,11 @@ class Filter extends React.Component {
               </Button>
             </Link>
             {!this.state.show ? (
-              <img
-                src={this.state.finterImg}
-                className="ml-3"
+              <FilterImg
+                className="settingsSvg ml-3"
                 onClick={() => {
                   this.setState({ show: true });
                 }}
-                onMouseLeave={() => {
-                  this.setState({ finterImg: filter });
-                }}
-                onMouseEnter={() => {
-                  this.setState({ finterImg: filterHover });
-                }}
-                style={{
-                  cursor: "pointer",
-                }}
-                alt=""
-                width="26"
-                height="26"
               />
             ) : (
               ""

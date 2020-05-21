@@ -7,7 +7,6 @@ import ConfigSettings from "../../config/settings";
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
 import { Link } from "react-router-dom";
-import SideNav from "../../Partials/SideNav";
 
 // Redux
 import { connect } from "react-redux";

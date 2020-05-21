@@ -22,7 +22,6 @@ class SideNav extends React.Component {
   };
   updateDimensions = () => {
     let height = document.getElementsByClassName("content")[0].offsetHeight;
-    console.log(height);
     if (window.innerWidth <= 1024)
       this.setState({
         height: height,
@@ -35,6 +34,18 @@ class SideNav extends React.Component {
   componentDidMount() {
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions);
+  }
+  componentDidUpdate() {
+    console.log(
+      Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      )
+    );
   }
   render() {
     return (
