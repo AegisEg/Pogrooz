@@ -31,12 +31,16 @@ const colourStyles = {
   menu: (base) => ({
     ...base,
     zIndex: 9999,
+    overflow: "hidden",
     top: "83%",
     border: "1px solid #B9B9B9",
     borderTop: "none",
     boxShadow: "none",
     borderTopLeftRadius: "0",
     borderTopRightRadius: "0",
+  }),
+  menuList: (base) => ({
+    paddingBottom: 0,
   }),
   valueContainer: (base) => ({
     ...base,

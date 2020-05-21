@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../../Elements/Button";
+import Tarrifs from "../../Elements/Tarrifs";
 import Filter from "../../Elements/Filter";
 
 // Images
@@ -187,35 +188,47 @@ class Carrier extends React.Component {
             </div>
           </div>
         </div>
-        <div className="faq-questions row">
-          {questions.map((question) => {
-            if (
-              question.questions.filter((item) => {
-                return item.type == "carrier" || item.type == "all";
-              }).length
-            )
-              return (
-                <div
-                  className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
-                  key={question.id}
-                >
-                  <h4>{question.title}</h4>
-                  <ul>
-                    {question.questions
-                      .filter((item) => {
-                        return item.type == "carrier" || item.type == "all";
-                      })
-                      .map((question) => {
-                        return (
-                          <li key={question.id}>
-                            <Link to="/">{question.title}</Link>
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
-              );
-          })}
+        <div className="carrier-div tarrif-block">
+          <h3 className="font-weight-normal f-16 mb-4">Пакеты для оплаты</h3>
+          <Tarrifs />
+          <div className="f-12 mt-4">
+            *Расчет стоимости дня произведен из расчета 30 дней а месяц,
+            указывается в ознакомительных целях.
+          </div>
+        </div>
+        <div className="faq-questions">
+          
+        <hr />
+          <div className="row">
+            {questions.map((question) => {
+              if (
+                question.questions.filter((item) => {
+                  return item.type == "carrier" || item.type == "all";
+                }).length
+              )
+                return (
+                  <div
+                    className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
+                    key={question.id}
+                  >
+                    <h4>{question.title}</h4>
+                    <ul>
+                      {question.questions
+                        .filter((item) => {
+                          return item.type == "carrier" || item.type == "all";
+                        })
+                        .map((question) => {
+                          return (
+                            <li key={question.id}>
+                              <Link to="/">{question.title}</Link>
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                );
+            })}
+          </div>
         </div>
       </div>
     );

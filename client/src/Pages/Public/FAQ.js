@@ -17,12 +17,11 @@ class FAQ extends React.Component {
     return (
       <div className="faq-page container-fluid">
         <h1 className="faq-title">Часто задаваемые вопросы</h1>
-
         <div className="row">
           <div className="col">
             <Input
               type="text"
-              placeholder="Напишите ваш вопрос..."
+              placeholder="Что ищем?"
               value={this.state.q}
               onChange={(e) => {
                 this.setState({ q: e.target.value });

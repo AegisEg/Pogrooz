@@ -1,7 +1,7 @@
 // App
 import React from "react";
 
-import logo from "../img/footer_logo.png";
+import logo from "../img/footer_logo.svg";
 //Иконки соцсетей
 import vk from "../img/vk.png";
 import facebook from "../img/facebook.png";

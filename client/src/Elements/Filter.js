@@ -7,8 +7,7 @@ import Select from "../Elements/Select";
 
 import ImgActiveStar from "../img/active-star.png";
 import closePng from "../img/close.png";
-import filter from "../img/filter.png";
-import filterHover from "../img/filter-hover.png";
+import { ReactComponent as FilterImg } from "../img/filter.svg";
 import CheckBox from "./CheckBox";
 
 class Filter extends React.Component {
@@ -18,14 +17,17 @@ class Filter extends React.Component {
     volumeH: 0,
     volumeW: 0,
     volumeWh: 0,
-    finterImg: filter,
   };
   render() {
     return (
-      <div className={`filter ${this.props.className}`}>
+      <div
+        className={`filter ${this.state.show ? "background-gray" : ""} ${
+          this.props.className
+        }`}
+      >
         {this.state.show && (
           <Link to="/" className="f-14 mb-2 go-to-pro mr-4 d-inline d-lg-none">
-            Пенрейти в режим PRO
+            Перейти в режим PRO
           </Link>
         )}
         <div className="row filter-line">
@@ -69,21 +71,11 @@ class Filter extends React.Component {
               </Button>
             </Link>
             {!this.state.show ? (
-              <img
-                src={this.state.finterImg}
-                className="ml-3"
+              <FilterImg
+                className="settingsSvg ml-3"
                 onClick={() => {
                   this.setState({ show: true });
                 }}
-                onMouseLeave={() => {
-                  this.setState({ finterImg: filter });
-                }}
-                onMouseEnter={() => {
-                  this.setState({ finterImg: filterHover });
-                }}
-                alt=""
-                width="26"
-                height="26"
               />
             ) : (
               ""
@@ -312,7 +304,7 @@ class Filter extends React.Component {
                 <span className="filter-input-title">
                   Желаемый<br></br>бюджет, руб
                 </span>
-                <Input type="number" placeholder="до 20 000" max="20000" />
+                <Input type="number" placeholder="0" max="20000" />
               </div>
             </>
           )}
@@ -333,7 +325,7 @@ class Filter extends React.Component {
                   </Button>
                 </Link>
                 <Link to="/" className="f-14 go-to-pro mr-4 d-none d-lg-inline">
-                  Пенрейти в режим PRO
+                  Перейти в режим PRO
                 </Link>
                 <Link
                   to={false}

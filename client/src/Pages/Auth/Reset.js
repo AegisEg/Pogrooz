@@ -2,7 +2,7 @@
 import React from "react";
 import configApi from "../../config/api";
 import { toast } from "react-toastify";
-
+import { withRouter } from "react-router-dom";
 // Elements
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
@@ -34,7 +34,7 @@ class Reset extends React.Component {
       .then((data) => {
         if (data.error) {
           this.setState({ error: true, errors: data.errors });
-          if(data.errors[0].param === "all") {
+          if (data.errors[0].param === "all") {
             toast.error("Ссылка для сброса пароля устарела");
           }
         } else {
@@ -49,7 +49,7 @@ class Reset extends React.Component {
   render() {
     return (
       <div className="login-page">
-        <h1 className="login-title">Вход</h1>
+        <h1 className="login-title">Сброс пароля</h1>
         <div className="login-form col-12 col-sm-9 col-md-6 col-lg-6 col-xl-3 mx-auto">
           <div className="row">
             <div className="col-12">
@@ -62,7 +62,7 @@ class Reset extends React.Component {
                 onChange={(e) => {
                   this.setState({ password: e.target.value });
                 }}
-                style={{paddingRight: 50}}
+                style={{ paddingRight: 50 }}
                 placeholder="Новый пароль"
               />
             </div>
@@ -78,7 +78,7 @@ class Reset extends React.Component {
                 onChange={(e) => {
                   this.setState({ passwordConfirm: e.target.value });
                 }}
-                style={{paddingRight: 50}}
+                style={{ paddingRight: 50 }}
                 placeholder="Подтверждение пароля"
               />
             </div>
@@ -94,7 +94,7 @@ class Reset extends React.Component {
                 fontSize={"17px"}
                 paddingHorizontal={"35px"}
               >
-                Войти
+                Сбросить пароль
               </Button>
             </div>
           </div>
@@ -117,4 +117,4 @@ class Reset extends React.Component {
   }
 }
 
-export default Reset;
+export default withRouter(Reset);

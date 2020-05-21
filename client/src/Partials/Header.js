@@ -1,10 +1,10 @@
 // App
 import React from "react";
-import Modal from "react-modal";
+import FeedbackModal from "../Elements/FeedbackModal";
 import { withCookies } from "react-cookie";
 //IMG
 import logo from "../logo.svg";
-import minilogo from "../img/minilogo.png";
+import minilogo from "../img/logoMobile.svg";
 import profile from "../img/profile.png";
 import myOrders from "../img/my-orders.png";
 import add from "../img/add.png";
@@ -14,11 +14,10 @@ import notificationsFill from "../img/notifications-fill.png";
 import support from "../img/support.png";
 
 // Router
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../Elements/Button";
-import Input from "../Elements/Input";
 import MenuNav from "./MenuNav";
 import MobileMenu from "./MobileMenu";
 
@@ -29,83 +28,23 @@ import { bindActionCreators } from "redux";
 
 import ArrowDown from "../img/arrowDown.png";
 
-const customStyles = {
-  overlay: {
-    zIndex: 1001,
-  },
-  content: {
-    top: "0",
-    position: "absolute",
-    left: "0",
-    right: "0",
-    bottom: "0",
-    margin: "auto",
-    height: "265px",
-    background: "#FFFFFF",
-    border: "1px solid #DDDDDD",
-    boxSizing: "border-box",
-    boxShadow: "3px 2px 15px rgba(0, 0, 0, 0.13)",
-    borderRadius: "10px",
-    padding: "20px 30px 40px 30px",
-  },
-};
-
 class Header extends React.Component {
   constructor() {
     super();
-
     this.showProfileMenu = this.showProfileMenu.bind(this);
     this.hideProfileMenu = this.hideProfileMenu.bind(this);
+    this.showNotificationsPop = this.showNotificationsPop.bind(this);
+    this.hideNotificationsPop = this.hideNotificationsPop.bind(this);
+    this.showMessagesPop = this.showMessagesPop.bind(this);
+    this.hideMessagesPop = this.hideMessagesPop.bind(this);
   }
 
   state = {
     showModal: false,
+    showMobile: false,
     showProfileMenu: false,
-    menu: [
-      {
-        id: 1,
-        name: "Грузовладельцам",
-        href: "/cargo",
-        type: "menu",
-      },
-      {
-        id: 2,
-        name: "Перевозчикам",
-        href: "/carrier",
-      },
-      {
-        id: 3,
-        name: "FAQ",
-        href: "/faq",
-      },
-      {
-        id: 4,
-        name: "О портале",
-        href: "/about",
-      },
-      {
-        id: 5,
-        name: "Тарифы",
-        href: "/tariffs",
-      },
-      {
-        id: 6,
-        name: "Скачать приложение",
-        href: "/download-app",
-      },
-      {
-        id: 7,
-        name: "Вход",
-        href: "/login",
-        notIsAuth: true,
-      },
-      {
-        id: 8,
-        name: "Регистрация",
-        href: "/register",
-        notIsAuth: true,
-      },
-    ],
+    showNotificationsPop: false,
+    showMessagesPop: false,
   };
 
   showProfileMenu() {
@@ -117,6 +56,24 @@ class Header extends React.Component {
     this.setState({ showProfileMenu: false });
     document.removeEventListener("click", this.hideProfileMenu);
   }
+  showNotificationsPop() {
+    this.setState({ showNotificationsPop: true });
+    document.addEventListener("click", this.hideNotificationsPop);
+  }
+
+  hideNotificationsPop() {
+    this.setState({ showNotificationsPop: false });
+    document.removeEventListener("click", this.hideNotificationsPop);
+  }
+  showMessagesPop() {
+    this.setState({ showMessagesPop: true });
+    document.addEventListener("click", this.hideMessagesPop);
+  }
+
+  hideMessagesPop() {
+    this.setState({ showMessagesPop: false });
+    document.removeEventListener("click", this.hideMessagesPop);
+  }
 
   logout() {
     const { cookies } = this.props;
@@ -126,7 +83,6 @@ class Header extends React.Component {
   }
 
   render() {
-    let menu = this.state.menu;
     return (
       <header className="header container-fluid">
         <div className="header-content row">
@@ -182,17 +138,49 @@ class Header extends React.Component {
 
           {this.props.user.isAuth && (
             <div className="header-fast-access">
-              <div className="fast-access-btn">
+              <div
+                className="fast-access-btn  notifications not-empty"
+                onClick={() => {
+                  this.showNotificationsPop();
+                }}
+              >
                 <img src={notificationsFill} alt="Уведомления" />
                 <div className="action-counter">
                   <span>3</span>
                 </div>
+                {this.state.showNotificationsPop && (
+                  <div className="pop-block">
+                    <div className="pop-block-item">
+                      В личном кабинете произошли изменения
+                    </div>
+                    <div className="pop-block-item">
+                      В личном кабинете произошли изменения
+                    </div>
+                    <div className="pop-block-additionally">Скрыть</div>
+                  </div>
+                )}
               </div>
-              <div className="fast-access-btn">
+              <div
+                className="fast-access-btn messages not-empty"
+                onClick={() => {
+                  this.showMessagesPop();
+                }}
+              >
                 <img src={support} alt="Тех. Поддержка" />
                 <div className="action-counter">
                   <span>3</span>
                 </div>
+                {this.state.showMessagesPop && (
+                  <div className="pop-block">
+                    <div className="pop-block-item">
+                      В личном кабинете произошли изменения
+                    </div>
+                    <div className="pop-block-item">
+                      В личном кабинете произошли изменения
+                    </div>
+                    <div className="pop-block-additionally">Скрыть</div>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -285,58 +273,15 @@ class Header extends React.Component {
             </div>
           )}
           <div className="toogle-burger">
-            <MobileMenu>
-              {menu.map((item, i) => {
-                if (
-                  (item.notIsAuth && !this.props.user.isAuth) ||
-                  !item.notIsAuth
-                )
-                  return (
-                    <div key={item.id}>
-                      <NavLink
-                        to={item.href}
-                        key={item.id}
-                        activeClassName="active"
-                      >
-                        {item.name}
-                      </NavLink>
-                      {i + 1 !== menu.length && (
-                        <div className="seperator"></div>
-                      )}
-                    </div>
-                  );
-              })}
-            </MobileMenu>
+            <MobileMenu />
           </div>
         </div>
-        <Modal
+        <FeedbackModal
           isOpen={this.state.showModal}
           onRequestClose={() => {
             this.setState({ showModal: false });
           }}
-          className="col-10 col-md-6 col-lg-4 col-xl-3 col-md-6"
-          style={customStyles}
-        >
-          <h3 className="m-0 font-weight-normal text-center">
-            Заказать звонок
-          </h3>
-          <Input
-            type="phone"
-            className="my-2"
-            onChange={() => {}}
-            placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
-          />
-          <Input type="text" className="my-2" placeholder="Имя" />
-          <p className="text-right">
-            <Button
-              type="fill"
-              paddingVertical={"11px"}
-              paddingHorizontal={"25px"}
-            >
-              Отправить
-            </Button>
-          </p>
-        </Modal>
+        />
       </header>
     );
   }

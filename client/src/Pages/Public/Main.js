@@ -146,7 +146,7 @@ class Main extends React.Component {
             <Button
               type="empty"
               margin="auto 0 70px auto"
-              className="mx-auto bg-gray"
+              className="mx-auto bg-gray hover-underline"
               paddingVertical={"13px"}
               paddingHorizontal={"35px"}
             >

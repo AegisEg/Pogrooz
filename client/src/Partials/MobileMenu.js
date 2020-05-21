@@ -1,12 +1,61 @@
 // App
 import React from "react";
 import { slide as Menu } from "react-burger-menu";
-
+import { NavLink } from "react-router-dom";
+// Redux
+import { connect } from "react-redux";
+import * as userActions from "../redux/actions/user";
+import { bindActionCreators } from "redux";
+import { withCookies } from "react-cookie";
 import burger from "../img/burger.png";
-
+var menu = [
+  {
+    id: 1,
+    name: "Грузовладельцам",
+    href: "/cargo",
+    type: "menu",
+  },
+  {
+    id: 2,
+    name: "Перевозчикам",
+    href: "/carrier",
+  },
+  {
+    id: 3,
+    name: "FAQ",
+    href: "/faq",
+  },
+  {
+    id: 4,
+    name: "О портале",
+    href: "/about",
+  },
+  {
+    id: 5,
+    name: "Тарифы",
+    href: "/tariffs",
+  },
+  {
+    id: 6,
+    name: "Скачать приложение",
+    href: "/download-app",
+  },
+  {
+    id: 7,
+    name: "Вход",
+    href: "/login",
+    notIsAuth: true,
+  },
+  {
+    id: 8,
+    name: "Регистрация",
+    href: "/register",
+    notIsAuth: true,
+  },
+];
 var styles = {
   bmBurgerButton: {
-    position: 'relative'
+    position: "relative",
   },
   bmBurgerBars: {
     background: "#373a47",
@@ -48,15 +97,59 @@ var styles = {
   },
 };
 class MobileMenu extends React.Component {
+  state = {
+    showMobile: false,
+  };
+  handleStateChange(state) {
+    this.setState({ showMobile: state.isOpen });
+  }
   render() {
     return (
       <>
-        <Menu styles={styles} customBurgerIcon={<img src={burger} alt="Мобильное меню" />} right>
-          {this.props.children}
+        <Menu
+          styles={styles}
+          isOpen={this.state.showMobile}
+          onStateChange={(state) => this.handleStateChange(state)}
+          customBurgerIcon={<img src={burger} alt="Мобильное меню" />}
+          right
+        >
+          {menu.map((item, i) => {
+            if ((item.notIsAuth && !this.props.user.isAuth) || !item.notIsAuth)
+              return (
+                <div key={item.id}>
+                  <NavLink
+                    to={item.href}
+                    key={item.id}
+                    activeClassName="active"
+                    onClick={() => {
+                      this.setState({ showMobile: false });
+                    }}
+                  >
+                    {item.name}
+                  </NavLink>
+                  {i + 1 !== menu.length && <div className="seperator"></div>}
+                </div>
+              );
+          })}
         </Menu>
       </>
     );
   }
 }
 
-export default MobileMenu;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(userActions, dispatch),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withCookies(MobileMenu));

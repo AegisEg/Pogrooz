@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
 import { Link } from "react-router-dom";
-import SideNav from '../../Partials/SideNav'
 
 class Profile extends React.Component {
   state = {
