@@ -4,7 +4,7 @@ import appsImg from "../../img/application.png";
 class Application extends React.Component {
   render() {
     return (
-      <div className="application-page">
+      <div className="application-page standart-page">
         <h1>Страница в разработке</h1>
         <div className="application-div">
           <div className="row mx-0">

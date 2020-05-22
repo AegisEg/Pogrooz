@@ -22,7 +22,7 @@ import questions from "../../config/questions";
 class Carrier extends React.Component {
   render() {
     return (
-      <div className="carrier-page">
+      <div className="carrier-page standart-page">
         <h1>Перевозчикам</h1>
         <Filter />
         <div className="carrier-pros row">

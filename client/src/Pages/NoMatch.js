@@ -4,7 +4,7 @@ import NoMatchPng from "../img/NoMatch.png";
 class NoMatch extends React.Component {
   render() {
     return (
-      <div className="nomatch-page">
+      <div className="nomatch-page standart-page">
         <h1>Страница не найдена</h1>
         <div className="nomatch-div">
           <div className="row mx-0">

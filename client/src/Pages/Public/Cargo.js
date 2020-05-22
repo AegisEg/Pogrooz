@@ -21,7 +21,7 @@ import questions from "../../config/questions";
 class Cargo extends React.Component {
   render() {
     return (
-      <div className="cargo-page">
+      <div className="cargo-page standart-page">
         <h1>Владельцам груза</h1>
 
         <Filter />
