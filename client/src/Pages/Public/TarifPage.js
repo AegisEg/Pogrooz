@@ -11,8 +11,8 @@ class TarifPage extends React.Component {
       <div className="tarrifs-page standart-page container-fluid">
         <h1 className="px-0">Тарифы</h1>
         <div className="row">
-          <div className="col-7">
-            <Button type="empty" className="text-decode bg-gray f-14">
+          <div className="col-xl-9 col-lg-10 col-md-12">
+            <Button type="empty" className="text-decode w-100 bg-gray f-14">
               Для Грузовладельцев размещение заказов и заявок на предложения
               перевозчиков БЕСПЛАТНО.
             </Button>
@@ -60,11 +60,7 @@ class TarifPage extends React.Component {
             <div className="col-xl col-lg col-md col-sm-12 col-12 d-flex mt-3">
               <div className="f-12">
                 <b>Понедельная тарификация.</b> После оплаты тарифа профиль и
-                предложения перевозчика становятся доступны всем пользователям.
-                Полные условия читайте в разделе Тарифы&nbsp;
-                <Link to="/" className="href">
-                  Тарифы
-                </Link>
+                предложения перевозчика становятся доступны всем пользователям.                
               </div>
             </div>
           </div>

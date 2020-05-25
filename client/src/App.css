@@ -2528,12 +2528,24 @@ a.href span {
   margin-bottom: 45px;
   cursor: auto;
 }
+.tarrifs-list .slider-wrapper {
+  height: 250px;
+}
+@media (max-width: 576px) and (min-width: 400px) {
+  .col-post-sm-6 {
+    flex: 0 0 50%!important;
+    max-width: 50%;
+  }
+}
+.tarrifs-list .btn-block {
+  top: -20px;
+  right: 30px;
+}
 .tarrifs-page {
   padding-bottom: 150px !important;
 }
 /* LK ORDER-PAGE */
-.lk-order-page .articles-block
-{
+.lk-order-page .articles-block {
   margin-left: -15px;
   margin-right: -15px;
 }
