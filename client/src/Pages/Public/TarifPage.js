@@ -11,8 +11,8 @@ class TarifPage extends React.Component {
       <div className="tarrifs-page standart-page container-fluid">
         <h1 className="px-0">Тарифы</h1>
         <div className="row">
-          <div className="col-xl-9 col-lg-10 col-md-12">
-            <Button type="empty" className="text-decode w-100 bg-gray f-14">
+          <div className="px-3">
+            <Button type="empty" className="text-decode text-left bg-gray f-14">
               Для Грузовладельцев размещение заказов и заявок на предложения
               перевозчиков БЕСПЛАТНО.
             </Button>

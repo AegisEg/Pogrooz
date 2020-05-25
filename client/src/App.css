@@ -2527,6 +2527,7 @@ a.href span {
 .text-decode {
   margin-bottom: 45px;
   cursor: auto;
+  width: auto;
 }
 .tarrifs-list .slider-wrapper {
   height: 250px;
