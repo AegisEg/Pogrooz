@@ -9,6 +9,8 @@ import Forgot from "../Pages/Auth/Forgot";
 import Reset from "../Pages/Auth/Reset";
 import About from "../Pages/Public/About";
 import Cargo from "../Pages/Public/Cargo";
+import SearchPage from "../Pages/Public/SearchPage";
+import TarifPage from "../Pages/Public/TarifPage";
 import Application from "../Pages/Public/Application";
 import Carrier from "../Pages/Public/Carrier";
 import Profile from "../Pages/User/Profile";
@@ -78,6 +80,20 @@ const routes = [
     component: () => <Cargo />,
   },
   {
+    path: "/search",
+    exact: true,
+    type: "public",
+    title: "Поиск",
+    component: () => <SearchPage />,
+  },
+  {
+    path: "/tariffs",
+    exact: true,
+    type: "public",
+    title: "Тарифы",
+    component: () => <TarifPage />,
+  },
+  {
     path: "/download-app",
     exact: true,
     type: "public",
@@ -115,10 +131,51 @@ const routes = [
     component: () => <NotificationsSettings />,
   },
   {
-    path: "/my-orders",
+    path: "/my-orders-open",
     exact: true,
     type: "private",
-    title: "Мои заказы",
+    title: "Открытые заказы",
+    // role: "cargo",
+    component: () => <MyOrders />,
+  },
+  {
+    path: "/my-orders-working",
+    exact: true,
+    type: "private",
+    title: "Заказы в работе",
+    // role: "cargo",
+    component: () => <MyOrders />,
+  },
+  {
+    path: "/my-orders-completed",
+    exact: true,
+    type: "private",
+    title: "Закрытые заказы",
+    // role: "cargo",
+    component: () => <MyOrders />,
+  },
+  {
+    path: "/my-offers-open",
+    exact: true,
+    type: "private",
+    title: "Открытые предложения",
+    // role: "carrier",
+    component: () => <MyOrders />,
+  },
+  {
+    path: "/my-offers-working",
+    exact: true,
+    type: "private",
+    title: "Предложения в работе",
+    // role: "carrier",
+    component: () => <MyOrders />,
+  },
+  {
+    path: "/my-offers-completed",
+    exact: true,
+    type: "private",
+    title: "Закрытые предложения",
+    // role: "carrier",
     component: () => <MyOrders />,
   },
 ];

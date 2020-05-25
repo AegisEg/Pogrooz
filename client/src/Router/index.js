@@ -2,6 +2,8 @@
 import React from "react";
 import { withCookies } from "react-cookie";
 
+import Header from "../Partials/Header";
+
 import SideNav from "../Partials/SideNav";
 import Footer from "../Partials/Footer";
 
@@ -63,60 +65,64 @@ class AppRouter extends React.Component {
   render() {
     return (
       this.state.isRender && (
-        <Switch>
-          {routes.map((route, index) => {
-            switch (route.type) {
-              case "auth":
-                return (
-                  <this.AuthRoute
-                    key={index}
-                    path={route.path}
-                    exact={route.exact}
-                  >
-                    <route.component />
-                  </this.AuthRoute>
-                );
-              case "public":
-                return (
-                  <this.PublicRoute
-                    key={index}
-                    path={route.path}
-                    exact={route.exact}
-                  >
-                    <route.component />
-                  </this.PublicRoute>
-                );
-              case "private":
-                return (
-                  <this.PrivateRoute
-                    key={index}
-                    path={route.path}
-                    exact={route.exact}
-                  >
-                    <route.component />
-                  </this.PrivateRoute>
-                );
+        <>
+          <Header />
+          <Switch>
+            {routes.map((route, index) => {
+              switch (route.type) {
+                case "auth":
+                  return (
+                    <this.AuthRoute
+                      key={index}
+                      path={route.path}
+                      exact={route.exact}
+                    >
+                      <route.component />
+                    </this.AuthRoute>
+                  );
+                case "public":
+                  return (
+                    <this.PublicRoute
+                      key={index}
+                      path={route.path}
+                      exact={route.exact}
+                    >
+                      <route.component />
+                    </this.PublicRoute>
+                  );
+                case "private":
+                  return (
+                    <this.PrivateRoute
+                      key={index}
+                      path={route.path}
+                      role={route.role}
+                      exact={route.exact}
+                    >
+                      <route.component />
+                    </this.PrivateRoute>
+                  );
 
-              default:
-                return false;
-            }
-          })}
+                default:
+                  return false;
+              }
+            })}
 
-          <this.PublicRoute>
-            <NoMatch />
-          </this.PublicRoute>
-        </Switch>
+            <this.PublicRoute>
+              <NoMatch />
+            </this.PublicRoute>
+          </Switch>
+        </>
       )
     );
   }
 
-  PrivateRoute = ({ children, ...rest }) => {
+  PrivateRoute = ({ children, role, ...rest }) => {
     return (
       <Route
         {...rest}
         render={() =>
           this.props.user.isAuth ? (
-            <>
+            !role || this.props.user.type == role ? (
               <div className="row mx-0">
                 <SideNav />
                 <div className="content col">
@@ -126,7 +132,9 @@ class AppRouter extends React.Component {
                   <Footer />
                 </div>
               </div>
-            </>
+            ) : (
+              <NoMatch />
+            )
           ) : (
             <Redirect
               to={{

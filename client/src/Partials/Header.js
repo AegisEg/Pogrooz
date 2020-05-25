@@ -244,10 +244,12 @@ class Header extends React.Component {
                       Профиль
                     </div>
                   </Link>
-                  <div className="profile-menu-item">
-                    <img src={myOrders} alt="Мои заказы" />
-                    Мои заказы
-                  </div>
+                  <Link to="/my-orders-open">
+                    <div className="profile-menu-item">
+                      <img src={myOrders} alt="Мои заказы" />
+                      Мои заказы
+                    </div>
+                  </Link>
                   <div className="profile-menu-item">
                     <img src={add} alt="Добавить заказ" />
                     Добавить заказ

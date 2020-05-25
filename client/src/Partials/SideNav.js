@@ -1,10 +1,15 @@
 // App
 import React from "react";
+import { CSSTransitionGroup } from "react-transition-group";
+import { NavLink, withRouter } from "react-router-dom";
+import { withCookies } from "react-cookie";
 
 // Images
 import profile from "../img/profile.png";
 import myOrders from "../img/my-orders.png";
 import acceptedOrders from "../img/accepted-orders.png";
+import chatOrder from "../img/chat-order.png";
+import chatUser from "../img/chatUser.png";
 import geoDetect from "../img/geo-detect.png";
 import messages from "../img/messages.png";
 import raiting from "../img/raiting.png";
@@ -12,9 +17,167 @@ import gear from "../img/gear.png";
 import notifications from "../img/notifications.png";
 import sidebarOpen from "../img/sidebarOpen.png";
 import sidebarAngleOpen from "../img/sidebarAngleOpen.png";
+// Images END
 
-import { NavLink } from "react-router-dom";
+// Redux
+import { connect } from "react-redux";
+import * as userActions from "../redux/actions/user";
+import { bindActionCreators } from "redux";
 
+var menu = [
+  {
+    name: "Мои заказ",
+    icon: myOrders,
+    // role: "cargo",
+    childlist: [
+      {
+        name: "Открытые",
+        to: "/my-orders-open",
+        icon: chatOrder,
+      },
+      {
+        name: "В работе",
+        to: "/my-orders-working",
+        icon: chatUser,
+      },
+      {
+        name: "Завершенные",
+        to: "/my-orders-completed",
+        icon: chatUser,
+      },
+    ],
+  },
+  {
+    name: "Мои предложения",
+    icon: acceptedOrders,
+    // role: "carrier",
+    childlist: [
+      {
+        name: "Открытые",
+        to: "/my-offers-open",
+        icon: chatOrder,
+      },
+      {
+        name: "В работе",
+        to: "/my-offers-working",
+        icon: chatUser,
+      },
+      {
+        name: "Завершенные",
+        to: "/my-offers-completed",
+        icon: chatUser,
+      },
+    ],
+  },
+  {
+    name: "Отслеживание",
+    to: "/geo-detect",
+    icon: geoDetect,
+  },
+  {
+    name: "Сообщения",
+    to: "",
+    icon: messages,
+    childlist: [
+      {
+        name: "Сообщения по заказам, предложениям",
+        to: "/messages",
+        icon: chatOrder,
+      },
+      {
+        name: "Сообщения пользователей",
+        to: "/profile",
+        icon: chatUser,
+      },
+    ],
+  },
+  {
+    name: "Отзывы",
+    to: "/reviews",
+    icon: raiting,
+  },
+  {
+    name: "Профиль",
+    to: "/profile",
+    icon: profile,
+  },
+  {
+    name: "Уведомления",
+    to: "/notifications",
+    icon: notifications,
+  },
+  {
+    name: "Настройки уведомлений",
+    to: "/notifications-settings",
+    icon: gear,
+  },
+];
+
+class MenuItem1 extends React.Component {
+  state = {
+    isOpen: false,
+  };
+  componentDidMount() {
+    if (
+      this.props.childlist &&
+      this.props.childlist.length &&
+      this.props.childlist.find((item) => {
+        return item.to === this.props.match.path;
+      }) &&
+      !this.state.active
+    )
+      this.setState({ isOpen: true });
+  }
+  render() {
+    if (this.props.childlist && this.props.childlist.length) {
+      return (
+        <span className="parent-item">
+          <div
+            className={`side-nav-item label`}
+            onClick={() => {
+              this.setState({ isOpen: !this.state.isOpen });
+            }}
+          >
+            <img src={this.props.icon} alt="{this.props.name} " />
+            <span>{this.props.name} </span>
+          </div>
+          <CSSTransitionGroup
+            transitionName="height-animation-item"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+            style={{
+              display: "contents",
+            }}
+            className="children-list"
+          >
+            {this.state.isOpen &&
+              this.props.childlist.map((item, index) => {
+                return (
+                  <MenuItem
+                    key={index}
+                    to={item.to}
+                    icon={item.icon}
+                    className={item.className}
+                    name={item.name}
+                    childlist={item.childlist}
+                  />
+                );
+              })}
+          </CSSTransitionGroup>
+        </span>
+      );
+    } else
+      return (
+        <NavLink to={this.props.to} activeClassName="active">
+          <div className="side-nav-item">
+            <img src={this.props.icon} alt={this.props.name} />
+            <span>{this.props.name}</span>
+          </div>
+        </NavLink>
+      );
+  }
+}
+let MenuItem = withRouter(MenuItem1);
 class SideNav extends React.Component {
   state = {
     isOpen: false,
@@ -35,18 +198,6 @@ class SideNav extends React.Component {
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions);
   }
-  componentDidUpdate() {
-    console.log(
-      Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-        document.body.clientHeight,
-        document.documentElement.clientHeight
-      )
-    );
-  }
   render() {
     return (
       <div
@@ -55,54 +206,20 @@ class SideNav extends React.Component {
           height: this.state.height,
         }}
       >
-        <NavLink to="/my-orders" activeClassName="active">
-          <div className="side-nav-item">
-            <img src={myOrders} alt="Мои заказы" />
-            <span>Мои заказы</span>
-          </div>
-        </NavLink>
-        <NavLink to="/taken-orders" activeClassName="active">
-          <div className="side-nav-item">
-            <img src={acceptedOrders} alt="Взятые  предложения" />
-            <span>Взятые предложения</span>
-          </div>
-        </NavLink>
-        <NavLink to="/geo-detect" activeClassName="active">
-          <div className="side-nav-item">
-            <img src={geoDetect} alt="Отслеживание" />
-            <span>Отслеживание</span>
-          </div>
-        </NavLink>
-        <NavLink to="/messages" activeClassName="active">
-          <div className="side-nav-item">
-            <img src={messages} alt="Сообщения" />
-            <span>Сообщения</span>
-          </div>
-        </NavLink>
-        <NavLink to="/reviews" activeClassName="active">
-          <div className="side-nav-item">
-            <img src={raiting} alt="Отзывы" />
-            <span>Отзывы</span>
-          </div>
-        </NavLink>
-        <NavLink to="/profile" activeClassName="active">
-          <div className="side-nav-item">
-            <img src={profile} alt="Профиль" />
-            <span>Профиль</span>
-          </div>
-        </NavLink>
-        <NavLink to="/notifications" activeClassName="active">
-          <div className="side-nav-item">
-            <img src={notifications} alt="Уведомления" />
-            <span>Уведомления</span>
-          </div>
-        </NavLink>
-        <NavLink to="/notifications-settings" activeClassName="active">
-          <div className="side-nav-item">
-            <img src={gear} alt="Настройки уведомлений" />
-            <span>Настройки уведомлений</span>
-          </div>
-        </NavLink>
+        {menu.map((item, index) => {
+          if (!item.role || item.role == this.props.user.type)
+            return (
+              <MenuItem
+                key={index}
+                to={item.to}
+                icon={item.icon}
+                className={item.className}
+                name={item.name}
+                childlist={item.childlist}
+              />
+            );
+        })}
+
         <span
           className="toogle-sideBar"
           onClick={() => {
@@ -120,5 +237,19 @@ class SideNav extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
 
-export default SideNav;
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(userActions, dispatch),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withCookies(SideNav));

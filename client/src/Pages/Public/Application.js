@@ -4,8 +4,8 @@ import appsImg from "../../img/application.png";
 class Application extends React.Component {
   render() {
     return (
-      <div className="application-page">
-        <h1>Страница в разработке</h1>
+      <div className="application-page standart-page">
+        <h1>Скачать приложение</h1>
         <div className="application-div">
           <div className="row mx-0">
             <div className="col-12 d-block d-md-flex  align-items-end justify-content-center">

@@ -142,7 +142,7 @@ class Main extends React.Component {
         <Filter className="background-gray-768 filter-main" />
         <Articles />
         <div className="text-center">
-          <Link to="/" className="href">
+          <Link to="/search" className="href">
             <Button
               type="empty"
               margin="auto 0 70px auto"

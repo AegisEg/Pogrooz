@@ -11,8 +11,6 @@ import AppRouter from "./Router";
 import { BrowserRouter as Router } from "react-router-dom";
 
 // Partials
-import Header from "./Partials/Header";
-import Footer from "./Partials/Footer";
 import Modal from "react-modal";
 
 // Redux
@@ -28,8 +26,7 @@ class App extends React.Component {
         <Provider store={store}>
           <YMaps>
             <Router>
-              <ToastContainer />
-              <Header />
+              <ToastContainer />              
               <AppRouter />
             </Router>
           </YMaps>

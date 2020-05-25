@@ -3,7 +3,9 @@
   font-family: "Bahamas";
   src: url(./fonts/bahamas-pragmatica.otf);
 }
-
+.header-logo img {
+  margin-left: -10px;
+}
 body {
   font-family: Roboto;
   margin: 0;
@@ -30,6 +32,10 @@ a {
 .f-17 {
   font-size: 17px;
   line-height: 18px;
+}
+.f-18 {
+  font-size: 18px;
+  line-height: 19px;
 }
 .wrapper {
   display: grid;
@@ -1485,9 +1491,7 @@ a.mail {
     padding: 10px 15px;
     padding-top: 0;
   }
-  .cargo-page h1,
-  .carrier-page h1,
-  .application-page h1б .nomatch-page h1 {
+  .standart-page h1 {
     padding: 10px 15px !important;
   }
 }
@@ -1958,13 +1962,14 @@ a.href span {
 }
 /* Cargo end */
 /* carrier */
-.carrier-page {
+.carrier-page,
+.tarrifs-page,
+.nomatch-page,
+.search-page,
+.application-page {
   border-top: 1px solid #6c6c6c;
 }
-.carrier-page h1,
-.cargo-page h1,
-.application-page h1,
-.nomatch-page h1 {
+.standart-page h1 {
   font-size: 24px;
   color: #171717;
   font-weight: normal;
@@ -2156,14 +2161,24 @@ a.href span {
   }
 }
 .side-nav {
-  width: max-content;
+  width: 230px;
   background-color: #4f4f4f;
   padding: 0 !important;
+}
+.side-nav .parent-item .side-nav-item:not(.label) {
+  padding-left: 35px;
+}
+.side-nav .children-list a.active {
+  background-color: #282727;
+}
+.side-nav .children-list a {
+  background-color: #322f2f;
 }
 .side-nav-item {
   position: relative;
   width: 100%;
   padding: 15px 22px;
+  padding-right: 16px;
   font-size: 14px;
   line-height: 14px;
   cursor: pointer;
@@ -2171,10 +2186,12 @@ a.href span {
   z-index: 999;
   display: flex;
 }
-.side-nav a {
+.side-nav a,
+.side-nav span {
   color: #fff;
   display: block;
   transition: all 0.2s;
+  font-size: 12px;
 }
 .side-nav a:hover {
   background-color: #6c6c6c;
@@ -2184,6 +2201,8 @@ a.href span {
 }
 
 .side-nav-item img {
+  width: 16px;
+  height: 16px;
   display: inline-block;
   transition: all 0.2s;
   filter: invert(90%) sepia(32%) saturate(2%) hue-rotate(213deg)
@@ -2502,4 +2521,31 @@ a.href span {
 .nomatch-page h1 {
   margin-top: 17px;
   margin-bottom: 40px;
+}
+
+/*TARIFT PAGE */
+.text-decode {
+  margin-bottom: 45px;
+  cursor: auto;
+}
+.tarrifs-list .slider-wrapper {
+  height: 250px;
+}
+@media (max-width: 576px) and (min-width: 400px) {
+  .col-post-sm-6 {
+    flex: 0 0 50%!important;
+    max-width: 50%;
+  }
+}
+.tarrifs-list .btn-block {
+  top: -20px;
+  right: 30px;
+}
+.tarrifs-page {
+  padding-bottom: 150px !important;
+}
+/* LK ORDER-PAGE */
+.lk-order-page .articles-block {
+  margin-left: -15px;
+  margin-right: -15px;
 }
