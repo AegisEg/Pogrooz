@@ -73,14 +73,14 @@ class Notification extends React.Component {
       <div
         className={`notification-item ${
           this.props.notification.readble ? "" : "unreadble"
-        } row mx-0`}
+        } row d-block d-sm-flex mx-0`}
       >
         <div className="border-top"></div>
-        <div className>
+        <div className="">
           <div className="date">{this.props.notification.date}</div>
           <div className="time">{this.props.notification.time}</div>
         </div>
-        <div className="col text-notification">{text}</div>
+        <div className="col px-0 px-sm-3 text-notification">{text}</div>
         <div className="readble_col">
           {this.props.notification.readble ? (
             <span className="readble">

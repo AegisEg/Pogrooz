@@ -1,13 +1,12 @@
 // App
 import React from "react";
-
-// Article
-import Article from "./Article";
-import Pagination from "../Elements/Pagination";
+import configApi from "../../config/api";
+import { toast } from "react-toastify";
 // Elements
-import Button from "../Elements/Button";
+import Articles from "../../Catalog/Articles";
+import articlestest from "../../config/articlestest.js";
 
-class Articles extends React.Component {
+class ArticlePage extends React.Component {
   render() {
     return (
       <div className="articles-block">
@@ -43,15 +42,9 @@ class Articles extends React.Component {
             </div>
           </div>
         </div>
-        {this.props.articlesList.map((article, i) => {          
-            return <Article key={i} article={article} key={article.id} />;
-        })}
-        <div className="container-fluid">
-          <Pagination pageCount={10} perPage="1" />
-        </div>
       </div>
     );
   }
 }
 
-export default Articles;
+export default ArticlePage;

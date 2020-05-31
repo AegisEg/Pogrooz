@@ -77,7 +77,7 @@ class AppRouter extends React.Component {
                       path={route.path}
                       exact={route.exact}
                     >
-                      <route.component />
+                      <route.component title={route.title} />
                     </this.AuthRoute>
                   );
                 case "public":
@@ -87,7 +87,7 @@ class AppRouter extends React.Component {
                       path={route.path}
                       exact={route.exact}
                     >
-                      <route.component />
+                      <route.component title={route.title} />
                     </this.PublicRoute>
                   );
                 case "private":
@@ -98,7 +98,11 @@ class AppRouter extends React.Component {
                       role={route.role}
                       exact={route.exact}
                     >
-                      <route.component />
+                      <route.component
+                        title={route.title}
+                        statusArticle={route.statusArticle}
+                        typeArticle={route.typeArticle}
+                      />
                     </this.PrivateRoute>
                   );
 

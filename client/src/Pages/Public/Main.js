@@ -20,6 +20,7 @@ import Filter from "../../Elements/Filter";
 import Questions from "../../MainElements/Questions";
 import Cities from "../../MainElements/Cities";
 import Articles from "../../Catalog/Articles";
+import articlestest from "../../config/articlestest.js";
 
 class Main extends React.Component {
   state = {
@@ -140,7 +141,7 @@ class Main extends React.Component {
           </div>
         </div>
         <Filter className="background-gray-768 filter-main" />
-        <Articles />
+        <Articles articlesList={articlestest} />
         <div className="text-center">
           <Link to="/search" className="href">
             <Button

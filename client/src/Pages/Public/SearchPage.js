@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Button from "../../Elements/Button";
 import Filter from "../../Elements/Filter";
 import Articles from "../../Catalog/Articles";
+import articlestest from "../../config/articlestest.js";
 class SearchPage extends React.Component {
   state = {
     searchType: "offer",
@@ -37,7 +38,7 @@ class SearchPage extends React.Component {
           </div>
         </div>
         <Filter className="background-gray filter-main" />
-        <Articles />
+        <Articles articlesList={articlestest} />
         <div className="text-center">
           <Link to="/" className="href">
             <Button

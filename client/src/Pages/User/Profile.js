@@ -14,6 +14,7 @@ import CheckBox from "../../Elements/CheckBox";
 import Select from "../../Elements/Select";
 //IMGS
 import passport from "../../img/passport.png";
+import upload from "../../img/upload.svg";
 
 class Profile extends React.Component {
   state = {
@@ -25,10 +26,11 @@ class Profile extends React.Component {
     lastPassword: "",
     newPassword: "",
     confirmPassword: "",
+    isOOO: this.props.user.isOOO,
+    isIP: this.props.user.isIP,
   };
 
   render() {
-    console.log(ConfigSettings);
     return (
       <div className="profile-page">
         <h2 className="title">
@@ -36,10 +38,13 @@ class Profile extends React.Component {
           {this.props.user.type === "carrier" && "Перевозчик"})
         </h2>
 
-        <div className="row profile-input-fixed">
+        <div className="row d-block d-md-flex profile-input-fixed">
           <div className="col">
             <Input
               type="text"
+              style={{
+                marginBottom: 12,
+              }}
               placeholder="Имя *"
               value={this.state.firstName}
               onChange={(e) => {
@@ -50,6 +55,9 @@ class Profile extends React.Component {
           <div className="col">
             <Input
               type="text"
+              style={{
+                marginBottom: 12,
+              }}
               placeholder="Фамилия *"
               value={this.state.middleName}
               onChange={(e) => {
@@ -60,6 +68,9 @@ class Profile extends React.Component {
           <div className="col">
             <Input
               type="text"
+              style={{
+                marginBottom: 12,
+              }}
               placeholder="Отчество *"
               value={this.state.lastName}
               onChange={(e) => {
@@ -86,7 +97,9 @@ class Profile extends React.Component {
                   this.setState({ firstName: e.target.value });
                 }}
               />
-              <Button type="empty">Получить код</Button>
+              <Button type="empty" margin="0 0 12px 0">
+                Получить код
+              </Button>
             </span>
             <Input
               type="text"
@@ -128,7 +141,7 @@ class Profile extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6 adress-input">
+          <div className="col-12 col-md-6 col-lg-4 col-xl-6 adress-input">
             <h4 className="subtitle mb-1 pb-0">Адрес *</h4>
             <div className="row mx-0 align-items-center">
               <span className>Страна:</span>
@@ -157,9 +170,9 @@ class Profile extends React.Component {
             </div>
           </div>
 
-          <div className="col-md-3">
-            <h4 className="subtitle mb-1 pb-0">Безопасность</h4>
-            <div className="position-relative">
+          <div className="col-12 col-sm-6 col-md-7 col-lg-4 col-xl-3">
+            <h4 className="subtitle mb-1 pb-2">Безопасность</h4>
+            <div className="position-relative" style={{ maxWidth: "320px" }}>
               <Input
                 type="password"
                 placeholder="Старый пароль"
@@ -170,7 +183,7 @@ class Profile extends React.Component {
                 }}
               />
             </div>
-            <div className="position-relative">
+            <div className="position-relative" style={{ maxWidth: "320px" }}>
               <Input
                 type="password"
                 placeholder="Новый пароль"
@@ -181,7 +194,7 @@ class Profile extends React.Component {
                 }}
               />
             </div>
-            <div className="position-relative">
+            <div className="position-relative" style={{ maxWidth: "320px" }}>
               <Input
                 type="password"
                 placeholder="Подтверждение пароля"
@@ -197,95 +210,146 @@ class Profile extends React.Component {
             </div>
           </div>
 
-          <div className="col-md-3">
-            <h4 className="subtitle">Заключение договора</h4>
-            <div style={{ marginBottom: 8, lineHeight: "16px" }}>
+          <div className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <h4 className="subtitle pb-2">Заключение договора</h4>
+            <div
+              style={{ marginTop: "4px", marginBottom: 8, lineHeight: "16px" }}
+            >
               <CheckBox id="phyz" text="Физ лицо"></CheckBox>
             </div>
             <div style={{ marginBottom: 8, lineHeight: "16px" }}>
-              <CheckBox id="ooo" text="ООО"></CheckBox>
+              <CheckBox
+                id="ooo"
+                onChange={() => {
+                  this.setState({ isOOO: !this.state.isOOO });
+                }}
+                text="ООО"
+              ></CheckBox>
+              {this.state.isOOO && (
+                <Input
+                  type="text"
+                  placeholder="Введите ОГРН"
+                  className="d-block"
+                  style={{ marginTop: "8px", maxWidth: "320px" }}
+                  value={this.state.country}
+                  onChange={(e) => {
+                    this.setState({ firstName: e.target.value });
+                  }}
+                />
+              )}
             </div>
             <div style={{ marginBottom: 8, lineHeight: "16px" }}>
-              <CheckBox id="ip" text="ИП"></CheckBox>
+              <CheckBox
+                id="ip"
+                text="ИП"
+                onChange={() => {
+                  this.setState({ isIP: !this.state.isIP });
+                }}
+              ></CheckBox>
+              {this.state.isIP && (
+                <Input
+                  type="text"
+                  placeholder="Введите ИНН"
+                  className="d-block"
+                  style={{ marginTop: "8px", maxWidth: "320px" }}
+                  value={this.state.country}
+                  onChange={(e) => {
+                    this.setState({ firstName: e.target.value });
+                  }}
+                />
+              )}
             </div>
             <div style={{ marginBottom: 8, lineHeight: "16px" }}>
               <CheckBox id="single" text="Самозанятый"></CheckBox>
             </div>
           </div>
         </div>
-        <div className="row">
-          <h4 className=" col-12 subtitle py-0 mb-3 px-3">Паспорт</h4>
-          <div className="col-md-6">
-            <div>
-              <span
-                className="d-inline-block mr-2"
-                style={{
-                  width: "85px",
-                  lineHeight: "16px",
-                  verticalAlign: "top",
-                }}
-              >
-                Фото с паспортом в руках
-              </span>
-              <Input
-                type="text"
-                placeholder="Тут нужно уточнить"
-                style={{
-                  maxWidth: "156px",
-                }}
-                className="mr-2"
-                value={this.state.country}
-                onChange={(e) => {
-                  this.setState({ firstName: e.target.value });
-                }}
+        {this.props.user.type == "carrier" && (
+          <div className="row">
+            <h4 className=" col-12 subtitle py-0 mb-3 px-3">Паспорт</h4>
+            <div className="col-12 col-lg-6  mb-4">
+              <div className="d-block d-lg-flex">
+                <span
+                  className="d-block d-md-inline-block mr-2 foto-lable-passport"
+                  style={{
+                    lineHeight: "16px",
+                    marginBottom: "12px",
+                  }}
+                >
+                  Фото с паспортом в руках
+                </span>
+                <div>
+                  <Input
+                    type="text"
+                    placeholder="Выбрать"
+                    style={{
+                      maxWidth: "156px",
+                      marginBottom: "12px",
+                    }}
+                    className="mr-2"
+                    value={this.state.country}
+                    onChange={(e) => {
+                      this.setState({ firstName: e.target.value });
+                    }}
+                  />
+                  <Button
+                    type="fill"
+                    paddingVertical={"13px"}
+                    className="mr-2 f-17"
+                    margin="0 0 12px 0"
+                    paddingHorizontal={"26px"}
+                  >
+                    <span className="d-none d-md-block">Загрузить</span>
+                    <img
+                      className="d-block d-md-none"
+                      style={{
+                        width: "20px",
+                      }}
+                      src={upload}
+                      alt=""
+                    />
+                  </Button>
+                  <span className="d-block">
+                    Возьмите паспорт в руки разверните парспорт и разместите
+                    так, чтобы он не закрывал Ваше лицо, но был четким и
+                    читабельным. Ваше лицо на этой фотографии оператор будет
+                    сравнивать с лоцом на аватаре.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="col-12 col-lg-6 row mx-0 mb-4 ">
+              <Link to="/" className="href">
+                <span
+                  className="d-inline-block f-14 text-center"
+                  style={{
+                    maxWidth: "65px",
+                    lineHeight: "16px",
+                    margin: 0,
+                    marginTop: "5px",
+                    marginRight: "10px",
+                  }}
+                >
+                  Открыть пример фото
+                </span>
+              </Link>
+              <img
+                className="defaultPassport mb-3"
+                src={ConfigSettings.defaultPassport}
+                alt="defaultPassport"
               />
-              <Button
-                type="fill"
-                paddingVertical={"13px"}
-                className="mr-2 f-17"
-                paddingHorizontal={"26px"}
-              >
-                Загрузить
-              </Button>
-            </div>
-            <span className="d-block" style={{ marginLeft: "90px" }}>
-              Возьмите паспорт в руки разверните парспорт и разместите так,
-              чтобы он не закрывал Ваше лицо, но был четким и читабельным. Ваше
-              лицо на этой фотографии оператор будет сравнивать с лоцом на
-              аватаре.
-            </span>
-          </div>
-          <div className="col-md-6 row mx-0 ">
-            <Link to="/" className="href">
-              <span
-                className="d-inline-block f-14 text-center"
-                style={{
-                  maxWidth: "65px",
-                  lineHeight: "16px",
-                  margin: 0,
-                  marginTop: "5px",
-                  marginRight: "10px",
-                }}
-              >
-                Открыть пример фото
-              </span>
-            </Link>
-            <img
-              className="defaultPassport"
-              src={ConfigSettings.defaultPassport}
-              alt="defaultPassport"
-            />
-            <div className="col status-passport">
-              <p className="left-angle left-angle-margin position-relative active">
-                Фото на провекре (первый статус)
-              </p>
-              <p className="">
-                <img src={passport} alt="" />
-                Паспорт загружен (после подтверждения админом)
-              </p>
+              <div className="col-12 mb-3 col-sm status-passport">
+                <p className="left-angle left-angle-margin position-relative active">
+                  Фото на провекре (первый статус)
+                </p>
+                <p className="d-flex align-items-center">
+                  <img src={passport} alt="" />
+                  Паспорт загружен (после подтверждения админом)
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="d-flex mt-2">
           <Button
             type="fill"
