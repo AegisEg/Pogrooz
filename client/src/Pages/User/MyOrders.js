@@ -10,9 +10,6 @@ class MyOrders extends React.Component {
   state = {
     currentStatus: "all",
   };
-  componentDidMount() {
-    setForceTitle(this.props.title);
-  }
   renderTabs() {
     return (
       <div className="tab_groups">

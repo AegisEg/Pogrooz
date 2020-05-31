@@ -3,3 +3,6 @@ export function setForceTitle(title) {
   pageTitle = "Pogrooz | " + title;
   document.title = pageTitle ? pageTitle : "Pogrooz";
 }
+// componentDidMount() {
+//   setForceTitle(this.props.title);
+// }
