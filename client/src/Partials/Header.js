@@ -2,6 +2,7 @@
 import React from "react";
 import FeedbackModal from "../Elements/FeedbackModal";
 import { withCookies } from "react-cookie";
+import { withRouter } from "react-router-dom";
 //IMG
 import logo from "../logo.svg";
 import minilogo from "../img/logoMobile.svg";
@@ -12,6 +13,7 @@ import acceptedOrders from "../img/accepted-orders.png";
 import geoDetect from "../img/geo-detect.png";
 import notificationsFill from "../img/notifications-fill.png";
 import support from "../img/support.png";
+import ImgActiveStar from "../img/active-star.png";
 
 // Router
 import { Link } from "react-router-dom";
@@ -37,6 +39,8 @@ class Header extends React.Component {
     this.hideNotificationsPop = this.hideNotificationsPop.bind(this);
     this.showMessagesPop = this.showMessagesPop.bind(this);
     this.hideMessagesPop = this.hideMessagesPop.bind(this);
+    this.showTarrifPop = this.showTarrifPop.bind(this);
+    this.hideTarrifPop = this.hideTarrifPop.bind(this);
   }
 
   state = {
@@ -45,13 +49,21 @@ class Header extends React.Component {
     showProfileMenu: false,
     showNotificationsPop: false,
     showMessagesPop: false,
+    showTarrifPop: false,
   };
 
   showProfileMenu() {
     this.setState({ showProfileMenu: true });
     document.addEventListener("click", this.hideProfileMenu);
   }
-
+  showTarrifPop() {
+    this.setState({ showTarrifPop: true });
+    document.addEventListener("click", this.hideTarrifPop);
+  }
+  hideTarrifPop() {
+    this.setState({ showTarrifPop: false });
+    document.removeEventListener("click", this.hideTarrifPop);
+  }
   hideProfileMenu() {
     this.setState({ showProfileMenu: false });
     document.removeEventListener("click", this.hideProfileMenu);
@@ -186,7 +198,7 @@ class Header extends React.Component {
           )}
 
           {this.props.user.isAuth && (
-            <div className="header-additionals">
+            <div className="header-additionals d-md-block d-none">
               <Link to="/register" className="register">
                 <Button
                   type="fill"
@@ -217,6 +229,20 @@ class Header extends React.Component {
                   Физ лицо
                 </p>
                 <p style={{ margin: 0, fontSize: 12, lineHeight: "15px" }}>
+                  <span
+                    className="mr-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      this.props.history.push("/reviews");
+                    }}
+                  >
+                    <span>4,6</span>
+                    <img
+                      style={{ verticalAlign: "sub" }}
+                      src={ImgActiveStar}
+                      alt="ImgActiveStar"
+                    />
+                  </span>
                   {this.props.user.type === "cargo" && "Грузовладелец"}
                   {this.props.user.type === "carrier" && "Перевозчик"}
                 </p>
@@ -235,7 +261,6 @@ class Header extends React.Component {
                   }}
                 />
               </div>
-
               {this.state.showProfileMenu && (
                 <div className="profile-menu">
                   <Link to="/profile">
@@ -274,6 +299,25 @@ class Header extends React.Component {
               )}
             </div>
           )}
+          {this.props.user.isAuth && (
+            <div
+              style={{ cursor: "pointer", width: "75px", marginRight: "5px" }}
+              className="header-profile tarrif-pop text-center f-12"
+              onClick={() => {
+                this.showTarrifPop();
+              }}
+            >
+              <span>Тариф ДЕМО активен до 20.12.2025</span>
+              {this.state.showTarrifPop && (
+                <div className="pop-block">
+                  <div className="pop-block-item">
+                    Тариф оплачен и в полном порядке
+                  </div>
+                  <div className="pop-block-additionally">Скрыть</div>
+                </div>
+              )}
+            </div>
+          )}
           <div className="toogle-burger">
             <MobileMenu />
           </div>
@@ -304,4 +348,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withCookies(Header));
+)(withRouter(withCookies(Header)));

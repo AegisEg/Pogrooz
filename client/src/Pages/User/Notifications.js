@@ -67,9 +67,9 @@ class Notifications extends React.Component {
     return (
       <div>
         <h2 className="title">Уведомления</h2>
-        <div className="notification_groups">
+        <div className="tab_groups">
           <span
-            className={`notification_group ${
+            className={`tab_group ${
               this.state.typeNotification == "all" ? "active" : ""
             }`}
             onClick={() => {
@@ -79,7 +79,7 @@ class Notifications extends React.Component {
             Все
           </span>
           <span
-            className={`notification_group ${
+            className={`tab_group ${
               this.state.typeNotification == "order" ? "active" : ""
             }`}
             onClick={() => {
@@ -89,7 +89,7 @@ class Notifications extends React.Component {
             По заказам
           </span>
           <span
-            className={`notification_group ${
+            className={`tab_group ${
               this.state.typeNotification == "offer" ? "active" : ""
             }`}
             onClick={() => {
@@ -99,7 +99,7 @@ class Notifications extends React.Component {
             По предложениям
           </span>
           <span
-            className={`notification_group ${
+            className={`tab_group ${
               this.state.typeNotification == "system" ? "active" : ""
             }`}
             onClick={() => {
@@ -109,7 +109,7 @@ class Notifications extends React.Component {
             Системные
           </span>
           <span
-            className={`notification_group ${
+            className={`tab_group ${
               this.state.typeNotification == "tarif" ? "active" : ""
             }`}
             onClick={() => {

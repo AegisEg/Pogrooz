@@ -120,7 +120,7 @@ class NotificationsSettings extends React.Component {
       <div>
         <h2 className="title">Настроить уведомления</h2>
         <div className="row">
-          <div className="col-6">
+          <div className="col-12 col-sm-12 col-md-6">
             <p className="setting-title">По предложениям</p>
             {settingsField.map((item, i) => {
               if (
@@ -137,7 +137,7 @@ class NotificationsSettings extends React.Component {
               }
             })}
           </div>
-          <div className="col-6">
+          <div className="col-12 col-sm-12 col-md-6">
             <p className="setting-title">По заказам</p>
             {settingsField.map((item, i) => {
               if (
@@ -156,7 +156,7 @@ class NotificationsSettings extends React.Component {
           </div>
         </div>
         <div className="row common-settings">
-          <div className="col-6">
+          <div className="col-12 col-sm-12 col-md-6">
             <p className="setting-title">Общие</p>
             {settingsField.map((item, i) => {
               if (
@@ -173,7 +173,7 @@ class NotificationsSettings extends React.Component {
               }
             })}
           </div>
-          <div className="col-6">
+          <div className="col-12 col-sm-12 col-md-6">
             <p className="setting-title"></p>
             {settingsField.map((item, i) => {
               if (

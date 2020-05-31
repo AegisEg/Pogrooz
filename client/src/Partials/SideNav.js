@@ -45,6 +45,11 @@ var menu = [
         to: "/my-orders-completed",
         icon: chatUser,
       },
+      {
+        name: "Корзина",
+        to: "/my-orders-deleted",
+        icon: chatUser,
+      },
     ],
   },
   {
@@ -67,7 +72,22 @@ var menu = [
         to: "/my-offers-completed",
         icon: chatUser,
       },
+      {
+        name: "Корзина",
+        to: "/my-offers-deleted",
+        icon: chatUser,
+      },
     ],
+  },
+  {
+    name: "Взятые предложения",
+    to: "/taken-offers",
+    icon: acceptedOrders,
+  },
+  {
+    name: "Взятые заказы",
+    to: "/taken-orders",
+    icon: myOrders,
   },
   {
     name: "Отслеживание",
@@ -193,6 +213,10 @@ class SideNav extends React.Component {
   };
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
+  }
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions);
   }
   componentDidMount() {
     this.updateDimensions();
