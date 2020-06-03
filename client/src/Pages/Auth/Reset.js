@@ -100,13 +100,13 @@ class Reset extends React.Component {
           </div>
           <p className="text-center mb-0 f-12">Еще не зарегистрированы?</p>
           <p className="text-center my-0 pb-4 f-12">
-            Перейти{" "}
+            Перейти
             <Link to="/register" className="href">
               страницу регистрации
             </Link>
           </p>
           <p className="text-center my-0 pb-4 f-12">
-            Перейти{" "}
+            Перейти
             <Link to="/login" className="href">
               страницу входа
             </Link>

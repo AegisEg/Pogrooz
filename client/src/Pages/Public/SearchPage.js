@@ -17,7 +17,7 @@ class SearchPage extends React.Component {
         <div className="row mx-0 search-tabs background-gray tabs pb-lg-0 pb-xl-3 justify-content-center">
           <div
             className={`tab mx-3 text-uppercase ${
-              this.state.searchType == "offer" ? "active" : ""
+              this.state.searchType === "offer" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ searchType: "offer" });
@@ -27,13 +27,13 @@ class SearchPage extends React.Component {
           </div>
           <div
             className={`tab mx-3 text-uppercase ${
-              this.state.searchType == "order" ? "active" : ""
+              this.state.searchType === "order" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ searchType: "order" });
             }}
           >
-            Новые заказы{" "}
+            Новые заказы
             <span className="d-380 d-sm-inline-block">на перевозку</span>
           </div>
         </div>

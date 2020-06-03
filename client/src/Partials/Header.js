@@ -1,6 +1,6 @@
 // App
 import React from "react";
-import FeedbackModal from "../Elements/FeedbackModal";
+import FeedbackModal from "../Modal/FeedbackModal";
 import { withCookies } from "react-cookie";
 import { withRouter } from "react-router-dom";
 //IMG

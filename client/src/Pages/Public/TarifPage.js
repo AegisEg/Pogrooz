@@ -2,9 +2,8 @@
 import React from "react";
 
 // Router
-import { Link } from "react-router-dom";
 import Button from "../../Elements/Button";
-import Tarifs from "../../Elements/Tarrifs";
+import Tarifs from "../../Partials/Tarrifs";
 class TarifPage extends React.Component {
   render() {
     return (
@@ -24,7 +23,7 @@ class TarifPage extends React.Component {
             marginBottom: "15px",
           }}
         >
-          Тариф для подключения перевозчиков к порталу PoGrooz{" "}
+          Тариф для подключения перевозчиков к порталу PoGrooz
         </p>
         <p
           className="f-14"

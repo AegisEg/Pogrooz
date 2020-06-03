@@ -152,7 +152,7 @@ class Cargo extends React.Component {
           {questions.map((question) => {
             if (
               question.questions.filter((item) => {
-                return item.type == "cargo" || item.type == "all";
+                return item.type === "cargo" || item.type === "all";
               }).length
             )
               return (
@@ -164,7 +164,7 @@ class Cargo extends React.Component {
                   <ul>
                     {question.questions
                       .filter((item) => {
-                        return item.type == "cargo" || item.type == "all";
+                        return item.type === "cargo" || item.type === "all";
                       })
                       .map((question) => {
                         return (
@@ -176,6 +176,7 @@ class Cargo extends React.Component {
                   </ul>
                 </div>
               );
+            else return <></>;
           })}
         </div>
       </div>

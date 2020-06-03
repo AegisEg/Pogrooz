@@ -113,13 +113,13 @@ class MobileMenu extends React.Component {
           customBurgerIcon={<img src={burger} alt="Мобильное меню" />}
           right
         >
-          {menu.map((item, i) => {
+          {menu.map((item, index) => {
             if ((item.notIsAuth && !this.props.user.isAuth) || !item.notIsAuth)
               return (
-                <div key={item.id}>
+                <div key={index}>
                   <NavLink
                     to={item.href}
-                    key={item.id}
+                    key={index}
                     activeClassName="active"
                     onClick={() => {
                       this.setState({ showMobile: false });
@@ -127,9 +127,10 @@ class MobileMenu extends React.Component {
                   >
                     {item.name}
                   </NavLink>
-                  {i + 1 !== menu.length && <div className="seperator"></div>}
+                  {index + 1 !== menu.length && <div className="seperator"></div>}
                 </div>
               );
+            else return <></>;
           })}
         </Menu>
       </>

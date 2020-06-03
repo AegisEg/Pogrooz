@@ -11,7 +11,7 @@ class CheckBox extends React.Component {
           name={this.props.name}
           checked={this.props.value}
           className={`input-${this.props.type}`}
-          onChange={this.props.onChange}
+          onChange={this.props.onChange ? this.props.onChange : () => {}}
         />
         <label
           htmlFor={this.props.id}

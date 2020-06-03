@@ -1,8 +1,8 @@
 // App
 import React from "react";
-import Slider from "./Slider";
+import Slider from "../Elements/Slider";
 // Elements
-import Button from "./Button";
+import Button from "../Elements/Button";
 var tarrifs = [
   {
     name: "Тариф ДЕМО",

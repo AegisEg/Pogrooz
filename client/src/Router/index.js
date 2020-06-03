@@ -33,12 +33,10 @@ class AppRouter extends React.Component {
   state = {
     isRender: false,
   };
-  componentWillMount() {
+  componentDidMount() {
     this.props.history.listen(() => {
       setTitle(this.props.history.location.pathname, routes);
     });
-  }
-  componentDidMount() {
     setTitle(this.props.history.location.pathname, routes);
     const { cookies } = this.props;
     let apiToken = cookies.get("apiToken");
@@ -79,6 +77,16 @@ class AppRouter extends React.Component {
                     >
                       <route.component title={route.title} />
                     </this.AuthRoute>
+                  );
+                case "common":
+                  return (
+                    <this.CommonRoute
+                      key={index}
+                      path={route.path}
+                      exact={route.exact}
+                    >
+                      <route.component title={route.title} />
+                    </this.CommonRoute>
                   );
                 case "public":
                   return (
@@ -126,13 +134,11 @@ class AppRouter extends React.Component {
         {...rest}
         render={() =>
           this.props.user.isAuth ? (
-            !role || this.props.user.type == role ? (
+            !role || this.props.user.type === role ? (
               <div className="row mx-0">
                 <SideNav />
                 <div className="content col">
-                  <div className="lk-page  row">
-                    <div className="col">{children}</div>
-                  </div>
+                  <div className="lk-page">{children}</div>
                   <Footer />
                 </div>
               </div>
@@ -182,6 +188,29 @@ class AppRouter extends React.Component {
             <Footer />
           </>
         )}
+      />
+    );
+  };
+  CommonRoute = ({ children, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={() =>
+          this.props.user.isAuth ? (
+            <div className="row mx-0">
+              <SideNav />
+              <div className="content col">
+                <div className="lk-page">{children}</div>
+                <Footer />
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="page-common">{children}</div>
+              <Footer />
+            </>
+          )
+        }
       />
     );
   };

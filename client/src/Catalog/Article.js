@@ -4,6 +4,10 @@ import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
 import ReviewsForm from "../Elements/ReviewsForm.js";
 import CheckBox from "../Elements/CheckBox.js";
+import Fancybox from "../Elements/Fancybox.js";
+import { withRouter } from "react-router-dom";
+import RequestModal from "../Modal/RequestModal.js";
+//IMGS
 import ImgActiveStar from "../img/active-star.png";
 import ArrowDown from "../img/arrowDown.png";
 import payIco from "../img/pay-ico.png";
@@ -28,14 +32,16 @@ class Article extends React.Component {
     showMore: false,
     onMobile: false,
     isOpenPopReviews: false,
+    dataFancybox: false,
+    isOpenModalRequest: false,
   };
   renderInput = () => {
-    if (this.props.article.user.id == this.props.user.id)
+    if (this.props.article.user.id === this.props.user.id)
       return (
         <>
           {/* Если статус черновик */}
-          {this.props.article.status == 1 && (
-            <div className="row row-input-controls mt-4">
+          {this.props.article.status === 1 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="px-3 d-flex">
                 <span className="d-flex align-items-center">
                   <img
@@ -49,7 +55,7 @@ class Article extends React.Component {
                   <div className="f-12">Черновик</div>
                 </span>
               </div>
-              <div className="col-12 col-md row row-input-controls justify-content-end">
+              <div className="col-12 col-md row mx-0  px-0  row-input-controls">
                 <Button type="empty" className="input-action mx-3">
                   Удалить
                 </Button>
@@ -63,15 +69,15 @@ class Article extends React.Component {
             </div>
           )}
           {/* Если статус Опубликовано */}
-          {this.props.article.status == 2 && (
-            <div className="row  row-input-controls mt-4">
+          {this.props.article.status === 2 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="px-3">
                 <span className="d-flex align-items-center">
                   <img src={yellowAngle} className="mr-2" alt="" />
                   <div className="f-12">Опубликован</div>
                 </span>
               </div>
-              <div className="col-12 col-md row row-input-controls justify-content-end">
+              <div className="col-12 col-md row mx-0  px-0  row-input-controls">
                 <Button type="empty" className="input-action mx-3">
                   Удалить
                 </Button>
@@ -84,8 +90,8 @@ class Article extends React.Component {
               </div>
             </div>
           )}
-          {this.props.article.type == 0 && this.props.article.status == 3 && (
-            <div className="row row-input-controls mt-4">
+          {this.props.article.type === 0 && this.props.article.status === 3 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="px-3 d-flex">
                 <span className="d-flex align-items-center">
                   <img src={profileOk} className="mr-2" alt="" />
@@ -96,7 +102,7 @@ class Article extends React.Component {
                   </div>
                 </span>
               </div>
-              <div className="col-12 col-md row row-input-controls justify-content-end">
+              <div className="col-12 col-md row mx-0  px-0  row-input-controls">
                 <Button type="empty" className="input-action mx-3">
                   Отказаться от исполнителя
                 </Button>
@@ -109,15 +115,15 @@ class Article extends React.Component {
               </div>
             </div>
           )}
-          {this.props.article.type == 0 && this.props.article.status == 4 && (
-            <div className="row row-input-controls mt-4">
+          {this.props.article.type === 0 && this.props.article.status === 4 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="d-flex px-3 ">
                 <span className="d-flex align-items-center">
                   <img src={geolocation} className="mr-2" alt="" />
                   <div className="f-12">В пути</div>
                 </span>
               </div>
-              <div className="col-12 col-md row row-input-controls buttons">
+              <div className="col-12 col-sm row row-input-controls mx-0 buttons">
                 <Button type="empty" className="input-action mx-3">
                   Завершить
                 </Button>
@@ -133,8 +139,8 @@ class Article extends React.Component {
               </div>
             </div>
           )}
-          {this.props.article.type == 1 && this.props.article.status == 3 && (
-            <div className="row row-input-controls mt-4">
+          {this.props.article.type === 1 && this.props.article.status === 3 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="px-3 d-flex">
                 <span className="d-flex align-items-center">
                   <img src={profileOk} className="mr-2" alt="" />
@@ -153,7 +159,7 @@ class Article extends React.Component {
                   </div>
                 </span>
               </div>
-              <div className="col-12 col-md row row-input-controls justify-content-end">
+              <div className="col-12 col-md row mx-0 px-0 row-input-controls">
                 <Button type="empty" className="input-action mx-3">
                   Отказаться от грузовладельца
                 </Button>
@@ -183,15 +189,15 @@ class Article extends React.Component {
               </div>
             </div>
           )}
-          {this.props.article.type == 1 && this.props.article.status == 4 && (
-            <div className="row row-input-controls mt-4">
+          {this.props.article.type === 1 && this.props.article.status === 4 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="d-flex px-3 ">
                 <span className="d-flex align-items-center">
                   <img src={geolocation} className="mr-2" alt="" />
                   <div className="f-12">В пути</div>
                 </span>
               </div>
-              <div className="col-12 col-md row row-input-controls buttons">
+              <div className="col-12 col-sm row row-input-controls mx-0 buttons">
                 <Button type="empty" className="input-action mx-3">
                   Завершить
                 </Button>
@@ -201,8 +207,8 @@ class Article extends React.Component {
               </div>
             </div>
           )}
-          {this.props.article.status == 5 && (
-            <div className="row row-input-controls mt-4">
+          {this.props.article.status === 5 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="d-flex px-3 ">
                 <span
                   className="left-angle left-angle-margin position-relative"
@@ -211,7 +217,7 @@ class Article extends React.Component {
                   <div className="d-inline-block f-12">Выполнен</div>
                 </span>
               </div>
-              <div className="col-12 col-md row row-input-controls buttons">
+              <div className="col-12 col-sm row row-input-controls mx-0 buttons">
                 <span className="d-flex align-items-center mx-3 input-action pop-wrapper position-relative">
                   <img src={reviews} alt="reviews" />
                   <div className="ml-2">Смотреть отзыв</div>
@@ -263,15 +269,15 @@ class Article extends React.Component {
               </div>
             </div>
           )}
-          {this.props.article.status == 6 && (
-            <div className="row row-input-controls mt-4">
+          {this.props.article.status === 6 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="d-flex px-3 ">
                 <span className="d-flex align-items-center">
                   <img src={otmena} alt="otmena" />
                   <div className="ml-2 d-inline-block f-12">Отменен</div>
                 </span>
               </div>
-              <div className="col-12 col-md row row-input-controls buttons">
+              <div className="col-12 col-sm row row-input-controls mx-0 buttons">
                 <span className="d-flex align-items-center mx-3 input-action pop-wrapper">
                   <img src={reviews} alt="reviews" />
                   <div className="ml-2">Смотреть отзыв</div>
@@ -323,15 +329,15 @@ class Article extends React.Component {
               </div>
             </div>
           )}
-          {this.props.article.status == 7 && (
-            <div className="row row-input-controls mt-4">
+          {this.props.article.status === 7 && (
+            <div className="row px-0 row-input-controls mt-4">
               <div className="d-flex px-3 ">
                 <span className="d-flex align-items-center">
                   <img src={basket} alt="basket" />
                   <div className="ml-2 d-inline-block f-12">В корзине</div>
                 </span>
-              </div>              
-              <div className="col-12 col-md row row-input-controls buttons">
+              </div>
+              <div className="col-12 col-sm row row-input-controls mx-0 buttons">
                 <span className="d-flex align-items-center mx-3 input-action pop-wrapper">
                   <img src={reviews} alt="reviews" />
                   <div className="ml-2">Смотреть отзыв</div>
@@ -371,16 +377,17 @@ class Article extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
   }
-  componentDidUpdate() {}
   render() {
     return (
       <div className="article-block">
         {!this.state.onMobile ? (
           <>
             <div className="row">
-              <div className="col-md-6 row">
+              <div className="col-md-6  mx-0 row">
                 <div className="col-md-1">
-                  <span>{this.props.article.id}</span>
+                  <Link to={`/order/${this.props.article.id}`}>
+                    {this.props.article.id}
+                  </Link>
                 </div>
                 <div className="col-md-3">
                   <span>{this.props.article.carName}</span>
@@ -422,7 +429,7 @@ class Article extends React.Component {
                           width="100%"
                           height="100px"
                           instanceRef={(ref) => {
-                            console.log(ref);
+                            // console.log(ref);
                           }}
                         />
                       </div>
@@ -451,7 +458,7 @@ class Article extends React.Component {
                   </CSSTransitionGroup>
                 </div>
               </div>
-              <div className="col-md-6 row">
+              <div className="col-md-6  mx-0 row">
                 <div className="col-md-4">
                   <span>
                     <span className="d-block">
@@ -491,7 +498,6 @@ class Article extends React.Component {
                 </div>
               </div>
             </div>
-            {this.renderInput()}
             <CSSTransitionGroup
               transitionName="height-animation"
               transitionEnterTimeout={300}
@@ -508,7 +514,7 @@ class Article extends React.Component {
                       );
                     })}
                   </div>
-                  <div className="col-5 row">
+                  <div className="col-5 mx-0 row">
                     <img
                       src={this.props.article.user.avatar}
                       width="50px"
@@ -539,8 +545,35 @@ class Article extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div className="col-7">
-                    <b>Комментарий:</b> {this.props.article.comments}
+                  <div className="col-7 content">
+                    <div>
+                      <b>Комментарий:</b> {this.props.article.comments}
+                    </div>
+                    <div className="imgs-content">
+                      {this.props.article.images &&
+                        this.props.article.images.map((item, index) => {
+                          return (
+                            <img
+                              key={index}
+                              src={item.path}
+                              onClick={() => {
+                                this.setState({
+                                  dataFancybox: {
+                                    images: this.props.article.images,
+                                    index: index,
+                                  },
+                                });
+                              }}
+                              alt={index}
+                              style={{
+                                width: "75px",
+                                height: "57px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          );
+                        })}
+                    </div>
                   </div>
                 </div>
               )}
@@ -568,18 +601,34 @@ class Article extends React.Component {
                     alt="ArrowDown"
                   />
                 </Link>
-                {this.props.article.user.id != this.props.user.id && (
-                  <Link to="/register">
+
+                {this.props.article.user.id === this.props.user.id &&
+                  this.renderInput()}
+                {this.props.article.user.id !== this.props.user.id && (
+                  <>
                     <Button
                       type="fill"
                       className="get-article"
-                      paddingVertical={"15px"}
+                      paddingVertical={"13px"}
                       paddingHorizontal={"35px"}
                       fontSize={"14px"}
+                      onClick={() => {
+                        if (this.props.user.isAuth) {
+                          this.setState({
+                            isOpenModalRequest: !this.state.isOpenModalRequest,
+                          });
+                        } else this.props.history.push("/login");
+                      }}
                     >
                       ВЗЯТЬ
                     </Button>
-                  </Link>
+                    <RequestModal
+                      isOpen={this.state.isOpenModalRequest}
+                      onRequestClose={() => {
+                        this.setState({ isOpenModalRequest: false });
+                      }}
+                    />
+                  </>
                 )}
               </div>
             </div>
@@ -587,11 +636,11 @@ class Article extends React.Component {
         ) : (
           <>
             <div className="row">
-              <div className="col-12 px-0">
+              <div className="col-12 ">
                 <span>#{this.props.article.id}</span>
                 <span className="ml-3">{this.props.article.carName}</span>
               </div>
-              <div className="col-6 col-sm-4 pl-0">
+              <div className="col-6 col-sm-4 ">
                 <h3 className="title-column">Откуда</h3>
                 <span>{this.props.article.fromLocation}</span>
               </div>
@@ -599,17 +648,21 @@ class Article extends React.Component {
                 <h3 className="title-column">Куда</h3>
                 <span>{this.props.article.toLocation}</span>
               </div>
-              <div className="col-6 col-sm-4 px-0 pl-sm-2">
+              <div className="col-6 col-sm-4  pl-sm-2">
                 <h3 className="title-column">Груз</h3>
-                {this.props.article.cargo.map((item) => {
-                  return <span className="d-block">{item}</span>;
+                {this.props.article.cargo.map((item, i) => {
+                  return (
+                    <span key={i} className="d-block">
+                      {item}
+                    </span>
+                  );
                 })}
               </div>
-              <div className="col-6 col-sm pl-3 pl-sm-0">
+              <div className="col-6 col-sm ">
                 <h3 className="title-column">Параметры</h3>
                 <span>{this.props.article.parametrs}</span>
               </div>
-              <div className="col pl-0 pl-sm-3">
+              <div className="col  pl-sm-3">
                 <h3 className="title-column">Дата</h3>
                 <span>{this.props.article.date.date}</span>
               </div>
@@ -631,8 +684,46 @@ class Article extends React.Component {
                 </span>
               </div>
             </div>
-            {this.renderInput()}
+            {this.props.article.user.id === this.props.user.id &&
+                  this.renderInput()}
+                {this.props.article.user.id !== this.props.user.id && (
+                  <>
+                    <Button
+                      type="fill"
+                      className="get-article"
+                      paddingVertical={"15px"}
+                      paddingHorizontal={"35px"}
+                      fontSize={"14px"}
+                      onClick={() => {
+                        if (this.props.user.isAuth) {
+                          this.setState({
+                            isOpenModalRequest: !this.state.isOpenModalRequest,
+                          });
+                        } else this.props.history.push("/login");
+                      }}
+                    >
+                      ВЗЯТЬ
+                    </Button>
+                    <RequestModal
+                      isOpen={this.state.isOpenModalRequest}
+                      onRequestClose={() => {
+                        this.setState({ isOpenModalRequest: false });
+                      }}
+                    />
+                  </>
+                )}
           </>
+        )}
+        {this.state.dataFancybox.images && (
+          <Fancybox
+            close={() => {
+              this.setState({
+                dataFancybox: { images: false, index: false },
+              });
+            }}
+            images={this.state.dataFancybox.images}
+            index={this.state.dataFancybox.index}
+          />
         )}
       </div>
     );
@@ -645,4 +736,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Article);
+export default connect(mapStateToProps)(withRouter(Article));

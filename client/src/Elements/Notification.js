@@ -25,10 +25,6 @@ class Notification extends React.Component {
       case "offer_you_executor":
         //Выбрали исполнителем
         break;
-      case "offer_new_message":
-        //Новое сообщение
-        break;
-      //Уведомления по предложениям
       //Уведомления по заказам
       case "order_new_request":
         //Новая заявка
@@ -68,6 +64,8 @@ class Notification extends React.Component {
         //Моджерация заказов
         break;
       //Уведомления общие
+      default:
+        return false;
     }
     return (
       <div
@@ -84,7 +82,8 @@ class Notification extends React.Component {
         <div className="readble_col">
           {this.props.notification.readble ? (
             <span className="readble">
-              <img src={yellowAngle} className="mr-3" /> Просмотрено
+              <img src={yellowAngle} className="mr-3" alt="yellowAngle" />
+              Просмотрено
             </span>
           ) : (
             <span

@@ -15,8 +15,11 @@ import Application from "../Pages/Public/Application";
 import Carrier from "../Pages/Public/Carrier";
 import Profile from "../Pages/User/Profile";
 import MyOrders from "../Pages/User/MyOrders";
+import ArticlePage from "../Pages/User/ArticlePage";
 import Notifications from "../Pages/User/Notifications";
 import NotificationsSettings from "../Pages/User/NotificationsSettings";
+import NewOffer from "../Pages/User/NewOffer";
+import NewOrder from "../Pages/User/NewOrder";
 
 const routes = [
   //AUTH ROUTE
@@ -173,11 +176,19 @@ const routes = [
   {
     path: "/order/:id",
     exact: true,
-    type: "private",
+    type: "common",
     title: "Заказ #0000",
     forseTitle: true,
     // role: "carrier",
-    component: (props) => <MyOrders {...props} />,
+    component: (props) => <ArticlePage {...props} />,
+  },
+  {
+    path: "/order-create",
+    exact: true,
+    type: "private",
+    title: "Новый заказ",
+    // role: "carrier",
+    component: (props) => <NewOrder {...props} />,
   },
   {
     path: "/taken-orders",
@@ -238,6 +249,14 @@ const routes = [
     title: "Взятые предложения",
     // role: "carrier",
     component: (props) => <MyOrders {...props} />,
+  },
+  {
+    path: "/offer-create",
+    exact: true,
+    type: "private",
+    title: "Новое предложение",
+    // role: "carrier",
+    component: (props) => <NewOffer {...props} />,
   },
 ];
 

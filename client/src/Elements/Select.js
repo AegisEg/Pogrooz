@@ -14,10 +14,6 @@ const DropdownIndicator = (props) => {
 const colourStyles = {
   placeholder: (base) => ({
     color: "#909090",
-    padding: "5px 15px",
-  }),
-  singleValue: (base) => ({
-    padding: "5px 15px",
   }),
   indicatorsContainer: (base, state) => ({
     ...base,
@@ -28,11 +24,15 @@ const colourStyles = {
     bottom: 0,
     margin: "auto",
   }),
+  dropdownIndicator: (base) => ({
+    ...base,
+    padding: "2px",
+  }),
   menu: (base) => ({
     ...base,
     zIndex: 9999,
     overflow: "hidden",
-    top: "83%",
+    top: "77%",
     border: "1px solid #B9B9B9",
     borderTop: "none",
     boxShadow: "none",
@@ -44,7 +44,8 @@ const colourStyles = {
   }),
   valueContainer: (base) => ({
     ...base,
-    maxHeight: 42,
+    height: 42,
+    padding: "5px 21px",
   }),
   container: (base, state) => ({
     ...base,
@@ -78,7 +79,7 @@ const colourStyles = {
       : "",
   }),
   option: (base, state) => ({
-    padding: "5px 15px",
+    padding: "5px 21px",
     cursor: "pointer",
     color: state.isSelected ? "#A038E3" : "",
     "&:hover": {
@@ -96,12 +97,14 @@ class Select extends React.Component {
             IndicatorSeparator: () => null,
             DropdownIndicator,
           }}
-          className="select f-17-only"
+          className={`select ${this.props.className}`}
           onChange={this.props.onChange}
           placeholder={this.props.placeholder}
           ref={(ref) => {
-            this.select = ref;
-            this.props.getRef(ref);
+            if (this.props.getRef) {
+              this.select = ref;
+              this.props.getRef(ref);
+            }
           }}
           noOptionsMessage={
             this.props.noOptionsMessage
