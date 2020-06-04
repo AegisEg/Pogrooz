@@ -7,6 +7,7 @@ import Input from "../../Elements/Input";
 import Select from "../../Elements/Select";
 import CheckBoxSwitcher from "../../Elements/CheckBoxSwitcher";
 import CheckBox from "../../Elements/CheckBox";
+import { Link } from "react-router-dom";
 import ArticleShow from "../../Catalog/ArticleShow";
 import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
@@ -32,7 +33,10 @@ class OrderCreate1 extends React.Component {
               fontWeight: "normal",
             }}
           >
-            Параметры одного места и количество мест
+            Тип груза
+            <Link to="/" className="href f-14 ml-4">
+              Открыть Pro список
+            </Link>
           </h4>
           {ConfigSettings.cargoTypes.map((item, index) => {
             //Проверка на отмеченность
@@ -84,7 +88,7 @@ class OrderCreate1 extends React.Component {
               fontWeight: "normal",
             }}
           >
-            Тип груза
+            Параметры одного места и количество мест
           </h4>
           <div
             className="col"
@@ -397,7 +401,7 @@ class OrderCreate3 extends React.Component {
             >
               Тип авто
             </h4>
-            <div className="d-inline-flex align-items-center">
+            <div className="d-inline-flex flex-wrap align-items-center">
               <div className="px-3">
                 <CheckBox id="all" text="Любой"></CheckBox>
               </div>
@@ -474,14 +478,23 @@ class OrderCreate3 extends React.Component {
                   <div className="mt-2">
                     <CheckBox id="cargo4" text="Нужны поддоны" />
                   </div>
-                  <div className="mt-2">
+                  <div className="mt-2 d-sm-flex">
                     <CheckBox id="cargo4" text="Сопровождение" />
+                    <div className="mt-2 pl-4">
+                      <Select
+                        className="select175px "
+                        options={[{ value: 4, label: "1 человек" }]}
+                        placeholder="1 человек"
+                      />
+                    </div>
                   </div>
                   <div className="mt-2">
                     <CheckBox id="cargo4" text="Услуги грузчика" />
                     <div className="d-flex row-parametrs">
                       <div className="f-16">На погрузке</div>
-                      <CheckBox id="asd" text="есть лифт" />
+                      <div>
+                        <CheckBox id="asd" text="есть лифт" />
+                      </div>
                       <Input
                         type="number"
                         placeholder="1"
@@ -493,7 +506,9 @@ class OrderCreate3 extends React.Component {
                     </div>
                     <div className="d-flex mt-2 row-parametrs">
                       <div className="f-16">На погрузке</div>
-                      <CheckBox id="asd" text="есть лифт" />
+                      <div>
+                        <CheckBox id="asd" text="есть лифт" />
+                      </div>
                       <Input
                         type="number"
                         placeholder="1"
@@ -576,11 +591,11 @@ class OrderCreate3 extends React.Component {
                   </div>
                   <div className="mt-2">
                     <CheckBox id="cargo4" text="Безналичный расчет" />
-                    <div className="mt-2">
+                    <div className="mt-2 pl-4">
                       <Select
-                        className="select175px mx-auto"
-                        options={[{ value: 4, label: "Машина" }]}
-                        placeholder="Тип  машины"
+                        className="select175px "
+                        options={[{ value: 4, label: "1 человек" }]}
+                        placeholder="1 человек"
                       />
                     </div>
                   </div>
@@ -651,7 +666,7 @@ class OrderCreate4 extends React.Component {
 }
 class OrderCreate extends React.Component {
   state = {
-    currentTab: 3,
+    currentTab: 1,
   };
   render() {
     return (

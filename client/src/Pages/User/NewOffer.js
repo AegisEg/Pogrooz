@@ -5,6 +5,7 @@ import ConfigSettings from "../../config/settings";
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
 import Select from "../../Elements/Select";
+import { Link } from "react-router-dom";
 import CheckBoxSwitcher from "../../Elements/CheckBoxSwitcher";
 import CheckBox from "../../Elements/CheckBox";
 import ArticleShow from "../../Catalog/ArticleShow";
@@ -418,7 +419,10 @@ class OfferCreate3 extends React.Component {
               fontWeight: "normal",
             }}
           >
-            Параметры одного места и количество мест
+            Тип груза
+            <Link to="/" className="href f-14 ml-4">
+              Открыть Pro список
+            </Link>
           </h4>
           {ConfigSettings.cargoTypes.map((item, index) => {
             //Проверка на отмеченность
@@ -470,7 +474,7 @@ class OfferCreate3 extends React.Component {
               fontWeight: "normal",
             }}
           >
-            Тип груза
+            Параметры одного места и количество мест
           </h4>
           <div
             className="col"
@@ -604,7 +608,9 @@ class OfferCreate4 extends React.Component {
     let article = articlestest[0];
     return (
       <div className={`step-create ${this.props.className}`}>
-        <div className="articles-block full"><ArticleShow article={article}/></div>
+        <div className="articles-block full">
+          <ArticleShow article={article} />
+        </div>
         <div className="row justify-content-end">
           <Button
             type="empty"

@@ -112,11 +112,7 @@ class ArticleShow extends React.Component {
           {!this.state.onMobile && (
             <div className="row">
               <div className="col-md-6 row  mx-0">
-                <div className="col-md-1">
-                  <Link to={`/order/${this.props.article.id}`}>
-                    {this.props.article.id}
-                  </Link>
-                </div>
+                <div className="col-md-1">{this.props.article.id}</div>
                 <div className="col-md-3">
                   <span>{this.props.article.carName}</span>
 
@@ -337,7 +333,7 @@ class ArticleShow extends React.Component {
               </div>
             </div>
           </div>
-          {this.renderInput()}
+          {this.props.isManage && this.renderInput()}
         </div>
         {this.state.dataFancybox.images && (
           <Fancybox

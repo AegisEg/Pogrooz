@@ -15,10 +15,10 @@ import { connect } from "react-redux";
 import Button from "../../Elements/Button";
 import { Map } from "react-yandex-maps";
 import NoMatch from "../NoMatch.js";
+import { withLastLocation } from "react-router-last-location";
 
 class ArticlePage extends React.Component {
   state = {};
-
   render() {
     let article = articlestest.find((item) => {
       return item.id == this.props.match.params.id;
@@ -33,13 +33,17 @@ class ArticlePage extends React.Component {
           <Link
             className="href left-angle angle-go mb-2 d-block"
             onClick={() => {
-              this.props.history.goBack();
+              if (this.props.lastLocation) {
+                this.props.history.push(this.props.lastLocation.pathname);
+              } else {
+                this.props.history.push("/search");
+              }
             }}
           >
             Назад
           </Link>
           <div className="articles-block full">
-            <ArticleShow article={article} />
+            <ArticleShow isManage={true} article={article} />
             <div className="articles-header">
               <span className="f-16">Заявок по заказу - 9</span>
             </div>
@@ -172,4 +176,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(ArticlePage));
+export default connect(mapStateToProps)(
+  withRouter(withLastLocation(ArticlePage))
+);

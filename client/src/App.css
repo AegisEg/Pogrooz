@@ -3,9 +3,6 @@
   font-family: "Bahamas";
   src: url(./fonts/bahamas-pragmatica.otf);
 }
-.header-logo img {
-  margin-left: -10px;
-}
 body {
   font-family: Roboto;
   margin: 0;
@@ -14,15 +11,18 @@ body {
 a {
   text-decoration: none;
 }
-.f-12 {
+.f-12,
+.f-12 span {
   font-size: 12px;
 }
 .f-16 {
   font-size: 16px;
 }
-.f-14 {
+.f-14,
+.f-14 span {
   font-size: 14px;
 }
+
 .f-20 {
   font-size: 20px;
 }
@@ -69,8 +69,16 @@ a {
     display: none;
   }
 }
-@media (max-width: 958px) {
+@media (max-width: 992px) {
   .d-premd-none {
+    display: none;
+  }
+  .header-stub {
+    display: block;
+  }
+}
+@media (min-width: 993px) {
+  .header-stub {
     display: none;
   }
 }
@@ -642,7 +650,6 @@ input:-ms-input-placeholder {
   margin: 0 !important;
 }
 .header-logo {
-  padding: 3.5px 0;
   height: 88px;
 }
 @media (min-width: 992px) {
@@ -686,7 +693,7 @@ input:-ms-input-placeholder {
   transition: 0.2s;
 }
 header ~ div {
-  min-height: 55vh;
+  min-height: 80vh;
 }
 .register span {
   position: relative;
@@ -801,6 +808,12 @@ header ~ div {
   flex-wrap: wrap;
   position: relative;
   z-index: 1;
+}
+@media (max-width: 585px) {
+  .tarrif-pop,
+  .header-fast-access {
+    display: none !important;
+  }
 }
 .tarrif-pop .pop-block {
   right: 0;
@@ -1005,6 +1018,7 @@ textarea {
   cursor: pointer;
   padding: 34px 10px;
   display: inline-block;
+  white-space: nowrap;
   /* display: none; */
 }
 .more-menu img {
@@ -1069,7 +1083,7 @@ textarea {
   position: relative;
 }
 .header-fast-access .fast-access-btn .action-counter {
-  top: 31px;
+  top: 38px;
   right: 3px;
 }
 .header-fast-access .fast-access-btn img {
@@ -1580,6 +1594,10 @@ a.mail {
     flex: 0 0 17%;
     max-width: 17%;
   }
+  .avatar-img-wrapper {
+    max-width: 150px !important;
+    min-width: 150px !important;
+  }
 }
 .go-to-pro {
   text-decoration: underline;
@@ -1760,10 +1778,22 @@ a.mail {
 .row-input-controls > * {
   display: inline-block;
 }
-@media (min-width: 769px) {
-  .row-input-controls.buttons {
-    justify-content: end;
+@media (max-width: 380px) {
+  .row-parametrs {
+    flex-wrap: wrap;
   }
+  .row-parametrs > * {
+    margin-top: 15px;
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+@media (min-width: 769px) {
+  /* .row-input-controls.buttons {
+    justify-content: end;
+  } */
   .row-input-controls {
     margin: 0;
   }
@@ -1869,7 +1899,6 @@ a.mail {
   margin-bottom: 10px;
   min-height: 25px;
   font-size: 20px;
-  white-space: nowrap;
   font-weight: normal;
 }
 .faq-question ul {
@@ -2450,7 +2479,7 @@ a.href span {
   margin-left: auto;
 }
 .tab_groups .tab_group.active {
-  background-color: #ffdc1c;
+  background-color: #ffdc1c !important;
 }
 @media (max-width: 576px) {
   .tab_groups .tab_group {
@@ -2465,7 +2494,12 @@ a.href span {
     display: inline-block;
   }
 }
-.tab_groups .tab_group {
+.tab_groups .tab_group.goPrev {
+  background: transparent;
+  font-size: 14px;
+  padding: 10px 20px;
+}
+.tab_groups .tab_group:not(.goPrev) {
   background: #eeeeee;
   border-radius: 20px;
   font-size: 12px;
@@ -3099,7 +3133,8 @@ a.href span {
   transition: all 0.3s;
 }
 .select175px {
-  width: 187px;}
+  width: 187px;
+}
 .row-parametrs {
   align-items: center;
 }
@@ -3108,5 +3143,29 @@ a.href span {
   max-width: 100%;
 }
 .row-parametrs > * {
-  margin-right: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+@media screen and (max-width: 576px) {
+  .page-block {
+    padding: 10px 15px;
+    padding-top: 0;
+  }
+}
+@media (min-width: 1024px) {
+  .page-block {
+    padding: 0 50px;
+  }
+}
+@media (max-width: 1024px) {
+  .page-block {
+    padding: 0 15px;
+  }
+}
+
+.user-page .avatar-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
 }

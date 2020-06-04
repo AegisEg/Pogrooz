@@ -12,6 +12,7 @@ import chatOrder from "../img/chat-order.png";
 import chatUser from "../img/chatUser.png";
 import geoDetect from "../img/geo-detect.png";
 import messages from "../img/messages.png";
+import car from "../img/car.svg";
 import raiting from "../img/raiting.png";
 import gear from "../img/gear.png";
 import notifications from "../img/notifications.png";
@@ -96,6 +97,11 @@ var menu = [
     name: "Взятые предложения",
     to: "/taken-offers",
     icon: acceptedOrders,
+  },
+  {
+    name: "Мои шаблоны авто",
+    to: "/mytemplate-auto",
+    icon: car,
   },
   {
     name: "Взятые заказы",

@@ -15,6 +15,9 @@ import Application from "../Pages/Public/Application";
 import Carrier from "../Pages/Public/Carrier";
 import Profile from "../Pages/User/Profile";
 import MyOrders from "../Pages/User/MyOrders";
+import CreateTemplateAuto from "../Pages/User/CreateTemplateAuto";
+import MyTemplateAuto from "../Pages/User/MyTemplateAuto";
+import User from "../Pages/Public/User";
 import ArticlePage from "../Pages/User/ArticlePage";
 import Notifications from "../Pages/User/Notifications";
 import NotificationsSettings from "../Pages/User/NotificationsSettings";
@@ -257,6 +260,30 @@ const routes = [
     title: "Новое предложение",
     // role: "carrier",
     component: (props) => <NewOffer {...props} />,
+  },
+  {
+    path: "/create-template-auto",
+    exact: true,
+    type: "private",
+    title: "Новое предложение",
+    // role: "carrier",
+    component: (props) => <CreateTemplateAuto {...props} />,
+  },
+  {
+    path: "/mytemplate-auto",
+    exact: true,
+    type: "private",
+    title: "Новое предложение",
+    // role: "carrier",
+    component: (props) => <MyTemplateAuto {...props} />,
+  },
+  {
+    path: "/user/:id",
+    exact: true,
+    type: "public",
+    title: "Профиль пользователя",
+    // role: "carrier",
+    component: (props) => <User {...props} />,
   },
 ];
 
