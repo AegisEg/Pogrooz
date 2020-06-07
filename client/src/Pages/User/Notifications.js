@@ -5,6 +5,7 @@ import Notification from "../../Elements/Notification";
 
 // Redux
 import { connect } from "react-redux";
+
 var notifications = [
   {
     id: 1,
@@ -50,15 +51,15 @@ class Notifications extends React.Component {
   renderNotification = () => {
     let contentNotification = [];
     for (let i = 0; i < notifications.length; i++)
-      if (this.state.typeNotification == "all")
+      if (this.state.typeNotification === "all")
         contentNotification.push(
           <Notification notification={notifications[i]} />
         );
-      else if (notifications[i].type == this.state.typeNotification)
+      else if (notifications[i].type === this.state.typeNotification)
         contentNotification.push(
           <Notification notification={notifications[i]} />
         );
-    if (contentNotification.length==0) {
+    if (contentNotification.length === 0) {
       contentNotification = <div>Уведомления отсутствуют</div>;
     }
     return contentNotification;
@@ -70,7 +71,7 @@ class Notifications extends React.Component {
         <div className="tab_groups">
           <span
             className={`tab_group ${
-              this.state.typeNotification == "all" ? "active" : ""
+              this.state.typeNotification === "all" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ typeNotification: "all" });
@@ -80,7 +81,7 @@ class Notifications extends React.Component {
           </span>
           <span
             className={`tab_group ${
-              this.state.typeNotification == "order" ? "active" : ""
+              this.state.typeNotification === "order" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ typeNotification: "order" });
@@ -90,7 +91,7 @@ class Notifications extends React.Component {
           </span>
           <span
             className={`tab_group ${
-              this.state.typeNotification == "offer" ? "active" : ""
+              this.state.typeNotification === "offer" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ typeNotification: "offer" });
@@ -100,7 +101,7 @@ class Notifications extends React.Component {
           </span>
           <span
             className={`tab_group ${
-              this.state.typeNotification == "system" ? "active" : ""
+              this.state.typeNotification === "system" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ typeNotification: "system" });
@@ -110,7 +111,7 @@ class Notifications extends React.Component {
           </span>
           <span
             className={`tab_group ${
-              this.state.typeNotification == "tarif" ? "active" : ""
+              this.state.typeNotification === "tarif" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ typeNotification: "tarif" });
@@ -130,11 +131,5 @@ const mapStateToProps = (state) => {
     user: state.user,
   };
 };
-
-function mapDispatchToProps(dispatch) {
-  return {
-    // userActions: bindActionCreators(userActions, dispatch),
-  };
-}
 
 export default connect(mapStateToProps)(Notifications);

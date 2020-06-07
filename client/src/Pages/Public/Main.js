@@ -33,7 +33,7 @@ class Main extends React.Component {
           <div className="row col-12">
             <div className="main-text-block  col-md-8 col-xl-6">
               <h1 className="main-title">
-                <img src={logoName} alt="logoName" />{" "}
+                <img src={logoName} alt="logoName" />
               </h1>
               <h2 className="main-subtitle">Куда угодно. Что угодно.</h2>
 
@@ -121,7 +121,7 @@ class Main extends React.Component {
         <div className="row mx-0 search-tabs background-gray-768 tabs mb-lg-0 mb-xl-3 justify-content-center">
           <div
             className={`tab mx-3 text-uppercase ${
-              this.state.searchType == "offer" ? "active" : ""
+              this.state.searchType === "offer" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ searchType: "offer" });
@@ -131,7 +131,7 @@ class Main extends React.Component {
           </div>
           <div
             className={`tab mx-3 text-uppercase ${
-              this.state.searchType == "order" ? "active" : ""
+              this.state.searchType === "order" ? "active" : ""
             }`}
             onClick={() => {
               this.setState({ searchType: "order" });
@@ -172,9 +172,9 @@ class Main extends React.Component {
               </h5>
               <p>
                 Самый быстрый способ перевезти груз: <br></br>оставьте он-лайн
-                заказ и получите заявкии от перевозчиков, готовых его выполнить.{" "}
+                заказ и получите заявкии от перевозчиков, готовых его выполнить.
                 <br></br>Выбираете наиболее комфортное предложение. <br></br>
-                Никаких звонков.{" "}
+                Никаких звонков.
               </p>
               <Link to="/register">
                 <Button
@@ -198,9 +198,9 @@ class Main extends React.Component {
               </h5>
               <p>
                 Самый быстрый способ перевезти груз: <br></br>оставьте он-лайн
-                заказ и получите заявкии от перевозчиков, готовых его выполнить.{" "}
+                заказ и получите заявкии от перевозчиков, готовых его выполнить.
                 <br></br>Выбираете наиболее комфортное предложение. <br></br>
-                Никаких звонков.{" "}
+                Никаких звонков.
               </p>
               <Link to="/register">
                 <Button

@@ -15,8 +15,18 @@ import Application from "../Pages/Public/Application";
 import Carrier from "../Pages/Public/Carrier";
 import Profile from "../Pages/User/Profile";
 import MyOrders from "../Pages/User/MyOrders";
+import CreateTemplateAuto from "../Pages/User/CreateTemplateAuto";
+import MyTemplateAuto from "../Pages/User/MyTemplateCar";
+import User from "../Pages/Public/User";
+import ArticlePage from "../Pages/User/ArticlePage";
 import Notifications from "../Pages/User/Notifications";
 import NotificationsSettings from "../Pages/User/NotificationsSettings";
+import NewOffer from "../Pages/User/NewOffer";
+import NewOrder from "../Pages/User/NewOrder";
+import Reviwes from "../Pages/User/Reviwes";
+import Support from "../Pages/User/Support";
+import TarifLk from "../Pages/User/TarifLk";
+import AutoPay from "../Pages/User/AutoPay";
 
 const routes = [
   //AUTH ROUTE
@@ -124,6 +134,13 @@ const routes = [
     component: () => <Notifications />,
   },
   {
+    path: "/mytarif",
+    exact: true,
+    type: "private",
+    title: "Мои тариф",
+    component: () => <TarifLk />,
+  },
+  {
     path: "/notifications-settings",
     exact: true,
     type: "private",
@@ -161,6 +178,14 @@ const routes = [
     component: (props) => <MyOrders {...props} />,
   },
   {
+    path: "/autopay",
+    exact: true,
+    type: "private",
+    title: "Настройка автоплатежа",
+    // role: "cargo",
+    component: (props) => <AutoPay {...props} />,
+  },
+  {
     path: "/my-orders-deleted",
     exact: true,
     type: "private",
@@ -173,11 +198,19 @@ const routes = [
   {
     path: "/order/:id",
     exact: true,
-    type: "private",
+    type: "common",
     title: "Заказ #0000",
     forseTitle: true,
     // role: "carrier",
-    component: (props) => <MyOrders {...props} />,
+    component: (props) => <ArticlePage {...props} />,
+  },
+  {
+    path: "/order-create",
+    exact: true,
+    type: "private",
+    title: "Новый заказ",
+    // role: "carrier",
+    component: (props) => <NewOrder {...props} />,
   },
   {
     path: "/taken-orders",
@@ -238,6 +271,62 @@ const routes = [
     title: "Взятые предложения",
     // role: "carrier",
     component: (props) => <MyOrders {...props} />,
+  },
+  {
+    path: "/offer-create",
+    exact: true,
+    type: "private",
+    title: "Новое предложение",
+    // role: "carrier",
+    component: (props) => <NewOffer {...props} />,
+  },
+  {
+    path: "/create-template-auto",
+    exact: true,
+    type: "private",
+    title: "Новый шаблон авто",
+    // role: "carrier",
+    component: (props) => <CreateTemplateAuto {...props} />,
+  },
+  {
+    path: "/edit-template-auto/:id",
+    exact: true,
+    type: "private",
+    title: "Редактирование шаблона Авто",
+    // role: "carrier",
+    component: (props) => <CreateTemplateAuto {...props} />,
+  },
+  {
+    path: "/mytemplate-auto",
+    exact: true,
+    type: "private",
+    title: "Мои шалоны авто",
+    // role: "carrier",
+    component: (props) => <MyTemplateAuto {...props} />,
+  },
+  {
+    path: "/user/:id",
+    exact: true,
+    type: "public",
+    title: "Профиль пользователя",
+    // role: "carrier",
+    component: (props) => <User {...props} />,
+  },
+  {
+    path: "/reviews",
+    exact: true,
+    type: "private",
+    title: "Отзывы",
+    // role: "carrier",
+    component: (props) => <Reviwes {...props} />,
+  },
+  {
+    path: "/support",
+    exact: true,
+    type: "private",
+    title: "Техподдержка",
+    // role: "carrier",
+    component: (props) => <Support {...props} />,
   },
 ];
 

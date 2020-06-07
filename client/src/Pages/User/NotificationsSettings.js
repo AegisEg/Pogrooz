@@ -1,7 +1,7 @@
 // App
 import React from "react";
 import SettingsFiled from "../../Elements/SettingsFiled";
-import Button from "../../Elements/Button"
+import Button from "../../Elements/Button";
 // Redux
 import { connect } from "react-redux";
 var settingsField = [
@@ -124,8 +124,8 @@ class NotificationsSettings extends React.Component {
             <p className="setting-title">По предложениям</p>
             {settingsField.map((item, i) => {
               if (
-                item.type == "offer" &&
-                (this.props.user.type == item.role || item.role == "all")
+                item.type === "offer" &&
+                (this.props.user.type === item.role || item.role === "all")
               ) {
                 return (
                   <SettingsFiled
@@ -134,15 +134,15 @@ class NotificationsSettings extends React.Component {
                     keyField={item.keyField}
                   />
                 );
-              }
+              } else return <></>;
             })}
           </div>
           <div className="col-12 col-sm-12 col-md-6">
             <p className="setting-title">По заказам</p>
             {settingsField.map((item, i) => {
               if (
-                item.type == "order" &&
-                (this.props.user.type == item.role || item.role == "all")
+                item.type === "order" &&
+                (this.props.user.type === item.role || item.role === "all")
               ) {
                 return (
                   <SettingsFiled
@@ -151,7 +151,7 @@ class NotificationsSettings extends React.Component {
                     keyField={item.keyField}
                   />
                 );
-              }
+              } else return <></>;
             })}
           </div>
         </div>
@@ -160,8 +160,8 @@ class NotificationsSettings extends React.Component {
             <p className="setting-title">Общие</p>
             {settingsField.map((item, i) => {
               if (
-                item.type == "common" &&
-                (this.props.user.type == item.role || item.role == "all")
+                item.type === "common" &&
+                (this.props.user.type === item.role || item.role === "all")
               ) {
                 return (
                   <SettingsFiled
@@ -170,15 +170,15 @@ class NotificationsSettings extends React.Component {
                     keyField={item.keyField}
                   />
                 );
-              }
+              } else return <></>;
             })}
           </div>
           <div className="col-12 col-sm-12 col-md-6">
             <p className="setting-title"></p>
             {settingsField.map((item, i) => {
               if (
-                item.type == "common2" &&
-                (this.props.user.type == item.role || item.role == "all")
+                item.type === "common2" &&
+                (this.props.user.type === item.role || item.role === "all")
               ) {
                 return (
                   <SettingsFiled
@@ -187,7 +187,7 @@ class NotificationsSettings extends React.Component {
                     keyField={item.keyField}
                   />
                 );
-              }
+              } else return <></>;
             })}
           </div>
         </div>
@@ -211,11 +211,5 @@ const mapStateToProps = (state) => {
     user: state.user,
   };
 };
-
-function mapDispatchToProps(dispatch) {
-  return {
-    // userActions: bindActionCreators(userActions, dispatch),
-  };
-}
 
 export default connect(mapStateToProps)(NotificationsSettings);

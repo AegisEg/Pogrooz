@@ -1,11 +1,12 @@
-// App
+import addIcon from "../img/add-icon.svg"; // App
 import React from "react";
-import FeedbackModal from "../Elements/FeedbackModal";
+import FeedbackModal from "../Modal/FeedbackModal";
 import { withCookies } from "react-cookie";
 import { withRouter } from "react-router-dom";
 //IMG
 import logo from "../logo.svg";
 import minilogo from "../img/logoMobile.svg";
+import smallminilogo from "../img/mini-logo.svg";
 import profile from "../img/profile.png";
 import myOrders from "../img/my-orders.png";
 import add from "../img/add.png";
@@ -98,18 +99,32 @@ class Header extends React.Component {
     return (
       <header className="header container-fluid">
         <div className="header-content row">
-          <div className="header-logo d-none d-md-block">
+          <div className="header-logo d-none d-md-flex align-items-center">
             <Link to="/">
               <img src={logo} className="header-logo-img" alt="Pogrooz" />
             </Link>
           </div>
           <div className="header-logo d-flex d-md-none">
-            <Link to="/" className="m-auto">
+            <Link
+              to="/"
+              className={`m-auto ${
+                this.props.user.isAuth ? "d-none d-sm-block" : ""
+              }`}
+            >
               <img src={minilogo} className="header-logo-img" alt="Pogrooz" />
             </Link>
+            {this.props.user.isAuth && (
+              <Link to="/" className="m-auto d-block d-sm-none">
+                <img
+                  src={smallminilogo}
+                  className="header-logo-img"
+                  alt="Pogrooz"
+                />
+              </Link>
+            )}
           </div>
           <MenuNav />
-          <div className="d-premd-block col d-postmd-none"></div>
+          <div className="col header-stub"></div>
           {!this.props.user.isAuth && (
             <>
               <div
@@ -202,10 +217,25 @@ class Header extends React.Component {
               <Link to="/register" className="register">
                 <Button
                   type="fill"
-                  paddingVertical={"8px"}
+                  className="d-none d-lg-block"
+                  paddingVertical={"11px"}
                   paddingHorizontal={"27px"}
                 >
                   Добавить предложение
+                </Button>
+                <Button
+                  type="fill"
+                  className="d-block d-lg-none"
+                  paddingVertical={"11px"}
+                  paddingHorizontal={"13px"}
+                >
+                  <img
+                    src={addIcon}
+                    style={{
+                      verticalAlign: "middle",
+                    }}
+                    alt="addIcon"
+                  />
                 </Button>
               </Link>
             </div>

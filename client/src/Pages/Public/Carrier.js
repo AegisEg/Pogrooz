@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../../Elements/Button";
-import Tarrifs from "../../Elements/Tarrifs";
+import Tarrifs from "../../Partials/Tarrifs";
 import Filter from "../../Elements/Filter";
 
 // Images
@@ -197,13 +197,12 @@ class Carrier extends React.Component {
           </div>
         </div>
         <div className="faq-questions">
-          
-        <hr />
+          <hr />
           <div className="row">
             {questions.map((question) => {
               if (
                 question.questions.filter((item) => {
-                  return item.type == "carrier" || item.type == "all";
+                  return item.type === "carrier" || item.type === "all";
                 }).length
               )
                 return (
@@ -215,7 +214,7 @@ class Carrier extends React.Component {
                     <ul>
                       {question.questions
                         .filter((item) => {
-                          return item.type == "carrier" || item.type == "all";
+                          return item.type === "carrier" || item.type === "all";
                         })
                         .map((question) => {
                           return (
@@ -227,6 +226,7 @@ class Carrier extends React.Component {
                     </ul>
                   </div>
                 );
+              else return <></>;
             })}
           </div>
         </div>

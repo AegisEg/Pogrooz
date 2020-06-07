@@ -12,11 +12,15 @@ import chatOrder from "../img/chat-order.png";
 import chatUser from "../img/chatUser.png";
 import geoDetect from "../img/geo-detect.png";
 import messages from "../img/messages.png";
+import car from "../img/car.svg";
 import raiting from "../img/raiting.png";
 import gear from "../img/gear.png";
 import notifications from "../img/notifications.png";
 import sidebarOpen from "../img/sidebarOpen.png";
 import sidebarAngleOpen from "../img/sidebarAngleOpen.png";
+import addIcon from "../img/add-icon.svg";
+import chat from "../img/chat.svg";
+import ruble from "../img/ruble.svg";
 // Images END
 
 // Redux
@@ -25,6 +29,18 @@ import * as userActions from "../redux/actions/user";
 import { bindActionCreators } from "redux";
 
 var menu = [
+  {
+    name: "Добавить предложение",
+    to: "/offer-create",
+    icon: addIcon,
+    className: "yellow",
+  },
+  {
+    name: "Добавить заказ",
+    to: "/order-create",
+    icon: addIcon,
+    className: "yellow",
+  },
   {
     name: "Мои заказ",
     icon: myOrders,
@@ -85,6 +101,16 @@ var menu = [
     icon: acceptedOrders,
   },
   {
+    name: "Мои шаблоны авто",
+    to: "/mytemplate-auto",
+    icon: car,
+  },
+  {
+    name: "Мой тариф",
+    to: "/mytarif",
+    icon: ruble,
+  },
+  {
     name: "Взятые заказы",
     to: "/taken-orders",
     icon: myOrders,
@@ -130,6 +156,11 @@ var menu = [
     name: "Настройки уведомлений",
     to: "/notifications-settings",
     icon: gear,
+  },
+  {
+    name: "Техподдержка",
+    to: "/support",
+    icon: chat,
   },
 ];
 
@@ -189,7 +220,7 @@ class MenuItem1 extends React.Component {
     } else
       return (
         <NavLink to={this.props.to} activeClassName="active">
-          <div className="side-nav-item">
+          <div className={`side-nav-item ${this.props.className}`}>
             <img src={this.props.icon} alt={this.props.name} />
             <span>{this.props.name}</span>
           </div>
@@ -205,6 +236,7 @@ class SideNav extends React.Component {
   };
   updateDimensions = () => {
     let height = document.getElementsByClassName("content")[0].offsetHeight;
+    console.log(window.innerWidth);
     if (window.innerWidth <= 1024)
       this.setState({
         height: height,
@@ -213,10 +245,6 @@ class SideNav extends React.Component {
   };
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
-  }
-  componentDidMount() {
-    this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
   }
   componentDidMount() {
     this.updateDimensions();
@@ -231,7 +259,7 @@ class SideNav extends React.Component {
         }}
       >
         {menu.map((item, index) => {
-          if (!item.role || item.role == this.props.user.type)
+          if (!item.role || item.role === this.props.user.type)
             return (
               <MenuItem
                 key={index}
@@ -242,6 +270,7 @@ class SideNav extends React.Component {
                 childlist={item.childlist}
               />
             );
+          else return <></>;
         })}
 
         <span

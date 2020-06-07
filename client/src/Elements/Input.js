@@ -8,7 +8,6 @@ import {
   TimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
-import { withStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
 //DATE
 import EyeOpen from "../img/eye-open.png";
@@ -59,7 +58,7 @@ class Input extends React.Component {
         <div
           className="input"
           style={{
-            display: this.props.type === "password" ? "block" : "contents",
+            display: "contents",
             position: "relative",
             paddingBottom: this.props.error ? "10px" : "0px",
           }}
@@ -94,7 +93,7 @@ class Input extends React.Component {
         <div
           className="input"
           style={{
-            display: this.props.type === "password" ? "block" : "contents",
+            display: "contents",
             position: "relative",
             paddingBottom: this.props.error ? "10px" : "0px",
           }}
@@ -127,7 +126,7 @@ class Input extends React.Component {
         <div
           className="input"
           style={{
-            display: "contents",
+            display: this.props.type === "number" ? "block" : "contents",
             position: "relative",
             paddingBottom: this.props.error ? "10px" : "0px",
           }}

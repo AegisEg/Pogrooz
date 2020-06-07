@@ -1,7 +1,5 @@
 // App
 import React from "react";
-import configApi from "../../config/api";
-import { toast } from "react-toastify";
 import ConfigSettings from "../../config/settings";
 // Elements
 import Button from "../../Elements/Button";
@@ -136,7 +134,7 @@ class Profile extends React.Component {
               }}
             >
               На фото должны быть только Вы. Лицо не должны закрывать
-              посторонние предметы или люди.{" "}
+              посторонние предметы или люди.
             </span>
           </div>
         </div>
@@ -264,7 +262,7 @@ class Profile extends React.Component {
             </div>
           </div>
         </div>
-        {this.props.user.type == "carrier" && (
+        {this.props.user.type === "carrier" && (
           <div className="row">
             <h4 className=" col-12 subtitle py-0 mb-3 px-3">Паспорт</h4>
             <div className="col-12 col-lg-6  mb-4">
@@ -370,11 +368,5 @@ const mapStateToProps = (state) => {
     user: state.user,
   };
 };
-
-function mapDispatchToProps(dispatch) {
-  return {
-    // userActions: bindActionCreators(userActions, dispatch),
-  };
-}
 
 export default connect(mapStateToProps)(Profile);

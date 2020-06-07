@@ -4,8 +4,6 @@ import React from "react";
 // Article
 import Article from "./Article";
 import Pagination from "../Elements/Pagination";
-// Elements
-import Button from "../Elements/Button";
 
 class Articles extends React.Component {
   render() {
@@ -13,7 +11,7 @@ class Articles extends React.Component {
       <div className="articles-block">
         <div className="articles-header d-none d-md-block">
           <div className="row">
-            <div className="col-md-6 row">
+            <div className="col-md-6   mx-0 row">
               <div className="col-md-1">
                 <span>#</span>
               </div>
@@ -27,7 +25,7 @@ class Articles extends React.Component {
                 <span>Куда</span>
               </div>
             </div>
-            <div className="col-md-6 row">
+            <div className="col-md-6  mx-0 row">
               <div className="col-md-4">
                 <span>Груз</span>
               </div>
@@ -44,7 +42,7 @@ class Articles extends React.Component {
           </div>
         </div>
         {this.props.articlesList.map((article, i) => {          
-            return <Article key={i} article={article} key={article.id} />;
+            return <Article key={i} article={article} />;
         })}
         <div className="container-fluid">
           <Pagination pageCount={10} perPage="1" />

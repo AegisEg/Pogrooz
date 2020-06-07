@@ -22,14 +22,14 @@ class Pagination extends React.Component {
     return (
       <ReactPaginate
         previousLabel={
-          this.state.currentpage == 1 ? (
+          this.state.currentpage === 1 ? (
             <img src={prevQuest} alt="nextQuest" />
           ) : (
             <img src={prevQuestEnable} alt="nextQuestEnable" />
           )
         }
         nextLabel={
-          this.state.currentpage == this.props.pageCount ? (
+          this.state.currentpage === this.props.pageCount ? (
             <img src={nextQuest} alt="nextQuest" />
           ) : (
             <img src={nextQuestEnable} alt="nextQuestEnable" />
@@ -41,7 +41,7 @@ class Pagination extends React.Component {
         breakClassName={"break-me"}
         marginPagesDisplayed={1}
         pageRangeDisplayed={2}
-        containerClassName={"pagination"}
+        containerClassName={`pagination ${this.props.className}`}
         subContainerClassName={"pages pagination"}
         activeClassName={"active"}
       />

@@ -136,7 +136,7 @@ class Filter extends React.Component {
                 <span className="filter-input-title">
                   Рейтинг
                   <br />
-                  (0-5):{" "}
+                  (0-5):
                 </span>
                 <Input
                   type="number"
@@ -294,7 +294,7 @@ class Filter extends React.Component {
                 />
               </div>
               <div
-                className="row col-md-5 col-lg-4 col-9 budjet_div col-sm-6"
+                className="row col-md-5 col-lg-4 col-12 budjet_div col-sm-6"
                 style={{
                   marginLeft: "0",
                   marginRight: "0",

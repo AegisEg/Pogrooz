@@ -1,29 +1,10 @@
 // App
 import React from "react";
 import Modal from "react-modal";
-import Button from "./Button";
-import Input from "./Input";
+import Button from "../Elements/Button";
+import Input from "../Elements/Input";
+import settings from "../config/settings.js";
 
-const customStyles = {
-  overlay: {
-    zIndex: 1001,
-  },
-  content: {
-    top: "0",
-    position: "absolute",
-    left: "0",
-    right: "0",
-    bottom: "0",
-    margin: "auto",
-    height: "265px",
-    background: "#FFFFFF",
-    border: "1px solid #DDDDDD",
-    boxSizing: "border-box",
-    boxShadow: "3px 2px 15px rgba(0, 0, 0, 0.13)",
-    borderRadius: "10px",
-    padding: "20px 30px 40px 30px",
-  },
-};
 class FeedbackModal extends React.Component {
   state = {
     isMailSend: false,
@@ -37,7 +18,7 @@ class FeedbackModal extends React.Component {
         isOpen={this.props.isOpen}
         onRequestClose={this.props.onRequestClose}
         className="col-10 col-md-6 col-lg-4 col-xl-3 col-md-6"
-        style={customStyles}
+        style={settings.stylesModals}
       >
         <h3 className="m-0 font-weight-normal text-center">Заказать звонок</h3>
         <Input
