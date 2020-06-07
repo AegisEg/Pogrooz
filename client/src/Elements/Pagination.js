@@ -41,7 +41,7 @@ class Pagination extends React.Component {
         breakClassName={"break-me"}
         marginPagesDisplayed={1}
         pageRangeDisplayed={2}
-        containerClassName={"pagination"}
+        containerClassName={`pagination ${this.props.className}`}
         subContainerClassName={"pages pagination"}
         activeClassName={"active"}
       />

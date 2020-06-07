@@ -127,10 +127,11 @@ class MobileMenu extends React.Component {
                   >
                     {item.name}
                   </NavLink>
-                  {index + 1 !== menu.length && <div className="seperator"></div>}
+                  {index + 1 !== menu.length && (
+                    <div className="seperator"></div>
+                  )}
                 </div>
               );
-            else return <></>;
           })}
         </Menu>
       </>

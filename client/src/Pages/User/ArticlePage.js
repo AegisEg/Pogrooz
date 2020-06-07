@@ -50,9 +50,9 @@ class ArticlePage extends React.Component {
             {article.requests && article.requests.length && (
               <>
                 <div className="article-block requests-article-block">
-                  {article.requests.map((item) => {
+                  {article.requests.map((item, index) => {
                     return (
-                      <div className="request-article">
+                      <div key={index} className="request-article">
                         <div className="row">
                           <div
                             className="col f-14"
@@ -130,6 +130,7 @@ class ArticlePage extends React.Component {
                             </Button>
                           </div>
                         </div>
+                        {article.requests.length != index + 1 && <hr />}
                       </div>
                     );
                   })}

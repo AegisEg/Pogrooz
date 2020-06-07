@@ -284,6 +284,10 @@ a {
 .hover-underline:hover {
   text-decoration: underline;
 }
+.border-none.button-empty,
+.border-none.button-fill {
+  border: 0px solid #6c6c6c;
+}
 .button-empty {
   cursor: pointer;
   color: #171717;
@@ -905,6 +909,14 @@ textarea {
 .adress-input .row span {
   display: inline-block;
   min-width: 80px;
+}
+.sharected-link:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 .profile-menu,
 .pop-block {
@@ -1831,12 +1843,17 @@ a.mail {
 .article-block .moreinfo_block .fio {
   white-space: pre-line;
 }
-.article-block .moreinfo_block .property-user {
+.article-block .property-user {
   margin-right: 20px;
-  display: inline-block;
+  margin-top: 5px;
 }
-.article-block .moreinfo_block .property-user img {
+.property-user {
+  display: inline-flex;
+  align-items: center;
+}
+.property-user img {
   margin-right: 5px;
+  vertical-align: sub;
 }
 .article-block .title-column {
   color: #919191;
@@ -1879,6 +1896,9 @@ a.mail {
 /* Articles end */
 
 /* FAQ */
+.lk-page .faq-page {
+  border-top: none;
+}
 .faq-page {
   border-top: 1px solid #6c6c6c;
   margin-bottom: 50px;
@@ -1888,7 +1908,7 @@ a.mail {
   margin-bottom: 20px;
   font-size: 24px;
   line-height: 28px;
-  font-weight: 500;
+  font-weight: normal;
 }
 .faq-question {
   margin-top: 40px;
@@ -2471,7 +2491,6 @@ a.href span {
 
 /* Notifications */
 .tab_groups {
-  margin-bottom: 20px;
   margin-left: -15px;
   margin-right: -15px;
 }
@@ -2643,10 +2662,15 @@ a.href span {
   line-height: 14px;
   color: #322f2f;
 }
-.tarrif .left-angle:before {
+.tarrif .left-angle:before,
+.left-angle.yellow:before {
   border-color: #ffdc1c;
 }
-.tarrif.yellow .left-angle:before {
+.left-angle.gray:before {
+  border-color: #b9b9b9;
+}
+.tarrif.yellow .left-angle:before,
+.left-angle.white:before {
   border-color: #ffff;
 }
 .tarrif.yellow .sale {
@@ -2918,8 +2942,8 @@ a.href span {
 }
 
 .request-article {
-  padding-top: 27px;
-  padding-top: 20px;
+  position: relative;
+  padding-bottom: 20px;
 }
 .request-article > .row > div {
   margin: auto;
@@ -2970,7 +2994,8 @@ a.href span {
   max-width: 100%;
 }
 .CheckBoxSwitcher.checked {
-  background-color: #11c411;
+  background: #ffdc1c;
+  border: 1px solid #f5d210;
 }
 .CheckBoxSwitcher.checked::after {
   margin-left: 47px;
@@ -3168,4 +3193,118 @@ a.href span {
   width: 120px;
   height: 120px;
   object-fit: cover;
+}
+
+.title-auto {
+  min-width: 280px;
+  max-width: 290px;
+  font-size: 16px;
+}
+.auto-template {
+  border-bottom: 1px solid #dddddd;
+  margin-left: -28px;
+  margin-right: -28px;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-bottom: 20px;
+}
+
+.flex-columns {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: 80px;
+  font-size: 12px;
+}
+.flex-columns .left-angle {
+  margin: 0 25px;
+}
+.requests-article-block {
+  overflow: hidden;
+}
+.requests-article-block .request-article hr {
+  position: absolute;
+  width: 300%;
+  background-color: #dddddd;
+  height: 1px;
+  border: none;
+  left: -100%;
+  bottom: -8px;
+}
+
+.pay-history > .row > div {
+  padding: 10px 15px;
+  font-size: 14px;
+}
+.pay-history > .row.header-table {
+  color: #909090;
+}
+.pay-history > .row:not(.header-table)::before {
+  content: "";
+  border-top: 1px solid #dddddd;
+  width: calc(100% - 30px);
+  margin: auto;
+}
+.card-list {
+  margin-left: -8px !important;
+  margin-right: -8px !important;
+  position: relative;
+  width: max-content !important;
+  max-width: 100% !important;
+}
+.card.active > .row {
+  background: #ffdc1c;
+}
+.card {
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-top: 20px;
+}
+.card > .row {
+  padding: 21px 6px;
+  width: 380px;
+  max-width: 380px !important;
+  height: 220px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.12);
+  border-radius: 13px;
+}
+.card .card-hidden {
+  height: 32px;
+  margin: auto;
+  background: #f7f7f7;
+}
+.card-list .add-new {
+  position: absolute;
+  right: 0;
+  bottom: -30px;
+}
+.input-name-cart input {
+  font-size: 18px;
+}
+.input-name-cart {
+  margin-top: 17px;
+}
+.input-name-cart input,
+.input-cart-wrapper input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 26px;
+  border-bottom: 1px solid #000;
+}
+.input-cart-wrapper {
+  display: flex;
+}
+.input-cart-wrapper input {
+  font-size: 20px;
+}
+.not-border {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #000;
+}
+.expires input {
+  height: 24px;
+  font-size: 18px;
+  text-align: center;
 }

@@ -19,6 +19,8 @@ import notifications from "../img/notifications.png";
 import sidebarOpen from "../img/sidebarOpen.png";
 import sidebarAngleOpen from "../img/sidebarAngleOpen.png";
 import addIcon from "../img/add-icon.svg";
+import chat from "../img/chat.svg";
+import ruble from "../img/ruble.svg";
 // Images END
 
 // Redux
@@ -104,6 +106,11 @@ var menu = [
     icon: car,
   },
   {
+    name: "Мой тариф",
+    to: "/mytarif",
+    icon: ruble,
+  },
+  {
     name: "Взятые заказы",
     to: "/taken-orders",
     icon: myOrders,
@@ -149,6 +156,11 @@ var menu = [
     name: "Настройки уведомлений",
     to: "/notifications-settings",
     icon: gear,
+  },
+  {
+    name: "Техподдержка",
+    to: "/support",
+    icon: chat,
   },
 ];
 

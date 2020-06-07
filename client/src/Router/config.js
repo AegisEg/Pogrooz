@@ -16,13 +16,17 @@ import Carrier from "../Pages/Public/Carrier";
 import Profile from "../Pages/User/Profile";
 import MyOrders from "../Pages/User/MyOrders";
 import CreateTemplateAuto from "../Pages/User/CreateTemplateAuto";
-import MyTemplateAuto from "../Pages/User/MyTemplateAuto";
+import MyTemplateAuto from "../Pages/User/MyTemplateCar";
 import User from "../Pages/Public/User";
 import ArticlePage from "../Pages/User/ArticlePage";
 import Notifications from "../Pages/User/Notifications";
 import NotificationsSettings from "../Pages/User/NotificationsSettings";
 import NewOffer from "../Pages/User/NewOffer";
 import NewOrder from "../Pages/User/NewOrder";
+import Reviwes from "../Pages/User/Reviwes";
+import Support from "../Pages/User/Support";
+import TarifLk from "../Pages/User/TarifLk";
+import AutoPay from "../Pages/User/AutoPay";
 
 const routes = [
   //AUTH ROUTE
@@ -130,6 +134,13 @@ const routes = [
     component: () => <Notifications />,
   },
   {
+    path: "/mytarif",
+    exact: true,
+    type: "private",
+    title: "Мои тариф",
+    component: () => <TarifLk />,
+  },
+  {
     path: "/notifications-settings",
     exact: true,
     type: "private",
@@ -165,6 +176,14 @@ const routes = [
     title: "Закрытые заказы",
     // role: "cargo",
     component: (props) => <MyOrders {...props} />,
+  },
+  {
+    path: "/autopay",
+    exact: true,
+    type: "private",
+    title: "Настройка автоплатежа",
+    // role: "cargo",
+    component: (props) => <AutoPay {...props} />,
   },
   {
     path: "/my-orders-deleted",
@@ -265,7 +284,15 @@ const routes = [
     path: "/create-template-auto",
     exact: true,
     type: "private",
-    title: "Новое предложение",
+    title: "Новый шаблон авто",
+    // role: "carrier",
+    component: (props) => <CreateTemplateAuto {...props} />,
+  },
+  {
+    path: "/edit-template-auto/:id",
+    exact: true,
+    type: "private",
+    title: "Редактирование шаблона Авто",
     // role: "carrier",
     component: (props) => <CreateTemplateAuto {...props} />,
   },
@@ -273,7 +300,7 @@ const routes = [
     path: "/mytemplate-auto",
     exact: true,
     type: "private",
-    title: "Новое предложение",
+    title: "Мои шалоны авто",
     // role: "carrier",
     component: (props) => <MyTemplateAuto {...props} />,
   },
@@ -284,6 +311,22 @@ const routes = [
     title: "Профиль пользователя",
     // role: "carrier",
     component: (props) => <User {...props} />,
+  },
+  {
+    path: "/reviews",
+    exact: true,
+    type: "private",
+    title: "Отзывы",
+    // role: "carrier",
+    component: (props) => <Reviwes {...props} />,
+  },
+  {
+    path: "/support",
+    exact: true,
+    type: "private",
+    title: "Техподдержка",
+    // role: "carrier",
+    component: (props) => <Support {...props} />,
   },
 ];
 

@@ -15,8 +15,10 @@ class FAQ extends React.Component {
 
   render() {
     return (
-      <div className="faq-page container-fluid">
-        <h1 className="faq-title">Часто задаваемые вопросы</h1>
+      <div
+        className={`faq-page ${!this.props.noPadding ? "container-fluid" : ""}`}
+      >
+        <h2 className="faq-title">Часто задаваемые вопросы</h2>
         <div className="row">
           <div className="col">
             <Input
