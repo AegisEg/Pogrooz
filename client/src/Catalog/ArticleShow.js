@@ -204,7 +204,7 @@ class ArticleShow extends React.Component {
                     width="100%"
                     height="100px"
                     instanceRef={(ref) => {
-                      // console.log(ref);
+                   
                     }}
                   />
                 </div>
@@ -218,7 +218,7 @@ class ArticleShow extends React.Component {
                     width="100%"
                     height="100px"
                     instanceRef={(ref) => {
-                      // console.log(ref);
+                    
                     }}
                   />
                 </div>

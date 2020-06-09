@@ -19,14 +19,16 @@ import CreateTemplateAuto from "../Pages/User/CreateTemplateAuto";
 import MyTemplateAuto from "../Pages/User/MyTemplateCar";
 import User from "../Pages/Public/User";
 import ArticlePage from "../Pages/User/ArticlePage";
-import Notifications from "../Pages/User/Notifications";
-import NotificationsSettings from "../Pages/User/NotificationsSettings";
+import Notifications from "../Pages/User/Notifications/Notifications";
+import NotificationsSettings from "../Pages/User/Notifications/NotificationsSettings";
 import NewOffer from "../Pages/User/NewOffer";
 import NewOrder from "../Pages/User/NewOrder";
 import Reviwes from "../Pages/User/Reviwes";
 import Support from "../Pages/User/Support";
 import TarifLk from "../Pages/User/TarifLk";
 import AutoPay from "../Pages/User/AutoPay";
+import Messages from "../Pages/User/Messages/Messages";
+import Dialog from "../Pages/User/Messages/Dialog";
 
 const routes = [
   //AUTH ROUTE
@@ -132,6 +134,40 @@ const routes = [
     type: "private",
     title: "Уведомления",
     component: () => <Notifications />,
+  },
+  {
+    path: "/messages-by-order",
+    exact: true,
+    type: "private",
+    tab: 1,
+    title: "Сообщения по заказам, предложениям",
+    component: (props) => <Messages {...props} />,
+  },
+  {
+    path: "/messages",
+    exact: true,
+    type: "private",  
+    tab: 2,
+    title: "Сообщения пользователей",
+    component: (props) => <Messages {...props} />,
+  },
+  {
+    path: "/dialog/:id",
+    exact: true,
+    type: "private",
+    lkHeight: true,
+    dialogType: 2,
+    title: "Сообщения пользователей",
+    component: (props) => <Dialog {...props} />,
+  },
+  {
+    path: "/dialog-order/:id",
+    exact: true,
+    type: "private",
+    lkHeight: true,
+    dialogType: 1,
+    title: "Сообщения пользователей",
+    component: (props) => <Dialog {...props} />,
   },
   {
     path: "/mytarif",

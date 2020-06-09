@@ -105,11 +105,13 @@ class AppRouter extends React.Component {
                       path={route.path}
                       role={route.role}
                       exact={route.exact}
+                      isChat={route.lkHeight}
                     >
                       <route.component
                         title={route.title}
                         statusArticle={route.statusArticle}
                         typeArticle={route.typeArticle}
+                        tab={route.tab}
                       />
                     </this.PrivateRoute>
                   );
@@ -128,7 +130,7 @@ class AppRouter extends React.Component {
     );
   }
 
-  PrivateRoute = ({ children, role, ...rest }) => {
+  PrivateRoute = ({ children, role, isChat, ...rest }) => {
     return (
       <Route
         {...rest}
@@ -138,7 +140,9 @@ class AppRouter extends React.Component {
               <div className="row mx-0">
                 <SideNav />
                 <div className="content col">
-                  <div className="lk-page">{children}</div>
+                  <div className={`lk-page ${isChat ? "messages" : ""}`}>
+                    {children}
+                  </div>
                   <Footer />
                 </div>
               </div>

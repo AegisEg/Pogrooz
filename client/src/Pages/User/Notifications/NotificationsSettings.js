@@ -1,7 +1,7 @@
 // App
 import React from "react";
-import SettingsFiled from "../../Elements/SettingsFiled";
-import Button from "../../Elements/Button";
+import SettingsFiled from "../../../Elements/SettingsFiled";
+import Button from "../../../Elements/Button";
 // Redux
 import { connect } from "react-redux";
 var settingsField = [

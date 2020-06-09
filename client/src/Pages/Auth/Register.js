@@ -52,10 +52,7 @@ class Register extends React.Component {
       .then((data) => {
         if (data.error) {
           this.setState({ error: true, errors: data.errors });
-        } else {
-          // console.log(data)
         }
-
         this.setState({ isFetching: false });
       });
   }

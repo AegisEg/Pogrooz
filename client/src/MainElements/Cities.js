@@ -68,7 +68,7 @@ class Cities extends React.Component {
     for (let i = 0; i < citiesCount; i += perColumn) {
       sliced_array.push(cities.slice(i, i + perColumn));
     }
-    // console.log(perColumn);
+   
     this.setState({
       perColumn: perColumn,
       citiesCount: citiesCount,
