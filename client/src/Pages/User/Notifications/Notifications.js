@@ -1,7 +1,7 @@
 // App
 import React from "react";
 
-import Notification from "../../Elements/Notification";
+import Notification from "../../../Elements/Notification";
 
 // Redux
 import { connect } from "react-redux";

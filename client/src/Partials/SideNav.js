@@ -127,12 +127,12 @@ var menu = [
     childlist: [
       {
         name: "Сообщения по заказам, предложениям",
-        to: "/messages",
+        to: "/messages-by-order",
         icon: chatOrder,
       },
       {
         name: "Сообщения пользователей",
-        to: "/profile",
+        to: "/messages",
         icon: chatUser,
       },
     ],
@@ -236,7 +236,6 @@ class SideNav extends React.Component {
   };
   updateDimensions = () => {
     let height = document.getElementsByClassName("content")[0].offsetHeight;
-    console.log(window.innerWidth);
     if (window.innerWidth <= 1024)
       this.setState({
         height: height,

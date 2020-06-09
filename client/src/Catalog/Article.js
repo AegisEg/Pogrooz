@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 import RequestModal from "../Modal/RequestModal.js";
 //IMGS
 import ImgActiveStar from "../img/active-star.png";
-import ArrowDown from "../img/arrowDown.png";
+import ArrowDown from "../img/arrowDownperple.svg";
 import payIco from "../img/pay-ico.png";
 import dogovor from "../img/dogovor.png";
 import passport from "../img/passport.png";
@@ -428,8 +428,7 @@ class Article extends React.Component {
                           defaultState={{ center: [55.75, 37.57], zoom: 15 }}
                           width="100%"
                           height="100px"
-                          instanceRef={(ref) => {
-                            // console.log(ref);
+                          instanceRef={(ref) => {                          
                           }}
                         />
                       </div>
