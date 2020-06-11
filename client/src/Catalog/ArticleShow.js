@@ -6,7 +6,7 @@ import Button from "../Elements/Button";
 //IMGS
 import ImgActiveStar from "../img/active-star.png";
 import yellowAngle from "../img/yellowAngle.png";
-import payIco from "../img/pay-ico.png";
+import payIco from "../img/pay-ico.svg";
 import dogovor from "../img/dogovor.png";
 import passport from "../img/passport.png";
 

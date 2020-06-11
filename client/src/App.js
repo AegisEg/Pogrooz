@@ -17,6 +17,7 @@ import Modal from "react-modal";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 import { LastLocationProvider } from "react-router-last-location";
+import ScrollToTop from "./Partials/scrollTop";
 Modal.setAppElement("#root");
 
 class App extends React.Component {
@@ -26,10 +27,12 @@ class App extends React.Component {
         <Provider store={store}>
           <YMaps>
             <Router>
-              <LastLocationProvider>
-                <ToastContainer />
-                <AppRouter />
-              </LastLocationProvider>
+              <ScrollToTop>
+                <LastLocationProvider>
+                  <ToastContainer />
+                  <AppRouter />
+                </LastLocationProvider>
+              </ScrollToTop>
             </Router>
           </YMaps>
         </Provider>

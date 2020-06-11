@@ -97,7 +97,11 @@ class Header extends React.Component {
 
   render() {
     return (
-      <header className="header container-fluid">
+      <header
+        className={`header ${
+          this.props.className ? this.props.className : "container-fluid"
+        } `}
+      >
         <div className="header-content row">
           <div className="header-logo d-none d-md-flex align-items-center">
             <Link to="/">
@@ -167,8 +171,11 @@ class Header extends React.Component {
             <div className="header-fast-access">
               <div
                 className="fast-access-btn  notifications not-empty"
-                onClick={() => {
+                onMouseEnter={() => {
                   this.showNotificationsPop();
+                }}
+                onMouseLeave={() => {
+                  this.hideNotificationsPop();
                 }}
               >
                 <img src={notificationsFill} alt="Уведомления" />
@@ -189,8 +196,11 @@ class Header extends React.Component {
               </div>
               <div
                 className="fast-access-btn messages not-empty"
-                onClick={() => {
+                onMouseEnter={() => {
                   this.showMessagesPop();
+                }}
+                onMouseLeave={() => {
+                  this.hideMessagesPop();
                 }}
               >
                 <img src={support} alt="Тех. Поддержка" />
@@ -214,7 +224,7 @@ class Header extends React.Component {
 
           {this.props.user.isAuth && (
             <div className="header-additionals d-md-block d-none">
-              <Link to="/register" className="register">
+              <Link to="/offer-create" className="register">
                 <Button
                   type="fill"
                   className="d-none d-lg-block"
@@ -253,12 +263,17 @@ class Header extends React.Component {
                 className="header-profile-name"
               >
                 <p
-                  style={{ margin: 0, fontSize: 14, lineHeight: "16px" }}
+                  style={{
+                    margin: 0,
+                    fontSize: 14,
+                    lineHeight: "16px",
+                    minWidth: "123px",
+                  }}
                 >{`${this.props.user.lastName} ${this.props.user.firstName}`}</p>
-                <p style={{ margin: 0, fontSize: 12, lineHeight: "15px" }}>
+                <p style={{ margin: 0, fontSize: 12, lineHeight: "14px" }}>
                   Физ лицо
                 </p>
-                <p style={{ margin: 0, fontSize: 12, lineHeight: "15px" }}>
+                <p style={{ margin: 0, fontSize: 12, lineHeight: "14px" }}>
                   <span
                     className="mr-2"
                     onClick={(e) => {
@@ -305,14 +320,18 @@ class Header extends React.Component {
                       Мои заказы
                     </div>
                   </Link>
-                  <div className="profile-menu-item">
-                    <img src={add} alt="Добавить заказ" />
-                    Добавить заказ
-                  </div>
-                  <div className="profile-menu-item">
-                    <img src={acceptedOrders} alt="Взятые предложения" />
-                    Взятые предложения
-                  </div>
+                  <Link to="/order-create">
+                    <div className="profile-menu-item">
+                      <img src={add} alt="Добавить заказ" />
+                      Добавить заказ
+                    </div>
+                  </Link>
+                  <Link to="/taken-offers">
+                    <div className="profile-menu-item">
+                      <img src={acceptedOrders} alt="Взятые предложения" />
+                      Взятые предложения
+                    </div>
+                  </Link>
                   <div className="profile-menu-item">
                     <img src={geoDetect} alt="Отслеживание" />
                     Отслеживание

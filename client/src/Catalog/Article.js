@@ -10,7 +10,7 @@ import RequestModal from "../Modal/RequestModal.js";
 //IMGS
 import ImgActiveStar from "../img/active-star.png";
 import ArrowDown from "../img/arrowDownperple.svg";
-import payIco from "../img/pay-ico.png";
+import payIco from "../img/pay-ico.svg";
 import dogovor from "../img/dogovor.png";
 import passport from "../img/passport.png";
 import yellowAngle from "../img/yellowAngle.png";
@@ -221,7 +221,7 @@ class Article extends React.Component {
                 <span className="d-flex align-items-center mx-3 input-action pop-wrapper position-relative">
                   <img src={reviews} alt="reviews" />
                   <div className="ml-2">Смотреть отзыв</div>
-                  <div className="pop-block padding left">
+                  <div className="pop-block padding left text-left">
                     <div className="padding pop-block-item-simple pb-0 noborder nohref">
                       Текст отзыва при наведении на пункт “Смотреть отзыв”
                     </div>
@@ -393,21 +393,18 @@ class Article extends React.Component {
                   <span>{this.props.article.carName}</span>
                   <CSSTransitionGroup
                     transitionName="height-animation-item"
-                    transitionEnterTimeout={300}
-                    transitionLeaveTimeout={300}
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
                     style={{
                       display: "contents",
                     }}
                   >
                     {this.state.showMore && (
-                      <div>
-                        <img
-                          className="w-100  moreinfo"
-                          src={this.props.article.carImg}
-                          style={{ height: "100%" }}
-                          alt=""
-                        />
-                      </div>
+                      <img
+                        className="w-100  moreinfo"
+                        src={this.props.article.carImg}
+                        alt=""
+                      />
                     )}
                   </CSSTransitionGroup>
                 </div>
@@ -416,20 +413,23 @@ class Article extends React.Component {
 
                   <CSSTransitionGroup
                     transitionName="height-animation-item"
-                    transitionEnterTimeout={300}
-                    transitionLeaveTimeout={300}
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
                     style={{
                       display: "contents",
                     }}
                   >
                     {this.state.showMore && (
-                      <div className="moreinfo" style={{ height: "100px" }}>
+                      <div
+                        className="moreinfo"
+                        style={{
+                          height: "100px",
+                        }}
+                      >
                         <Map
                           defaultState={{ center: [55.75, 37.57], zoom: 15 }}
                           width="100%"
                           height="100px"
-                          instanceRef={(ref) => {                          
-                          }}
                         />
                       </div>
                     )}
@@ -439,14 +439,19 @@ class Article extends React.Component {
                   <span>{this.props.article.toLocation}</span>
                   <CSSTransitionGroup
                     transitionName="height-animation-item"
-                    transitionEnterTimeout={300}
-                    transitionLeaveTimeout={300}
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
                     style={{
                       display: "contents",
                     }}
                   >
                     {this.state.showMore && (
-                      <div className="moreinfo" style={{ height: "100px" }}>
+                      <div
+                        className="moreinfo"
+                        style={{
+                          height: "100px",
+                        }}
+                      >
                         <Map
                           defaultState={{ center: [55.75, 37.57], zoom: 15 }}
                           width="100%"
@@ -483,15 +488,23 @@ class Article extends React.Component {
                     {this.props.article.date.time}
                   </span>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-3">
                   <span>{this.props.article.price}</span>
                 </div>
-                <div className="col-md-3">
+                <div className="col-md-2">
                   <span>
                     Рейтинг: &nbsp;
                     <span className="d-inline-block">
                       {this.props.article.rating}
-                      <img src={ImgActiveStar} alt="ImgActiveStar" />
+                      <img
+                        src={ImgActiveStar}
+                        style={{
+                          position: "relative",
+                          top: "1px",
+                        }}
+                        className="ml-1"
+                        alt="ImgActiveStar"
+                      />
                     </span>
                   </span>
                 </div>
@@ -499,8 +512,8 @@ class Article extends React.Component {
             </div>
             <CSSTransitionGroup
               transitionName="height-animation"
-              transitionEnterTimeout={300}
-              transitionLeaveTimeout={300}
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={500}
             >
               {this.state.showMore && (
                 <div className="row moreinfo_block">
@@ -684,33 +697,33 @@ class Article extends React.Component {
               </div>
             </div>
             {this.props.article.user.id === this.props.user.id &&
-                  this.renderInput()}
-                {this.props.article.user.id !== this.props.user.id && (
-                  <>
-                    <Button
-                      type="fill"
-                      className="get-article"
-                      paddingVertical={"15px"}
-                      paddingHorizontal={"35px"}
-                      fontSize={"14px"}
-                      onClick={() => {
-                        if (this.props.user.isAuth) {
-                          this.setState({
-                            isOpenModalRequest: !this.state.isOpenModalRequest,
-                          });
-                        } else this.props.history.push("/login");
-                      }}
-                    >
-                      ВЗЯТЬ
-                    </Button>
-                    <RequestModal
-                      isOpen={this.state.isOpenModalRequest}
-                      onRequestClose={() => {
-                        this.setState({ isOpenModalRequest: false });
-                      }}
-                    />
-                  </>
-                )}
+              this.renderInput()}
+            {this.props.article.user.id !== this.props.user.id && (
+              <>
+                <Button
+                  type="fill"
+                  className="get-article"
+                  paddingVertical={"15px"}
+                  paddingHorizontal={"35px"}
+                  fontSize={"14px"}
+                  onClick={() => {
+                    if (this.props.user.isAuth) {
+                      this.setState({
+                        isOpenModalRequest: !this.state.isOpenModalRequest,
+                      });
+                    } else this.props.history.push("/login");
+                  }}
+                >
+                  ВЗЯТЬ
+                </Button>
+                <RequestModal
+                  isOpen={this.state.isOpenModalRequest}
+                  onRequestClose={() => {
+                    this.setState({ isOpenModalRequest: false });
+                  }}
+                />
+              </>
+            )}
           </>
         )}
         {this.state.dataFancybox.images && (

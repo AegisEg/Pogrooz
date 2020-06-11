@@ -11,6 +11,7 @@ import CheckBox from "../../Elements/CheckBox";
 import ArticleShow from "../../Catalog/ArticleShow";
 import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
+import { ReactComponent as AngleSvg } from "../../img/angle-right.svg";
 //IMGS
 import nextQuestEnable from "../../img/nextQuestEnable.png";
 
@@ -648,14 +649,14 @@ class OfferCreate extends React.Component {
                 this.state.currentTab >= 1 ? "active" : ""
               }`}
             >
-              Описание авто <img src={nextQuestEnable} alt="" />
+              Описание авто <AngleSvg />
             </div>
             <div
               className={`col-md-3 col-sm-6 col-12 ${
                 this.state.currentTab >= 2 ? "active" : ""
               }`}
             >
-              Маршрут <img src={nextQuestEnable} alt="" />
+              Маршрут <AngleSvg />
             </div>
             <div
               className={`col-md-3 col-sm-6 col-12 ${
@@ -663,7 +664,7 @@ class OfferCreate extends React.Component {
               }`}
             >
               Описание груза
-              <img src={nextQuestEnable} alt="" />
+              <AngleSvg />
             </div>
             <div
               className={`col-md-3 col-sm-6 col-12 ${
@@ -671,7 +672,6 @@ class OfferCreate extends React.Component {
               }`}
             >
               Публикация заказа
-              <img src={nextQuestEnable} alt="" />
             </div>
           </div>
           <div className="steps-create">

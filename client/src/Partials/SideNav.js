@@ -21,6 +21,10 @@ import sidebarAngleOpen from "../img/sidebarAngleOpen.png";
 import addIcon from "../img/add-icon.svg";
 import chat from "../img/chat.svg";
 import ruble from "../img/ruble.svg";
+import working from "../img/working.svg";
+import completed from "../img/completed.svg";
+import trash from "../img/trash.svg";
+import download from "../img/download.svg";
 // Images END
 
 // Redux
@@ -42,29 +46,29 @@ var menu = [
     className: "yellow",
   },
   {
-    name: "Мои заказ",
+    name: "Мои заказы",
     icon: myOrders,
     // role: "cargo",
     childlist: [
       {
         name: "Открытые",
         to: "/my-orders-open",
-        icon: chatOrder,
+        icon: myOrders,
       },
       {
         name: "В работе",
         to: "/my-orders-working",
-        icon: chatUser,
+        icon: working,
       },
       {
         name: "Завершенные",
         to: "/my-orders-completed",
-        icon: chatUser,
+        icon: completed,
       },
       {
         name: "Корзина",
         to: "/my-orders-deleted",
-        icon: chatUser,
+        icon: trash,
       },
     ],
   },
@@ -76,22 +80,22 @@ var menu = [
       {
         name: "Открытые",
         to: "/my-offers-open",
-        icon: chatOrder,
+        icon: acceptedOrders,
       },
       {
         name: "В работе",
         to: "/my-offers-working",
-        icon: chatUser,
+        icon: working,
       },
       {
         name: "Завершенные",
         to: "/my-offers-completed",
-        icon: chatUser,
+        icon: completed,
       },
       {
         name: "Корзина",
         to: "/my-offers-deleted",
-        icon: chatUser,
+        icon: trash,
       },
     ],
   },
@@ -161,6 +165,14 @@ var menu = [
     name: "Техподдержка",
     to: "/support",
     icon: chat,
+  },
+  {
+    name: `Шаблон договора 
+    между Перевозчиком 
+    и Грузовладельцем`,
+    to: "/dowload",
+    icon: download,
+    className: "download-order",
   },
 ];
 

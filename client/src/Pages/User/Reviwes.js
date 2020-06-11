@@ -79,7 +79,7 @@ class Reviews extends React.Component {
                           заказ №{item.articleWith}
                         </div>
                         <div
-                          className="col f-14 d-flex"
+                          className="col f-14 d-flex align-items-center"
                           style={{
                             whiteSpace: "pre-line",
                             maxWidth: "190px",

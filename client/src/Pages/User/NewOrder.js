@@ -10,9 +10,10 @@ import CheckBox from "../../Elements/CheckBox";
 import { Link } from "react-router-dom";
 import ArticleShow from "../../Catalog/ArticleShow";
 import { connect } from "react-redux";
+
 import { CSSTransitionGroup } from "react-transition-group";
 //IMGS
-import nextQuestEnable from "../../img/nextQuestEnable.png";
+import { ReactComponent as AngleSvg } from "../../img/angle-right.svg";
 
 import articlestest from "../../config/articlestest.js";
 
@@ -679,14 +680,14 @@ class OrderCreate extends React.Component {
                 this.state.currentTab >= 1 ? "active" : ""
               }`}
             >
-              Описание авто <img src={nextQuestEnable} alt="" />
+              Описание авто <AngleSvg />
             </div>
             <div
               className={`col-md-3 col-sm-6 col-12 ${
                 this.state.currentTab >= 2 ? "active" : ""
               }`}
             >
-              Маршрут <img src={nextQuestEnable} alt="" />
+              Маршрут <AngleSvg />
             </div>
             <div
               className={`col-md-3 col-sm-6 col-12 ${
@@ -694,7 +695,7 @@ class OrderCreate extends React.Component {
               }`}
             >
               Описание груза
-              <img src={nextQuestEnable} alt="" />
+              <AngleSvg />
             </div>
             <div
               className={`col-md-3 col-sm-6 col-12 ${
@@ -702,7 +703,7 @@ class OrderCreate extends React.Component {
               }`}
             >
               Публикация заказа
-              <img src={nextQuestEnable} alt="" />
+              <AngleSvg />
             </div>
           </div>
           <div className="steps-create">
