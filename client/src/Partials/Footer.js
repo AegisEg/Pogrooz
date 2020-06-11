@@ -1,5 +1,6 @@
 // App
 import React from "react";
+import { connect } from "react-redux";
 
 import logo from "../img/footer_logo.svg";
 //Иконки соцсетей
@@ -46,6 +47,11 @@ class Footer extends React.Component {
                 <li>
                   <Link to="/faq">Интсрукция</Link>
                 </li>
+                {!this.props.user.isAuth && (
+                  <li>
+                    <Link to="/register">Регистрация</Link>
+                  </li>
+                )}
               </ul>
               <p>
                 <span className="text-uppercase title-ul">
@@ -60,8 +66,13 @@ class Footer extends React.Component {
                   <Link to="/faq">Интсрукция</Link>
                 </li>
                 <li>
-                  <Link to="/faq">Тарифы</Link>
+                  <Link to="/tariffs">Тарифы</Link>
                 </li>
+                {!this.props.user.isAuth && (
+                  <li>
+                    <Link to="/register">Регистрация</Link>
+                  </li>
+                )}
               </ul>
             </div>
             <div className="footer_list col-min380-12 col-576px-6  col-sm-7">
@@ -72,13 +83,13 @@ class Footer extends React.Component {
               </p>
               <ul>
                 <li>
-                  <Link to="/faq">Найти предложение на грузоперевозку</Link>
+                  <Link to="/search">Найти предложение на грузоперевозку</Link>
                 </li>
                 <li>
-                  <Link to="/faq">Найти Перевозчика</Link>
+                  <Link to="/search">Найти Перевозчика</Link>
                 </li>
                 <li>
-                  <Link to="/faq">Найти заказ</Link>
+                  <Link to="/search">Найти заказ</Link>
                 </li>
               </ul>
               <p>
@@ -214,5 +225,9 @@ class Footer extends React.Component {
     );
   }
 }
-
-export default Footer;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+export default connect(mapStateToProps)(Footer);

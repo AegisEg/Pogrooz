@@ -26,7 +26,14 @@ class Button extends React.Component {
           }
         }}
       >
-        <span style={{ zIndex: 2, textAlign: "center", width: "100%" }}>
+        <span
+          style={{
+            zIndex: 2,
+            textAlign: "center",
+            position: "relative",
+            width: "100%",
+          }}
+        >
           {this.props.children}
         </span>
       </span>

@@ -30,7 +30,7 @@ class FeedbackModal extends React.Component {
         <Input type="text" className="my-2" placeholder="Имя" />
         <p className="text-right">
           <span
-            className={`d-block f-14 
+            className={`d-block text-center f-14 
             ${this.state.isMailSend ? `visible` : `invisible`}`}
           >
             Сообщение отправлено

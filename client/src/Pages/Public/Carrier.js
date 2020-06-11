@@ -11,11 +11,11 @@ import Filter from "../../Elements/Filter";
 
 // Images
 import Imgtophone from "../../img/tophone.png";
-import ImgLk from "../../img/lk.png";
 import ImgChat from "../../img/chat.png";
 import ImgHistory from "../../img/history.png";
 import ImgPhone from "../../img/phone.png";
 import Imgtamplate from "../../img/tamplate.png";
+import payIco from "../../img/pay-ico.svg";
 
 import questions from "../../config/questions";
 
@@ -41,10 +41,10 @@ class Carrier extends React.Component {
               <img
                 className="carrier-pros-image"
                 src={ImgChat}
-                alt="Удобная коммуникация"
+                alt="Удобный чат с клиентом"
               />
             </div>
-            <p className="carrier-pros-label">Удобная коммуникация</p>
+            <p className="carrier-pros-label">Удобный чат с клиентом</p>
           </div>
           <div className="col-12 col-sm-6 col-md-4 col-lg-2">
             <div className="carrier-pros-image-block">
@@ -82,12 +82,12 @@ class Carrier extends React.Component {
             <div className="carrier-pros-image-block">
               <img
                 className="carrier-pros-image"
-                src={ImgLk}
-                alt="Простой и удобный личный кабинет"
+                src={payIco}
+                alt="Без комиссий за заказ и доплат"
               />
             </div>
             <p className="carrier-pros-label">
-              Простой и удобный личный кабинет
+            Без комиссий за заказ и доплат
             </p>
           </div>
         </div>
@@ -131,9 +131,10 @@ class Carrier extends React.Component {
               <p className="carrier-step-label">Заключайте договор</p>
             </div>
           </div>
-        </div>
-        <div className="carrier-div">
           <hr />
+        </div>
+
+        <div className="carrier-div">
           <h3 className="font-weight-normal f-20">
             Тариф для подключения перевозчиков к порталу PoGrooz
           </h3>

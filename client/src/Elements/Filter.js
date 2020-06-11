@@ -7,6 +7,7 @@ import Select from "../Elements/Select";
 
 import ImgActiveStar from "../img/active-star.png";
 import closePng from "../img/close.png";
+import angle from "../img/angle-up.png";
 import { ReactComponent as FilterImg } from "../img/filter.svg";
 import CheckBox from "./CheckBox";
 
@@ -70,16 +71,12 @@ class Filter extends React.Component {
                 Найти
               </Button>
             </Link>
-            {!this.state.show ? (
-              <FilterImg
-                className="settingsSvg ml-3"
-                onClick={() => {
-                  this.setState({ show: true });
-                }}
-              />
-            ) : (
-              ""
-            )}
+            <FilterImg
+              className={`settingsSvg ml-3 ${this.state.show ? "active" : ""}`}
+              onClick={() => {
+                this.setState({ show: true });
+              }}
+            />
           </div>
           {this.state.show && (
             <>
@@ -308,7 +305,7 @@ class Filter extends React.Component {
               </div>
             </>
           )}
-          <div className="filter-actions w-100 row justify-content-end">
+          <div className="filter-actions w-100 row justify-content-end mb-3">
             {this.state.show ? (
               <>
                 <Link
@@ -332,16 +329,17 @@ class Filter extends React.Component {
                   onClick={() => {
                     this.setState({ show: !this.state.show });
                   }}
-                  className="filter-open f-14"
+                  className="filter-open"
                 >
                   Скрыть параметры поиска
+                  <img src={angle} className="ml-2" alt="angle" />
                 </Link>
                 <Link
                   to={false}
                   onClick={() => {
                     this.setState({ show: !this.state.show });
                   }}
-                  className="filter-close f-14"
+                  className="filter-close mr-3 f-14"
                 >
                   <img src={closePng} alt="closePng" />
                 </Link>

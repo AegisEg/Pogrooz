@@ -32,10 +32,10 @@ class Articles extends React.Component {
               <div className="col-md-3">
                 <span>Загрузка</span>
               </div>
-              <div className="col-md-2">
+              <div className="col-md-3">
                 <span>Цена</span>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-2">
                 <span>Еще</span>
               </div>
             </div>

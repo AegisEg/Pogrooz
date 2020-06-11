@@ -64,7 +64,6 @@ class AppRouter extends React.Component {
     return (
       this.state.isRender && (
         <>
-          <Header />
           <Switch>
             {routes.map((route, index) => {
               switch (route.type) {
@@ -137,15 +136,18 @@ class AppRouter extends React.Component {
         render={() =>
           this.props.user.isAuth ? (
             !role || this.props.user.type === role ? (
-              <div className="row mx-0">
-                <SideNav />
-                <div className="content col">
-                  <div className={`lk-page ${isChat ? "messages" : ""}`}>
-                    {children}
+              <>
+                <Header className="different-width" />
+                <div className="row mx-0">
+                  <SideNav />
+                  <div className="content col">
+                    <div className={`lk-page ${isChat ? "messages" : ""}`}>
+                      {children}
+                    </div>
+                    <Footer />
                   </div>
-                  <Footer />
                 </div>
-              </div>
+              </>
             ) : (
               <NoMatch />
             )
@@ -168,6 +170,7 @@ class AppRouter extends React.Component {
         render={() =>
           !this.props.user.isAuth ? (
             <>
+              <Header />
               {children}
               <Footer />
             </>
@@ -188,6 +191,7 @@ class AppRouter extends React.Component {
         {...rest}
         render={() => (
           <>
+            <Header />
             {children}
             <Footer />
           </>
@@ -201,15 +205,19 @@ class AppRouter extends React.Component {
         {...rest}
         render={() =>
           this.props.user.isAuth ? (
-            <div className="row mx-0">
-              <SideNav />
-              <div className="content col">
-                <div className="lk-page">{children}</div>
-                <Footer />
+            <>
+              <Header className="different-width" />
+              <div className="row mx-0">
+                <SideNav />
+                <div className="content col">
+                  <div className="lk-page">{children}</div>
+                  <Footer />
+                </div>
               </div>
-            </div>
+            </>
           ) : (
             <>
+              <Header />
               <div className="page-common">{children}</div>
               <Footer />
             </>

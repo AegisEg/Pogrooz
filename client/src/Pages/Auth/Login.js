@@ -8,7 +8,7 @@ import Button from "../../Elements/Button";
 import CheckBox from "../../Elements/CheckBox";
 import Input from "../../Elements/Input";
 import { Link } from "react-router-dom";
-
+import { withRouter } from "react-router-dom";
 // Redux
 import { connect } from "react-redux";
 import * as userActions from "../../redux/actions/user";
@@ -42,8 +42,10 @@ class Login extends React.Component {
         } else {
           const { cookies } = this.props;
           cookies.set("apiToken", data.token, { path: "/" });
-
           this.props.userActions.loginUser(data.user);
+          if (data.user.type == "carrier")
+            this.props.history.push("/my-orders-open");
+          else this.props.history.push("/taken-offers");
         }
 
         this.setState({ isFetching: false });
@@ -141,4 +143,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withCookies(Login));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withCookies(Login)));

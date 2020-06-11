@@ -5,7 +5,7 @@ import CheckBox from "./CheckBox";
 class SettingsFiled extends React.Component {
   render() {    
     return (
-      <div className="row mx-0 align-items-center user-settings">
+      <div className="row  align-items-center user-settings">
         <div className="filed-label">{this.props.label}</div>
         <div className="col fields-checkbox">
           <span className="align-middle">

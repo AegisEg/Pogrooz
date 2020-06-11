@@ -18,7 +18,7 @@ class Slider extends React.Component {
 
   updateDimensions = () => {
     this.refs.scrollLeft = 0;
-    this.checkButtons(0, 0);
+    this.checkButtons(this.refs.offsetWidth, this.refs.scrollLeft);
   };
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
@@ -29,13 +29,19 @@ class Slider extends React.Component {
   }
 
   checkButtons = (offsetWidthValue, scrollLeftValue) => {
-    this.setState({
-      prevDisable: scrollLeftValue <= 0 ? true : false,
-      nextDisable:
-        scrollLeftValue + offsetWidthValue >= this.refs.scrollWidth
-          ? true
-          : false,
-    });
+    if (offsetWidthValue === this.refs.scrollWidth) {
+      this.setState({
+        prevDisable: true,
+        nextDisable: true,
+      });
+    } else
+      this.setState({
+        prevDisable: scrollLeftValue <= 0 ? true : false,
+        nextDisable:
+          scrollLeftValue + offsetWidthValue >= this.refs.scrollWidth
+            ? true
+            : false,
+      });
   };
 
   render() {

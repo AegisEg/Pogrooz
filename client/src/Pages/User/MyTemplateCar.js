@@ -6,7 +6,7 @@ import Button from "../../Elements/Button";
 import settings from "../../config/settings";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import payIco from "../../img/pay-ico.png";
+import payIco from "../../img/pay-ico.svg";
 import dogovor from "../../img/dogovor.png";
 //IMGS
 import nextQuestEnable from "../../img/nextQuestEnable.png";

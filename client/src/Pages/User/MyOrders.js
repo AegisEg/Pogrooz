@@ -20,6 +20,7 @@ class MyOrders extends React.Component {
           }}
         >
           Все
+          <div class="action-counter"><span>3</span></div>
         </span>
 
         {this.props.statusArticle.length > 1 &&

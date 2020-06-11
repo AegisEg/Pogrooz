@@ -20,12 +20,13 @@ class PanelRecord extends React.Component {
           alt="ResetRecord"
         />
         <div className="col input-chat">
-          <canvas></canvas>
+          <canvas id="voice-canvas"></canvas>
           {!this.state.isRecordPause && (
             <img
               src={RecordPause}
               onClick={() => {
                 this.setState({ isRecordPause: true });
+                this.props.stopRec();
               }}
               className="RecordPauseStart"
               alt="RecordPause"
@@ -35,7 +36,7 @@ class PanelRecord extends React.Component {
             <img
               src={RecordPlay}
               onClick={() => {
-                this.setState({ isRecordPause: false });
+                this.props.stopRec();
               }}
               className="RecordPauseStart"
               alt="RecordPlay"
@@ -48,7 +49,7 @@ class PanelRecord extends React.Component {
             width: "26px",
           }}
         >
-          <img src={send}  onClick={this.props.recordReset} alt="microphone" />
+          <img src={send} onClick={this.props.recordReset} alt="microphone" />
         </div>
       </>
     );
