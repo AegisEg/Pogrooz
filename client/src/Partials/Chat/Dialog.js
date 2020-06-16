@@ -10,7 +10,6 @@ const isIE = /*@cc_on!@*/ false || !!document.documentMode;
 
 // Edge 20+
 const isEdge = !isIE && !!window.StyleMedia;
-let waitActiveUser = false;
 
 class Dialog extends React.Component {
   state = {
@@ -85,16 +84,16 @@ class Dialog extends React.Component {
       active = true;
     }
     //&& !!this.props.unRead.length
-    if (!this.state.activePage && active) {
-      if (waitActiveUser) clearTimeout(waitActiveUser);
+    // if (!this.state.activePage && active) {
+    //   if (waitActiveUser) clearTimeout(waitActiveUser);
 
-      // this.props.readMessages();
-      this.setState({ activePage: true });
+    //   // this.props.readMessages();
+    //   this.setState({ activePage: true });
 
-      waitActiveUser = setTimeout(() => {
-        this.setState({ activePage: false });
-      }, 3000);
-    }
+    //   waitActiveUser = setTimeout(() => {
+    //     this.setState({ activePage: false });
+    //   }, 3000);
+    // }
   }
   blurPage() {
     this.setState({ activePage: false });
@@ -183,7 +182,7 @@ class Dialog extends React.Component {
                 },
               }}
             />
-            <TimeTag  />
+            <TimeTag />
             <Message
               isAva={true}
               isHead={true}

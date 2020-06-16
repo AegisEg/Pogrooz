@@ -103,16 +103,18 @@ class OfferCreate1 extends React.Component {
 
         <div className="row order-swicher-wrapper">
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              lableClassname="f-16"
-              val={this.state.extraOptions}
-              onChange={() => {
-                this.setState({
-                  extraOptions: !this.state.extraOptions,
-                });
-              }}
-              lable="Дополнительные параметры"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                lableClassname="f-16"
+                val={this.state.extraOptions}
+                onChange={() => {
+                  this.setState({
+                    extraOptions: !this.state.extraOptions,
+                  });
+                }}
+                lable="Дополнительные параметры"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -136,26 +138,28 @@ class OfferCreate1 extends React.Component {
                     <CheckBox id="cargo4" text="Мед. книжка" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Нужны поддоны" />
+                    <CheckBox id="cargo5" text="Нужны поддоны" />
                   </div>
                   <div className="mt-2 d-sm-flex">
-                    <CheckBox id="cargo4" text="Сопровождение" />
+                    <CheckBox id="cargo6" text="Сопровождение" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Услуги грузчика" />
+                    <CheckBox id="cargo7" text="Услуги грузчика" />
                   </div>
                 </div>
               )}
             </CSSTransitionGroup>
           </div>
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              val={this.state.doContract}
-              onChange={() => {
-                this.setState({ doContract: !this.state.doContract });
-              }}
-              lable="Заключение договора"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                val={this.state.doContract}
+                onChange={() => {
+                  this.setState({ doContract: !this.state.doContract });
+                }}
+                lable="Заключение договора"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -167,31 +171,33 @@ class OfferCreate1 extends React.Component {
               {this.state.doContract && (
                 <div className="pt-2 cheked-list">
                   <div className="mt-2">
-                    <CheckBox id="cargo" text="Физ лицо" />
+                    <CheckBox id="cargo8" text="Физ лицо" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo2" text="ООО" />
+                    <CheckBox id="cargo9" text="ООО" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo3" text="ИП" />
+                    <CheckBox id="cargo10" text="ИП" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Самозанятый" />
+                    <CheckBox id="cargo11" text="Самозанятый" />
                   </div>
                 </div>
               )}
             </CSSTransitionGroup>
           </div>
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              val={this.state.paymentMethods}
-              onChange={() => {
-                this.setState({
-                  paymentMethods: !this.state.paymentMethods,
-                });
-              }}
-              lable="Способы оплаты водителю"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                val={this.state.paymentMethods}
+                onChange={() => {
+                  this.setState({
+                    paymentMethods: !this.state.paymentMethods,
+                  });
+                }}
+                lable="Способы оплаты водителю"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -203,24 +209,27 @@ class OfferCreate1 extends React.Component {
               {this.state.paymentMethods && (
                 <div className="pt-2 cheked-list">
                   <div className="mt-2">
-                    <CheckBox id="cargo" text="Наличные" />
+                    <CheckBox id="cargo12" text="Наличные" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo2" text="На банковскую карту" />
+                    <CheckBox id="cargo13" text="На банковскую карту" />
                   </div>
                   <div className="mt-2">
                     <CheckBox
-                      id="cargo3"
+                      id="cargo14"
                       text="Блиц-перевод (перевод через систему мгновенных денежных переводов)"
                     />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Безналичный расчет" />
+                    <CheckBox id="cargo15" text="Безналичный расчет" />
                     <div className="mt-2 pl-4">
                       <Select
                         className="select175px "
-                        options={[{ value: 4, label: "1 человек" }]}
-                        placeholder="1 человек"
+                        options={[
+                          { value: 1, label: "с ндс" },
+                          { value: 2, label: "без ндс" },
+                        ]}
+                        placeholder="не выбрано"
                       />
                     </div>
                   </div>

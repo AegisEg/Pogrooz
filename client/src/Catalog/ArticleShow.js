@@ -10,8 +10,6 @@ import payIco from "../img/pay-ico.svg";
 import dogovor from "../img/dogovor.png";
 import passport from "../img/passport.png";
 
-// Router
-import { Link } from "react-router-dom";
 
 // Elements
 import { Map } from "react-yandex-maps";

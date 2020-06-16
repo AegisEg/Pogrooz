@@ -13,7 +13,6 @@ import { connect } from "react-redux";
 
 // Elements
 import Button from "../../Elements/Button";
-import { Map } from "react-yandex-maps";
 import NoMatch from "../NoMatch.js";
 import { withLastLocation } from "react-router-last-location";
 
@@ -21,7 +20,7 @@ class ArticlePage extends React.Component {
   state = {};
   render() {
     let article = articlestest.find((item) => {
-      return item.id == this.props.match.params.id;
+      return item.id === this.props.match.params.id;
     });
     if (article)
       return (
@@ -130,7 +129,7 @@ class ArticlePage extends React.Component {
                             </Button>
                           </div>
                         </div>
-                        {article.requests.length != index + 1 && <hr />}
+                        {article.requests.length !== index + 1 && <hr />}
                       </div>
                     );
                   })}

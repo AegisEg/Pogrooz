@@ -15,7 +15,7 @@ class PanelStandart extends React.Component {
     return (
       <>
         <img
-          class="mr-3"
+          className="mr-3"
           style={{
             width: "24px",
           }}
@@ -28,9 +28,8 @@ class PanelStandart extends React.Component {
             onChange={(e) => {
               this.setState({ text: e.target.value });
             }}
-          >
-            {this.state.text}
-          </textarea>
+            value={this.state.text}
+          >{this.state.text}</textarea>
           {!this.state.text && <span className="placeholder">Сообщение</span>}
           <img src={photo} className="photo d-md-block d-none" alt="photo" />
           <img src={smiles} className="smiles" alt="smiles" />

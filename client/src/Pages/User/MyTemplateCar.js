@@ -8,8 +8,6 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import payIco from "../../img/pay-ico.svg";
 import dogovor from "../../img/dogovor.png";
-//IMGS
-import nextQuestEnable from "../../img/nextQuestEnable.png";
 
 class OfferCreate extends React.Component {
   render() {
@@ -51,7 +49,7 @@ class OfferCreate extends React.Component {
                 </div>
                 <div className="px-3 mt-2 mt-md-0">
                   <Button type="fill" className="f-12 px-3 position-relative">
-                    Редактивровать
+                    Редактировать
                     <Link
                       to="/edit-template-auto/1"
                       className="sharected-link"
@@ -136,9 +134,9 @@ class OfferCreate extends React.Component {
                 </div>
                 <div className="px-3 mt-2 mt-md-0">
                   <Button type="fill" className="f-12 px-3 position-relative">
-                    Редактивровать
+                    Редактировать
                     <Link
-                      to="//edit-template-auto/2"
+                      to="/edit-template-auto/2"
                       className="sharected-link"
                     ></Link>
                   </Button>

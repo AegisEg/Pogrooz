@@ -74,7 +74,7 @@ class Filter extends React.Component {
             <FilterImg
               className={`settingsSvg ml-3 ${this.state.show ? "active" : ""}`}
               onClick={() => {
-                this.setState({ show: true });
+                this.setState({ show: !this.state.show });
               }}
             />
           </div>

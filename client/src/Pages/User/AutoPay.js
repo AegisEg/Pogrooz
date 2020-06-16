@@ -16,7 +16,7 @@ class InputCartName extends React.Component {
           value={this.props.value}
           onChange={(e) => {
             let value = e.target.value.toUpperCase();
-            if (/[a-zA-Z]+/gi.test(value) || value.length == 0)
+            if (/[a-zA-Z]+/gi.test(value) || value.length === 0)
               this.props.onChange(value);
           }}
         />
@@ -163,10 +163,8 @@ class AutoPay extends React.Component {
         <h2 className="title mb-0">Настройки автоплатежа</h2>
         <Link
           to="/mytarif"
-          style={{
-            color: "#6C6C6C",
-            fontSize: "12px",
-          }}
+          className="href-hover f-12"
+          
         >
           Вернуться на страницу Мой тариф
         </Link>

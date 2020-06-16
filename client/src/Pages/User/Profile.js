@@ -35,7 +35,6 @@ class Profile extends React.Component {
           Профиль ({this.props.user.type === "cargo" && "Грузовладелец"}
           {this.props.user.type === "carrier" && "Перевозчик"})
         </h2>
-
         <div className="row d-block d-md-flex profile-input-fixed">
           <div className="col">
             <Input
@@ -109,7 +108,6 @@ class Profile extends React.Component {
               }}
             />
           </div>
-
           <div className="col-md-6">
             <h4 className="subtitle">Фотография</h4>
             <Button
@@ -209,29 +207,48 @@ class Profile extends React.Component {
           </div>
 
           <div className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
-            <h4 className="subtitle pb-2">Заключение договора</h4>
+            <h4 className="subtitle pb-0 mb-0">Заключение договора</h4>
+            <div className="f-12 pb-2">Основная форма для аккаунта</div>
             <div
               style={{ marginTop: "4px", marginBottom: 8, lineHeight: "16px" }}
             >
-              <CheckBox id="phyz" text="Физ лицо"></CheckBox>
+              <CheckBox
+                id="individual"
+                value={this.state.typeContract === "individual"}
+                text="Физ лицо"
+                onChange={() => {
+                  if (this.state.typeContract !== "individual") {
+                    this.setState({
+                      typeContract: "individual",
+                      typeContractDetail: "",
+                    });
+                  }
+                }}
+              ></CheckBox>
             </div>
             <div style={{ marginBottom: 8, lineHeight: "16px" }}>
               <CheckBox
-                id="ooo"
+                id="OOO"
+                value={this.state.typeContract === "OOO"}
                 onChange={() => {
-                  this.setState({ isOOO: !this.state.isOOO });
+                  if (this.state.typeContract !== "OOO") {
+                    this.setState({
+                      typeContract: "OOO",
+                      typeContractDetail: "",
+                    });
+                  }
                 }}
                 text="ООО"
               ></CheckBox>
-              {this.state.isOOO && (
+              {this.state.typeContract === "OOO" && (
                 <Input
                   type="text"
                   placeholder="Введите ОГРН"
                   className="d-block"
                   style={{ marginTop: "8px", maxWidth: "320px" }}
-                  value={this.state.country}
+                  value={this.state.typeContractDetail}
                   onChange={(e) => {
-                    this.setState({ firstName: e.target.value });
+                    this.setState({ typeContractDetail: e.target.value });
                   }}
                 />
               )}
@@ -239,30 +256,49 @@ class Profile extends React.Component {
             <div style={{ marginBottom: 8, lineHeight: "16px" }}>
               <CheckBox
                 id="ip"
+                value={this.state.typeContract === "IP"}
                 text="ИП"
                 onChange={() => {
-                  this.setState({ isIP: !this.state.isIP });
+                  if (this.state.typeContract !== "IP") {
+                    this.setState({
+                      typeContract: "IP",
+                      typeContractDetail: "",
+                    });
+                  }
                 }}
               ></CheckBox>
-              {this.state.isIP && (
+              {this.state.typeContract === "IP" && (
                 <Input
                   type="text"
                   placeholder="Введите ИНН"
                   className="d-block"
                   style={{ marginTop: "8px", maxWidth: "320px" }}
-                  value={this.state.country}
+                  value={this.state.typeContractDetail}
                   onChange={(e) => {
-                    this.setState({ firstName: e.target.value });
+                    this.setState({ typeContractDetail: e.target.value });
                   }}
                 />
               )}
             </div>
             <div style={{ marginBottom: 8, lineHeight: "16px" }}>
-              <CheckBox id="single" text="Самозанятый"></CheckBox>
+              <CheckBox
+                value={this.state.typeContract === "self-employed"}
+                id="self-employed"
+                onChange={() => {
+                  if (this.state.typeContract !== "self-employed") {
+                    this.setState({
+                      typeContract: "self-employed",
+                      typeContractDetail: "",
+                    });
+                  }
+                }}
+                text="Самозанятый"
+              ></CheckBox>
             </div>
           </div>
         </div>
-        {this.props.user.type === "carrier" && (
+        {/* //this.props.user.type === "carrier" */}
+        {1 && (
           <div className="row">
             <h4 className=" col-12 subtitle py-0 mb-3 px-3">Паспорт</h4>
             <div className="col-12 col-lg-6  mb-4">

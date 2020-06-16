@@ -25,7 +25,7 @@ class MenuNav extends React.Component {
       {
         id: 3,
         name: "FAQ",
-        href: "/faq",
+        href: this.props.isAuth ? "/support" : "/faq",
         type: "menu",
         width: 0,
       },
@@ -88,10 +88,7 @@ class MenuNav extends React.Component {
               return (
                 item.type === "menu" && (
                   <li key={item.id} style={{ opacity: item.width ? 1 : 0 }}>
-                    <NavLink
-                      to={item.href}
-                      activeClassName="active"
-                    >
+                    <NavLink to={item.href} activeClassName="active">
                       {item.name}
                     </NavLink>
                     <ReactResizeDetector

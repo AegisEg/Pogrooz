@@ -132,6 +132,9 @@ class MobileMenu extends React.Component {
                   )}
                 </div>
               );
+            else {
+              return <div key={index}></div>;
+            }
           })}
         </Menu>
       </>

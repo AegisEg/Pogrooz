@@ -192,7 +192,7 @@ class Messages extends React.Component {
     return (
       <div className="article-page">
         <h2 className="title">
-          {this.state.currentStatus == 2 || this.state.currentStatus == "all"
+          {this.state.currentStatus === 2 || this.state.currentStatus === "all"
             ? "Сообщения"
             : "Сообщения по заказам/предложениям"}
         </h2>

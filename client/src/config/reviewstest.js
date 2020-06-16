@@ -1,5 +1,4 @@
 import avatar from "../img/avatar.png";
-import example from "../img/example.png";
 export default [
   {
     id: 1,

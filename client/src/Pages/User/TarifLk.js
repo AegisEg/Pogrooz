@@ -105,7 +105,7 @@ class PayHistoryTable extends React.Component {
           >
             1 неделя
           </div>
-          <div className="col">18.12.2025- 25.12.2025 г</div>
+          <div className="col date">18.12.2025&nbsp;-&nbsp;25.12.2025г</div>
           <div
             className="col"
             style={{
@@ -156,7 +156,7 @@ class PayHistoryTable extends React.Component {
           >
             1 неделя
           </div>
-          <div className="col">18.12.2025- 25.12.2025 г</div>
+          <div className="col date">18.12.2025&nbsp;-&nbsp;25.12.2025г</div>
           <div
             className="col"
             style={{
@@ -171,7 +171,7 @@ class PayHistoryTable extends React.Component {
           <div
             className="col"
             style={{
-              maxWidth: "200px",
+              maxWidth: "220px",
             }}
           >
             18.12.2025 г
@@ -208,7 +208,7 @@ class PayHistoryTable extends React.Component {
           >
             1 неделя
           </div>
-          <div className="col">18.12.2025- 25.12.2025 г</div>
+          <div className="col date">18.12.2025&nbsp;-&nbsp;25.12.2025г</div>
           <div
             className="col"
             style={{
@@ -249,7 +249,15 @@ class Support extends React.Component {
           указывается в ознакомительных целях.
         </p>
         <span className="mb-4 d-block">
-          <Link to="/autopay">Настройка автоплатежа</Link>
+          <Link
+            to="/autopay"
+            className="f-14"
+            style={{
+              color: "#000",
+            }}
+          >
+            Настройка автоплатежа
+          </Link>
         </span>
       </div>
     );
