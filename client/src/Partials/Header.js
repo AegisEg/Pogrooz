@@ -7,17 +7,9 @@ import { withRouter } from "react-router-dom";
 import logo from "../logo.svg";
 import minilogo from "../img/logoMobile.svg";
 import smallminilogo from "../img/mini-logo.svg";
-import profile from "../img/profile.png";
-import myOrders from "../img/my-orders.png";
-import add from "../img/add.png";
-import acceptedOrders from "../img/accepted-orders.png";
-import geoDetect from "../img/geo-detect.png";
 import notificationsFill from "../img/notifications-fill.png";
-import support from "../img/support.png";
+import { ReactComponent as Support } from "../img/support.svg";
 import ImgActiveStar from "../img/active-star.png";
-
-// Router
-import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../Elements/Button";
@@ -28,7 +20,8 @@ import MobileMenu from "./MobileMenu";
 import { connect } from "react-redux";
 import * as userActions from "../redux/actions/user";
 import { bindActionCreators } from "redux";
-
+import { Link } from "react-router-dom";
+import menu from "../config/sideMenu";
 import ArrowDown from "../img/arrowDown.png";
 
 class Header extends React.Component {
@@ -38,8 +31,6 @@ class Header extends React.Component {
     this.hideProfileMenu = this.hideProfileMenu.bind(this);
     this.showNotificationsPop = this.showNotificationsPop.bind(this);
     this.hideNotificationsPop = this.hideNotificationsPop.bind(this);
-    this.showMessagesPop = this.showMessagesPop.bind(this);
-    this.hideMessagesPop = this.hideMessagesPop.bind(this);
     this.showTarrifPop = this.showTarrifPop.bind(this);
     this.hideTarrifPop = this.hideTarrifPop.bind(this);
   }
@@ -77,15 +68,6 @@ class Header extends React.Component {
   hideNotificationsPop() {
     this.setState({ showNotificationsPop: false });
     document.removeEventListener("click", this.hideNotificationsPop);
-  }
-  showMessagesPop() {
-    this.setState({ showMessagesPop: true });
-    document.addEventListener("click", this.hideMessagesPop);
-  }
-
-  hideMessagesPop() {
-    this.setState({ showMessagesPop: false });
-    document.removeEventListener("click", this.hideMessagesPop);
   }
 
   logout() {
@@ -127,7 +109,7 @@ class Header extends React.Component {
               </Link>
             )}
           </div>
-          <MenuNav />
+          <MenuNav isAuth={this.props.user.isAuth} />
           <div className="col header-stub"></div>
           {!this.props.user.isAuth && (
             <>
@@ -194,30 +176,13 @@ class Header extends React.Component {
                   </div>
                 )}
               </div>
-              <div
-                className="fast-access-btn messages not-empty"
-                onMouseEnter={() => {
-                  this.showMessagesPop();
-                }}
-                onMouseLeave={() => {
-                  this.hideMessagesPop();
-                }}
-              >
-                <img src={support} alt="Тех. Поддержка" />
-                <div className="action-counter">
-                  <span>3</span>
-                </div>
-                {this.state.showMessagesPop && (
-                  <div className="pop-block">
-                    <div className="pop-block-item">
-                      В личном кабинете произошли изменения
-                    </div>
-                    <div className="pop-block-item">
-                      В личном кабинете произошли изменения
-                    </div>
-                    <div className="pop-block-additionally">Скрыть</div>
+              <div className="fast-access-btn messages not-empty">
+                <Link to="/messages">
+                  <Support />
+                  <div className="action-counter">
+                    <span>3</span>
                   </div>
-                )}
+                </Link>
               </div>
             </div>
           )}
@@ -228,7 +193,7 @@ class Header extends React.Component {
                 <Button
                   type="fill"
                   className="d-none d-lg-block"
-                  paddingVertical={"11px"}
+                  paddingVertical={"8px"}
                   paddingHorizontal={"27px"}
                 >
                   Добавить предложение
@@ -236,7 +201,7 @@ class Header extends React.Component {
                 <Button
                   type="fill"
                   className="d-block d-lg-none"
-                  paddingVertical={"11px"}
+                  paddingVertical={"8px"}
                   paddingHorizontal={"13px"}
                 >
                   <img
@@ -275,18 +240,14 @@ class Header extends React.Component {
                 </p>
                 <p style={{ margin: 0, fontSize: 12, lineHeight: "14px" }}>
                   <span
-                    className="mr-2"
+                    className="rating-head"
                     onClick={(e) => {
                       e.stopPropagation();
                       this.props.history.push("/reviews");
                     }}
                   >
                     <span>4,6</span>
-                    <img
-                      style={{ verticalAlign: "sub" }}
-                      src={ImgActiveStar}
-                      alt="ImgActiveStar"
-                    />
+                    <img src={ImgActiveStar} alt="ImgActiveStar" />
                   </span>
                   {this.props.user.type === "cargo" && "Грузовладелец"}
                   {this.props.user.type === "carrier" && "Перевозчик"}
@@ -308,34 +269,18 @@ class Header extends React.Component {
               </div>
               {this.state.showProfileMenu && (
                 <div className="profile-menu">
-                  <Link to="/profile">
-                    <div className="profile-menu-item">
-                      <img src={profile} alt="Профиль" />
-                      Профиль
-                    </div>
-                  </Link>
-                  <Link to="/my-orders-open">
-                    <div className="profile-menu-item">
-                      <img src={myOrders} alt="Мои заказы" />
-                      Мои заказы
-                    </div>
-                  </Link>
-                  <Link to="/order-create">
-                    <div className="profile-menu-item">
-                      <img src={add} alt="Добавить заказ" />
-                      Добавить заказ
-                    </div>
-                  </Link>
-                  <Link to="/taken-offers">
-                    <div className="profile-menu-item">
-                      <img src={acceptedOrders} alt="Взятые предложения" />
-                      Взятые предложения
-                    </div>
-                  </Link>
-                  <div className="profile-menu-item">
-                    <img src={geoDetect} alt="Отслеживание" />
-                    Отслеживание
-                  </div>
+                  {menu.map((item, index) => {
+                    if (item.mobile || item.onlyMobile)
+                      return (
+                        <Link to={item.to}>
+                          <div className="profile-menu-item">
+                            <img src={item.icon} alt="Профиль" />
+                            {item.name}
+                          </div>
+                        </Link>
+                      );
+                    else return <></>;
+                  })}
                   <div
                     className="profile-menu-additionally"
                     onClick={() => {

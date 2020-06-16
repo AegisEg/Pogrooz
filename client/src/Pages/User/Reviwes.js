@@ -1,20 +1,15 @@
 // App
 import React from "react";
-import { withRouter } from "react-router-dom";
-import articlestest from "../../config/articlestest.js";
 import reviews from "../../config/reviewstest.js";
+import Pagination from "../../Elements/Pagination";
 //IMGS
 import ImgActiveStar from "../../img/active-star.png";
 
 // Router
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 // Elements
 import Button from "../../Elements/Button";
-import { Map } from "react-yandex-maps";
-import NoMatch from "../NoMatch.js";
-import { withLastLocation } from "react-router-last-location";
 
 class Reviews extends React.Component {
   state = {
@@ -27,20 +22,20 @@ class Reviews extends React.Component {
         <div className="tab_groups">
           <span
             className={`tab_group ${
-              this.state.currentStatus === "0" ? "active" : ""
+              this.state.currentStatus === 0 ? "active" : ""
             }`}
             onClick={() => {
-              this.setState({ currentStatus: "0" });
+              this.setState({ currentStatus: 0 });
             }}
           >
-            Все
+            Обо мне
           </span>
           <span
             className={`tab_group ${
-              this.state.currentStatus === "1" ? "active" : ""
+              this.state.currentStatus === 1 ? "active" : ""
             }`}
             onClick={() => {
-              this.setState({ currentStatus: "1" });
+              this.setState({ currentStatus: 1 });
             }}
           >
             От меня
@@ -68,16 +63,18 @@ class Reviews extends React.Component {
                             {item.created_at}
                           </span>
                         </div>
-                        <div
-                          className="col f-14 d-flex"
-                          style={{
-                            whiteSpace: "pre-line",
-                            maxWidth: "90px",
-                            color: "#322F2F",
-                          }}
-                        >
-                          заказ №{item.articleWith}
-                        </div>
+                        {this.state.currentStatus == 1 && (
+                          <div
+                            className="col f-14 d-flex"
+                            style={{
+                              whiteSpace: "pre-line",
+                              maxWidth: "90px",
+                              color: "#322F2F",
+                            }}
+                          >
+                            заказ №{item.articleWith}
+                          </div>
+                        )}
                         <div
                           className="col f-14 d-flex align-items-center"
                           style={{
@@ -105,8 +102,23 @@ class Reviews extends React.Component {
                         <div className="col-12 col-md f-14 ">
                           {item.comments}
                         </div>
+                        {this.state.currentStatus === 1 && (
+                          <div
+                            className="col text-center"
+                            style={{
+                              maxWidth: "155px",
+                            }}
+                          >
+                            <div className="left-angle yellow mb-2">
+                              Опубликован
+                            </div>
+                            <Button type="fill" paddingHorizontal="25px">
+                              Изменить
+                            </Button>
+                          </div>
+                        )}
                       </div>
-                      <hr />
+                      {reviews.length != index + 1 && <hr />}
                     </div>
                   );
                 })}
@@ -114,6 +126,8 @@ class Reviews extends React.Component {
             </>
           )}
         </div>
+
+        <Pagination></Pagination>
       </div>
     );
   }

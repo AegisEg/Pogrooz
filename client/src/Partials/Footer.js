@@ -112,7 +112,7 @@ class Footer extends React.Component {
               </ul>
             </div>
           </div>
-          <div className="col-380-12 col-presm-4 col-sm-5 col-md-4 text-right">
+          <div className="col-380-12 col text-right">
             <div className="row">
               <div className="text-lg-left footer_list col-380-6 col-premd-12 col-lg-5 text-380-left text-premd-right">
                 <p>Контакты</p>
@@ -126,9 +126,15 @@ class Footer extends React.Component {
                 </ul>
               </div>
               <div className="col-380-6 col-premd-12 col-lg-7 text-premd text-premd-right">
-                <p className="">Мы в социальных сетях</p>
+                <p
+                  style={{
+                    color: "#00000",
+                  }}
+                >
+                  Мы в социальных сетях
+                </p>
                 <div className="social_link">
-                  <span className="mx-2">
+                  <span>
                     <Link to="/">
                       <img
                         src={this.state.isHovervk ? vkhover : vk}
@@ -142,7 +148,7 @@ class Footer extends React.Component {
                       />
                     </Link>
                   </span>
-                  <span className="mx-2">
+                  <span>
                     <Link to="/">
                       <img
                         src={
@@ -158,7 +164,7 @@ class Footer extends React.Component {
                       />
                     </Link>
                   </span>
-                  <span className="ml-2">
+                  <span>
                     <Link to="/">
                       <img
                         src={
@@ -180,7 +186,13 @@ class Footer extends React.Component {
               </div>
             </div>
             <div className="download_block text-380-center">
-              <p>Скачать приложения</p>
+              <p
+                style={{
+                  color: "#00000",
+                }}
+              >
+                Скачать приложения
+              </p>
               <div className="download_link">
                 <Link to="/">
                   <img

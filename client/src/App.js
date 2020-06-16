@@ -6,6 +6,7 @@ import "./css/grid.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { YMaps } from "react-yandex-maps";
+import "./controllers/TimeController.js";
 // Router
 import AppRouter from "./Router";
 import { BrowserRouter as Router } from "react-router-dom";

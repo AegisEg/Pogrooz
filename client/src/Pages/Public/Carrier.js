@@ -10,11 +10,11 @@ import Tarrifs from "../../Partials/Tarrifs";
 import Filter from "../../Elements/Filter";
 
 // Images
-import Imgtophone from "../../img/tophone.png";
-import ImgChat from "../../img/chat.png";
-import ImgHistory from "../../img/history.png";
-import ImgPhone from "../../img/phone.png";
-import Imgtamplate from "../../img/tamplate.png";
+import Imgtophone from "../../img/tophone.svg";
+import ImgChat from "../../img/chatico.svg";
+import ImgHistory from "../../img/history.svg";
+import ImgPhone from "../../img/phone.svg";
+import Imgtamplate from "../../img/tamplate.svg";
 import payIco from "../../img/pay-ico.svg";
 
 import questions from "../../config/questions";
@@ -83,12 +83,13 @@ class Carrier extends React.Component {
               <img
                 className="carrier-pros-image"
                 src={payIco}
+                style={{
+                  width: "20px",
+                }}
                 alt="Без комиссий за заказ и доплат"
               />
             </div>
-            <p className="carrier-pros-label">
-            Без комиссий за заказ и доплат
-            </p>
+            <p className="carrier-pros-label">Без комиссий за заказ и доплат</p>
           </div>
         </div>
 
@@ -173,7 +174,7 @@ class Carrier extends React.Component {
                   <p className="m-0 f-16">после регистрации</p>
                 </div>
               </div>
-              <div className="px-2 pl-custom text-md-left text-xl-right mt-3">
+              <div className="px-2 pl-custom mx-auto mx-md-0 mt-3">
                 <Button
                   type="fill"
                   margin={"0 0 0 auto"}

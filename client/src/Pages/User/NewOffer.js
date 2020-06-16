@@ -12,8 +12,6 @@ import ArticleShow from "../../Catalog/ArticleShow";
 import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
 import { ReactComponent as AngleSvg } from "../../img/angle-right.svg";
-//IMGS
-import nextQuestEnable from "../../img/nextQuestEnable.png";
 
 import articlestest from "../../config/articlestest.js";
 
@@ -27,7 +25,7 @@ class OfferCreate1 extends React.Component {
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="row">
-          <div className=" col-12 col-md-8 row carType">
+          <div className="mt-3 col-12 col-md-8 mx-0 px-0 row carType">
             <h4
               className="f-16 col-12 mb-1"
               style={{
@@ -73,9 +71,9 @@ class OfferCreate1 extends React.Component {
               />
             </div>
           </div>
-          <div className="col-12 col-md-4 row  align-items-center">
+          <div className="mt-3 col-12 col-md-4 row  align-items-center">
             <h4
-              className="f-16 col-12"
+              className="f-16 col-12 pr"
               style={{
                 marginBottom: "20px",
                 fontWeight: "normal",
@@ -83,8 +81,8 @@ class OfferCreate1 extends React.Component {
             >
               Добавьте фото машины
             </h4>
-            <div className="col-12 d-inline-block align-self-center text-center">
-              <div className="d-inline-block px-4 mt-2">
+            <div className="col-12 d-inline-block align-self-center ">
+              <div className="d-inline-block mr-4 mt-2">
                 <Button type="fill" paddingHorizontal="30px">
                   Загрузить
                 </Button>
@@ -102,16 +100,18 @@ class OfferCreate1 extends React.Component {
         </div>
         <div className="row order-swicher-wrapper">
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              lableClassname="f-16"
-              val={this.state.extraOptions}
-              onChange={() => {
-                this.setState({
-                  extraOptions: !this.state.extraOptions,
-                });
-              }}
-              lable="Дополнительные параметры"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                lableClassname="f-16"
+                val={this.state.extraOptions}
+                onChange={() => {
+                  this.setState({
+                    extraOptions: !this.state.extraOptions,
+                  });
+                }}
+                lable="Дополнительные параметры"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -139,13 +139,15 @@ class OfferCreate1 extends React.Component {
             </CSSTransitionGroup>
           </div>
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              val={this.state.doContract}
-              onChange={() => {
-                this.setState({ doContract: !this.state.doContract });
-              }}
-              lable="Заключение договора"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                val={this.state.doContract}
+                onChange={() => {
+                  this.setState({ doContract: !this.state.doContract });
+                }}
+                lable="Заключение договора"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -157,31 +159,33 @@ class OfferCreate1 extends React.Component {
               {this.state.doContract && (
                 <div className="pt-2">
                   <div className="mt-2">
-                    <CheckBox id="cargo" text="Услуги грузчика" />
+                    <CheckBox id="cargo5" text="Услуги грузчика" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo2" text="Страхование груза водителем" />
+                    <CheckBox id="cargo52" text="Страхование груза водителем" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo3" text="Пломбирование" />
+                    <CheckBox id="cargo53" text="Пломбирование" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Мед. книжка" />
+                    <CheckBox id="cargo54" text="Мед. книжка" />
                   </div>
                 </div>
               )}
             </CSSTransitionGroup>
           </div>
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              val={this.state.paymentMethods}
-              onChange={() => {
-                this.setState({
-                  paymentMethods: !this.state.paymentMethods,
-                });
-              }}
-              lable="Способы оплаты водителю"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                val={this.state.paymentMethods}
+                onChange={() => {
+                  this.setState({
+                    paymentMethods: !this.state.paymentMethods,
+                  });
+                }}
+                lable="Способы оплаты водителю"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -193,16 +197,16 @@ class OfferCreate1 extends React.Component {
               {this.state.paymentMethods && (
                 <div className="pt-2">
                   <div className="mt-2">
-                    <CheckBox id="cargo" text="Услуги грузчика" />
+                    <CheckBox id="cargo6" text="Услуги грузчика" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo2" text="Страхование груза водителем" />
+                    <CheckBox id="cargo62" text="Страхование груза водителем" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo3" text="Пломбирование" />
+                    <CheckBox id="cargo63" text="Пломбирование" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Мед. книжка" />
+                    <CheckBox id="cargo64" text="Мед. книжка" />
                   </div>
                   <div className="mt-2">
                     <Select
@@ -236,7 +240,7 @@ class OfferCreate1 extends React.Component {
                 type="number"
                 placeholder="0"
               />
-              <span>.руб</span>
+              <span>руб</span>
             </div>
           </div>
         </div>
@@ -429,7 +433,7 @@ class OfferCreate3 extends React.Component {
             //Проверка на отмеченность
             let isSelect =
               !!this.state.cargoTypes.find((itemY, indexY) => {
-                return itemY == item.id;
+                return itemY === item.id;
               }) !== false;
             return (
               <div className="col box-grooz-wrapper">
@@ -677,7 +681,7 @@ class OfferCreate extends React.Component {
           <div className="steps-create">
             <OfferCreate1
               key="1"
-              className={`${this.state.currentTab == 1 ? "active" : ""} 
+              className={`${this.state.currentTab === 1 ? "active" : ""} 
               ${this.state.currentTab > 1 ? "deactive" : ""}`}
               next={() => {
                 if (this.state.currentTab < 4) {
@@ -692,7 +696,7 @@ class OfferCreate extends React.Component {
             />
             <OfferCreate2
               key="2"
-              className={`${this.state.currentTab == 2 ? "active" : ""} ${
+              className={`${this.state.currentTab === 2 ? "active" : ""} ${
                 this.state.currentTab > 2 ? "deactive" : ""
               }`}
               next={() => {
@@ -707,7 +711,7 @@ class OfferCreate extends React.Component {
               }}
             />
             <OfferCreate3
-              className={`${this.state.currentTab == 3 ? "active" : ""} ${
+              className={`${this.state.currentTab === 3 ? "active" : ""} ${
                 this.state.currentTab > 3 ? "deactive" : ""
               }`}
               next={() => {
@@ -722,7 +726,7 @@ class OfferCreate extends React.Component {
               }}
             />
             <OfferCreate4
-              className={`${this.state.currentTab == 4 ? "active" : ""}`}
+              className={`${this.state.currentTab === 4 ? "active" : ""}`}
               next={() => {
                 if (this.state.currentTab < 4) {
                   this.setState({ currentTab: this.state.currentTab + 1 });

@@ -8,12 +8,12 @@ import { Link } from "react-router-dom";
 import Button from "../../Elements/Button";
 
 // Images
-import ImgFree from "../../img/free.png";
-import ImgLk from "../../img/lk.png";
-import ImgChat from "../../img/chat.png";
-import ImgGeo from "../../img/geo.png";
-import ImgPhone from "../../img/phone.png";
-import ImgBigStar from "../../img/big-star.png";
+import ImgFree from "../../img/free.svg";
+import ImgLk from "../../img/lk.svg";
+import ImgChat from "../../img/chatico.svg";
+import ImgGeo from "../../img/geo.svg";
+import ImgPhone from "../../img/phone.svg";
+import ImgBigStar from "../../img/big-star.svg";
 import Filter from "../../Elements/Filter";
 
 import questions from "../../config/questions";

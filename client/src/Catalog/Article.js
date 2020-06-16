@@ -402,6 +402,14 @@ class Article extends React.Component {
                     {this.state.showMore && (
                       <img
                         className="w-100  moreinfo"
+                        onClick={() => {
+                          this.setState({
+                            dataFancybox: {
+                              images: [{ path: this.props.article.carImg }],
+                              index: 0,
+                            },
+                          });
+                        }}
                         src={this.props.article.carImg}
                         alt=""
                       />
@@ -726,17 +734,23 @@ class Article extends React.Component {
             )}
           </>
         )}
-        {this.state.dataFancybox.images && (
-          <Fancybox
-            close={() => {
-              this.setState({
-                dataFancybox: { images: false, index: false },
-              });
-            }}
-            images={this.state.dataFancybox.images}
-            index={this.state.dataFancybox.index}
-          />
-        )}
+        <CSSTransitionGroup
+          transitionName="fancybox-animation"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={300}
+        >
+          {this.state.dataFancybox.images && (
+            <Fancybox
+              close={() => {
+                this.setState({
+                  dataFancybox: { images: false, index: false },
+                });
+              }}
+              images={this.state.dataFancybox.images}
+              index={this.state.dataFancybox.index}
+            />
+          )}
+        </CSSTransitionGroup>
       </div>
     );
   }

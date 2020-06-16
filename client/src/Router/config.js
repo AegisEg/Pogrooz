@@ -29,7 +29,7 @@ import TarifLk from "../Pages/User/TarifLk";
 import AutoPay from "../Pages/User/AutoPay";
 import Messages from "../Pages/User/Messages/Messages";
 import Dialog from "../Pages/User/Messages/Dialog";
-
+import GeoDetect from "../Pages/User/GeoDetect";
 const routes = [
   //AUTH ROUTE
   {
@@ -146,7 +146,7 @@ const routes = [
   {
     path: "/messages",
     exact: true,
-    type: "private",  
+    type: "private",
     tab: 2,
     title: "Сообщения пользователей",
     component: (props) => <Messages {...props} />,
@@ -182,6 +182,16 @@ const routes = [
     type: "private",
     title: "Настройки уведомлений",
     component: () => <NotificationsSettings />,
+  },
+  {
+    path: "/my-orders",
+    exact: true,
+    type: "private",
+    title: "Мои заказы",
+    typeArticle: 0,
+    statusArticle: [1, 2, 3, 4, 5, 6, 7],
+    // role: "cargo",
+    component: (props) => <MyOrders {...props} />,
   },
   {
     path: "/my-orders-open",
@@ -255,6 +265,16 @@ const routes = [
     typeArticle: 0,
     statusArticle: [3, 4, 5, 6, 7],
     title: "Взятые заказы",
+    // role: "carrier",
+    component: (props) => <MyOrders {...props} />,
+  },
+  {
+    path: "/my-offers",
+    exact: true,
+    type: "private",
+    typeArticle: 1,
+    statusArticle: [1, 2, 3, 4, 5, 6, 7],
+    title: "Мои предложения",
     // role: "carrier",
     component: (props) => <MyOrders {...props} />,
   },
@@ -363,6 +383,14 @@ const routes = [
     title: "Техподдержка",
     // role: "carrier",
     component: (props) => <Support {...props} />,
+  },
+  {
+    path: "/geo-detect",
+    exact: true,
+    type: "private",
+    title: "Отслеживание",
+    // role: "carrier",
+    component: (props) => <GeoDetect {...props} />,
   },
 ];
 

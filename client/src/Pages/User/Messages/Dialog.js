@@ -13,7 +13,7 @@ class Messages extends React.Component {
       <div className="article-page">
         <h2 className="title">Сообщения</h2>
         <div className="chat-header mt-3">
-          <Link
+          <a
             className="href left-angle f-14 angle-go "
             style={{
               maxWidth: "50px",
@@ -28,7 +28,7 @@ class Messages extends React.Component {
             }}
           >
             Назад
-          </Link>
+          </a>
           <span className="f-18 text-left mr-3">
             Максимов Максим Максиомвич
           </span>
@@ -51,10 +51,10 @@ class Messages extends React.Component {
                 maxWidth: "128px",
               }}
             >
-              <Link class="f-12 href" to="/">
+              <Link className="f-12 href" to="/">
                 Подробнее
                 <img
-                  class="ml-2"
+                  className="ml-2"
                   src={ArrowDown}
                   width="10"
                   height="7"

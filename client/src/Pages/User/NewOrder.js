@@ -43,7 +43,7 @@ class OrderCreate1 extends React.Component {
             //Проверка на отмеченность
             let isSelect =
               !!this.state.cargoTypes.find((itemY, indexY) => {
-                return itemY == item.id;
+                return itemY === item.id;
               }) !== false;
             return (
               <div className="col box-grooz-wrapper">
@@ -437,23 +437,25 @@ class OrderCreate3 extends React.Component {
                   type="number"
                   placeholder="0"
                 />
-                <span>.руб</span>
+                <span>руб</span>
               </div>
             </div>
           </div>
         </div>
         <div className="row order-swicher-wrapper">
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              lableClassname="f-16"
-              val={this.state.extraOptions}
-              onChange={() => {
-                this.setState({
-                  extraOptions: !this.state.extraOptions,
-                });
-              }}
-              lable="Дополнительные параметры"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                lableClassname="f-16"
+                val={this.state.extraOptions}
+                onChange={() => {
+                  this.setState({
+                    extraOptions: !this.state.extraOptions,
+                  });
+                }}
+                lable="Дополнительные параметры"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -477,10 +479,10 @@ class OrderCreate3 extends React.Component {
                     <CheckBox id="cargo4" text="Мед. книжка" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Нужны поддоны" />
+                    <CheckBox id="cargo5" text="Нужны поддоны" />
                   </div>
                   <div className="mt-2 d-sm-flex">
-                    <CheckBox id="cargo4" text="Сопровождение" />
+                    <CheckBox id="cargo6" text="Сопровождение" />
                     <div className="mt-2 pl-4">
                       <Select
                         className="select175px "
@@ -490,7 +492,7 @@ class OrderCreate3 extends React.Component {
                     </div>
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Услуги грузчика" />
+                    <CheckBox id="cargo27" text="Услуги грузчика" />
                     <div className="d-flex row-parametrs">
                       <div className="f-16">На погрузке</div>
                       <div>
@@ -508,7 +510,7 @@ class OrderCreate3 extends React.Component {
                     <div className="d-flex mt-2 row-parametrs">
                       <div className="f-16">На погрузке</div>
                       <div>
-                        <CheckBox id="asd" text="есть лифт" />
+                        <CheckBox id="asd2" text="есть лифт" />
                       </div>
                       <Input
                         type="number"
@@ -525,13 +527,15 @@ class OrderCreate3 extends React.Component {
             </CSSTransitionGroup>
           </div>
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              val={this.state.doContract}
-              onChange={() => {
-                this.setState({ doContract: !this.state.doContract });
-              }}
-              lable="Заключение договора"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                val={this.state.doContract}
+                onChange={() => {
+                  this.setState({ doContract: !this.state.doContract });
+                }}
+                lable="Заключение договора"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -543,31 +547,33 @@ class OrderCreate3 extends React.Component {
               {this.state.doContract && (
                 <div className="pt-2 cheked-list">
                   <div className="mt-2">
-                    <CheckBox id="cargo" text="Физ лицо" />
+                    <CheckBox id="cargo7" text="Физ лицо" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo2" text="ООО" />
+                    <CheckBox id="cargo8" text="ООО" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo3" text="ИП" />
+                    <CheckBox id="cargo9" text="ИП" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Самозанятый" />
+                    <CheckBox id="cargo10" text="Самозанятый" />
                   </div>
                 </div>
               )}
             </CSSTransitionGroup>
           </div>
           <div className="col-sm-6 col-lg-4">
-            <CheckBoxSwitcher
-              val={this.state.paymentMethods}
-              onChange={() => {
-                this.setState({
-                  paymentMethods: !this.state.paymentMethods,
-                });
-              }}
-              lable="Способы оплаты водителю"
-            />
+            <div className="CheckBoxSwitcher-wrapper">
+              <CheckBoxSwitcher
+                val={this.state.paymentMethods}
+                onChange={() => {
+                  this.setState({
+                    paymentMethods: !this.state.paymentMethods,
+                  });
+                }}
+                lable="Способы оплаты водителю"
+              />
+            </div>
             <CSSTransitionGroup
               transitionName="height-animation-item"
               transitionEnterTimeout={300}
@@ -579,24 +585,27 @@ class OrderCreate3 extends React.Component {
               {this.state.paymentMethods && (
                 <div className="pt-2 cheked-list">
                   <div className="mt-2">
-                    <CheckBox id="cargo" text="Наличные" />
+                    <CheckBox id="cargo11" text="Наличные" />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo2" text="На банковскую карту" />
+                    <CheckBox id="cargo12" text="На банковскую карту" />
                   </div>
                   <div className="mt-2">
                     <CheckBox
-                      id="cargo3"
+                      id="cargo13"
                       text="Блиц-перевод (перевод через систему мгновенных денежных переводов)"
                     />
                   </div>
                   <div className="mt-2">
-                    <CheckBox id="cargo4" text="Безналичный расчет" />
+                    <CheckBox id="cargo14" text="Безналичный расчет" />
                     <div className="mt-2 pl-4">
                       <Select
                         className="select175px "
-                        options={[{ value: 4, label: "1 человек" }]}
-                        placeholder="1 человек"
+                        options={[
+                          { value: 1, label: "с ндс" },
+                          { value: 2, label: "без ндс" },
+                        ]}
+                        placeholder="не выбрано"
                       />
                     </div>
                   </div>
@@ -709,7 +718,7 @@ class OrderCreate extends React.Component {
           <div className="steps-create">
             <OrderCreate1
               key="1"
-              className={`${this.state.currentTab == 1 ? "active" : ""} 
+              className={`${this.state.currentTab === 1 ? "active" : ""} 
               ${this.state.currentTab > 1 ? "deactive" : ""}`}
               next={() => {
                 if (this.state.currentTab < 4) {
@@ -724,7 +733,7 @@ class OrderCreate extends React.Component {
             />
             <OrderCreate2
               key="2"
-              className={`${this.state.currentTab == 2 ? "active" : ""} ${
+              className={`${this.state.currentTab === 2 ? "active" : ""} ${
                 this.state.currentTab > 2 ? "deactive" : ""
               }`}
               next={() => {
@@ -739,7 +748,7 @@ class OrderCreate extends React.Component {
               }}
             />
             <OrderCreate3
-              className={`${this.state.currentTab == 3 ? "active" : ""} ${
+              className={`${this.state.currentTab === 3 ? "active" : ""} ${
                 this.state.currentTab > 3 ? "deactive" : ""
               }`}
               next={() => {
@@ -754,7 +763,7 @@ class OrderCreate extends React.Component {
               }}
             />
             <OrderCreate4
-              className={`${this.state.currentTab == 4 ? "active" : ""}`}
+              className={`${this.state.currentTab === 4 ? "active" : ""}`}
               next={() => {
                 if (this.state.currentTab < 4) {
                   this.setState({ currentTab: this.state.currentTab + 1 });

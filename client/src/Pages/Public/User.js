@@ -133,7 +133,7 @@ class User extends React.Component {
                     fontSize: "18px",
                   }}
                 >
-                  {this.props.match.params.id == 2 && (
+                  {this.props.match.params.id === 2 && (
                     <div
                       className="d-flex"
                       style={{
@@ -145,7 +145,7 @@ class User extends React.Component {
                       Профиль скрыт
                     </div>
                   )}
-                  {this.props.match.params.id == 1 && (
+                  {this.props.match.params.id === 1 && (
                     <>
                       <div>+7 (927) 000-00-00</div>
                       <div>info@mail.ru</div>
@@ -161,7 +161,7 @@ class User extends React.Component {
                     <img src={ImgActiveStar} alt="ImgActiveStar" />
                   </span>
                 </span>
-                {this.props.match.params.id == 1 && (
+                {this.props.match.params.id === 1 && (
                   <div className="col-12">
                     <Button
                       type="fill"
@@ -178,12 +178,12 @@ class User extends React.Component {
           </div>
           {this.renderTabs()}
         </div>
-        {this.props.match.params.id == 1 && (
+        {this.props.match.params.id === 1 && (
           <div className="lk-order-page">
             <Articles articlesList={articlesList} />
           </div>
         )}
-        {this.props.match.params.id == 2 && (
+        {this.props.match.params.id === 2 && (
           <div className="row">
             <div className="col-12 text-center">
               <img src={redWarning} width="70px" alt="" />
