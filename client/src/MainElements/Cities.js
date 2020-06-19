@@ -68,7 +68,7 @@ class Cities extends React.Component {
     for (let i = 0; i < citiesCount; i += perColumn) {
       sliced_array.push(cities.slice(i, i + perColumn));
     }
-   
+
     this.setState({
       perColumn: perColumn,
       citiesCount: citiesCount,
@@ -85,18 +85,20 @@ class Cities extends React.Component {
   render() {
     return (
       <>
-        <div className="row">
-          {this.state.cities.map((item, i) => {
-            return (
-              <div key={i} className="main-cities-item">
-                <ul>
-                  {item.map((item1, i) => {
-                    return <li key={i}>{item1}</li>;
-                  })}
-                </ul>
-              </div>
-            );
-          })}
+        <div className="container-fluid">
+          <div className="row">
+            {this.state.cities.map((item, i) => {
+              return (
+                <div key={i} className="main-cities-item">
+                  <ul>
+                    {item.map((item1, i) => {
+                      return <li key={i}>{item1}</li>;
+                    })}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </>
     );

@@ -69,7 +69,6 @@ class Header extends React.Component {
     this.setState({ showNotificationsPop: false });
     document.removeEventListener("click", this.hideNotificationsPop);
   }
-
   logout() {
     const { cookies } = this.props;
     cookies.remove("apiToken", { path: "/" });
@@ -79,12 +78,8 @@ class Header extends React.Component {
 
   render() {
     return (
-      <header
-        className={`header ${
-          this.props.className ? this.props.className : "container-fluid"
-        } `}
-      >
-        <div className="header-content row">
+      <header className={`header container-fluid`}>
+        <div className="header-content d-flex">
           <div className="header-logo d-none d-md-flex align-items-center">
             <Link to="/">
               <img src={logo} className="header-logo-img" alt="Pogrooz" />
@@ -194,7 +189,7 @@ class Header extends React.Component {
                   type="fill"
                   className="d-none d-lg-block"
                   paddingVertical={"8px"}
-                  paddingHorizontal={"27px"}
+                  paddingHorizontal={"20px"}
                 >
                   Добавить предложение
                 </Button>

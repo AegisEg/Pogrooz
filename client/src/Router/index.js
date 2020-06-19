@@ -54,6 +54,9 @@ class AppRouter extends React.Component {
         .then((user) => {
           this.props.userActions.loginUser(user);
           this.setState({ isRender: true });
+        })
+        .catch(() => {
+          this.setState({ isRender: true });
         });
     } else {
       this.setState({ isRender: true });
@@ -165,38 +168,42 @@ class AppRouter extends React.Component {
 
   AuthRoute = ({ children, ...rest }) => {
     return (
-      <Route
-        {...rest}
-        render={() =>
-          !this.props.user.isAuth ? (
+      <div className="public-page">
+        <Route
+          {...rest}
+          render={() =>
+            !this.props.user.isAuth ? (
+              <>
+                <Header />
+                {children}
+                <Footer />
+              </>
+            ) : (
+              <Redirect
+                to={{
+                  pathname: "/",
+                }}
+              />
+            )
+          }
+        />
+      </div>
+    );
+  };
+  PublicRoute = ({ children, ...rest }) => {
+    return (
+      <div className="public-page">
+        <Route
+          {...rest}
+          render={() => (
             <>
               <Header />
               {children}
               <Footer />
             </>
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/",
-              }}
-            />
-          )
-        }
-      />
-    );
-  };
-  PublicRoute = ({ children, ...rest }) => {
-    return (
-      <Route
-        {...rest}
-        render={() => (
-          <>
-            <Header />
-            {children}
-            <Footer />
-          </>
-        )}
-      />
+          )}
+        />
+      </div>
     );
   };
   CommonRoute = ({ children, ...rest }) => {
@@ -217,9 +224,11 @@ class AppRouter extends React.Component {
             </>
           ) : (
             <>
-              <Header />
-              <div className="page-common">{children}</div>
-              <Footer />
+              <div className="public-page">
+                <Header />
+                <div className="page-common">{children}</div>
+                <Footer />
+              </div>
             </>
           )
         }

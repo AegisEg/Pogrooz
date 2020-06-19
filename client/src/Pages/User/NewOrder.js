@@ -220,7 +220,7 @@ class OrderCreate1 extends React.Component {
             ></textarea>
           </div>
         </div>
-        <div className="row justify-content-end">
+        <div className="row slide-step justify-content-end">
           <Button
             type="fill"
             className="mt-2 mx-3 input-action"
@@ -360,7 +360,7 @@ class OrderCreate2 extends React.Component {
             )}
           </div>
         </div>
-        <div className="row justify-content-end">
+        <div className="row slide-step justify-content-end">
           <Button
             type="empty"
             className="mt-2 mx-3 input-action"
@@ -393,33 +393,36 @@ class OrderCreate3 extends React.Component {
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="row">
-          <div className=" col-12 col-md-6 row">
+          <div className="list-type-auto-wrapper">
             <h4
-              className="f-16 col-12 mb-1"
+              className="f-16 mb-1 w-auto"
               style={{
                 fontWeight: "normal",
               }}
             >
               Тип авто
+              <Link to="/" className="href f-14 ml-4">
+                Открыть Pro список
+              </Link>
             </h4>
-            <div className="d-inline-flex flex-wrap align-items-center">
-              <div className="px-3">
+            <div className="list-type-auto">
+              <div>
                 <CheckBox id="all" text="Любой"></CheckBox>
               </div>
-              <div className="px-3">
+              <div>
                 <CheckBox id="all" text="Газель"></CheckBox>
               </div>
-              <div className="px-3">
+              <div>
                 <CheckBox id="all" text="Самосвал"></CheckBox>
               </div>
-              <div className="px-3">
+              <div>
                 <CheckBox id="all" text="Легковой"></CheckBox>
               </div>
             </div>
           </div>
-          <div className="col-12 col-md-3 row  align-items-center">
+          <div className="px-3  align-items-center">
             <h4
-              className="f-16 col-12"
+              className="f-16 "
               style={{
                 marginBottom: "20px",
                 fontWeight: "normal",
@@ -427,18 +430,16 @@ class OrderCreate3 extends React.Component {
             >
               Желаемый бюджет
             </h4>
-            <div className="col-12">
-              <div className="d-flex align-items-center">
-                <Input
-                  style={{
-                    maxWidth: "113px",
-                    marginRight: "7px",
-                  }}
-                  type="number"
-                  placeholder="0"
-                />
-                <span>руб</span>
-              </div>
+            <div className="d-flex align-items-center">
+              <Input
+                style={{
+                  maxWidth: "113px",
+                  marginRight: "7px",
+                }}
+                type="number"
+                placeholder="0"
+              />
+              <span>руб</span>
             </div>
           </div>
         </div>
@@ -602,6 +603,7 @@ class OrderCreate3 extends React.Component {
                       <Select
                         className="select175px "
                         options={[
+                          { value: 0, label: "не выбрано" },
                           { value: 1, label: "с ндс" },
                           { value: 2, label: "без ндс" },
                         ]}
@@ -615,7 +617,7 @@ class OrderCreate3 extends React.Component {
           </div>
         </div>
 
-        <div className="row justify-content-end">
+        <div className="row slide-step justify-content-end">
           <Button
             type="empty"
             className="mt-2 mx-3 input-action"
@@ -652,7 +654,7 @@ class OrderCreate4 extends React.Component {
         <div className="articles-block full">
           <ArticleShow article={article} />
         </div>
-        <div className="row justify-content-end">
+        <div className="row slide-step justify-content-end">
           <Button
             type="empty"
             className="mt-2 mx-3 input-action"
@@ -676,7 +678,7 @@ class OrderCreate4 extends React.Component {
 }
 class OrderCreate extends React.Component {
   state = {
-    currentTab: 1,
+    currentTab: 3,
   };
   render() {
     return (

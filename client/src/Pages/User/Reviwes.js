@@ -2,6 +2,7 @@
 import React from "react";
 import reviews from "../../config/reviewstest.js";
 import Pagination from "../../Elements/Pagination";
+import { Link } from "react-router-dom";
 //IMGS
 import ImgActiveStar from "../../img/active-star.png";
 
@@ -65,7 +66,7 @@ class Reviews extends React.Component {
                         </div>
                         {this.state.currentStatus == 1 && (
                           <div
-                            className="col f-14 d-flex"
+                            className="col f-14 d-flex align-items-start"
                             style={{
                               whiteSpace: "pre-line",
                               maxWidth: "90px",
@@ -84,10 +85,17 @@ class Reviews extends React.Component {
                         >
                           <img
                             src={item.user.avatar}
-                            className="mr-4"
+                            className="mr-4 user-avatar"
                             alt="avatar"
                           />
-                          {item.user.fio}
+                          <Link
+                            to="/user/2"
+                            style={{
+                              color: "#000",
+                            }}
+                          >
+                            {item.user.fio}
+                          </Link>
                         </div>
                         <div
                           className="col f-14"
@@ -109,7 +117,7 @@ class Reviews extends React.Component {
                               maxWidth: "155px",
                             }}
                           >
-                            <div className="left-angle yellow mb-2">
+                            <div className="left-angle yellow f-12 mb-2">
                               Опубликован
                             </div>
                             <Button type="fill" paddingHorizontal="25px">

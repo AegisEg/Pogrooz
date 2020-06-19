@@ -13,210 +13,55 @@ class PayHistoryTable extends React.Component {
   render() {
     return (
       <div className="pay-history">
-        <div className="row header-table">
-          <div
-            className="col"
-            style={{
-              maxWidth: "200px",
-            }}
-          >
-            Дата оплаты
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "200px",
-            }}
-          >
-            Способ оплаты
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "150px",
-            }}
-          >
-            Тариф
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "110px",
-            }}
-          >
-            Сумма
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "120px",
-            }}
-          >
-            Срок
-          </div>
-          <div className="col">Дата действия</div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "220px",
-            }}
-          >
-            Статус
-          </div>
-        </div>
-        <div className="row">
-          <div
-            className="col"
-            style={{
-              maxWidth: "200px",
-            }}
-          >
-            18.12.2025 г
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "200px",
-            }}
-          >
-            visa / master cart
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "150px",
-            }}
-          >
-            Тариф PRO
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "110px",
-            }}
-          >
-            280 руб
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "120px",
-            }}
-          >
-            1 неделя
-          </div>
-          <div className="col date">18.12.2025&nbsp;-&nbsp;25.12.2025г</div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "220px",
-            }}
-          >
-            <span className="left-angle yellow">Активен</span>
-          </div>
-        </div>
-        <div className="row">
-          <div
-            className="col"
-            style={{
-              maxWidth: "200px",
-            }}
-          >
-            18.12.2025 г
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "200px",
-            }}
-          >
-            visa / master cart
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "150px",
-            }}
-          >
-            Тариф PRO
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "110px",
-            }}
-          >
-            280 руб
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "120px",
-            }}
-          >
-            1 неделя
-          </div>
-          <div className="col date">18.12.2025&nbsp;-&nbsp;25.12.2025г</div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "220px",
-            }}
-          >
-            <span className="left-angle yellow">Ожидает</span>
-          </div>
-        </div>
-
-        <div className="row">
-          <div
-            className="col"
-            style={{
-              maxWidth: "220px",
-            }}
-          >
-            18.12.2025 г
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "200px",
-            }}
-          >
-            visa / master cart
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "150px",
-            }}
-          >
-            Тариф PRO
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "110px",
-            }}
-          >
-            280 руб
-          </div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "120px",
-            }}
-          >
-            1 неделя
-          </div>
-          <div className="col date">18.12.2025&nbsp;-&nbsp;25.12.2025г</div>
-          <div
-            className="col"
-            style={{
-              maxWidth: "220px",
-            }}
-          >
-            <span className="left-angle gray">Использован</span>
-          </div>
+        <div className="table-wrapper">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Дата оплаты</th>
+                <th>Способ оплаты</th>
+                <th>Тариф</th>
+                <th>Сумма</th>
+                <th>Срок</th>
+                <th>Дата действия</th>
+                <th>Статус</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"> 18.12.2025 г</th>
+                <td>visa / master cart</td>
+                <td>Тариф PRO</td>
+                <td>280 руб</td>
+                <td>1 неделя</td>
+                <td>18.12.2025- 25.12.2025 г</td>
+                <td>
+                  <span className="left-angle yellow">Активен</span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"> 18.12.2025 г</th>
+                <td>visa / master cart</td>
+                <td>Тариф PRO</td>
+                <td>280 руб</td>
+                <td>1 неделя</td>
+                <td>18.12.2025- 25.12.2025 г</td>
+                <td>
+                  <span className="left-angle yellow">Ожидает</span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row"> 18.12.2025 г</th>
+                <td>visa / master cart</td>
+                <td>Тариф PRO</td>
+                <td>280 руб</td>
+                <td>1 неделя</td>
+                <td>18.12.2025- 25.12.2025 г</td>
+                <td>
+                  <span className="left-angle gray">Использован</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <Pagination className="mt-4" />
       </div>
@@ -248,10 +93,10 @@ class Support extends React.Component {
           *Расчет стоимости дня произведен из расчета 30 дней а месяц,
           указывается в ознакомительных целях.
         </p>
-        <span className="mb-4 d-block">
+        <span className="mb-4 mt-2 d-block">
           <Link
             to="/autopay"
-            className="f-14"
+            className="f-14 href-hover"
             style={{
               color: "#000",
             }}

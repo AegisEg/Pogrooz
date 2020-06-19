@@ -117,7 +117,6 @@ class PanelRecord extends React.Component {
         if (height > 1) height = canvas.height - 9;
         else if (height === 0) height = 2;
         else height = (canvas.height - 9) * height;
-        console.log(height);
         ctxCanvas.fillRect(
           canvas.width -
             (RecordLine.length - index) * (paddingStick + widthStick),
@@ -232,6 +231,20 @@ class PanelRecord extends React.Component {
             />
           )}
           <canvas id="voice-canvas"></canvas>
+
+          <div className="canvas-overlay">
+            <div
+              onClick={(e) => {
+                let bodyRect = document.body.getBoundingClientRect(),
+                  elemRect = e.target.getBoundingClientRect(),
+                  offset = elemRect.left - bodyRect.left,
+                  clickedX = e.clientX - offset;
+                alert(this.audio.duration);
+                this.audio.currentTime =
+                  clickedX / e.target.getBoundingClientRect().width;
+              }}
+            ></div>
+          </div>
           <div className="timer">
             <Timer ref={this.timerref} />
           </div>

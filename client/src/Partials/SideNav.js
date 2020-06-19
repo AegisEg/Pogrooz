@@ -15,21 +15,15 @@ import { bindActionCreators } from "redux";
 
 class MenuItem1 extends React.Component {
   state = {
-    isOpen: false,
-  };
-  componentDidMount() {
-    if (
+    isOpen:
       this.props.childlist &&
       this.props.childlist.length &&
       this.props.childlist.find((item) => {
         return item.to === this.props.match.path;
-      }) &&
-      !this.state.active
-    )
-      this.setState({ isOpen: true });
-  }
+      }),
+  };
   render() {
-    if (this.props.childlist && this.props.childlist.length) {
+    if (this.props.childlist && !!this.props.childlist.length) {
       return (
         <span className="parent-item">
           <div
@@ -78,6 +72,7 @@ class MenuItem1 extends React.Component {
   }
 }
 let MenuItem = withRouter(MenuItem1);
+
 class SideNav extends React.Component {
   state = {
     isOpen: false,

@@ -48,10 +48,7 @@ class Tarrifs extends React.Component {
               ? item.price - item.price * (item.sale / 100)
               : item.price;
             return (
-              <div
-                key={index}
-                className="col-xl-2 col-lg-3 col-md-3  col-sm-6 col-post-sm-6 col-12"
-              >
+              <div key={index} className="tarrif-wrapper">
                 <div className={`tarrif ${item.sale ? `yellow` : ``}`}>
                   <div className="info">
                     <div className="d-flex justify-content-between">
@@ -65,9 +62,11 @@ class Tarrifs extends React.Component {
                         ? priceWithSale + " руб"
                         : "Бесплатно"}
                     </span>
-                    {item.sale && (
-                      <span className="sale">Скидка {item.sale}% </span>
-                    )}
+
+                    <span className="sale">
+                      {item.sale && <>Скидка {item.sale}% </>}
+                    </span>
+
                     <div className="tags">
                       {item.tags.map((item, index) => {
                         return (
