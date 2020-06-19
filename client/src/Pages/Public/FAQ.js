@@ -15,91 +15,91 @@ class FAQ extends React.Component {
 
   render() {
     return (
-      <div
-        className={`faq-page ${!this.props.noPadding ? "container-fluid" : ""}`}
-      >
-        <h2 className="faq-title">Часто задаваемые вопросы</h2>
-        <div className="row">
-          <div className="col">
-            <Input
-              type="text"
-              placeholder="Что ищем?"
-              value={this.state.q}
-              onChange={(e) => {
-                this.setState({ q: e.target.value });
-              }}
-            />
+      <div className={`faq-page`}>
+        <div className="container-fluid">
+          <h2 className="faq-title">Часто задаваемые вопросы</h2>
+          <div className="row">
+            <div className="col">
+              <Input
+                type="text"
+                placeholder="Что ищем?"
+                value={this.state.q}
+                onChange={(e) => {
+                  this.setState({ q: e.target.value });
+                }}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="faq-questions row">
-          {questions.map((question) => {
-            let view = false;
+          <div className="faq-questions row">
+            {questions.map((question) => {
+              let view = false;
 
-            let q = this.state.q.split(" ");
+              let q = this.state.q.split(" ");
 
-            if (
-              question.questions.find((x) => {
-                for (let i = 0; i < q.length; i++) {
-                  if (
-                    !(
-                      ~x.title.toLowerCase().indexOf(q[i].toLowerCase()) ||
-                      q[i] === 0
+              if (
+                question.questions.find((x) => {
+                  for (let i = 0; i < q.length; i++) {
+                    if (
+                      !(
+                        ~x.title.toLowerCase().indexOf(q[i].toLowerCase()) ||
+                        q[i] === 0
+                      )
                     )
-                  )
-                    return false;
-                }
-                return true;
-              })
-            )
-              view = true;
-            else view = false;
-            if (this.state.q.length === 0) {
-              view = true;
-            }
-
-            return (
-              view && (
-                <div
-                  className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
-                  key={question.id}
-                >
-                  <h4>{question.title}</h4>
-                  <ul>
-                    {question.questions.map((question) => {
-                      let view = false;
-                      let q = this.state.q.split(" ");
-
-                      for (let i = 0; i < q.length; i++) {
-                        if (
-                          ~question.title
-                            .toLowerCase()
-                            .indexOf(q[i].toLowerCase() || q[i])
-                        ) {
-                          view = true;
-                        } else {
-                          view = false;
-                          break;
-                        }
-                      }
-
-                      if (this.state.q.length === 0) {
-                        view = true;
-                      }
-
-                      return (
-                        view && (
-                          <li key={question.id}>
-                            <Link to="/">{question.title}</Link>
-                          </li>
-                        )
-                      );
-                    })}
-                  </ul>
-                </div>
+                      return false;
+                  }
+                  return true;
+                })
               )
-            );
-          })}
+                view = true;
+              else view = false;
+              if (this.state.q.length === 0) {
+                view = true;
+              }
+
+              return (
+                view && (
+                  <div
+                    className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
+                    key={question.id}
+                  >
+                    <h4>{question.title}</h4>
+                    <ul>
+                      {question.questions.map((question) => {
+                        let view = false;
+                        let q = this.state.q.split(" ");
+
+                        for (let i = 0; i < q.length; i++) {
+                          if (
+                            ~question.title
+                              .toLowerCase()
+                              .indexOf(q[i].toLowerCase() || q[i])
+                          ) {
+                            view = true;
+                          } else {
+                            view = false;
+                            break;
+                          }
+                        }
+
+                        if (this.state.q.length === 0) {
+                          view = true;
+                        }
+
+                        return (
+                          view && (
+                            <li key={question.id}>
+                              <Link to="/">{question.title}</Link>
+                            </li>
+                          )
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )
+              );
+            })}
+          </div>
         </div>
       </div>
     );

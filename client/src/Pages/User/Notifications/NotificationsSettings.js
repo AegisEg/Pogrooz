@@ -119,76 +119,78 @@ class NotificationsSettings extends React.Component {
     return (
       <div>
         <h2 className="title">Настроить уведомления</h2>
-        <div className="row">
-          <div className="col-12 col-sm-12 col-md-6">
-            <p className="setting-title">По предложениям</p>
-            {settingsField.map((item, i) => {
-              if (
-                item.type === "offer" &&
-                (this.props.user.type === item.role || item.role === "all")
-              ) {
-                return (
-                  <SettingsFiled
-                    key={i}
-                    label={item.label}
-                    keyField={item.keyField}
-                  />
-                );
-              } else return <></>;
-            })}
+        <div className="settings-notification">
+          <div className="row">
+            <div className="col-12 col-sm-12 col-md-6">
+              <p className="setting-title">По предложениям</p>
+              {settingsField.map((item, i) => {
+                if (
+                  item.type === "offer" &&
+                  (this.props.user.type === item.role || item.role === "all")
+                ) {
+                  return (
+                    <SettingsFiled
+                      key={i}
+                      label={item.label}
+                      keyField={item.keyField}
+                    />
+                  );
+                } else return <></>;
+              })}
+            </div>
+            <div className="col-12 col-sm-12 col-md-6">
+              <p className="setting-title">По заказам</p>
+              {settingsField.map((item, i) => {
+                if (
+                  item.type === "order" &&
+                  (this.props.user.type === item.role || item.role === "all")
+                ) {
+                  return (
+                    <SettingsFiled
+                      key={i}
+                      label={item.label}
+                      keyField={item.keyField}
+                    />
+                  );
+                } else return <></>;
+              })}
+            </div>
           </div>
-          <div className="col-12 col-sm-12 col-md-6">
-            <p className="setting-title">По заказам</p>
-            {settingsField.map((item, i) => {
-              if (
-                item.type === "order" &&
-                (this.props.user.type === item.role || item.role === "all")
-              ) {
-                return (
-                  <SettingsFiled
-                    key={i}
-                    label={item.label}
-                    keyField={item.keyField}
-                  />
-                );
-              } else return <></>;
-            })}
-          </div>
-        </div>
-        <div className="row common-settings">
-          <div className="col-12 col-sm-12 col-md-6">
-            <p className="setting-title">Общие</p>
-            {settingsField.map((item, i) => {
-              if (
-                item.type === "common" &&
-                (this.props.user.type === item.role || item.role === "all")
-              ) {
-                return (
-                  <SettingsFiled
-                    key={i}
-                    label={item.label}
-                    keyField={item.keyField}
-                  />
-                );
-              } else return <></>;
-            })}
-          </div>
-          <div className="col-12 col-sm-12 col-md-6">
-            <p className="setting-title"></p>
-            {settingsField.map((item, i) => {
-              if (
-                item.type === "common2" &&
-                (this.props.user.type === item.role || item.role === "all")
-              ) {
-                return (
-                  <SettingsFiled
-                    key={i}
-                    label={item.label}
-                    keyField={item.keyField}
-                  />
-                );
-              } else return <></>;
-            })}
+          <div className="row common-settings">
+            <div className="col-12 col-sm-12 col-md-6">
+              <p className="setting-title">Общие</p>
+              {settingsField.map((item, i) => {
+                if (
+                  item.type === "common" &&
+                  (this.props.user.type === item.role || item.role === "all")
+                ) {
+                  return (
+                    <SettingsFiled
+                      key={i}
+                      label={item.label}
+                      keyField={item.keyField}
+                    />
+                  );
+                } else return <></>;
+              })}
+            </div>
+            <div className="col-12 col-sm-12 col-md-6">
+              <p className="setting-title"></p>
+              {settingsField.map((item, i) => {
+                if (
+                  item.type === "common2" &&
+                  (this.props.user.type === item.role || item.role === "all")
+                ) {
+                  return (
+                    <SettingsFiled
+                      key={i}
+                      label={item.label}
+                      keyField={item.keyField}
+                    />
+                  );
+                } else return <></>;
+              })}
+            </div>
           </div>
         </div>
         <Button

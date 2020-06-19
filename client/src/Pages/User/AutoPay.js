@@ -161,14 +161,15 @@ class AutoPay extends React.Component {
     return (
       <div className="standart-page">
         <h2 className="title mb-0">Настройки автоплатежа</h2>
-        <Link
-          to="/mytarif"
-          className="href-hover f-12"
-          
-        >
+        <Link to="/mytarif" className="href-hover f-12">
           Вернуться на страницу Мой тариф
         </Link>
-        <div className="row mt-4">
+        <div
+          className="row mt-4"
+          style={{
+            marginBottom: "39px",
+          }}
+        >
           <div className="col d-flex align-items-center">
             <div
               className="mr-4 f-14"

@@ -21,7 +21,11 @@ class Dialog extends React.Component {
                 maxWidth: "90px",
               }}
             >
-              <img src={reviews[0].user.avatar} alt="avatar" />
+              <img
+                src={reviews[0].user.avatar}
+                className="user-avatar"
+                alt="avatar"
+              />
             </div>
             <div className="col f-14 pl-0 row dialog-content">
               <div className="head">
@@ -71,7 +75,11 @@ class Dialog extends React.Component {
                 maxWidth: "90px",
               }}
             >
-              <img src={reviews[0].user.avatar} alt="avatar" />
+              <img
+                src={reviews[0].user.avatar}
+                className="user-avatar"
+                alt="avatar"
+              />
             </div>
             <div className="col f-14 pl-0 row dialog-content">
               <div className="head">

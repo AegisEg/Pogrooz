@@ -24,11 +24,11 @@ class Support extends React.Component {
           телефону +7 (927) 000 - 00 - 00 или написать на почту info@pogrooz.ru.
         </p>
         <p className="f-14">
-          Также вы можете написать нашим специалистам в
+          Также вы можете написать нашим специалистам в &nbsp;
           <Link to="/" className="href">
             online чат
           </Link>
-          .{" "}
+          .
         </p>
         <FAQ noPadding={true} />
       </div>

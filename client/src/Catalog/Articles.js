@@ -10,39 +10,41 @@ class Articles extends React.Component {
     return (
       <div className="articles-block">
         <div className="articles-header d-none d-md-block">
-          <div className="row">
-            <div className="col-md-6   mx-0 row">
-              <div className="col-md-1">
-                <span>#</span>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-6   mx-0 row">
+                <div className="col-md-2">
+                  <span>#</span>
+                </div>
+                <div className="col-md-2">
+                  <span>Машина</span>
+                </div>
+                <div className="col-md-4">
+                  <span>Откуда</span>
+                </div>
+                <div className="col-md-4">
+                  <span>Куда</span>
+                </div>
               </div>
-              <div className="col-md-3">
-                <span>Машина</span>
-              </div>
-              <div className="col-md-4">
-                <span>Откуда</span>
-              </div>
-              <div className="col-md-4">
-                <span>Куда</span>
-              </div>
-            </div>
-            <div className="col-md-6  mx-0 row">
-              <div className="col-md-4">
-                <span>Груз</span>
-              </div>
-              <div className="col-md-3">
-                <span>Загрузка</span>
-              </div>
-              <div className="col-md-3">
-                <span>Цена</span>
-              </div>
-              <div className="col-md-2">
-                <span>Еще</span>
+              <div className="col-md-6  mx-0 row">
+                <div className="col-md-4">
+                  <span>Груз</span>
+                </div>
+                <div className="col-md-3">
+                  <span>Загрузка</span>
+                </div>
+                <div className="col-md-3">
+                  <span>Цена</span>
+                </div>
+                <div className="col-md-2">
+                  <span>Еще</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        {this.props.articlesList.map((article, i) => {          
-            return <Article key={i} article={article} />;
+        {this.props.articlesList.map((article, i) => {
+          return <Article key={i} article={article} />;
         })}
         <div className="container-fluid">
           <Pagination pageCount={10} perPage="1" />

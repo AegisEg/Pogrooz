@@ -226,6 +226,7 @@ class OfferCreate1 extends React.Component {
                       <Select
                         className="select175px "
                         options={[
+                          { value: 0, label: "не выбрано" },
                           { value: 1, label: "с ндс" },
                           { value: 2, label: "без ндс" },
                         ]}
@@ -262,6 +263,7 @@ class CreateTemplateAuto extends React.Component {
           <Input
             type="text"
             placeholder="Название шаблона"
+            className="mb-4"
             style={{
               maxWidth: "725px",
             }}

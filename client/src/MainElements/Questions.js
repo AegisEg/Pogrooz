@@ -36,28 +36,29 @@ class Questions extends React.Component {
     return (
       <div className="main-questions d-sm-block">
         <h3>Часто задаваемые вопросы</h3>
-
-        <SliderQuestions>
-          {this.state.questions.map((question) => {
-            return (
-              <div
-                key={question.id}
-                className="child-questions col-12 col-sm-6 col-md-4 col-xl-3"
-              >
-                <div className="child-question">
-                  <p className="child-question-title">{question.title}</p>
-                  <p className="child-question-text">
-                    Попутные грузоперевозки с PoGrooz – это шаг в будущее
-                    удобных грузоперевозок.
-                  </p>
-                  <div className="child-preview-img">
-                    <img src={sliderPreviewImg} alt="sliderPreviewImg" />
+        <div className="container-fluid">
+          <SliderQuestions>
+            {this.state.questions.map((question) => {
+              return (
+                <div
+                  key={question.id}
+                  className="child-questions col-12 col-sm-6 col-md-4 col-xl-3"
+                >
+                  <div className="child-question">
+                    <p className="child-question-title">{question.title}</p>
+                    <p className="child-question-text">
+                      Попутные грузоперевозки с PoGrooz – это шаг в будущее
+                      удобных грузоперевозок.
+                    </p>
+                    <div className="child-preview-img">
+                      <img src={sliderPreviewImg} alt="sliderPreviewImg" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </SliderQuestions>
+              );
+            })}
+          </SliderQuestions>
+        </div>
       </div>
     );
   }

@@ -3,6 +3,7 @@ import React from "react";
 // Elements
 import Articles from "../../Catalog/Articles";
 import articlestest from "../../config/articlestest.js";
+import { connect } from "react-redux";
 
 class MyOrders extends React.Component {
   state = {
@@ -20,7 +21,9 @@ class MyOrders extends React.Component {
           }}
         >
           Все
-          <div className="action-counter"><span>3</span></div>
+          <div className="action-counter">
+            <span>3</span>
+          </div>
         </span>
 
         {this.props.statusArticle.length > 1 &&
@@ -52,15 +55,16 @@ class MyOrders extends React.Component {
     //Ставлю статус(0,1 - открытый, 2,3 - в работе, 3,4 - закрытый) и Тип(Заказ
     //или Предложение) для отображения
     let articlesList = articlestest.filter((item) => {
-      if (item.type === this.props.typeArticle) {
-        if (this.state.currentStatus === "all") {
-          return this.props.statusArticle.find((x) => {
-            return x === item.status;
-          });
-        } else {
-          return item.status === this.state.currentStatus;
-        }
-      } else return false;
+      if (item.user.id == this.props.user.id)
+        if (item.type === this.props.typeArticle) {
+          if (this.state.currentStatus === "all") {
+            return this.props.statusArticle.find((x) => {
+              return x === item.status;
+            });
+          } else {
+            return item.status === this.state.currentStatus;
+          }
+        } else return false;
     });
     return (
       <div className="lk-order-page">
@@ -71,5 +75,9 @@ class MyOrders extends React.Component {
     );
   }
 }
-
-export default MyOrders;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+export default connect(mapStateToProps)(MyOrders);

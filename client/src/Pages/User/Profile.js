@@ -5,7 +5,8 @@ import ConfigSettings from "../../config/settings";
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
 import { Link } from "react-router-dom";
-
+import Fancybox from "../../Elements/Fancybox.js";
+import { CSSTransitionGroup } from "react-transition-group";
 // Redux
 import { connect } from "react-redux";
 import CheckBox from "../../Elements/CheckBox";
@@ -26,6 +27,7 @@ class Profile extends React.Component {
     confirmPassword: "",
     isOOO: this.props.user.isOOO,
     isIP: this.props.user.isIP,
+    dataFancybox: false,
   };
 
   render() {
@@ -343,7 +345,7 @@ class Profile extends React.Component {
                       alt=""
                     />
                   </Button>
-                  <span className="d-block">
+                  <span className="d-block f-12">
                     Возьмите паспорт в руки разверните парспорт и разместите
                     так, чтобы он не закрывал Ваше лицо, но был четким и
                     читабельным. Ваше лицо на этой фотографии оператор будет
@@ -353,7 +355,19 @@ class Profile extends React.Component {
               </div>
             </div>
             <div className="col-12 col-lg-6 row mx-0 mb-4 ">
-              <Link to="/" className="href">
+              <Link
+                to="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.setState({
+                    dataFancybox: {
+                      images: [{ path: ConfigSettings.defaultPassport }],
+                      index: 0,
+                    },
+                  });
+                }}
+                className="href"
+              >
                 <span
                   className="d-inline-block f-14 text-center"
                   style={{
@@ -394,6 +408,23 @@ class Profile extends React.Component {
             Сохранить все
           </Button>
         </div>
+        <CSSTransitionGroup
+          transitionName="fancybox-animation"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={300}
+        >
+          {this.state.dataFancybox.images && (
+            <Fancybox
+              close={() => {
+                this.setState({
+                  dataFancybox: { images: false, index: false },
+                });
+              }}
+              images={this.state.dataFancybox.images}
+              index={this.state.dataFancybox.index}
+            />
+          )}
+        </CSSTransitionGroup>
       </div>
     );
   }

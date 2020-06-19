@@ -10,7 +10,6 @@ import payIco from "../img/pay-ico.svg";
 import dogovor from "../img/dogovor.png";
 import passport from "../img/passport.png";
 
-
 // Elements
 import { Map } from "react-yandex-maps";
 
@@ -201,9 +200,7 @@ class ArticleShow extends React.Component {
                     defaultState={{ center: [55.75, 37.57], zoom: 15 }}
                     width="100%"
                     height="100px"
-                    instanceRef={(ref) => {
-                   
-                    }}
+                    instanceRef={(ref) => {}}
                   />
                 </div>
               </div>
@@ -215,9 +212,7 @@ class ArticleShow extends React.Component {
                     defaultState={{ center: [55.75, 37.57], zoom: 15 }}
                     width="100%"
                     height="100px"
-                    instanceRef={(ref) => {
-                    
-                    }}
+                    instanceRef={(ref) => {}}
                   />
                 </div>
               </div>
@@ -271,9 +266,7 @@ class ArticleShow extends React.Component {
             <div className="col-12 col-md-5 mx-0 mt-2 row">
               <img
                 src={this.props.article.user.avatar}
-                width="50px"
-                className="mr-3"
-                height="50px"
+                className="mr-3 user-avatar"
                 alt="avatar"
               />
               <div className="col">

@@ -245,7 +245,7 @@ class OfferCreate1 extends React.Component {
           </div>
         </div>
 
-        <div className="row justify-content-end">
+        <div className="row slide-step justify-content-end">
           <Button
             type="fill"
             className="mt-2 mx-3 input-action"
@@ -385,7 +385,7 @@ class OfferCreate2 extends React.Component {
             )}
           </div>
         </div>
-        <div className="row justify-content-end">
+        <div className="row slide-step justify-content-end">
           <Button
             type="empty"
             className="mt-2 mx-3 input-action"
@@ -578,7 +578,7 @@ class OfferCreate3 extends React.Component {
             <span className="d-inline-block ml-4">= 0 кг</span>
           </div>
         </div>
-        <div className="row justify-content-end">
+        <div className="row slide-step justify-content-end">
           <Button
             type="empty"
             className="mt-2 mx-3 input-action"
@@ -616,7 +616,7 @@ class OfferCreate4 extends React.Component {
         <div className="articles-block full">
           <ArticleShow article={article} />
         </div>
-        <div className="row justify-content-end">
+        <div className="row slide-step justify-content-end">
           <Button
             type="empty"
             className="mt-2 mx-3 input-action"
