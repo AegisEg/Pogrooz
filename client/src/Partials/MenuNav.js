@@ -49,14 +49,6 @@ class MenuNav extends React.Component {
     ],
     menuWidth: 0,
   };
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextProps + nextState);
-    if (nextState.menuWidth && this.state.menuWidth === nextState.menuWidth)
-      return false;
-    if (nextProps.isAuth && this.props.user.isAuth === nextProps.isAuth)
-      return false;
-    return true;
-  }//Чета тут
   onResizeItem = this.onResizeItem.bind(this);
   onResize = this.onResize.bind(this);
 
