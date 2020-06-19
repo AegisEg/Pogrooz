@@ -68,8 +68,10 @@ class MyOrders extends React.Component {
     });
     return (
       <div className="lk-order-page">
-        <h2 className="title">{this.props.title}</h2>
-        {this.renderTabs()}
+        <div className="container-fluid">
+          <h2 className="title">{this.props.title}</h2>
+          {this.renderTabs()}
+        </div>
         <Articles articlesList={articlesList} />
       </div>
     );

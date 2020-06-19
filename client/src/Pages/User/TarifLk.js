@@ -73,37 +73,39 @@ class Support extends React.Component {
   render() {
     return (
       <div className="standart-page">
-        <h2 className="title">Мои тариф</h2>
-        <div className="row align-items-center">
-          <p className="f-14 d-inline-block px-3">
-            Тариф PRO оплачен до 25.12.2025 г
-          </p>
-          <div className="col">
-            <Button type="fill" paddingVertical="6px">
-              <span className="f-12">Пополнить</span>
-            </Button>
+        <div className="container-fluid">
+          <h2 className="title">Мои тариф</h2>
+          <div className="row align-items-center">
+            <p className="f-14 d-inline-block px-3">
+              Тариф PRO оплачен до 25.12.2025 г
+            </p>
+            <div className="col">
+              <Button type="fill" paddingVertical="6px">
+                <span className="f-12">Пополнить</span>
+              </Button>
+            </div>
           </div>
+          <h3 className="f-16 font-weight-normal">История пополнений</h3>
+          <PayHistoryTable />
+          <h3 className="f-16 font-weight-normal mt-4">Продлить тариф</h3>
+          <Tarrifs />
+          <span className="f-14">Тарификация понедельная.</span>
+          <p className="f-12 mt-0">
+            *Расчет стоимости дня произведен из расчета 30 дней а месяц,
+            указывается в ознакомительных целях.
+          </p>
+          <span className="mb-4 mt-2 d-block">
+            <Link
+              to="/autopay"
+              className="f-14 href-hover"
+              style={{
+                color: "#000",
+              }}
+            >
+              Настройка автоплатежа
+            </Link>
+          </span>
         </div>
-        <h3 className="f-16 font-weight-normal">История пополнений</h3>
-        <PayHistoryTable />
-        <h3 className="f-16 font-weight-normal mt-4">Продлить тариф</h3>
-        <Tarrifs />
-        <span className="f-14">Тарификация понедельная.</span>
-        <p className="f-12 mt-0">
-          *Расчет стоимости дня произведен из расчета 30 дней а месяц,
-          указывается в ознакомительных целях.
-        </p>
-        <span className="mb-4 mt-2 d-block">
-          <Link
-            to="/autopay"
-            className="f-14 href-hover"
-            style={{
-              color: "#000",
-            }}
-          >
-            Настройка автоплатежа
-          </Link>
-        </span>
       </div>
     );
   }

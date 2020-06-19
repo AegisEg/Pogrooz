@@ -32,7 +32,7 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <div className="profile-page">
+      <div className="profile-page container-fluid">
         <h2 className="title">
           Профиль ({this.props.user.type === "cargo" && "Грузовладелец"}
           {this.props.user.type === "carrier" && "Перевозчик"})

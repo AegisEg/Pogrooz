@@ -259,16 +259,18 @@ class CreateTemplateAuto extends React.Component {
     return (
       <>
         <div className="create-page create-order-page">
-          <h2 className="title">Новый шаблон авто</h2>
-          <Input
-            type="text"
-            placeholder="Название шаблона"
-            className="mb-4"
-            style={{
-              maxWidth: "725px",
-            }}
-          />
-          <OfferCreate1 />
+          <div className="container-fluid">
+            <h2 className="title">Новый шаблон авто</h2>
+            <Input
+              type="text"
+              placeholder="Название шаблона"
+              className="mb-4"
+              style={{
+                maxWidth: "725px",
+              }}
+            />
+            <OfferCreate1 />
+          </div>
         </div>
       </>
     );

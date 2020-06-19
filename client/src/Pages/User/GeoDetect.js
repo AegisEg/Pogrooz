@@ -11,7 +11,9 @@ class AutoPay extends React.Component {
   render() {
     return (
       <div className="standart-page">
-        <h2 className="title mb-0">Отслеживание</h2>
+        <div className="container-fluid">
+          <h2 className="title mb-0">Отслеживание</h2>
+        </div>
       </div>
     );
   }

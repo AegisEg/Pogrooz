@@ -113,7 +113,7 @@ class Dialog extends React.Component {
   render() {
     return (
       <>
-        <div className="message-container">
+        <div className="message-container  container-fluid">
           <Scrollbars
             onScroll={() => {
               this.onScroll();

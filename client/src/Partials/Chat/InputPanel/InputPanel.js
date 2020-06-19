@@ -12,23 +12,25 @@ class InputPanel extends React.Component {
 
   render() {
     return (
-      <div className="message-panel">
-        {!this.state.isRecord && (
-          <PanelStandart
-            recordStart={() => {
-              this.setState({ isRecord: true });
-            }}
-          />
-        )}
-        {this.state.isRecord && (
-          <>
-            <PanelRecord
-              stopRec={() => {
-                this.setState({ isRecord: false });
+      <div className="container-fluid">
+        <div className="message-panel ">
+          {!this.state.isRecord && (
+            <PanelStandart
+              recordStart={() => {
+                this.setState({ isRecord: true });
               }}
             />
-          </>
-        )}
+          )}
+          {this.state.isRecord && (
+            <>
+              <PanelRecord
+                stopRec={() => {
+                  this.setState({ isRecord: false });
+                }}
+              />
+            </>
+          )}
+        </div>
       </div>
     );
   }

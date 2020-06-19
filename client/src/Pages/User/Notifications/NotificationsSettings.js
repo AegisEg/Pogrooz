@@ -117,7 +117,7 @@ var settingsField = [
 class NotificationsSettings extends React.Component {
   render() {
     return (
-      <div>
+      <div className="container-fluid">
         <h2 className="title">Настроить уведомления</h2>
         <div className="settings-notification">
           <div className="row">
