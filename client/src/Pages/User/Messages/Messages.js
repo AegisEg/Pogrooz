@@ -199,55 +199,60 @@ class Messages extends React.Component {
   render() {
     return (
       <div className="article-page">
-        <h2 className="title">
-          {this.state.currentStatus === 2 || this.state.currentStatus === "all"
-            ? "Сообщения"
-            : "Сообщения по заказам/предложениям"}
-        </h2>
-        <div className="tab_groups">
-          <span
-            className={`tab_group ${
-              this.state.currentStatus === "all" ? "active" : ""
-            }`}
-            onClick={() => {
-              this.setState({ currentStatus: "all" });
-            }}
-          >
-            Все
-            <div className="action-counter">
-              <span>3</span>
-            </div>
-          </span>
-          <span
-            className={`tab_group ${
-              this.state.currentStatus === 1 ? "active" : ""
-            }`}
-            onClick={() => {
-              this.setState({ currentStatus: 1 });
-            }}
-          >
-            По заказам /предложениям
-          </span>
-          <span
-            className={`tab_group ${
-              this.state.currentStatus === 2 ? "active" : ""
-            }`}
-            onClick={() => {
-              this.setState({ currentStatus: 2 });
-            }}
-          >
-            От пользователей
-          </span>
+        <div className="container-fluid">
+          <h2 className="title">
+            {this.state.currentStatus === 2 ||
+            this.state.currentStatus === "all"
+              ? "Сообщения"
+              : "Сообщения по заказам/предложениям"}
+          </h2>
+          <div className="tab_groups">
+            <span
+              className={`tab_group ${
+                this.state.currentStatus === "all" ? "active" : ""
+              }`}
+              onClick={() => {
+                this.setState({ currentStatus: "all" });
+              }}
+            >
+              Все
+              <div className="action-counter">
+                <span>3</span>
+              </div>
+            </span>
+            <span
+              className={`tab_group ${
+                this.state.currentStatus === 1 ? "active" : ""
+              }`}
+              onClick={() => {
+                this.setState({ currentStatus: 1 });
+              }}
+            >
+              По заказам /предложениям
+            </span>
+            <span
+              className={`tab_group ${
+                this.state.currentStatus === 2 ? "active" : ""
+              }`}
+              onClick={() => {
+                this.setState({ currentStatus: 2 });
+              }}
+            >
+              От пользователей
+            </span>
+          </div>
         </div>
         <div className="articles-block full">
           <div className="dialogs-block">
-            {messages.map((item, index) => {
-              if (
-                item.type === this.state.currentStatus ||
-                this.state.currentStatus === "all"
-              )
-                return <Dialog key={index} dialog={item} />;
-            })}
+            <div className="container-fluid">
+              {messages.map((item, index) => {
+                if (
+                  item.type === this.state.currentStatus ||
+                  this.state.currentStatus === "all"
+                )
+                  return <Dialog key={index} dialog={item} />;
+              })}
+            </div>
           </div>
         </div>
       </div>

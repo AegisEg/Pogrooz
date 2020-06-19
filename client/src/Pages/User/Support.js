@@ -12,24 +12,27 @@ class Support extends React.Component {
   state = {};
   render() {
     return (
-      <div className="standart-page">
-        <h2 className="title">Техподдержка</h2>
-        <p
-          className="f-14"
-          style={{
-            maxWidth: "651px",
-          }}
-        >
-          Если у Вас есть вопросы и предложения, можете позвонить нам по
-          телефону +7 (927) 000 - 00 - 00 или написать на почту info@pogrooz.ru.
-        </p>
-        <p className="f-14">
-          Также вы можете написать нашим специалистам в &nbsp;
-          <Link to="/" className="href">
-            online чат
-          </Link>
-          .
-        </p>
+      <div className="standart-page ">
+        <div className="container-fluid">
+          <h2 className="title">Техподдержка</h2>
+          <p
+            className="f-14"
+            style={{
+              maxWidth: "651px",
+            }}
+          >
+            Если у Вас есть вопросы и предложения, можете позвонить нам по
+            телефону +7 (927) 000 - 00 - 00 или написать на почту
+            info@pogrooz.ru.
+          </p>
+          <p className="f-14">
+            Также вы можете написать нашим специалистам в &nbsp;
+            <Link to="/" className="href">
+              online чат
+            </Link>
+            .
+          </p>
+        </div>
         <FAQ noPadding={true} />
       </div>
     );

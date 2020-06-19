@@ -1210,6 +1210,9 @@ a.mail {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
+.main-preview .container-fluid {
+  width: 100%;
+}
 .main-title {
   font-family: Bahamas;
   font-size: 46px;
@@ -2181,7 +2184,7 @@ a.href span {
 .cargo-page .faq-questions {
   padding-bottom: 50px;
 }
-.cargo-pros>.row>div{
+.cargo-pros > .row > div {
   margin-top: 10px;
 }
 .cargo-pros {
@@ -2604,7 +2607,8 @@ a.href span {
 }
 .lk-page .articles-header,
 .lk-page .dialogs-block,
-.lk-page .article-block {
+.lk-page .article-block,
+.slide-step {
   padding-left: 28px;
   padding-right: 28px;
 }
@@ -2836,6 +2840,7 @@ a.href span {
 }
 .container-fluid {
   max-width: 1920px;
+  padding: 0 28px;
   margin: auto;
 }
 .public-page .container-fluid {
@@ -2995,19 +3000,13 @@ a.href span {
 .tarrifs-page {
   padding-bottom: 150px !important;
 }
-.lk-page {
-  padding: 0 28px;
-}
+
 .article-page .title {
   font-weight: normal;
   font-size: 20px;
   line-height: 23px;
   color: #171717;
   margin-bottom: 15px;
-}
-.lk-page .articles-block {
-  margin-left: -28px;
-  margin-right: -28px;
 }
 
 /*Fancybox*/
@@ -3279,6 +3278,7 @@ a.href span {
   flex-wrap: wrap;
   margin-left: -13px;
   margin-right: -13px;
+  margin-bottom: 25px;
   justify-content: space-between;
 }
 .box-grooz-wrapper-row > * {
@@ -3323,6 +3323,8 @@ a.href span {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+}
+.step-create:not(:last-child) {
   padding-top: 20px;
 }
 .step-create {

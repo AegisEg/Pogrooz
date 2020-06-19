@@ -19,28 +19,30 @@ class Reviews extends React.Component {
   render() {
     return (
       <div className="article-page">
-        <h2 className="title">Отзывы</h2>
-        <div className="tab_groups">
-          <span
-            className={`tab_group ${
-              this.state.currentStatus === 0 ? "active" : ""
-            }`}
-            onClick={() => {
-              this.setState({ currentStatus: 0 });
-            }}
-          >
-            Обо мне
-          </span>
-          <span
-            className={`tab_group ${
-              this.state.currentStatus === 1 ? "active" : ""
-            }`}
-            onClick={() => {
-              this.setState({ currentStatus: 1 });
-            }}
-          >
-            От меня
-          </span>
+        <div className="container-fluid">
+          <h2 className="title">Отзывы</h2>
+          <div className="tab_groups">
+            <span
+              className={`tab_group ${
+                this.state.currentStatus === 0 ? "active" : ""
+              }`}
+              onClick={() => {
+                this.setState({ currentStatus: 0 });
+              }}
+            >
+              Обо мне
+            </span>
+            <span
+              className={`tab_group ${
+                this.state.currentStatus === 1 ? "active" : ""
+              }`}
+              onClick={() => {
+                this.setState({ currentStatus: 1 });
+              }}
+            >
+              От меня
+            </span>
+          </div>
         </div>
         <div className="articles-block full">
           {reviews && reviews.length && (
