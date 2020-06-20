@@ -603,60 +603,62 @@ class Article extends React.Component {
           </>
         ) : (
           <>
-            <div className="row">
-              <div className="col-12 ">
-                <span>#{this.props.article.id}</span>
-                <span className="ml-3">{this.props.article.carName}</span>
-              </div>
-              <div className="col-6 col-sm-4 ">
-                <h3 className="title-column">Откуда</h3>
-                <span>{this.props.article.fromLocation}</span>
-              </div>
-              <div className="col-6 col-sm-4 pr-0 pr-sm-2">
-                <h3 className="title-column">Куда</h3>
-                <span>{this.props.article.toLocation}</span>
-              </div>
-              <div className="col-6 col-sm-4  pl-sm-2">
-                <h3 className="title-column">Груз</h3>
-                {this.props.article.cargo.map((item, i) => {
-                  return (
-                    <span key={i} className="d-block">
-                      {item}
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-12 ">
+                  <span>#{this.props.article.id}</span>
+                  <span className="ml-3">{this.props.article.carName}</span>
+                </div>
+                <div className="col-6 col-sm-4 ">
+                  <h3 className="title-column">Откуда</h3>
+                  <span>{this.props.article.fromLocation}</span>
+                </div>
+                <div className="col-6 col-sm-4 pr-0 pr-sm-2">
+                  <h3 className="title-column">Куда</h3>
+                  <span>{this.props.article.toLocation}</span>
+                </div>
+                <div className="col-6 col-sm-4  pl-sm-2">
+                  <h3 className="title-column">Груз</h3>
+                  {this.props.article.cargo.map((item, i) => {
+                    return (
+                      <span key={i} className="d-block">
+                        {item}
+                      </span>
+                    );
+                  })}
+                </div>
+                <div className="col-6 col-sm ">
+                  <h3 className="title-column">Параметры</h3>
+                  <span>{this.props.article.parametrs}</span>
+                </div>
+                <div className="col  pl-sm-3">
+                  <h3 className="title-column">Дата</h3>
+                  <span>{this.props.article.date.date}</span>
+                </div>
+                <div className="col d-none d-sm-block">
+                  <h3 className="title-column">Время</h3>
+                  <span>{this.props.article.date.time}</span>
+                </div>
+                <div className="col">
+                  <h3 className="title-column">Цена</h3>
+                  <span>{this.props.article.price}</span>
+                </div>
+                <div className="col pr-0">
+                  <h3 className="title-column">Рейтинг</h3>
+                  <span>
+                    <span className="d-inline-block">
+                      {this.props.article.rating}
+                      <img src={ImgActiveStar} alt="ImgActiveStar" />
                     </span>
-                  );
-                })}
-              </div>
-              <div className="col-6 col-sm ">
-                <h3 className="title-column">Параметры</h3>
-                <span>{this.props.article.parametrs}</span>
-              </div>
-              <div className="col  pl-sm-3">
-                <h3 className="title-column">Дата</h3>
-                <span>{this.props.article.date.date}</span>
-              </div>
-              <div className="col d-none d-sm-block">
-                <h3 className="title-column">Время</h3>
-                <span>{this.props.article.date.time}</span>
-              </div>
-              <div className="col">
-                <h3 className="title-column">Цена</h3>
-                <span>{this.props.article.price}</span>
-              </div>
-              <div className="col pr-0">
-                <h3 className="title-column">Рейтинг</h3>
-                <span>
-                  <span className="d-inline-block">
-                    {this.props.article.rating}
-                    <img src={ImgActiveStar} alt="ImgActiveStar" />
                   </span>
-                </span>
+                </div>
               </div>
-            </div>
 
-            <div className="row px-0 row-input-controls mt-4">
-              {this.renderStatus()}
-              <div className="col-12 col-md row row-input-controls">
-                {this.renderInput()}
+              <div className="row row-input-controls mt-4">
+                {this.renderStatus()}
+                <div className="col-12 mx-0 col-md row row-input-controls">
+                  {this.renderInput()}
+                </div>
               </div>
             </div>
           </>

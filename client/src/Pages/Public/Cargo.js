@@ -102,7 +102,7 @@ class Cargo extends React.Component {
           <div className="container-fluid">
             <h3>Как это работает?</h3>
 
-            <div className="cargo-steps-block row">
+            <div className="cargo-steps-block row mx-0">
               <div className="cargo-step">
                 <div className="cargo-step-number">
                   <span>1</span>
@@ -152,7 +152,7 @@ class Cargo extends React.Component {
           <hr />
         </div>
 
-        <div className="container-fluid">
+        <div className="container-fluid ">
           <div className="faq-questions row">
             {questions.map((question) => {
               if (

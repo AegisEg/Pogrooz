@@ -105,7 +105,7 @@ class Carrier extends React.Component {
           <div className="container-fluid">
             <h3>Как это работает?</h3>
 
-            <div className="carrier-steps-block row">
+            <div className="carrier-steps-block row mx-0">
               <div className="carrier-step">
                 <div className="carrier-step-number">
                   <span>1</span>
@@ -147,7 +147,12 @@ class Carrier extends React.Component {
 
         <div className="carrier-div">
           <div className="container-fluid">
-            <h3 className="font-weight-normal f-20">
+            <h3
+              className="font-weight-normal f-20"
+              style={{
+                marginTop: "45px",
+              }}
+            >
               Тариф для подключения перевозчиков к порталу PoGrooz
             </h3>
             <div className="row">
