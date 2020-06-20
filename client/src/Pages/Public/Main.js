@@ -31,7 +31,7 @@ class Main extends React.Component {
       <div className="main-page">
         <div className="main-preview row">
           <div className="container-fluid">
-            <div className="row col-12">
+            <div className="row px-0 col-12">
               <div className="main-text-block  col-md-8 col-xl-6">
                 <h1 className="main-title">
                   <img src={logoName} alt="logoName" />
@@ -59,7 +59,7 @@ class Main extends React.Component {
                       </span>
                       <div
                         className="text-uppercase"
-                        style={{ fontSize: "22px", marginTop: "3px" }}
+                        style={{ fontSize: "22px", lineHeight: "22px" }}
                       >
                         Заказать
                       </div>
@@ -74,7 +74,7 @@ class Main extends React.Component {
                       <span style={{ lineHeight: "14px" }}>Я перевозчик</span>
                       <div
                         className="text-uppercase"
-                        style={{ fontSize: "22px", marginTop: "3px" }}
+                        style={{ fontSize: "22px", lineHeight: "22px" }}
                       >
                         Найти груз
                       </div>
@@ -92,7 +92,7 @@ class Main extends React.Component {
               </div>
             </div>
 
-            <div className="main-advantages row col-12">
+            <div className="main-advantages row px-0 col-12">
               <div className="main-advantage col-4">
                 <h4 className="main-advantage-title">
                   <img src={ImgPreviewTimer} alt="Fasted working" /> Быстро
@@ -145,7 +145,7 @@ class Main extends React.Component {
           </div>
         </div>
         <Filter className="background-gray-768 filter-main" />
-        <Articles articlesList={articlestest} />
+        <Articles articlesList={articlestest.slice(0, 5)} />
         <div className="text-center">
           <Link to="/search" className="href">
             <Button

@@ -1205,7 +1205,7 @@ a.mail {
 .main-preview {
   background-color: #f9f8f8;
   height: max-content;
-  padding: 0 35px 50px;
+  padding: 50px 0;
   margin: 0 !important;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
@@ -1472,6 +1472,9 @@ a.mail {
   text-align: center;
 }
 .main-profitably-block {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
   margin-top: 25px;
   max-width: 465px;
 }
@@ -1830,19 +1833,12 @@ a.mail {
 .article-block .content .imgs-content img {
   margin: 0 14px;
 }
-@media (max-width: 1024px) {
-  .article-block,
-  .dialogs-block,
-  .articles-header {
-    padding: 0 15px;
-  }
-}
 .border-yellow {
   border-color: #ffd12c;
 }
 @media (max-width: 768px) {
   .row-input-controls {
-    justify-content: flex-start;
+    justify-content: center;
   }
 }
 @media (min-width: 769px) {
@@ -2125,7 +2121,7 @@ a.href span {
 /* About */
 .about-page {
   border-top: 1px solid #6c6c6c;
-  padding: 50px;
+  padding: 50px 0;
 }
 .about-page h1 {
   margin-top: 0;
@@ -2184,11 +2180,12 @@ a.href span {
 .cargo-page .faq-questions {
   padding-bottom: 50px;
 }
-.cargo-pros > .row > div {
+.cargo-pros > .row > div,
+.carrier-pros > .row > div {
   margin-top: 10px;
 }
 .cargo-pros {
-  padding: 24px 50px 8px 50px;
+  padding: 30px 0;
   background-color: #f9f8f8;
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #eeeeee;
@@ -2217,13 +2214,11 @@ a.href span {
   color: #000;
   margin-top: 20px;
 }
-.cargo-steps {
-  padding: 50px 50px 0 50px;
-}
 .cargo-steps h3 {
   margin: 0;
   font-size: 20px;
   font-weight: normal;
+  padding-top: 45px;
 }
 .cargo-steps-block {
   margin: 35px 0;
@@ -2237,7 +2232,7 @@ a.href span {
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
   padding: 0 !important;
-  margin: 0 42px 0 15px;
+  margin: 0 30px 0 15px;
   display: flex;
   align-items: center;
   min-width: 200px;
@@ -2301,11 +2296,10 @@ a.href span {
   margin-top: 40px;
 }
 .carrier-page .faq-questions {
-  padding: 0 50px;
   padding-bottom: 50px;
 }
 .carrier-pros {
-  padding: 24px 50px 8px 50px;
+  padding: 30px 0;
   background-color: #f9f8f8;
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #eeeeee;
@@ -2350,13 +2344,11 @@ a.href span {
 }
 .application-div {
 }
-.carrier-steps,
-.carrier-div {
-  padding: 50px 50px 0 50px;
-}
+
 .carrier-steps h3 {
   margin: 0;
   font-size: 20px;
+  padding-top: 45px;
   font-weight: normal;
 }
 .carrier-steps-block {
@@ -2604,13 +2596,6 @@ a.href span {
 }
 .article-block {
   position: relative;
-}
-.lk-page .articles-header,
-.lk-page .dialogs-block,
-.lk-page .article-block,
-.slide-step {
-  padding-left: 28px;
-  padding-right: 28px;
 }
 .readble_col {
   margin-left: auto;

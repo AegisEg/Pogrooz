@@ -12,7 +12,7 @@ class Articles extends React.Component {
         <div className="articles-header d-none d-md-block">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-6   mx-0 row">
+              <div className="col-md-6  row">
                 <div className="col-md-2">
                   <span>#</span>
                 </div>
