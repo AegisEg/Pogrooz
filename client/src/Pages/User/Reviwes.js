@@ -51,84 +51,87 @@ class Reviews extends React.Component {
                 {reviews.map((item, index) => {
                   return (
                     <div key={index} className="request-article">
-                      <div className="row">
-                        <div
-                          className="col f-14"
-                          style={{
-                            maxWidth: "115px",
-                          }}
-                        >
-                          <span
+                      <div className="container-fluid">
+                        <div className="row">
+                          <div
+                            className="col f-14"
                             style={{
-                              color: "#6C6C6C",
+                              maxWidth: "115px",
                             }}
                           >
-                            {item.created_at}
-                          </span>
-                        </div>
-                        {this.state.currentStatus == 1 && (
+                            <span
+                              style={{
+                                color: "#6C6C6C",
+                              }}
+                            >
+                              {item.created_at}
+                            </span>
+                          </div>
+                          {this.state.currentStatus == 1 && (
+                            <div
+                              className="col f-14 d-flex align-items-start"
+                              style={{
+                                whiteSpace: "pre-line",
+                                maxWidth: "90px",
+                                color: "#322F2F",
+                              }}
+                            >
+                              заказ №{item.articleWith}
+                            </div>
+                          )}
                           <div
-                            className="col f-14 d-flex align-items-start"
+                            className="col f-14 d-flex align-items-center"
                             style={{
                               whiteSpace: "pre-line",
-                              maxWidth: "90px",
-                              color: "#322F2F",
+                              maxWidth: "190px",
                             }}
                           >
-                            заказ №{item.articleWith}
+                            <img
+                              src={item.user.avatar}
+                              className="mr-4 user-avatar"
+                              alt="avatar"
+                            />
+                            <Link
+                              to="/user/2"
+                              style={{
+                                color: "#000",
+                              }}
+                            >
+                              {item.user.fio}
+                            </Link>
                           </div>
-                        )}
-                        <div
-                          className="col f-14 d-flex align-items-center"
-                          style={{
-                            whiteSpace: "pre-line",
-                            maxWidth: "190px",
-                          }}
-                        >
-                          <img
-                            src={item.user.avatar}
-                            className="mr-4 user-avatar"
-                            alt="avatar"
-                          />
-                          <Link
-                            to="/user/2"
-                            style={{
-                              color: "#000",
-                            }}
-                          >
-                            {item.user.fio}
-                          </Link>
-                        </div>
-                        <div
-                          className="col f-14"
-                          style={{
-                            maxWidth: "105px",
-                          }}
-                        >
-                          Рейтинг:
-                          <br />
-                          {item.user.rating} <img src={ImgActiveStar} alt="" />
-                        </div>
-                        <div className="col-12 col-md f-14 ">
-                          {item.comments}
-                        </div>
-                        {this.state.currentStatus === 1 && (
                           <div
-                            className="col text-center"
+                            className="col f-14"
                             style={{
-                              maxWidth: "155px",
+                              maxWidth: "105px",
                             }}
                           >
-                            <div className="left-angle yellow f-12 mb-2">
-                              Опубликован
-                            </div>
-                            <Button type="fill" paddingHorizontal="25px">
-                              Изменить
-                            </Button>
+                            Рейтинг:
+                            <br />
+                            {item.user.rating}{" "}
+                            <img src={ImgActiveStar} alt="" />
                           </div>
-                        )}
+                          <div className="col-12 col-md f-14 ">
+                            {item.comments}
+                          </div>
+                          {this.state.currentStatus === 1 && (
+                            <div
+                              className="col text-center"
+                              style={{
+                                maxWidth: "155px",
+                              }}
+                            >
+                              <div className="left-angle yellow f-12 mb-2">
+                                Опубликован
+                              </div>
+                              <Button type="fill" paddingHorizontal="25px">
+                                Изменить
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                        {reviews.length != index + 1 && <hr />}
                       </div>
-                      {reviews.length != index + 1 && <hr />}
                     </div>
                   );
                 })}

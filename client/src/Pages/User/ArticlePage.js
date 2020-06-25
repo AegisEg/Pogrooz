@@ -2,6 +2,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import Article from "../../Catalog/Article";
+import ArticleHeader from "../../Catalog/ArticleHeader";
 import RequestForm from "../../Partials/RequestForm.js";
 import articlestest from "../../config/articlestest.js";
 //IMGS
@@ -44,40 +45,7 @@ class ArticlePage extends React.Component {
             </Link>
           </div>
           <div className="articles-block full">
-            <div className="articles-header d-none d-md-block">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-md-6  row">
-                    <div className="col-md-2">
-                      <span>#</span>
-                    </div>
-                    <div className="col-md-2">
-                      <span>Машина</span>
-                    </div>
-                    <div className="col-md-4">
-                      <span>Откуда</span>
-                    </div>
-                    <div className="col-md-4">
-                      <span>Куда</span>
-                    </div>
-                  </div>
-                  <div className="col-md-6  row">
-                    <div className="col-md-4">
-                      <span>Груз</span>
-                    </div>
-                    <div className="col-md-3">
-                      <span>Загрузка</span>
-                    </div>
-                    <div className="col-md-3">
-                      <span>Цена</span>
-                    </div>
-                    <div className="col-md-2">
-                      <span>Еще</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ArticleHeader></ArticleHeader>
             <Article
               isManage={this.props.user.id == article.user.id}
               onlyOpen={true}

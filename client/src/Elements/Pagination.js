@@ -20,31 +20,33 @@ class Pagination extends React.Component {
   };
   render() {
     return (
-      <ReactPaginate
-        previousLabel={
-          this.state.currentpage === 1 ? (
-            <img src={prevQuest} alt="nextQuest" />
-          ) : (
-            <img src={prevQuestEnable} alt="nextQuestEnable" />
-          )
-        }
-        nextLabel={
-          this.state.currentpage === this.props.pageCount ? (
-            <img src={nextQuest} alt="nextQuest" />
-          ) : (
-            <img src={nextQuestEnable} alt="nextQuestEnable" />
-          )
-        }
-        pageCount={this.props.pageCount}
-        breakLabel={"..."}
-        onPageChange={this.handlePageClick}
-        breakClassName={"break-me"}
-        marginPagesDisplayed={1}
-        pageRangeDisplayed={2}
-        containerClassName={`pagination ${this.props.className}`}
-        subContainerClassName={"pages pagination"}
-        activeClassName={"active"}
-      />
+      <div className="container-fluid">
+        <ReactPaginate
+          previousLabel={
+            this.state.currentpage === 1 ? (
+              <img src={prevQuest} alt="nextQuest" />
+            ) : (
+              <img src={prevQuestEnable} alt="nextQuestEnable" />
+            )
+          }
+          nextLabel={
+            this.state.currentpage === this.props.pageCount ? (
+              <img src={nextQuest} alt="nextQuest" />
+            ) : (
+              <img src={nextQuestEnable} alt="nextQuestEnable" />
+            )
+          }
+          pageCount={this.props.pageCount}
+          breakLabel={"..."}
+          onPageChange={this.handlePageClick}
+          breakClassName={"break-me"}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={2}
+          containerClassName={`pagination ${this.props.className}`}
+          subContainerClassName={"pages pagination"}
+          activeClassName={"active"}
+        />
+      </div>
     );
   }
 }

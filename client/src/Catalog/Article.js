@@ -37,9 +37,9 @@ class Article extends React.Component {
     isHoverHref: false,
   };
   renderStatus = () => {
-    if (this.props.article.user.id == this.props.user.id)
+    if (this.props.isManage && this.props.article.user.id == this.props.user.id)
       return (
-        <>
+        <div>
           {this.props.article.status === 1 && (
             <>
               <div className="status-label">
@@ -78,7 +78,14 @@ class Article extends React.Component {
               </div>
               <div className="status-label">
                 <CheckBox value="1" />
-                <div className="f-12">Предложение укомплектовано</div>
+                <div
+                  className="f-12"
+                  style={{
+                    color: "#6C6C6C",
+                  }}
+                >
+                  Предложение укомплектовано
+                </div>
               </div>
             </>
           )}
@@ -118,18 +125,18 @@ class Article extends React.Component {
               </div>
             </>
           )}
-        </>
+        </div>
       );
   };
   renderInput = () => {
-    if (this.props.article.user.id == this.props.user.id)
+    if (this.props.isManage)
       return (
         <>
           {/* Если Черновик или опубликовано */}
           {(this.props.article.status === 1 ||
             this.props.article.status === 2) && (
             <>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Удалить
               </Button>
             </>
@@ -137,7 +144,7 @@ class Article extends React.Component {
           {/* Если статус черновик */}
           {this.props.article.status === 1 && (
             <>
-              <Button type="fill" className="input-action mx-3">
+              <Button type="fill" className="input-action">
                 Опубликовать
               </Button>
             </>
@@ -145,7 +152,7 @@ class Article extends React.Component {
           {/* Если статус опубликовано */}
           {this.props.article.status === 2 && (
             <>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Отменить
               </Button>
             </>
@@ -153,10 +160,10 @@ class Article extends React.Component {
           {/* Если статус Выбран исполнитель и это заказ */}
           {this.props.article.type === 0 && this.props.article.status === 3 && (
             <>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Отказаться от исполнителя
               </Button>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Запросить отмену заказа
               </Button>
             </>
@@ -164,17 +171,14 @@ class Article extends React.Component {
           {/* Если статус Выбран исполнитель и это предложение */}
           {this.props.article.type === 1 && this.props.article.status === 3 && (
             <>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Отказаться от грузовладельца
               </Button>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Запросить отмену
               </Button>
               <span className="pop-wrapper position-relative">
-                <Button
-                  type="empty"
-                  className="border-yellow input-action mx-3"
-                >
+                <Button type="empty" className="border-yellow input-action">
                   В пути
                 </Button>
                 <div className="pop-block on-my-way padding notAngle">
@@ -189,14 +193,14 @@ class Article extends React.Component {
 
           {this.props.article.status === 4 && (
             <>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Завершить
               </Button>
             </>
           )}
           {this.props.article.type === 0 && this.props.article.status === 4 && (
             <>
-              <Button type="empty" className="input-action mx-3 border-yellow">
+              <Button type="empty" className="input-action border-yellow">
                 Отследить
               </Button>
             </>
@@ -228,7 +232,7 @@ class Article extends React.Component {
               <span className="position-relative">
                 <Button
                   type="empty"
-                  className="input-action mx-3"
+                  className="input-action"
                   onClick={() => {
                     this.setState({
                       isOpenPopReviews: !this.state.isOpenPopReviews,
@@ -248,13 +252,13 @@ class Article extends React.Component {
                   </div>
                 )}
               </span>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Копировать
               </Button>
             </>
           )}
           <Link to={`/order/${this.props.article.id}`}>
-            <Button type="empty" className="input-action mx-3">
+            <Button type="empty" className="input-action">
               Смотреть
             </Button>
           </Link>
@@ -263,7 +267,7 @@ class Article extends React.Component {
             this.props.article.status === 5 ||
             this.props.article.status === 6) && (
             <>
-              <Button type="fill" className="input-action mx-3">
+              <Button type="fill" className="input-action">
                 Написать
               </Button>
             </>
@@ -272,27 +276,70 @@ class Article extends React.Component {
           {(this.props.article.status === 1 ||
             this.props.article.status === 2) && (
             <>
-              <Button type="fill" className="input-action mx-3">
+              <Button type="fill" className="input-action">
                 Редактировать
               </Button>
             </>
           )}
           {this.props.article.status === 7 && (
             <>
-              <Button type="empty" className="input-action mx-3">
+              <Button type="empty" className="input-action">
                 Восстановить
               </Button>
             </>
           )}
+          {!this.props.onlyOpen && (
+            <Link
+              to="/"
+              className="mr-3 d-640-none f-12 href more-click in-row-manage"
+              onClick={(e) => {
+                e.preventDefault();
+                this.setState({ showMore: !this.state.showMore });
+              }}
+            >
+              {!this.state.showMore ? <>Подробнее</> : <>Скрыть подробности</>}
+              <img
+                className="ml-2"
+                src={ArrowDown}
+                width="10"
+                height="7"
+                alt="ArrowDown"
+              />
+            </Link>
+          )}
         </>
       );
-    else
+    else if (!this.props.onlyOpen)
       return (
         <>
+          {!this.props.onlyOpen && (
+            <Link
+              to="/"
+              className="mr-3 d-640-none f-12 href more-click"
+              onClick={(e) => {
+                e.preventDefault();
+                this.setState({ showMore: !this.state.showMore });
+              }}
+            >
+              {!this.state.showMore ? <>Подробнее</> : <>Скрыть подробности</>}
+              <img
+                className="ml-2"
+                src={ArrowDown}
+                width="10"
+                height="7"
+                alt="ArrowDown"
+              />
+            </Link>
+          )}
+          <Link to={`/order/${this.props.article.id}`}>
+            <Button type="empty" className="input-action">
+              Смотреть
+            </Button>
+          </Link>
           <Button
             type="fill"
             className="get-article"
-            paddingVertical={"13px"}
+            paddingVertical={"8px"}
             paddingHorizontal={"35px"}
             fontSize={"14px"}
             onClick={() => {
@@ -315,7 +362,7 @@ class Article extends React.Component {
       );
   };
   updateDimensions = () => {
-    if (window.innerWidth < 768) this.setState({ onMobile: true });
+    if (window.innerWidth <= 768) this.setState({ onMobile: true });
     else this.setState({ onMobile: false });
   };
   componentDidMount() {
@@ -332,19 +379,19 @@ class Article extends React.Component {
           <>
             <div className="container-fluid">
               <div className="row position-relative">
-                <div className="col-md-6 row">
-                  <div className="col-2">{this.props.article.id}</div>
-                  <div className="col-2">
-                    <span>{this.props.article.carName}</span>
-                    <CSSTransitionGroup
-                      transitionName="height-animation-item"
-                      transitionEnterTimeout={500}
-                      transitionLeaveTimeout={500}
-                      style={{
-                        display: "contents",
-                      }}
-                    >
-                      {this.state.showMore && (
+                <div className="ID-col">{this.props.article.id}</div>
+                <div className="car-col">
+                  <span>{this.props.article.carName}</span>
+                  <CSSTransitionGroup
+                    transitionName="height-animation-item"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
+                    style={{
+                      display: "contents",
+                    }}
+                  >
+                    {this.state.showMore ||
+                      (this.props.onlyOpen && (
                         <img
                           className="w-100  moreinfo"
                           onClick={() => {
@@ -358,109 +405,108 @@ class Article extends React.Component {
                           src={this.props.article.carImg}
                           alt=""
                         />
-                      )}
-                    </CSSTransitionGroup>
-                  </div>
-                  <div className="col-4">
-                    <span>{this.props.article.fromLocation}</span>
-
-                    <CSSTransitionGroup
-                      transitionName="height-animation-item"
-                      transitionEnterTimeout={500}
-                      transitionLeaveTimeout={500}
-                      style={{
-                        display: "contents",
-                      }}
-                    >
-                      {this.state.showMore && (
-                        <div
-                          className="moreinfo"
-                          style={{
-                            height: "100px",
-                          }}
-                        >
-                          <Map
-                            defaultState={{ center: [55.75, 37.57], zoom: 15 }}
-                            width="100%"
-                            height="100px"
-                          />
-                        </div>
-                      )}
-                    </CSSTransitionGroup>
-                  </div>
-                  <div className="col-4">
-                    <span>{this.props.article.toLocation}</span>
-                    <CSSTransitionGroup
-                      transitionName="height-animation-item"
-                      transitionEnterTimeout={500}
-                      transitionLeaveTimeout={500}
-                      style={{
-                        display: "contents",
-                      }}
-                    >
-                      {this.state.showMore && (
-                        <div
-                          className="moreinfo"
-                          style={{
-                            height: "100px",
-                          }}
-                        >
-                          <Map
-                            defaultState={{ center: [55.75, 37.57], zoom: 15 }}
-                            width="100%"
-                            height="100px"
-                          />
-                        </div>
-                      )}
-                    </CSSTransitionGroup>
-                  </div>
+                      ))}
+                  </CSSTransitionGroup>
                 </div>
-                <div className="col-6 row">
-                  <div className="col-md-4">
-                    <span>
-                      <span className="d-block">
-                        {this.props.article.parametrs}
-                        <br />
-                        {this.props.article.count}
-                      </span>
-                      <br />
-                      {this.props.article.cargo.map((item, index) => {
-                        return (
-                          <span key={index} className="d-block">
-                            {item}
-                          </span>
-                        );
-                      })}
-                    </span>
-                  </div>
-                  <div className="col-md-3">
-                    <span>
-                      {this.props.article.date.date}
-                      <br />
-                      <br />
-                      {this.props.article.date.time}
-                    </span>
-                  </div>
-                  <div className="col-md-3">
-                    <span>{this.props.article.price}</span>
-                  </div>
-                  <div className="col-md-2">
-                    <span>
-                      Рейтинг: &nbsp;
-                      <span className="d-inline-block">
-                        {this.props.article.rating}
-                        <img
-                          src={ImgActiveStar}
+                <div className="FromL-col">
+                  <span>{this.props.article.fromLocation}</span>
+
+                  <CSSTransitionGroup
+                    transitionName="height-animation-item"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
+                    style={{
+                      display: "contents",
+                    }}
+                  >
+                    {this.state.showMore ||
+                      (this.props.onlyOpen && (
+                        <div
+                          className="moreinfo"
                           style={{
-                            position: "relative",
-                            top: "1px",
+                            height: "100px",
                           }}
-                          className="ml-1"
-                          alt="ImgActiveStar"
-                        />
-                      </span>
+                        >
+                          <Map
+                            defaultState={{ center: [55.75, 37.57], zoom: 15 }}
+                            width="100%"
+                            height="100px"
+                          />
+                        </div>
+                      ))}
+                  </CSSTransitionGroup>
+                </div>
+                <div className="ToLoc-col">
+                  <span>{this.props.article.toLocation}</span>
+                  <CSSTransitionGroup
+                    transitionName="height-animation-item"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
+                    style={{
+                      display: "contents",
+                    }}
+                  >
+                    {this.state.showMore ||
+                      (this.props.onlyOpen && (
+                        <div
+                          className="moreinfo"
+                          style={{
+                            height: "100px",
+                          }}
+                        >
+                          <Map
+                            defaultState={{ center: [55.75, 37.57], zoom: 15 }}
+                            width="100%"
+                            height="100px"
+                          />
+                        </div>
+                      ))}
+                  </CSSTransitionGroup>
+                </div>
+                <div className="Grooz-col">
+                  <span>
+                    <span className="d-block">
+                      {this.props.article.parametrs}
+                      <br />
+                      {this.props.article.count}
                     </span>
-                  </div>
+                    <br />
+                    {this.props.article.cargo.map((item, index) => {
+                      return (
+                        <span key={index} className="d-block">
+                          {item}
+                        </span>
+                      );
+                    })}
+                  </span>
+                </div>
+                <div className="Date-col">
+                  <span>
+                    {this.props.article.date.date}
+                    <br />
+                    <br />
+                    {this.props.article.date.time}
+                  </span>
+                </div>
+                <div className="Price-col">
+                  <span>{this.props.article.price}</span>
+                </div>
+                <div className="More-col">
+                  <span>
+                    Рейтинг: &nbsp;
+                    <span className="d-inline-block">
+                      {this.props.article.rating}
+                      <img
+                        src={ImgActiveStar}
+                        style={{
+                          position: "relative",
+                          top: "1px",
+                        }}
+                        className="ml-1"
+                        alt="ImgActiveStar"
+                      />
+                    </span>
+                  </span>
                 </div>
                 {!this.state.showMore && !this.props.singlePage && (
                   <Link
@@ -475,6 +521,7 @@ class Article extends React.Component {
                   ></Link>
                 )}
               </div>
+
               <CSSTransitionGroup
                 transitionName="height-animation"
                 transitionEnterTimeout={500}
@@ -494,7 +541,12 @@ class Article extends React.Component {
                         );
                       })}
                     </div>
-                    <div className="col-5 mx-0 row">
+                    <div
+                      className="col mx-0 row"
+                      style={{
+                        maxWidth: "350px",
+                      }}
+                    >
                       <img
                         src={this.props.article.user.avatar}
                         className="user-avatar"
@@ -502,12 +554,7 @@ class Article extends React.Component {
                       />
                       <div className="col">
                         <div className="fio">
-                          <Link
-                            to="/user/1"
-                            style={{
-                              color: "#000",
-                            }}
-                          >
+                          <Link to="/user/1">
                             {this.props.article.user.fio}
                           </Link>
                         </div>
@@ -568,35 +615,12 @@ class Article extends React.Component {
               </CSSTransitionGroup>
               <div className="row mx-0">
                 <div className="col-md-12 article-actions">
-                  <div className="row px-0 row-input-controls mt-4">
+                  <div className="row px-0 row-input-controls">
                     {this.renderStatus()}
                     <div className="col-12 col-md row  row-input-controls">
                       {this.renderInput()}
                     </div>
                   </div>
-                  {!this.props.onlyOpen && (
-                    <Link
-                      to="/"
-                      className="mr-3 d-640-none f-12 href"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({ showMore: !this.state.showMore });
-                      }}
-                    >
-                      {!this.state.showMore ? (
-                        <>Подробнее</>
-                      ) : (
-                        <>Скрыть подробности</>
-                      )}
-                      <img
-                        className="ml-2"
-                        src={ArrowDown}
-                        width="10"
-                        height="7"
-                        alt="ArrowDown"
-                      />
-                    </Link>
-                  )}
                 </div>
               </div>
             </div>

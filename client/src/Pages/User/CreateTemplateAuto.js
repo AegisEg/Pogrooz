@@ -102,7 +102,7 @@ class OfferCreate1 extends React.Component {
         </div>
 
         <div className="row order-swicher-wrapper">
-          <div className="col-sm-6 col-lg-4">
+          <div className="col-sm-6 col-md-4">
             <div className="CheckBoxSwitcher-wrapper">
               <CheckBoxSwitcher
                 lableClassname="f-16"
@@ -150,7 +150,7 @@ class OfferCreate1 extends React.Component {
               )}
             </CSSTransitionGroup>
           </div>
-          <div className="col-sm-6 col-lg-4">
+          <div className="col-sm-6 col-md-4">
             <div className="CheckBoxSwitcher-wrapper">
               <CheckBoxSwitcher
                 val={this.state.doContract}
@@ -186,7 +186,7 @@ class OfferCreate1 extends React.Component {
               )}
             </CSSTransitionGroup>
           </div>
-          <div className="col-sm-6 col-lg-4">
+          <div className="col-sm-6 col-md-4">
             <div className="CheckBoxSwitcher-wrapper">
               <CheckBoxSwitcher
                 val={this.state.paymentMethods}
@@ -243,7 +243,7 @@ class OfferCreate1 extends React.Component {
         <div className="row justify-content-end">
           <Button
             type="fill"
-            className="mt-2 mx-3 input-action"
+            className=" input-action"
             paddingHorizontal="40px"
             onClick={this.props.next}
           >

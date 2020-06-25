@@ -28,7 +28,7 @@ class Cargo extends React.Component {
         <Filter />
         <div className="cargo-pros">
           <div className="container-fluid row">
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="cargo-pros-image-block">
                 <img
                   className="cargo-pros-image"
@@ -41,7 +41,7 @@ class Cargo extends React.Component {
                 Беcплатно. Без процентов и комиссий
               </p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="cargo-pros-image-block">
                 <img
                   className="cargo-pros-image"
@@ -54,7 +54,7 @@ class Cargo extends React.Component {
                 Простой и удобный личный кабинет
               </p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="cargo-pros-image-block">
                 <img
                   className="cargo-pros-image"
@@ -64,7 +64,7 @@ class Cargo extends React.Component {
               </div>
               <p className="cargo-pros-label">Система оповещений и сообщений</p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="cargo-pros-image-block">
                 <img
                   className="cargo-pros-image"
@@ -74,7 +74,7 @@ class Cargo extends React.Component {
               </div>
               <p className="cargo-pros-label">Отслеживание груза в пути</p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="cargo-pros-image-block">
                 <img
                   className="cargo-pros-image"
@@ -85,7 +85,7 @@ class Cargo extends React.Component {
 
               <p className="cargo-pros-label">Прямое общение с перевозчиком</p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="cargo-pros-image-block">
                 <img
                   className="cargo-pros-image"
@@ -162,7 +162,7 @@ class Cargo extends React.Component {
               )
                 return (
                   <div
-                    className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
+                    className="faq-question col-12 col-sm-6 col-md-4 col-lg-3"
                     key={question.id}
                   >
                     <h4>{question.title}</h4>

@@ -100,7 +100,7 @@ class OfferCreate1 extends React.Component {
             </div>
           </div>
           <div className="row order-swicher-wrapper">
-            <div className="col-sm-6 col-lg-4">
+            <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
                   lableClassname="f-16"
@@ -142,7 +142,7 @@ class OfferCreate1 extends React.Component {
                 )}
               </CSSTransitionGroup>
             </div>
-            <div className="col-sm-6 col-lg-4">
+            <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
                   val={this.state.doContract}
@@ -181,7 +181,7 @@ class OfferCreate1 extends React.Component {
                 )}
               </CSSTransitionGroup>
             </div>
-            <div className="col-sm-6 col-lg-4">
+            <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
                   val={this.state.paymentMethods}
@@ -258,7 +258,7 @@ class OfferCreate1 extends React.Component {
           <div className="row slide-step justify-content-end">
             <Button
               type="fill"
-              className="mt-2 mx-3 input-action"
+              className=" input-action"
               paddingHorizontal="40px"
               onClick={this.props.next}
             >
@@ -280,7 +280,7 @@ class OfferCreate2 extends React.Component {
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
           <div className="row align-items-start">
-            <div className="col-xl-8 col-12 row">
+            <div className="col-xl-8 mt-2 col-12 row">
               <h4
                 className="f-16 col-12 mb-1"
                 style={{
@@ -312,7 +312,7 @@ class OfferCreate2 extends React.Component {
                 ></div>
               </div>
             </div>
-            <div className="col-xl-4 col-12 row">
+            <div className="col-xl-4 mt-2 col-12 row">
               <h4
                 className="f-16 col-12"
                 style={{
@@ -400,7 +400,7 @@ class OfferCreate2 extends React.Component {
           <div className="row slide-step justify-content-end">
             <Button
               type="empty"
-              className="mt-2 mx-3 input-action"
+              className=" input-action"
               paddingHorizontal="40px"
               onClick={this.props.prev}
             >
@@ -408,7 +408,7 @@ class OfferCreate2 extends React.Component {
             </Button>
             <Button
               type="fill"
-              className="mt-2 mx-3 input-action"
+              className=" input-action"
               paddingHorizontal="40px"
               onClick={this.props.next}
             >
@@ -599,7 +599,7 @@ class OfferCreate3 extends React.Component {
           <div className="row slide-step justify-content-end">
             <Button
               type="empty"
-              className="mt-2 mx-3 input-action"
+              className=" input-action"
               paddingHorizontal="40px"
               onClick={this.props.prev}
             >
@@ -608,7 +608,7 @@ class OfferCreate3 extends React.Component {
 
             <Button
               type="fill"
-              className="mt-2 mx-3 input-action"
+              className=" input-action"
               paddingHorizontal="40px"
               onClick={this.props.next}
             >
@@ -635,23 +635,25 @@ class OfferCreate4 extends React.Component {
         <div className="articles-block full">
           <ArticleShow article={article} />
         </div>
-        <div className="row slide-step justify-content-end">
-          <Button
-            type="empty"
-            className="mt-2 mx-3 input-action"
-            paddingHorizontal="40px"
-            onClick={this.props.prev}
-          >
-            Назад
-          </Button>
-          <Button
-            type="fill"
-            className="mt-2 mx-3 input-action"
-            paddingHorizontal="40px"
-            onClick={() => {}}
-          >
-            Опубликовать
-          </Button>
+        <div className="container-fluid">
+          <div className="row slide-step justify-content-end">
+            <Button
+              type="empty"
+              className=" input-action"
+              paddingHorizontal="40px"
+              onClick={this.props.prev}
+            >
+              Назад
+            </Button>
+            <Button
+              type="fill"
+              className=" input-action"
+              paddingHorizontal="40px"
+              onClick={() => {}}
+            >
+              Опубликовать
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -668,34 +670,44 @@ class OfferCreate extends React.Component {
           <div className="container-fluid">
             <h2 className="title">{this.props.title}</h2>
             <div className="header-statusBar row">
-              <div
-                className={`col-md-3 col-sm-6 col-12 ${
-                  this.state.currentTab >= 1 ? "active" : ""
-                }`}
-              >
-                Описание авто <AngleSvg />
-              </div>
-              <div
-                className={`col-md-3 col-sm-6 col-12 ${
-                  this.state.currentTab >= 2 ? "active" : ""
-                }`}
-              >
-                Маршрут <AngleSvg />
-              </div>
-              <div
-                className={`col-md-3 col-sm-6 col-12 ${
-                  this.state.currentTab >= 3 ? "active" : ""
-                }`}
-              >
-                Описание груза
+              <div className={`${this.state.currentTab >= 1 ? "active" : ""}`}>
+                <span
+                  onClick={() => {
+                    this.setState({ currentTab: 1 });
+                  }}
+                >
+                  Описание авто
+                </span>{" "}
                 <AngleSvg />
               </div>
-              <div
-                className={`col-md-3 col-sm-6 col-12 ${
-                  this.state.currentTab >= 4 ? "active" : ""
-                }`}
-              >
-                Публикация заказа
+              <div className={` ${this.state.currentTab >= 2 ? "active" : ""}`}>
+                <span
+                  onClick={() => {
+                    this.setState({ currentTab: 2 });
+                  }}
+                >
+                  Маршрут
+                </span>{" "}
+                <AngleSvg />
+              </div>
+              <div className={`${this.state.currentTab >= 3 ? "active" : ""}`}>
+                <span
+                  onClick={() => {
+                    this.setState({ currentTab: 3 });
+                  }}
+                >
+                  Описание груза
+                </span>
+                <AngleSvg />
+              </div>
+              <div className={`${this.state.currentTab >= 4 ? "active" : ""}`}>
+                <span
+                  onClick={() => {
+                    this.setState({ currentTab: 4 });
+                  }}
+                >
+                  Публикация заказа
+                </span>
               </div>
             </div>
           </div>
