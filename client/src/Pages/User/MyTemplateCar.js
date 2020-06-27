@@ -30,6 +30,7 @@ class OfferCreate extends React.Component {
               <Button
                 paddingVertical="11px"
                 className="f-14 position-relative "
+                paddingVertical="10px"
                 type="fill"
               >
                 Добавить шаблон авто
@@ -49,7 +50,11 @@ class OfferCreate extends React.Component {
                     Мерседес Вито для перевозки{" "}
                   </div>
                   <div className="px-3 mt-2 mt-md-0">
-                    <Button type="fill" className="f-12 px-3 position-relative">
+                    <Button
+                      type="fill"
+                      paddingVertical="6px"
+                      className="f-12 position-relative"
+                    >
                       Редактировать
                       <Link
                         to="/edit-template-auto/1"
@@ -58,7 +63,11 @@ class OfferCreate extends React.Component {
                     </Button>
                   </div>
                   <div className="px-3 mt-2 mt-md-0">
-                    <Button type="fill" className="bg-gray f-12 ">
+                    <Button
+                      type="fill"
+                      paddingVertical="6px"
+                      className="bg-gray f-12 "
+                    >
                       Удалить
                     </Button>
                   </div>
@@ -81,7 +90,15 @@ class OfferCreate extends React.Component {
                     Еврофура Mercedes Vito 2020 год 86 куб. м тоннаж - 20-22 т
                     Загрузка задняя
                   </div>
-                  <div className="row ml-2 mt-2 mt-md-0">
+                  <div
+                    className="row ml-2 mt-2 mt-md-0"
+                    style={{
+                      maxWidth: "320px",
+                      minWidth: "171px",
+                      flexBasis: "0",
+                      flexGrow: "1",
+                    }}
+                  >
                     <div className="flex-columns">
                       <span className="position-relative left-angle">
                         Услуги грузчика
@@ -134,7 +151,11 @@ class OfferCreate extends React.Component {
                     Мерседес Вито для перевозки{" "}
                   </div>
                   <div className="px-3 mt-2 mt-md-0">
-                    <Button type="fill" className="f-12 px-3 position-relative">
+                    <Button
+                      type="fill"
+                      paddingVertical="6px"
+                      className="f-12 position-relative"
+                    >
                       Редактировать
                       <Link
                         to="/edit-template-auto/2"
@@ -143,7 +164,11 @@ class OfferCreate extends React.Component {
                     </Button>
                   </div>
                   <div className="px-3 mt-2 mt-md-0">
-                    <Button type="fill" className="bg-gray f-12 ">
+                    <Button
+                      type="fill"
+                      paddingVertical="6px"
+                      className="bg-gray f-12 "
+                    >
                       Удалить
                     </Button>
                   </div>
@@ -166,7 +191,15 @@ class OfferCreate extends React.Component {
                     Еврофура Mercedes Vito 2020 год 86 куб. м тоннаж - 20-22 т
                     Загрузка задняя
                   </div>
-                  <div className="row ml-2 mt-2 mt-md-0">
+                  <div
+                    className="row ml-2 mt-2 mt-md-0"
+                    style={{
+                      maxWidth: "320px",
+                      minWidth: "171px",
+                      flexBasis: "0",
+                      flexGrow: "1",
+                    }}
+                  >
                     <div className="flex-columns">
                       <span className="position-relative left-angle">
                         Услуги грузчика

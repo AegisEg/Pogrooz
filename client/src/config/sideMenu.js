@@ -1,5 +1,5 @@
 import addIcon from "../img/add-icon.svg";
-import chat from "../img/chat.svg";
+import chat from "../img/chatico.svg";
 import ruble from "../img/ruble.svg";
 import working from "../img/working.svg";
 import completed from "../img/completed.svg";
@@ -9,7 +9,7 @@ import profile from "../img/profile.svg";
 import myOrders from "../img/my-orders.svg";
 import acceptedOrders from "../img/accepted-orders.svg";
 import geoDetect from "../img/geo-detect.svg";
-import messages from "../img/messages.svg";
+import messages from "../img/chat.svg";
 import car from "../img/car.svg";
 import raiting from "../img/raiting.svg";
 import gear from "../img/gear.svg";

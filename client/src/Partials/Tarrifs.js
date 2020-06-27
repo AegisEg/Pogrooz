@@ -80,6 +80,7 @@ class Tarrifs extends React.Component {
                   <div className="text-center">
                     <Button
                       type={`${item.sale ? `empty` : `fill`}  `}
+                      className={`${item.sale ? `yellow-after` : ``}`}
                       paddingVertical="3px"
                     >
                       Оплатить

@@ -36,7 +36,7 @@ class OfferCreate1 extends React.Component {
               Тип авто
             </h4>
 
-            <div className="mt-3">
+            <div>
               <Select
                 options={[{ value: 4, label: "Машина" }]}
                 placeholder="Тип  машины"
@@ -45,7 +45,7 @@ class OfferCreate1 extends React.Component {
                 }}
               />
             </div>
-            <div className=" mt-3">
+            <div>
               <Select
                 options={[{ value: 4, label: "Машина" }]}
                 placeholder="Тип  машины"
@@ -54,7 +54,7 @@ class OfferCreate1 extends React.Component {
                 }}
               />
             </div>
-            <div className="mt-3">
+            <div>
               <Select
                 options={[{ value: 4, label: "Машина" }]}
                 placeholder="Тип  машины"
@@ -63,7 +63,7 @@ class OfferCreate1 extends React.Component {
                 }}
               />
             </div>
-            <div className="mt-3">
+            <div>
               <Select
                 options={[{ value: 4, label: "Машина" }]}
                 placeholder="Тип  машины"
@@ -85,7 +85,7 @@ class OfferCreate1 extends React.Component {
             </h4>
             <div className="col-12 d-inline-block align-self-center text-center">
               <div className="d-inline-block px-4 mt-2">
-                <Button type="fill" paddingHorizontal="30px">
+                <Button type="fill" className="f-17" paddingHorizontal="30px" paddingVertical="7px">
                   Загрузить
                 </Button>
               </div>
@@ -102,7 +102,7 @@ class OfferCreate1 extends React.Component {
         </div>
 
         <div className="row order-swicher-wrapper">
-          <div className="col-sm-6 col-lg-4">
+          <div className="col-sm-6 col-md-4">
             <div className="CheckBoxSwitcher-wrapper">
               <CheckBoxSwitcher
                 lableClassname="f-16"
@@ -150,7 +150,7 @@ class OfferCreate1 extends React.Component {
               )}
             </CSSTransitionGroup>
           </div>
-          <div className="col-sm-6 col-lg-4">
+          <div className="col-sm-6 col-md-4">
             <div className="CheckBoxSwitcher-wrapper">
               <CheckBoxSwitcher
                 val={this.state.doContract}
@@ -186,7 +186,7 @@ class OfferCreate1 extends React.Component {
               )}
             </CSSTransitionGroup>
           </div>
-          <div className="col-sm-6 col-lg-4">
+          <div className="col-sm-6 col-md-4">
             <div className="CheckBoxSwitcher-wrapper">
               <CheckBoxSwitcher
                 val={this.state.paymentMethods}
@@ -240,10 +240,10 @@ class OfferCreate1 extends React.Component {
           </div>
         </div>
 
-        <div className="row justify-content-end">
+        <div className="row mt-3 mx-0 justify-content-end">
           <Button
             type="fill"
-            className="mt-2 mx-3 input-action"
+            className="input-action"
             paddingHorizontal="40px"
             onClick={this.props.next}
           >

@@ -29,7 +29,7 @@ class Carrier extends React.Component {
         <Filter />
         <div className="carrier-pros ">
           <div className="container-fluid row">
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="carrier-pros-image-block">
                 <img
                   className="carrier-pros-image"
@@ -44,7 +44,7 @@ class Carrier extends React.Component {
                 Без комиссий и доплат за заказ
               </p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="carrier-pros-image-block">
                 <img
                   className="carrier-pros-image"
@@ -54,7 +54,7 @@ class Carrier extends React.Component {
               </div>
               <p className="carrier-pros-label">Прямые заказы</p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="carrier-pros-image-block">
                 <img
                   className="carrier-pros-image"
@@ -64,7 +64,7 @@ class Carrier extends React.Component {
               </div>
               <p className="carrier-pros-label">Удобный чат с клиентом</p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="carrier-pros-image-block">
                 <img
                   className="carrier-pros-image"
@@ -76,7 +76,7 @@ class Carrier extends React.Component {
                 Вся информация у вас в телефоне
               </p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="carrier-pros-image-block">
                 <img
                   className="carrier-pros-image"
@@ -86,7 +86,7 @@ class Carrier extends React.Component {
               </div>
               <p className="carrier-pros-label">История заказов</p>
             </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-2">
+            <div className="col-12 col-sm-6 col-md-2 col-lg-2">
               <div className="carrier-pros-image-block">
                 <img
                   className="carrier-pros-image"
@@ -229,7 +229,7 @@ class Carrier extends React.Component {
                 )
                   return (
                     <div
-                      className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
+                      className="faq-question col-12 col-sm-6 col-md-4 col-lg-3"
                       key={question.id}
                     >
                       <h4>{question.title}</h4>

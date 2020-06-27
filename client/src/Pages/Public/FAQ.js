@@ -60,7 +60,7 @@ class FAQ extends React.Component {
               return (
                 view && (
                   <div
-                    className="faq-question col-12 col-sm-6 col-md-4 col-lg-3 text-center text-md-left"
+                    className="faq-question col-12 col-sm-6 col-md-4 col-lg-3"
                     key={question.id}
                   >
                     <h4>{question.title}</h4>

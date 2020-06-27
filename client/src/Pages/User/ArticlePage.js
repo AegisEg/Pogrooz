@@ -2,6 +2,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import Article from "../../Catalog/Article";
+import ArticleHeader from "../../Catalog/ArticleHeader";
 import RequestForm from "../../Partials/RequestForm.js";
 import articlestest from "../../config/articlestest.js";
 //IMGS
@@ -44,40 +45,7 @@ class ArticlePage extends React.Component {
             </Link>
           </div>
           <div className="articles-block full">
-            <div className="articles-header d-none d-md-block">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-md-6  row">
-                    <div className="col-md-2">
-                      <span>#</span>
-                    </div>
-                    <div className="col-md-2">
-                      <span>Машина</span>
-                    </div>
-                    <div className="col-md-4">
-                      <span>Откуда</span>
-                    </div>
-                    <div className="col-md-4">
-                      <span>Куда</span>
-                    </div>
-                  </div>
-                  <div className="col-md-6  row">
-                    <div className="col-md-4">
-                      <span>Груз</span>
-                    </div>
-                    <div className="col-md-3">
-                      <span>Загрузка</span>
-                    </div>
-                    <div className="col-md-3">
-                      <span>Цена</span>
-                    </div>
-                    <div className="col-md-2">
-                      <span>Еще</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ArticleHeader></ArticleHeader>
             <Article
               isManage={this.props.user.id == article.user.id}
               onlyOpen={true}
@@ -91,7 +59,7 @@ class ArticlePage extends React.Component {
             </div>
             {article.requests && article.requests.length && (
               <>
-                <div className="article-block requests-article-block">
+                <div className="requests-article-block">
                   <div className="container-fluid">
                     {article.requests.map((item, index) => {
                       return (
@@ -113,10 +81,10 @@ class ArticlePage extends React.Component {
                               </span>
                             </div>
                             <div
-                              className="col f-14 d-flex align-items-center"
+                              className="col f-14 d-flex align-items-start"
                               style={{
                                 whiteSpace: "pre-line",
-                                maxWidth: "190px",
+                                maxWidth: "180px",
                               }}
                             >
                               <img
@@ -137,21 +105,8 @@ class ArticlePage extends React.Component {
                               {item.user.rating}{" "}
                               <img src={ImgActiveStar} alt="" />
                             </div>
-                            <div
-                              className="col f-14"
-                              style={{
-                                maxWidth: "105px",
-                              }}
-                            >
-                              <b>
-                                <p className="mt-0">{item.summ}</p>
-                                <div>
-                                  Погрузка: <br />
-                                  {item.date_pogrooz.date}
-                                  <br />
-                                  {item.date_pogrooz.time}
-                                </div>
-                              </b>
+                            <div className="col-12 col-lg f-14 price-request">
+                              {item.summ} Погрузка: {item.date_pogrooz.date} {item.date_pogrooz.time}
                             </div>
                             <div className="col-12 col-md f-14 ">
                               {item.comments}

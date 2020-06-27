@@ -100,6 +100,10 @@ class SideNav extends React.Component {
         style={{
           height: this.state.height,
         }}
+        onClick={() => {
+          if (window.innerWidth <= 800 && !this.state.isOpen)
+            this.setState({ isOpen: true });
+        }}
       >
         {menu.map((item, index) => {
           if (

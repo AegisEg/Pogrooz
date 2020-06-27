@@ -44,6 +44,8 @@ class Header extends React.Component {
     showTarrifPop: false,
   };
 
+  
+
   showProfileMenu() {
     this.setState({ showProfileMenu: true });
     document.addEventListener("click", this.hideProfileMenu);
