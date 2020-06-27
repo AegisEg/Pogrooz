@@ -76,16 +76,16 @@ class Support extends React.Component {
         <div className="container-fluid">
           <h2 className="title">Мои тариф</h2>
           <div className="row align-items-center">
-            <p className="f-14 d-inline-block px-3">
+            <p className="f-14 mt-2 d-inline-block px-3">
               Тариф PRO оплачен до 25.12.2025 г
             </p>
-            <div className="col">
-              <Button type="fill" paddingVertical="6px">
-                <span className="f-12">Пополнить</span>
+            <div className="col mt-2">
+              <Button type="fill" className="f-12" paddingVertical="6px">
+                Пополнить
               </Button>
             </div>
           </div>
-          <h3 className="f-16 font-weight-normal">История пополнений</h3>
+          <h3 className="f-16 font-weight-normal mt-2">История пополнений</h3>
           <PayHistoryTable />
           <h3 className="f-16 font-weight-normal mt-4">Продлить тариф</h3>
           <Tarrifs />

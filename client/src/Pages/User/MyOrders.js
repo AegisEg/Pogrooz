@@ -20,7 +20,7 @@ class MyOrders extends React.Component {
             this.setState({ currentStatus: "all" });
           }}
         >
-          Все
+          Все (3)
           <div className="action-counter">
             <span>3</span>
           </div>

@@ -74,8 +74,8 @@ class RequestForm extends React.Component {
                 </div>
                 <Button
                   type="fill"
-                  paddingVertical="11px"
-                  className="mt-3 mx-md-auto mr-xl-3 ml-xl-auto mr-3 ml-3 mb-0 input-action"
+                  paddingVertical="11px"                  
+                  className="mt-3 mx-md-auto mr-xl-3 ml-xl-auto mr-3 ml-3 mb-0 input-action send-input-action"
                 >
                   Отправить
                 </Button>

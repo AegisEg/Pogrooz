@@ -203,9 +203,7 @@ class Profile extends React.Component {
                 }}
               />
             </div>
-            <div className="d-flex justify-content-center">
-              <Button type="empty bg-gray ">Сохранить пароль</Button>
-            </div>
+            <Button type="empty bg-gray ">Сохранить пароль</Button>
           </div>
 
           <div className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
@@ -301,7 +299,7 @@ class Profile extends React.Component {
         </div>
         {/* //this.props.user.type === "carrier" */}
         {1 && (
-          <div className="row">
+          <div className="row mt-2">
             <h4 className=" col-12 subtitle py-0 mb-3 px-3">Паспорт</h4>
             <div className="col-12 col-lg-6  mb-4">
               <div className="d-block d-lg-flex">

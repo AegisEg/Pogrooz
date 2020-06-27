@@ -68,6 +68,15 @@ class MenuNav extends React.Component {
     this.setState({ menu });
   }
 
+  shouldComponentUpdate(a, b) {
+    console.log(new Date())
+    console.log(b)
+    console.log(this.state)
+    console.log(JSON.stringify(a) === JSON.stringify(this.props))
+    console.log(JSON.stringify(b) === JSON.stringify(this.state))
+    return true
+  }
+
   render() {
     let menu = this.state.menu,
       width = 61;

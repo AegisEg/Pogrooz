@@ -10,6 +10,7 @@ import CheckBox from "../../Elements/CheckBox";
 import { Link } from "react-router-dom";
 import ArticleShow from "../../Catalog/ArticleShow";
 import { connect } from "react-redux";
+import HeaderCreate from "../../Partials/CreateElements/HeaderCreate";
 
 import { CSSTransitionGroup } from "react-transition-group";
 //IMGS
@@ -701,47 +702,18 @@ class OrderCreate extends React.Component {
         <div className="create-page create-order-page">
           <div className="container-fluid">
             <h2 className="title">{this.props.title}</h2>
-            <div className="header-statusBar row">
-              <div className={`${this.state.currentTab >= 1 ? "active" : ""}`}>
-                <span
-                  onClick={() => {
-                    this.setState({ currentTab: 1 });
-                  }}
-                >
-                  Описание авто{" "}
-                </span>
-                <AngleSvg />
-              </div>
-              <div className={`${this.state.currentTab >= 2 ? "active" : ""}`}>
-                <span
-                  onClick={() => {
-                    this.setState({ currentTab: 2 });
-                  }}
-                >
-                  Маршрут
-                </span>{" "}
-                <AngleSvg />
-              </div>
-              <div className={`${this.state.currentTab >= 3 ? "active" : ""}`}>
-                <span
-                  onClick={() => {
-                    this.setState({ currentTab: 3 });
-                  }}
-                >
-                  Описание груза
-                </span>
-                <AngleSvg />
-              </div>
-              <div className={`${this.state.currentTab >= 4 ? "active" : ""}`}>
-                <span
-                  onClick={() => {
-                    this.setState({ currentTab: 4 });
-                  }}
-                >
-                  Публикация заказа
-                </span>
-              </div>
-            </div>
+            <HeaderCreate
+              changeTub={(setTub) => {
+                this.setState({ currentTab: setTub });
+              }}
+              currentTab={this.state.currentTab}
+              tabs={[
+                "Описание груза",
+                "Мартшрут",
+                "Пожелания к перевозчику",
+                "Публикация товара",
+              ]}
+            />
           </div>
           <div className="steps-create">
             <OrderCreate1

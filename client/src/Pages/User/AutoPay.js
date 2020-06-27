@@ -160,165 +160,167 @@ class AutoPay extends React.Component {
   render() {
     return (
       <div className="standart-page">
-        <h2 className="title mb-0">Настройки автоплатежа</h2>
-        <Link to="/mytarif" className="href-hover f-12">
-          Вернуться на страницу Мой тариф
-        </Link>
-        <div
-          className="row mt-4"
-          style={{
-            marginBottom: "39px",
-          }}
-        >
-          <div className="col d-flex align-items-center">
-            <div
-              className="mr-4 f-14"
-              style={{
-                color: this.state.enableAutoPay ? "#B9B9B9" : "",
-              }}
-            >
-              Включить
-            </div>
-            <CheckBoxSwitcher
-              val={this.state.enableAutoPay}
-              onChange={() => {
-                this.setState({ enableAutoPay: !this.state.enableAutoPay });
-              }}
-            />
-            <div
-              className="ml-4 f-14"
-              style={{
-                color: !this.state.enableAutoPay ? "#B9B9B9" : "",
-              }}
-            >
-              Включить
-            </div>
-          </div>
-        </div>
-        <h3 className="f-16 font-weight-normal">Привязанные карты</h3>
-        <div className="row card-list">
-          <div className="card active">
-            <div className="row mx-0">
-              <div className="col-7 f-20">4276 **** **** ****</div>
-              <div className="col-5 text-right">
-                <span className="left-angle white f-12 mr-0">Активна</span>
-              </div>
+        <div className="container-fluid">
+          <h2 className="title mb-0">Настройки автоплатежа</h2>
+          <Link to="/mytarif" className="href-hover f-12">
+            Вернуться на страницу Мой тариф
+          </Link>
+          <div
+            className="row mt-4"
+            style={{
+              marginBottom: "39px",
+            }}
+          >
+            <div className="col d-flex align-items-center">
               <div
-                className="col-7 f-18"
+                className="mr-4 f-14"
                 style={{
-                  marginTop: "33px",
+                  color: this.state.enableAutoPay ? "#B9B9B9" : "",
                 }}
               >
-                CARDHOLDER NAME
+                Включить
               </div>
+              <CheckBoxSwitcher
+                val={this.state.enableAutoPay}
+                onChange={() => {
+                  this.setState({ enableAutoPay: !this.state.enableAutoPay });
+                }}
+              />
               <div
-                className="col-5 text-right f-18"
+                className="ml-4 f-14"
                 style={{
-                  marginTop: "33px",
+                  color: !this.state.enableAutoPay ? "#B9B9B9" : "",
                 }}
               >
-                22/19
-              </div>
-              <div
-                className="col"
-                style={{
-                  marginTop: "17px",
-                }}
-              >
-                <div className="card-hidden"></div>
-              </div>
-              <div
-                className="col-12 text-right"
-                style={{
-                  marginTop: "17px",
-                }}
-              >
-                <Button
-                  type="empty"
-                  paddingVertical="7px"
-                  className="border-none"
-                >
-                  <span className="f-12">Редактировать</span>
-                </Button>
+                Включить
               </div>
             </div>
           </div>
-          <div className="card ">
-            <div className="row mx-0">
-              <div className="col-7 f-20">4276 **** **** ****</div>
-              <div className="col-5 text-right">
-                <span
-                  className=" f-12 mr-0"
+          <h3 className="f-16 font-weight-normal">Привязанные карты</h3>
+          <div className="row card-list">
+            <div className="card active">
+              <div className="row mx-0">
+                <div className="col-7 f-20">4276 **** **** ****</div>
+                <div className="col-5 text-right">
+                  <span className="left-angle white f-12 mr-0">Активна</span>
+                </div>
+                <div
+                  className="col-7 f-18"
                   style={{
-                    color: "#B9B9B9",
+                    marginTop: "33px",
                   }}
                 >
-                  Не активна
-                </span>
-              </div>
-              <div
-                className="col-7 f-18"
-                style={{
-                  marginTop: "33px",
-                }}
-              >
-                CARDHOLDER NAME
-              </div>
-              <div
-                className="col-5 text-right f-18"
-                style={{
-                  marginTop: "33px",
-                }}
-              >
-                22/19
-              </div>
-              <div
-                className="col"
-                style={{
-                  marginTop: "17px",
-                }}
-              >
-                <div className="card-hidden"></div>
-              </div>
-              <div
-                className="col-12 text-right"
-                style={{
-                  marginTop: "17px",
-                }}
-              >
-                <Button
-                  type="empty"
-                  paddingVertical="7px"
-                  className="border-none bg-gray mr-2"
+                  CARDHOLDER NAME
+                </div>
+                <div
+                  className="col-5 text-right f-18"
+                  style={{
+                    marginTop: "33px",
+                  }}
                 >
-                  <span className="f-12">Редактировать</span>
-                </Button>
-                <Button
-                  type="fill "
-                  paddingVertical="7px"
-                  className="border-none"
+                  22/19
+                </div>
+                <div
+                  className="col"
+                  style={{
+                    marginTop: "17px",
+                  }}
                 >
-                  <span className="f-12">Активировать</span>
-                </Button>
+                  <div className="card-hidden"></div>
+                </div>
+                <div
+                  className="col-12 text-right"
+                  style={{
+                    marginTop: "17px",
+                  }}
+                >
+                  <Button
+                    type="empty"
+                    paddingVertical="7px"
+                    className="border-none"
+                  >
+                    <span className="f-12">Редактировать</span>
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+            <div className="card ">
+              <div className="row mx-0">
+                <div className="col-7 f-20">4276 **** **** ****</div>
+                <div className="col-5 text-right">
+                  <span
+                    className=" f-12 mr-0"
+                    style={{
+                      color: "#B9B9B9",
+                    }}
+                  >
+                    Не активна
+                  </span>
+                </div>
+                <div
+                  className="col-7 f-18"
+                  style={{
+                    marginTop: "33px",
+                  }}
+                >
+                  CARDHOLDER NAME
+                </div>
+                <div
+                  className="col-5 text-right f-18"
+                  style={{
+                    marginTop: "33px",
+                  }}
+                >
+                  22/19
+                </div>
+                <div
+                  className="col"
+                  style={{
+                    marginTop: "17px",
+                  }}
+                >
+                  <div className="card-hidden"></div>
+                </div>
+                <div
+                  className="col-12 text-right"
+                  style={{
+                    marginTop: "17px",
+                  }}
+                >
+                  <Button
+                    type="empty"
+                    paddingVertical="7px"
+                    className="border-none bg-gray mr-2"
+                  >
+                    <span className="f-12">Редактировать</span>
+                  </Button>
+                  <Button
+                    type="fill "
+                    paddingVertical="7px"
+                    className="border-none"
+                  >
+                    <span className="f-12">Активировать</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
 
-          {this.state.formShow && <FormNewCart />}
-          {!this.state.formShow && (
-            <Link
-              to="/"
-              onClick={(e) => {
-                e.preventDefault();
-                this.setState({
-                  formShow: true,
-                });
-              }}
-              className="href add-new"
-            >
-              + добавить карту
-            </Link>
-          )}
+            {this.state.formShow && <FormNewCart />}
+            {!this.state.formShow && (
+              <Link
+                to="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.setState({
+                    formShow: true,
+                  });
+                }}
+                className="href add-new"
+              >
+                + добавить карту
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     );

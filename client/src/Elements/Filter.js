@@ -334,6 +334,16 @@ class Filter extends React.Component {
                   <Link
                     to="/"
                     className="f-14 go-to-pro mr-4 d-none d-lg-inline"
+                    onClick={(e)=>{
+                      e.preventDefault();
+                      
+                    }}
+                  >
+                    Сбросить фильтр
+                  </Link>
+                  <Link
+                    to="/"
+                    className="f-14 go-to-pro mr-4 d-none d-lg-inline"
                   >
                     Перейти в режим PRO
                   </Link>

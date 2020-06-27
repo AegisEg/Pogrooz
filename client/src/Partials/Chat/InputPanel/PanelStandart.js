@@ -1,6 +1,8 @@
 // App
 import React from "react";
 import { CSSTransitionGroup } from "react-transition-group";
+import ReactResizeDetector from "react-resize-detector";
+
 import addDocuments from "../../../img/addDocuments.svg";
 import send from "../../../img/send.svg";
 import smiles from "../../../img/smiles.svg";
@@ -24,15 +26,34 @@ class PanelStandart extends React.Component {
         />
         <div className="col input-chat">
           <textarea
-            className=""
+            className="col input-message"
+            id="input-message"
+            onKeyDown={(e) => {
+              if (e.keyCode === 13 && !e.shiftKey) {
+                e.preventDefault();
+                let inputMessage = document.getElementById("input-message");
+                inputMessage.style.maxHeight = "48px";
+              }
+            }}
+            onInput={() => {
+              let inputMessage = document.getElementById("input-message");
+              inputMessage.style.height = "5px";
+              inputMessage.style.height = inputMessage.scrollHeight + "px";
+              if (inputMessage.scrollHeight > 178) {
+                inputMessage.style.maxHeight = "178px";
+              } else {
+                inputMessage.style.maxHeight = inputMessage.scrollHeight + "px";
+              }
+            }}
             onChange={(e) => {
               this.setState({ text: e.target.value });
             }}
             value={this.state.text}
-          >{this.state.text}</textarea>
+          ></textarea>
           {!this.state.text && <span className="placeholder">Сообщение</span>}
           <img src={photo} className="photo d-md-block d-none" alt="photo" />
           <img src={smiles} className="smiles" alt="smiles" />
+          
         </div>
         <div
           className="text-center position-relative left-tools"

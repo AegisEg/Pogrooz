@@ -59,7 +59,7 @@ class ArticlePage extends React.Component {
             </div>
             {article.requests && article.requests.length && (
               <>
-                <div className="article-block requests-article-block">
+                <div className="requests-article-block">
                   <div className="container-fluid">
                     {article.requests.map((item, index) => {
                       return (
@@ -81,10 +81,10 @@ class ArticlePage extends React.Component {
                               </span>
                             </div>
                             <div
-                              className="col f-14 d-flex align-items-center"
+                              className="col f-14 d-flex align-items-start"
                               style={{
                                 whiteSpace: "pre-line",
-                                maxWidth: "190px",
+                                maxWidth: "180px",
                               }}
                             >
                               <img
@@ -105,21 +105,8 @@ class ArticlePage extends React.Component {
                               {item.user.rating}{" "}
                               <img src={ImgActiveStar} alt="" />
                             </div>
-                            <div
-                              className="col f-14"
-                              style={{
-                                maxWidth: "105px",
-                              }}
-                            >
-                              <b>
-                                <p className="mt-0">{item.summ}</p>
-                                <div>
-                                  Погрузка: <br />
-                                  {item.date_pogrooz.date}
-                                  <br />
-                                  {item.date_pogrooz.time}
-                                </div>
-                              </b>
+                            <div className="col-12 col-lg f-14 price-request">
+                              {item.summ} Погрузка: {item.date_pogrooz.date} {item.date_pogrooz.time}
                             </div>
                             <div className="col-12 col-md f-14 ">
                               {item.comments}

@@ -2,14 +2,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
-import ReviewsForm from "../Elements/ReviewsForm.js";
 import CheckBox from "../Elements/CheckBox.js";
 import Fancybox from "../Elements/Fancybox.js";
-import { withRouter } from "react-router-dom";
-import RequestModal from "../Modal/RequestModal.js";
+import InputRow from "./InputRow";
+
 //IMGS
 import ImgActiveStar from "../img/active-star.png";
-import ArrowDown from "../img/arrowDownperple.svg";
 import payIco from "../img/pay-ico.svg";
 import dogovor from "../img/dogovor.png";
 import passport from "../img/passport.png";
@@ -17,14 +15,12 @@ import yellowAngle from "../img/yellowAngle.png";
 import profileOk from "../img/profile-ok.png";
 import geolocation from "../img/geolocation.png";
 import otmena from "../img/otmena.png";
-import reviews from "../img/reviews.png";
+
 import basket from "../img/basket.png";
 
 // Router
 import { Link } from "react-router-dom";
 
-// Elements
-import Button from "../Elements/Button";
 import { Map } from "react-yandex-maps";
 
 class Article extends React.Component {
@@ -39,7 +35,7 @@ class Article extends React.Component {
   renderStatus = () => {
     if (this.props.isManage && this.props.article.user.id == this.props.user.id)
       return (
-        <div>
+        <div className="status-area">
           {this.props.article.status === 1 && (
             <>
               <div className="status-label">
@@ -128,241 +124,9 @@ class Article extends React.Component {
         </div>
       );
   };
-  renderInput = () => {
-    if (this.props.isManage)
-      return (
-        <>
-          {/* Если Черновик или опубликовано */}
-          {(this.props.article.status === 1 ||
-            this.props.article.status === 2) && (
-            <>
-              <Button type="empty" className="input-action">
-                Удалить
-              </Button>
-            </>
-          )}
-          {/* Если статус черновик */}
-          {this.props.article.status === 1 && (
-            <>
-              <Button type="fill" className="input-action">
-                Опубликовать
-              </Button>
-            </>
-          )}
-          {/* Если статус опубликовано */}
-          {this.props.article.status === 2 && (
-            <>
-              <Button type="empty" className="input-action">
-                Отменить
-              </Button>
-            </>
-          )}
-          {/* Если статус Выбран исполнитель и это заказ */}
-          {this.props.article.type === 0 && this.props.article.status === 3 && (
-            <>
-              <Button type="empty" className="input-action">
-                Отказаться от исполнителя
-              </Button>
-              <Button type="empty" className="input-action">
-                Запросить отмену заказа
-              </Button>
-            </>
-          )}
-          {/* Если статус Выбран исполнитель и это предложение */}
-          {this.props.article.type === 1 && this.props.article.status === 3 && (
-            <>
-              <Button type="empty" className="input-action">
-                Отказаться от грузовладельца
-              </Button>
-              <Button type="empty" className="input-action">
-                Запросить отмену
-              </Button>
-              <span className="pop-wrapper position-relative">
-                <Button type="empty" className="border-yellow input-action">
-                  В пути
-                </Button>
-                <div className="pop-block on-my-way padding notAngle">
-                  <div className="padding pop-block-item-simple noborder f-14 nohref">
-                    Статус заказа сменится на “В&nbsp;пути”.
-                    <br /> Клиент сможет отслеживать местоположение груза.
-                  </div>
-                </div>
-              </span>
-            </>
-          )}
 
-          {this.props.article.status === 4 && (
-            <>
-              <Button type="empty" className="input-action">
-                Завершить
-              </Button>
-            </>
-          )}
-          {this.props.article.type === 0 && this.props.article.status === 4 && (
-            <>
-              <Button type="empty" className="input-action border-yellow">
-                Отследить
-              </Button>
-            </>
-          )}
-          {this.props.article.status >= 5 && (
-            <span className="reviews-pop input-action pop-wrapper">
-              <img src={reviews} alt="reviews" />
-              <div className="ml-2">Смотреть отзыв</div>
-              <div className="pop-block padding left">
-                <div className="padding pop-block-item-simple pb-0 noborder nohref">
-                  Текст отзыва при наведении на пункт “Смотреть отзыв”
-                </div>
-                <div className="padding pop-block-item-simple text-left noborder">
-                  Рейтинг:
-                  <div className="d-flex ">
-                    <img src={ImgActiveStar} alt="ImgActiveStar" />
-                    <img src={ImgActiveStar} alt="ImgActiveStar" />
-                    <img src={ImgActiveStar} alt="ImgActiveStar" />
-                    <img src={ImgActiveStar} alt="ImgActiveStar" />
-                    <img src={ImgActiveStar} alt="ImgActiveStar" />
-                  </div>
-                </div>
-              </div>
-            </span>
-          )}
-          {(this.props.article.status === 5 ||
-            this.props.article.status === 6) && (
-            <>
-              <span className="position-relative">
-                <Button
-                  type="empty"
-                  className="input-action"
-                  onClick={() => {
-                    this.setState({
-                      isOpenPopReviews: !this.state.isOpenPopReviews,
-                    });
-                  }}
-                >
-                  Оставить отзыв
-                </Button>
-                {this.state.isOpenPopReviews && (
-                  <div className="pop-block notAngle padding bottom">
-                    <ReviewsForm
-                      reviewsItems={[
-                        { id: 1, name: "Иванов Иван Иванович" },
-                        { id: 2, name: "Иванов Иван Иванович" },
-                      ]}
-                    />
-                  </div>
-                )}
-              </span>
-              <Button type="empty" className="input-action">
-                Копировать
-              </Button>
-            </>
-          )}
-          <Link to={`/order/${this.props.article.id}`}>
-            <Button type="empty" className="input-action">
-              Смотреть
-            </Button>
-          </Link>
-          {(this.props.article.status === 3 ||
-            this.props.article.status === 4 ||
-            this.props.article.status === 5 ||
-            this.props.article.status === 6) && (
-            <>
-              <Button type="fill" className="input-action">
-                Написать
-              </Button>
-            </>
-          )}
-          {/* Если статус опубликовано и черновик */}
-          {(this.props.article.status === 1 ||
-            this.props.article.status === 2) && (
-            <>
-              <Button type="fill" className="input-action">
-                Редактировать
-              </Button>
-            </>
-          )}
-          {this.props.article.status === 7 && (
-            <>
-              <Button type="empty" className="input-action">
-                Восстановить
-              </Button>
-            </>
-          )}
-          {!this.props.onlyOpen && (
-            <Link
-              to="/"
-              className="mr-3 d-640-none f-12 href more-click in-row-manage"
-              onClick={(e) => {
-                e.preventDefault();
-                this.setState({ showMore: !this.state.showMore });
-              }}
-            >
-              {!this.state.showMore ? <>Подробнее</> : <>Скрыть подробности</>}
-              <img
-                className="ml-2"
-                src={ArrowDown}
-                width="10"
-                height="7"
-                alt="ArrowDown"
-              />
-            </Link>
-          )}
-        </>
-      );
-    else if (!this.props.onlyOpen)
-      return (
-        <>
-          {!this.props.onlyOpen && (
-            <Link
-              to="/"
-              className="mr-3 d-640-none f-12 href more-click"
-              onClick={(e) => {
-                e.preventDefault();
-                this.setState({ showMore: !this.state.showMore });
-              }}
-            >
-              {!this.state.showMore ? <>Подробнее</> : <>Скрыть подробности</>}
-              <img
-                className="ml-2"
-                src={ArrowDown}
-                width="10"
-                height="7"
-                alt="ArrowDown"
-              />
-            </Link>
-          )}
-          <Link to={`/order/${this.props.article.id}`}>
-            <Button type="empty" className="input-action">
-              Смотреть
-            </Button>
-          </Link>
-          <Button
-            type="fill"
-            className="get-article"
-            paddingVertical={"8px"}
-            paddingHorizontal={"35px"}
-            fontSize={"14px"}
-            onClick={() => {
-              if (this.props.user.isAuth) {
-                this.setState({
-                  isOpenModalRequest: !this.state.isOpenModalRequest,
-                });
-              } else this.props.history.push("/login");
-            }}
-          >
-            ВЗЯТЬ
-          </Button>
-          <RequestModal
-            isOpen={this.state.isOpenModalRequest}
-            onRequestClose={() => {
-              this.setState({ isOpenModalRequest: false });
-            }}
-          />
-        </>
-      );
-  };
   updateDimensions = () => {
-    if (window.innerWidth <= 768) this.setState({ onMobile: true });
+    if (window.innerWidth <= 992) this.setState({ onMobile: true });
     else this.setState({ onMobile: false });
   };
   componentDidMount() {
@@ -521,7 +285,6 @@ class Article extends React.Component {
                   ></Link>
                 )}
               </div>
-
               <CSSTransitionGroup
                 transitionName="height-animation"
                 transitionEnterTimeout={500}
@@ -615,10 +378,19 @@ class Article extends React.Component {
               </CSSTransitionGroup>
               <div className="row mx-0">
                 <div className="col-md-12 article-actions">
-                  <div className="row px-0 row-input-controls">
+                  <div className="row px-0">
                     {this.renderStatus()}
-                    <div className="col-12 col-md row  row-input-controls">
-                      {this.renderInput()}
+                    <div className="row-input-controls">
+                      <InputRow
+                        article={this.props.article}
+                        isManage={this.props.isManage}
+                        onlyOpen={this.props.onlyOpen}
+                        user={this.props.user}
+                        eOpen={(e) => {
+                          e.preventDefault();
+                          this.setState({ showMore: !this.state.showMore });
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -628,16 +400,16 @@ class Article extends React.Component {
         ) : (
           <>
             <div className="container-fluid">
-              <div className="row">
+              <div className="row mobile-row-article">
                 <div className="col-12 ">
                   <span>#{this.props.article.id}</span>
                   <span className="ml-3">{this.props.article.carName}</span>
                 </div>
-                <div className="col-6 col-sm-4 ">
+                <div className="col-12 col-sm-4 ">
                   <h3 className="title-column">Откуда</h3>
                   <span>{this.props.article.fromLocation}</span>
                 </div>
-                <div className="col-6 col-sm-4 pr-0 pr-sm-2">
+                <div className="col-12 col-sm-4 pr-0 pr-sm-2">
                   <h3 className="title-column">Куда</h3>
                   <span>{this.props.article.toLocation}</span>
                 </div>
@@ -678,10 +450,21 @@ class Article extends React.Component {
                 </div>
               </div>
 
-              <div className="row row-input-controls mt-4">
+              <div className="row mt-4">
                 {this.renderStatus()}
-                <div className="col-12 mx-0 col-md row row-input-controls">
-                  {this.renderInput()}
+                <div className="row-input-controls">
+                  <InputRow
+                    article={this.props.article}
+                    onMobile={true}
+                    isManage={this.props.isManage}
+                    onlyOpen={this.props.onlyOpen}
+                    user={this.props.user}
+                    articleOpen={this.state.showMore}
+                    eOpen={(e) => {
+                      e.preventDefault();
+                      this.setState({ showMore: !this.state.showMore });
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -715,4 +498,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(withRouter(Article));
+export default connect(mapStateToProps)(Article);
