@@ -544,6 +544,8 @@ input[type="checkbox"]:checked ~ label::after,
 .filter-actions {
   text-align: right;
   display: inline-block;
+  justify-content: flex-end;
+  align-items: flex-end;
   margin-top: 30px !important;
 }
 .lh-20 {
@@ -882,6 +884,10 @@ header ~ div {
 }
 .review-item {
   padding: 18px 22px;
+  overflow: hidden;
+}
+.review-item textarea {
+  width: 100%;
 }
 textarea {
   background: #ffffff;
@@ -1938,6 +1944,7 @@ a.mail {
 }
 .status-label {
   max-width: 160px;
+  text-align: left;
 }
 .status-label > * {
   display: inline-block;
@@ -2752,17 +2759,17 @@ a.href span {
 .user-settings > * {
   margin-bottom: 10px;
 }
-@media (max-width: 433px) {
-  .user-settings .filed-label {
-    width: 100%;
-  }
-}
 .status-area {
   align-self: center;
 }
-@media (max-width: 1240px) and (min-width: 433px) {
+@media (max-width: 1240px) and (min-width: 871px) {
   .user-settings .filed-label {
     width: 195px;
+  }
+}
+@media (max-width: 870px) and (min-width: 434px) {
+  .user-settings .filed-label {
+    width: 150px;
   }
 }
 @media (min-width: 1241px) {
@@ -2775,13 +2782,21 @@ a.href span {
     width: 260px;
   }
 }
+@media (max-width: 433px) {
+  .user-settings .filed-label {
+    width: 100%;
+  }
+}
 .user-settings .filed-label {
   font-size: 14px;
   line-height: 16px;
   padding: 0 15px;
   min-height: 32px;
 }
-
+.reviews-modal {
+  width: 100%;
+  max-width: 320px;
+}
 .user-settings .gray {
   color: #6c6c6c;
 }
@@ -2949,6 +2964,14 @@ a.href span {
 @media (max-width: 320px) {
   .tarrif-wrapper {
     width: 100%;
+  }
+  .tarrif .price,
+  .tarrif .sale {
+    text-align: center;
+  }
+  .tarrif .tags span {
+    width: 70px;
+    margin: auto;
   }
 }
 /* Application Page */
@@ -4170,7 +4193,7 @@ table {
 .input-chat * {
   z-index: 2;
 }
-.lk-page.messages~footer {
+.lk-page.messages ~ footer {
   display: none;
 }
 .input-chat textarea {

@@ -8,15 +8,14 @@ import Select from "../../Elements/Select";
 import CheckBoxSwitcher from "../../Elements/CheckBoxSwitcher";
 import CheckBox from "../../Elements/CheckBox";
 import { Link } from "react-router-dom";
-import ArticleShow from "../../Catalog/ArticleShow";
+import ArticleHeader from "../../Catalog/ArticleHeader";
+import Article from "../../Catalog/Article";
+import articlestest from "../../config/articlestest.js";
 import { connect } from "react-redux";
 import HeaderCreate from "../../Partials/CreateElements/HeaderCreate";
 
 import { CSSTransitionGroup } from "react-transition-group";
-//IMGS
-import { ReactComponent as AngleSvg } from "../../img/angle-right.svg";
 
-import articlestest from "../../config/articlestest.js";
 
 class OrderCreate1 extends React.Component {
   state = {
@@ -204,7 +203,7 @@ class OrderCreate1 extends React.Component {
               >
                 Добавьте фото груза
               </h4>
-              <Button type="fill" className=" input-action">
+              <Button type="fill" className="f-17" paddingHorizontal="30px" paddingVertical="7px">
                 Загрузить
               </Button>
             </div>
@@ -666,7 +665,13 @@ class OrderCreate4 extends React.Component {
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="articles-block full">
-          <ArticleShow article={article} />
+          <ArticleHeader></ArticleHeader>
+          <Article
+            isManage={false}
+            onlyOpen={true}
+            singlePage={true}
+            article={article}
+          />
         </div>
         <div className="container-fluid">
           <div className="row slide-step justify-content-end">

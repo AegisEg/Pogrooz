@@ -114,9 +114,9 @@ class Profile extends React.Component {
             <h4 className="subtitle">Фотография</h4>
             <Button
               type="fill"
-              paddingVertical={"13px"}
+              paddingHorizontal="30px"
+              paddingVertical="7px"
               className="mr-2 f-17"
-              paddingHorizontal={"26px"}
             >
               Загрузить
             </Button>
@@ -328,10 +328,10 @@ class Profile extends React.Component {
                   />
                   <Button
                     type="fill"
-                    paddingVertical={"13px"}
                     className="mr-2 f-17"
+                    paddingHorizontal="30px"
+                    paddingVertical="7px"
                     margin="0 0 12px 0"
-                    paddingHorizontal={"26px"}
                   >
                     <span className="d-none d-md-block">Загрузить</span>
                     <img

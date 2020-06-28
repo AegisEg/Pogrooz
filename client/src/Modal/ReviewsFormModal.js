@@ -6,6 +6,65 @@ import { CSSTransitionGroup } from "react-transition-group";
 //IMGS
 import AngleUp from "../img/angle-up.png";
 import AngleDown from "../img/angle-down.png";
+import Modal from "react-modal";
+import settings from "../config/settings.js";
+
+class ReviewsFormModal extends React.Component {
+  constructor(props) {
+    super(props);
+    settings.stylesModals.content.padingBottom = "37px";
+    this.closeForm = this.closeForm.bind(this);
+  }
+  state = {
+    isOpen: false,
+    openIndex: 0,
+  };
+  closeForm() {
+    this.setState({ isOpen: false });
+  }
+  openForm() {
+    this.setState({ isOpen: true });
+  }
+  render() {
+    if (this.state.isOpen) {
+      let content = (
+        <>
+          {this.props.reviewsItems.map((item, index) => {
+            return (
+              <ReviewsItem
+                key={index}
+                index={index}
+                multiple={this.props.reviewsItems.length > 1}
+                open={(openIndex) => {
+                  this.setState({ openIndex });
+                }}
+                isOpen={this.state.openIndex === index}
+                userReview={item}
+              />
+            );
+          })}
+        </>
+      );
+      if (this.props.onMobile) {
+        return (
+          <Modal
+            isOpen={this.state.isOpen}
+            onRequestClose={this.closeForm}
+            className="reviews-modal"
+            style={settings.stylesModals}
+          >
+            {content}
+          </Modal>
+        );
+      } else
+        return (
+          <div className="pop-block notAngle padding bottom">{content}</div>
+        );
+    } else return <></>;
+  }
+}
+
+export default ReviewsFormModal;
 
 class ReviewsItem extends React.Component {
   state = {
@@ -45,7 +104,6 @@ class ReviewsItem extends React.Component {
               <textarea
                 className="mx-auto d-block"
                 style={{
-                  width: "348px",
                   height: "164px",
                 }}
               ></textarea>
@@ -68,31 +126,3 @@ class ReviewsItem extends React.Component {
     );
   }
 }
-class ReviewsForm extends React.Component {
-  state = {
-    rating: 0,
-    openIndex: 0,
-  };
-  render() {
-    return (
-      <>
-        {this.props.reviewsItems.map((item, index) => {
-          return (
-            <ReviewsItem
-              key={index}
-              index={index}
-              multiple={this.props.reviewsItems.length > 1}
-              open={(openIndex) => {
-                this.setState({ openIndex });
-              }}
-              isOpen={this.state.openIndex === index}
-              userReview={item}
-            />
-          );
-        })}
-      </>
-    );
-  }
-}
-
-export default ReviewsForm;

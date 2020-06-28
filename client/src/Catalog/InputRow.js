@@ -1,13 +1,12 @@
 // App
 import React from "react";
 import RequestModal from "../Modal/RequestModal.js";
-import ReviewsForm from "../Elements/ReviewsForm.js";
+import ReviewsFormModal from "../Modal/ReviewsFormModal.js";
 import { withRouter } from "react-router-dom";
-
+import ReviewsShow from "../Modal/ReviewsShow";
 import ArrowDown from "../img/arrowDownperple.svg";
 import ArrowDownPng from "../img/arrowDown.png";
 import reviews from "../img/reviews.png";
-import ImgActiveStar from "../img/active-star.png";
 import { Link } from "react-router-dom";
 // Elements
 import Button from "../Elements/Button";
@@ -30,7 +29,7 @@ class InputRow extends React.Component {
       label: "Удалить",
       status: [1, 2],
       isButton: true,
-      ButtonType: "emty",
+      ButtonType: "empty",
     },
     {
       /* Если статус опубликовано */
@@ -118,25 +117,14 @@ class InputRow extends React.Component {
       label: "Смотреть отзыв",
       status: [5, 6, 7],
       isButton: false,
+      mobileAction: () => {
+        this.ReviewsForm.openForm();
+      },
       content: (
         <span className="reviews-pop input-action pop-wrapper">
           <img src={reviews} alt="reviews" />
           <div className="ml-2">Смотреть отзыв</div>
-          <div className="pop-block padding left">
-            <div className="padding pop-block-item-simple pb-0 noborder nohref">
-              Текст отзыва при наведении на пункт “Смотреть отзыв”
-            </div>
-            <div className="padding pop-block-item-simple text-left noborder">
-              Рейтинг:
-              <div className="d-flex ">
-                <img src={ImgActiveStar} alt="ImgActiveStar" />
-                <img src={ImgActiveStar} alt="ImgActiveStar" />
-                <img src={ImgActiveStar} alt="ImgActiveStar" />
-                <img src={ImgActiveStar} alt="ImgActiveStar" />
-                <img src={ImgActiveStar} alt="ImgActiveStar" />
-              </div>
-            </div>
-          </div>
+          <ReviewsShow onMobile={this.props.onMobile} />
         </span>
       ),
     },
@@ -145,29 +133,30 @@ class InputRow extends React.Component {
       label: "Оставить отзыв",
       status: [5, 6],
       isButton: false,
+      mobileAction: () => {
+        this.ReviewsFormModal.openForm();
+      },
       content: (
         <span className="position-relative">
           <Button
             type="empty"
             className="input-action"
             onClick={() => {
-              this.setState({
-                isOpenPopReviews: !this.state.isOpenPopReviews,
-              });
+              this.ReviewsFormModal.openForm();
             }}
           >
             Оставить отзыв
           </Button>
-          {this.state.isOpenPopReviews && (
-            <div className="pop-block notAngle padding bottom">
-              <ReviewsForm
-                reviewsItems={[
-                  { id: 1, name: "Иванов Иван Иванович" },
-                  { id: 2, name: "Иванов Иван Иванович" },
-                ]}
-              />
-            </div>
-          )}
+          <ReviewsFormModal
+            ref={(ref) => {
+              this.ReviewsFormModal = ref;
+            }}
+            onMobile={this.props.onMobile}
+            reviewsItems={[
+              { id: 1, name: "Иванов Иван Иванович" },
+              { id: 2, name: "Иванов Иван Иванович" },
+            ]}
+          />
         </span>
       ),
     },
@@ -250,12 +239,35 @@ class InputRow extends React.Component {
                         item.articleType == this.props.article.type)
                     ) {
                       return (
-                        <div className="profile-menu-item">{item.label}</div>
+                        <div
+                          className="profile-menu-item"
+                          onClick={
+                            item.mobileAction ? item.mobileAction : false
+                          }
+                        >
+                          {item.label}
+                        </div>
                       );
                     }
                   })}
                 </div>
               )}
+              <ReviewsShow
+                ref={(ref) => {
+                  this.ReviewsForm = ref;
+                }}
+                onMobile={this.props.onMobile}
+              />
+              <ReviewsFormModal
+                ref={(ref) => {
+                  this.ReviewsFormModal = ref;
+                }}
+                onMobile={this.props.onMobile}
+                reviewsItems={[
+                  { id: 1, name: "Иванов Иван Иванович" },
+                  { id: 2, name: "Иванов Иван Иванович" },
+                ]}
+              />
             </div>
           )}
           {!this.props.onMobile &&
@@ -384,6 +396,7 @@ class InputRow extends React.Component {
           )}
         </>
       );
+    return false;
   }
 }
 
