@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 
 class RequestForm extends React.Component {
   render() {
-    if (this.props.user.isAuth)
-      return (
-        <div className="article-block request-article-block form">
+    return (
+      <div className="article-block request-article-block form">
+        {this.props.user.isAuth && (
           <div className="container-fluid">
             <div className="mb-2">
               <b className="f-14">Напишите комментарий</b>
@@ -74,7 +74,7 @@ class RequestForm extends React.Component {
                 </div>
                 <Button
                   type="fill"
-                  paddingVertical="11px"                  
+                  paddingVertical="11px"
                   className="mt-3 mx-md-auto mr-xl-3 ml-xl-auto mr-3 ml-3 mb-0 input-action send-input-action"
                 >
                   Отправить
@@ -82,6 +82,8 @@ class RequestForm extends React.Component {
               </div>
             </div>
           </div>
+        )}
+        {!this.props.user.isAuth && (
           <div
             className="row mx-0 mt-4 justify-content-center"
             style={{ minHeight: "218px" }}
@@ -109,8 +111,9 @@ class RequestForm extends React.Component {
               </Button>
             </div>
           </div>
-        </div>
-      );
+        )}
+      </div>
+    );
   }
 }
 const mapStateToProps = (state) => {
