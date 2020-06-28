@@ -5,16 +5,10 @@ import ConfigSettings from "../../config/settings";
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
 import Select from "../../Elements/Select";
-import { Link } from "react-router-dom";
 import CheckBoxSwitcher from "../../Elements/CheckBoxSwitcher";
 import CheckBox from "../../Elements/CheckBox";
-import ArticleShow from "../../Catalog/ArticleShow";
 import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
-//IMGS
-import nextQuestEnable from "../../img/nextQuestEnable.png";
-
-import articlestest from "../../config/articlestest.js";
 
 class OfferCreate1 extends React.Component {
   state = {

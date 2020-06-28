@@ -11,7 +11,7 @@ class Articles extends React.Component {
       <div className="articles-block">
         <ArticleHeader></ArticleHeader>
         {this.props.articlesList.map((article, i) => {
-          return <Article isManage={true} key={i} article={article} />;
+          return <Article  key={i} article={article} />;
         })}
         <Pagination pageCount={10} perPage="1" />
       </div>

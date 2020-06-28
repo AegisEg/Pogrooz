@@ -33,7 +33,7 @@ class Article extends React.Component {
     isHoverHref: false,
   };
   renderStatus = () => {
-    if (this.props.isManage && this.props.article.user.id == this.props.user.id)
+    if (this.props.article.user.id == this.props.user.id)
       return (
         <div className="status-area">
           {this.props.article.status === 1 && (
@@ -383,7 +383,7 @@ class Article extends React.Component {
                     <div className="row-input-controls">
                       <InputRow
                         article={this.props.article}
-                        isManage={this.props.isManage}
+                        isManage={this.props.article.user.id == this.props.user.id}
                         onlyOpen={this.props.onlyOpen}
                         user={this.props.user}
                         eOpen={(e) => {
@@ -456,7 +456,7 @@ class Article extends React.Component {
                   <InputRow
                     article={this.props.article}
                     onMobile={true}
-                    isManage={this.props.isManage}
+                    isManage={this.props.article.user.id == this.props.user.id}
                     onlyOpen={this.props.onlyOpen}
                     user={this.props.user}
                     articleOpen={this.state.showMore}

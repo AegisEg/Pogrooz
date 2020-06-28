@@ -315,9 +315,18 @@ class Filter extends React.Component {
                 </div>
               </>
             )}
-            <div className="filter-actions w-100 row justify-content-end mb-3">
+            <div className="filter-actions mx-0 w-100 row mb-3">
               {this.state.show ? (
                 <>
+                  <Link
+                    to="/"
+                    className="f-14 go-to-pro mr-4"
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    Сбросить фильтр
+                  </Link>
                   <Link
                     to="/"
                     className="col px-0 d-block d-lg-none mobile filter-button"
@@ -331,16 +340,7 @@ class Filter extends React.Component {
                       Найти
                     </Button>
                   </Link>
-                  <Link
-                    to="/"
-                    className="f-14 go-to-pro mr-4 d-none d-lg-inline"
-                    onClick={(e)=>{
-                      e.preventDefault();
-                      
-                    }}
-                  >
-                    Сбросить фильтр
-                  </Link>
+
                   <Link
                     to="/"
                     className="f-14 go-to-pro mr-4 d-none d-lg-inline"

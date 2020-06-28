@@ -109,7 +109,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: 3,
       avatar: avatar,
       fio: `Максимов 
             Максим 
