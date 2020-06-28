@@ -122,29 +122,8 @@ class Main extends React.Component {
             </div>
           </div>
         </div>
-        <div className="row mx-0 search-tabs background-gray-768 tabs mb-lg-0 mb-xl-3 justify-content-center">
-          <div
-            className={`tab mx-3 text-uppercase ${
-              this.state.searchType === "offer" ? "active" : ""
-            }`}
-            onClick={() => {
-              this.setState({ searchType: "offer" });
-            }}
-          >
-            Услуги <span className="d-380 d-sm-inline-block">перевозчиков</span>
-          </div>
-          <div
-            className={`tab mx-3 text-uppercase ${
-              this.state.searchType === "order" ? "active" : ""
-            }`}
-            onClick={() => {
-              this.setState({ searchType: "order" });
-            }}
-          >
-            Заказы <span className="d-380 d-sm-inline-block">на перевозку</span>
-          </div>
-        </div>
-        <Filter className="background-gray-768 filter-main" />
+        
+        <Filter  className="background-gray-768 filter-main" />
         <Articles articlesList={articlestest.slice(0, 5)} />
         <div className="text-center">
           <Link to="/search" className="href">
