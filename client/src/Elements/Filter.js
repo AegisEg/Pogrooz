@@ -15,6 +15,8 @@ class Filter extends React.Component {
   state = {
     show: false,
     searchType: this.props.type,
+    showPop1: false,
+    showPop2: false,
     volumeH: 0,
     volumeW: 0,
     volumeWh: 0,
@@ -67,16 +69,38 @@ class Filter extends React.Component {
                 className={`col-480-6 ${
                   this.state.show ? `col-md-4` : `col-md-3`
                 } col-lg-3 col-xl-3 col-sm-6`}
+                onMouseLeave={() => {
+                  this.setState({ showPop1: false });
+                }}
+                onMouseMove={() => {
+                  this.setState({ showPop1: true });
+                }}
               >
                 <Input type="text" placeholder="Откуда" />
+                {this.state.showPop1 && (
+                  <div className="pop-block">
+                    Начните вводить адрес с области
+                  </div>
+                )}
               </div>
 
               <div
                 className={`col-480-6 ${
                   this.state.show ? `col-md-4` : `col-md-3`
                 } col-lg-3 col-xl-3 col-sm-6`}
+                onMouseLeave={() => {
+                  this.setState({ showPop2: false });
+                }}
+                onMouseMove={() => {
+                  this.setState({ showPop2: true });
+                }}
               >
                 <Input type="text" placeholder="Куда" />
+                {this.state.showPop2 && (
+                  <div className="pop-block">
+                    Начните вводить адрес с области
+                  </div>
+                )}
               </div>
 
               <div

@@ -559,6 +559,11 @@ input[type="checkbox"]:checked ~ label::after,
   margin-bottom: 0;
 }
 
+.filter-line .pop-block {
+  padding: 5px 10px;
+  top: 100%;
+  left: 15px;
+}
 .filter-close {
   position: absolute;
   top: 0;
