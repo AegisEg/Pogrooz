@@ -107,8 +107,8 @@ class SideNav extends React.Component {
       >
         {menu.map((item, index) => {
           if (
-            !item.role ||
-            (item.role === this.props.user.type && !item.onlyMobile)
+            (!item.role || item.role === this.props.user.type) &&
+            !item.onlyMobile
           )
             return (
               <MenuItem

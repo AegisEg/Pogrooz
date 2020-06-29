@@ -53,12 +53,12 @@ class PanelStandart extends React.Component {
           {!this.state.text && <span className="placeholder">Сообщение</span>}
           <img src={photo} className="photo d-md-block d-none" alt="photo" />
           <img src={smiles} className="smiles" alt="smiles" />
-          
         </div>
         <div
           className="text-center position-relative left-tools"
           style={{
             width: "26px",
+            height: "26px",
           }}
         >
           <CSSTransitionGroup

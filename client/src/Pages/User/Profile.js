@@ -37,8 +37,8 @@ class Profile extends React.Component {
           Профиль ({this.props.user.type === "cargo" && "Грузовладелец"}
           {this.props.user.type === "carrier" && "Перевозчик"})
         </h2>
-        <div className="row d-block d-md-flex profile-input-fixed">
-          <div className="col">
+        <div className="row profile-input-fixed">
+          <div className="col-12 col-sm">
             <Input
               type="text"
               style={{
@@ -51,7 +51,7 @@ class Profile extends React.Component {
               }}
             />
           </div>
-          <div className="col">
+          <div className="col-12 col-sm">
             <Input
               type="text"
               style={{
@@ -64,7 +64,7 @@ class Profile extends React.Component {
               }}
             />
           </div>
-          <div className="col">
+          <div className="col-12 col-sm">
             <Input
               type="text"
               style={{
@@ -78,9 +78,10 @@ class Profile extends React.Component {
             />
           </div>
         </div>
+        <hr />
         <div className="row">
           <div className="col-md-6">
-            <h4 className="subtitle">Контактные данные *</h4>
+            <h4 className="subtitle pt-0">Контактные данные *</h4>
             <span className="d-block">
               <Input
                 type="text"
@@ -111,7 +112,7 @@ class Profile extends React.Component {
             />
           </div>
           <div className="col-md-6">
-            <h4 className="subtitle">Фотография</h4>
+            <h4 className="subtitle pt-0 ">Фотография</h4>
             <Button
               type="fill"
               paddingHorizontal="30px"
@@ -138,9 +139,10 @@ class Profile extends React.Component {
             </span>
           </div>
         </div>
+        <hr />
         <div className="row">
           <div className="col-12 col-md-6 col-lg-4 col-xl-6 adress-input">
-            <h4 className="subtitle mb-1 pb-0">Адрес *</h4>
+            <h4 className="subtitle pt-0 ">Адрес *</h4>
             <div className="row mx-0 align-items-center">
               <span className>Страна:</span>
               <div className="col" style={{ maxWidth: "320px" }}>
@@ -169,7 +171,7 @@ class Profile extends React.Component {
           </div>
 
           <div className="col-12 col-sm-6 col-md-7 col-lg-4 col-xl-3">
-            <h4 className="subtitle mb-1 pb-2">Безопасность</h4>
+            <h4 className="subtitle pt-0">Безопасность</h4>
             <div className="position-relative" style={{ maxWidth: "320px" }}>
               <Input
                 type="password"
@@ -206,8 +208,8 @@ class Profile extends React.Component {
             <Button type="empty bg-gray ">Сохранить пароль</Button>
           </div>
 
-          <div className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
-            <h4 className="subtitle pb-0 mb-0">Заключение договора</h4>
+          <div className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 ">
+            <h4 className="subtitle pt-0">Заключение договора</h4>
             <div className="f-12 pb-2">Основная форма для аккаунта</div>
             <div
               style={{ marginTop: "4px", marginBottom: 8, lineHeight: "16px" }}
@@ -296,11 +298,13 @@ class Profile extends React.Component {
               ></CheckBox>
             </div>
           </div>
+         
         </div>
+        <hr />
         {/* //this.props.user.type === "carrier" */}
         {1 && (
           <div className="row mt-2">
-            <h4 className=" col-12 subtitle py-0 mb-3 px-3">Паспорт</h4>
+            <h4 className=" col-12 subtitle pt-0 px-3">Паспорт</h4>
             <div className="col-12 col-lg-6  mb-4">
               <div className="d-block d-lg-flex">
                 <span
@@ -399,8 +403,8 @@ class Profile extends React.Component {
         <div className="d-flex mt-2">
           <Button
             type="fill"
-            paddingVertical={"13px"}
-            className="ml-auto f-17"
+            paddingVertical={"7px"}
+            className="ml-auto f-14"
             paddingHorizontal={"26px"}
           >
             Сохранить все

@@ -2274,6 +2274,7 @@ a.href span {
 .about-page p span {
   color: #171717;
 }
+.profile-page hr,
 .about-page hr {
   border: none;
   border-top: 1px solid #dddddd;
@@ -2589,6 +2590,15 @@ a.href span {
   .side-nav.open .toogle-sideBar img.angle {
     transform: rotate(0);
   }
+}
+@media (min-width: 769px) {
+  .profile-page hr {
+    visibility: hidden;
+  }
+}
+.profile-page hr {
+  width: 100%;
+  margin: 15px 0;
 }
 .profile-page {
   padding-bottom: 40px;
@@ -3610,6 +3620,9 @@ a.href span {
   flex: 0 0 100%;
   max-width: 100%;
 }
+.cheked-list > div {
+  display: flex;
+}
 .row-parametrs > * {
   padding-right: 10px;
   padding-left: 10px;
@@ -4175,9 +4188,32 @@ table {
   margin: auto;
   z-index: 2;
 }
+.single-char {
+  max-width: 60px !important;
+  text-align: center;
+}
+.user-column-2 {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+  align-items: flex-start;
+}
+.user-column-2 .input-action {
+  margin: 10px 15px;
+}
+@media (max-width: 768px) {
+  .user-column-2 {
+    text-align: center;
+    justify-content: center;
+  }
+}
+.message-panel > *:first-child,
+.message-panel > *:last-child {
+  margin-top: 10px;
+}
 .message-panel {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   align-content: center;
   border-top: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
