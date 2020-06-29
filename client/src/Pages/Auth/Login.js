@@ -119,7 +119,7 @@ class Login extends React.Component {
           </div>
           <p className="text-center mb-0 f-12">Еще не зарегистрированы?</p>
           <p className="text-center my-0 pb-4 f-12">
-            Перейти
+            Перейти&nbsp;
             <Link to="/register" className="href">
               страницу регистрации
             </Link>
