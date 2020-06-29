@@ -15,12 +15,7 @@ class Support extends React.Component {
       <div className="standart-page ">
         <div className="container-fluid">
           <h2 className="title">Техподдержка</h2>
-          <p
-            className="f-14"
-            style={{
-              maxWidth: "651px",
-            }}
-          >
+          <p className="f-14">
             Если у Вас есть вопросы и предложения, можете позвонить нам по
             телефону +7 (927) 000 - 00 - 00 или написать на почту
             info@pogrooz.ru.
