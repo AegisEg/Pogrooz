@@ -563,6 +563,8 @@ input[type="checkbox"]:checked ~ label::after,
   padding: 5px 10px;
   top: 100%;
   left: 15px;
+  color: #919191;
+  width: 300px;
 }
 .filter-close {
   position: absolute;
