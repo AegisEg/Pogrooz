@@ -139,9 +139,9 @@ class Article extends React.Component {
   render() {
     return (
       <div className={`article-block ${this.state.isHoverHref ? "hover" : ""}`}>
-        {!this.state.onMobile ? (
-          <>
-            <div className="container-fluid">
+        <div className="container-fluid">
+          {!this.state.onMobile ? (
+            <>
               <div className="row position-relative">
                 <div className="ID-col">{this.props.article.id}</div>
                 <div className="car-col">
@@ -285,133 +285,64 @@ class Article extends React.Component {
                   ></Link>
                 )}
               </div>
-              <CSSTransitionGroup
-                transitionName="height-animation"
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={500}
-              >
-                {(this.state.showMore || this.props.onlyOpen) && (
-                  <div className="row moreinfo_block">
-                    <div className="col-12 mb-3">
-                      {this.props.article.tags.map((item, i) => {
-                        return (
-                          <span
-                            key={i}
-                            className="position-relative left-angle"
-                          >
-                            {item}
-                          </span>
-                        );
-                      })}
-                    </div>
-                    <div
-                      className="col mx-0 row"
-                      style={{
-                        maxWidth: "350px",
-                      }}
-                    >
-                      <img
-                        src={this.props.article.user.avatar}
-                        className="user-avatar"
-                        alt="avatar"
-                      />
-                      <div className="col">
-                        <div className="fio">
-                          <Link to="/user/1">
-                            {this.props.article.user.fio}
-                          </Link>
-                        </div>
-                        <div className="mt-2">
-                          {this.props.article.user.passport && (
-                            <span className="property-user d-block">
-                              <img src={passport} alt="passport" />
-                              Пасспорт загружен
-                            </span>
-                          )}
-                          {this.props.article.user.dogovor && (
-                            <span className="property-user">
-                              <img src={dogovor} alt="dogovor" />
-                              Договор с ИП, ООО
-                            </span>
-                          )}
-                          {this.props.article.user.paynal && (
-                            <span className="property-user">
-                              <img src={payIco} alt="payIco" />
-                              Оплата наличными, на р/c
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-7 content">
-                      <div>
-                        <b>Комментарий:</b> {this.props.article.comments}
-                      </div>
-                      <div className="imgs-content">
-                        {this.props.article.images &&
-                          this.props.article.images.map((item, index) => {
-                            return (
-                              <img
-                                key={index}
-                                src={item.path}
-                                onClick={() => {
-                                  this.setState({
-                                    dataFancybox: {
-                                      images: this.props.article.images,
-                                      index: index,
-                                    },
-                                  });
-                                }}
-                                alt={index}
-                                style={{
-                                  width: "75px",
-                                  height: "57px",
-                                  objectFit: "cover",
-                                }}
-                              />
-                            );
-                          })}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </CSSTransitionGroup>
-              <div className="row mx-0">
-                <div className="col-md-12 article-actions">
-                  <div className="row px-0">
-                    {this.renderStatus()}
-                    <div className="row-input-controls">
-                      <InputRow
-                        article={this.props.article}
-                        isManage={this.props.article.user.id == this.props.user.id}
-                        onlyOpen={this.props.onlyOpen}
-                        user={this.props.user}
-                        eOpen={(e) => {
-                          e.preventDefault();
-                          this.setState({ showMore: !this.state.showMore });
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="container-fluid">
+            </>
+          ) : (
+            <>
               <div className="row mobile-row-article">
                 <div className="col-12 ">
                   <span>#{this.props.article.id}</span>
                   <span className="ml-3">{this.props.article.carName}</span>
+                  {this.props.onlyOpen && (
+                    <img
+                      className="moreinfo"
+                      onClick={() => {
+                        this.setState({
+                          dataFancybox: {
+                            images: [{ path: this.props.article.carImg }],
+                            index: 0,
+                          },
+                        });
+                      }}
+                      src={this.props.article.carImg}
+                      alt=""
+                    />
+                  )}
                 </div>
                 <div className="col-12 col-sm-4 ">
                   <h3 className="title-column">Откуда</h3>
                   <span>{this.props.article.fromLocation}</span>
+                  {this.props.onlyOpen && (
+                    <div
+                      className="moreinfo"
+                      style={{
+                        height: "100px",
+                      }}
+                    >
+                      <Map
+                        defaultState={{ center: [55.75, 37.57], zoom: 15 }}
+                        width="100%"
+                        height="100px"
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="col-12 col-sm-4 pr-0 pr-sm-2">
                   <h3 className="title-column">Куда</h3>
                   <span>{this.props.article.toLocation}</span>
+                  {this.props.onlyOpen && (
+                    <div
+                      className="moreinfo"
+                      style={{
+                        height: "100px",
+                      }}
+                    >
+                      <Map
+                        defaultState={{ center: [55.75, 37.57], zoom: 15 }}
+                        width="100%"
+                        height="100px"
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="col-6 col-sm-4  pl-sm-2">
                   <h3 className="title-column">Груз</h3>
@@ -449,44 +380,129 @@ class Article extends React.Component {
                   </span>
                 </div>
               </div>
-
-              <div className="row mt-4">
-                {this.renderStatus()}
-                <div className="row-input-controls">
-                  <InputRow
-                    article={this.props.article}
-                    onMobile={true}
-                    isManage={this.props.article.user.id == this.props.user.id}
-                    onlyOpen={this.props.onlyOpen}
-                    user={this.props.user}
-                    articleOpen={this.state.showMore}
-                    eOpen={(e) => {
-                      e.preventDefault();
-                      this.setState({ showMore: !this.state.showMore });
-                    }}
-                  />
+            </>
+          )}
+          <CSSTransitionGroup
+            transitionName="height-animation"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={500}
+          >
+            {(this.state.showMore || this.props.onlyOpen) && (
+              <div className="row moreinfo_block">
+                <div className="col-12 mb-3">
+                  {this.props.article.tags.map((item, i) => {
+                    return (
+                      <span
+                        key={i}
+                        className="d-inline-block position-relative left-angle"
+                      >
+                        {item}
+                      </span>
+                    );
+                  })}
+                </div>
+                <div className="col mx-0 row">
+                  <div className="col-12 col-sm user-avatar-wrapper">
+                    <img
+                      src={this.props.article.user.avatar}
+                      className="user-avatar"
+                      alt="avatar"
+                    />
+                  </div>
+                  <div className="col text-left ">
+                    <div className="fio">
+                      <Link to="/user/1">{this.props.article.user.fio}</Link>
+                    </div>
+                    <div className="mt-2">
+                      {this.props.article.user.passport && (
+                        <span className="property-user d-block">
+                          <img src={passport} alt="passport" />
+                          Пасспорт загружен
+                        </span>
+                      )}
+                      {this.props.article.user.dogovor && (
+                        <span className="property-user">
+                          <img src={dogovor} alt="dogovor" />
+                          Договор с ИП, ООО
+                        </span>
+                      )}
+                      {this.props.article.user.paynal && (
+                        <span className="property-user">
+                          <img src={payIco} alt="payIco" />
+                          Оплата наличными, на р/c
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12 col-sm content">
+                  <div>
+                    <b>Комментарий:</b> {this.props.article.comments}
+                  </div>
+                  <div className="imgs-content">
+                    {this.props.article.images &&
+                      this.props.article.images.map((item, index) => {
+                        return (
+                          <img
+                            key={index}
+                            src={item.path}
+                            onClick={() => {
+                              this.setState({
+                                dataFancybox: {
+                                  images: this.props.article.images,
+                                  index: index,
+                                },
+                              });
+                            }}
+                            alt={index}
+                            style={{
+                              width: "75px",
+                              height: "57px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        );
+                      })}
+                  </div>
                 </div>
               </div>
+            )}
+          </CSSTransitionGroup>
+          <div className="row mt-4">
+            {this.renderStatus()}
+            <div className="row-input-controls">
+              <InputRow
+                article={this.props.article}
+                onMobile={this.state.onMobile}
+                isManage={this.props.article.user.id == this.props.user.id}
+                onlyOpen={this.props.onlyOpen}
+                user={this.props.user}
+                articleOpen={this.state.showMore}
+                eOpen={(e) => {
+                  e.preventDefault();
+                  this.setState({ showMore: !this.state.showMore });
+                }}
+              />
             </div>
-          </>
-        )}
-        <CSSTransitionGroup
-          transitionName="fancybox-animation"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
-        >
-          {this.state.dataFancybox.images && (
-            <Fancybox
-              close={() => {
-                this.setState({
-                  dataFancybox: { images: false, index: false },
-                });
-              }}
-              images={this.state.dataFancybox.images}
-              index={this.state.dataFancybox.index}
-            />
-          )}
-        </CSSTransitionGroup>
+          </div>
+          <CSSTransitionGroup
+            transitionName="fancybox-animation"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+          >
+            {this.state.dataFancybox.images && (
+              <Fancybox
+                close={() => {
+                  this.setState({
+                    dataFancybox: { images: false, index: false },
+                  });
+                }}
+                images={this.state.dataFancybox.images}
+                index={this.state.dataFancybox.index}
+              />
+            )}
+          </CSSTransitionGroup>
+        </div>
       </div>
     );
   }
