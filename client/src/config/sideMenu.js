@@ -1,5 +1,5 @@
 import addIcon from "../img/add-icon.svg";
-import chat from "../img/chatico.svg";
+import chat from "../img/supportsIco.svg";
 import ruble from "../img/ruble.svg";
 import working from "../img/working.svg";
 import completed from "../img/completed.svg";

@@ -23,7 +23,7 @@ class Filter extends React.Component {
     return (
       <>
         <div
-          className={`row mx-0 search-tabs background-gray-768 tabs mb-lg-0 mb-xl-3 justify-content-center ${
+          className={`row search-tabs background-gray-768 tabs justify-content-center ${
             this.state.show ? "background-gray" : ""
           }`}
         >
@@ -49,9 +49,9 @@ class Filter extends React.Component {
           </div>
         </div>
         <div
-          className={`filter  ${this.state.show ? "background-gray" : ""} ${
-            this.props.className
-          }`}
+          className={`filter  ${
+            this.state.show ? "background-gray" : ""
+          } background-gray-768`}
         >
           <div className="container-fluid">
             {this.state.show && (
@@ -247,30 +247,15 @@ class Filter extends React.Component {
                       &nbsp;м<sup>3</sup>
                     </span>
                   </div>
-                  <div
-                    className="row col-md-4 col-lg-4 col-xl-3  col-sm-6"
-                    style={{
-                      marginLeft: "0",
-                      marginRight: "0",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span className="filter-input-title">
-                      Кол-во<br></br>мест
-                    </span>
-                    <Input
-                      type="number"
-                      min="0"
-                      className="single-char"
-                      placeholder="1"
-                    />
-                  </div>
+
                   <h5 className="col-md-12">Дополнительно</h5>
                   <div className="col-12 row mx-0 check-list">
                     <div>
                       <CheckBox id="cargo" text="Услуги грузчика"></CheckBox>
                     </div>
-
+                    <div>
+                      <CheckBox id="popgrooz" text="Попутный груз"></CheckBox>
+                    </div>
                     <div>
                       <CheckBox
                         id="backup"

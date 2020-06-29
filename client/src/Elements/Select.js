@@ -45,7 +45,7 @@ const colourStyles = {
   valueContainer: (base) => ({
     ...base,
     height: 42,
-    padding: "5px 21px",
+    padding: "5px 15px",
   }),
   container: (base, state) => ({
     ...base,
@@ -79,7 +79,7 @@ const colourStyles = {
       : "",
   }),
   option: (base, state) => ({
-    padding: "5px 21px",
+    padding: "5px 15px",
     cursor: "pointer",
     color: state.isSelected ? "#A038E3" : "",
     "&:hover": {

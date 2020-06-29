@@ -99,9 +99,9 @@ class User extends React.Component {
               <img src={avatar} className="avatar-img" alt="" />
             </div>
             <div
-              className="col row px-0 mx-0 "
+              className="col row px-0 mx-0"
               style={{
-                maxWidth: "700px",
+                maxWidth: "800px",
               }}
             >
               <div
@@ -153,7 +153,7 @@ class User extends React.Component {
                   )}
                 </div>
               </div>
-              <div className="col-md-4 col-12 mt-2 mt-md-0 row text-center text-md-left">
+              <div className="col-md-4 col-12 user-column-2">
                 <span className="f-14 col-12">
                   Рейтинг: &nbsp;
                   <span className="d-inline-block">
@@ -161,18 +161,22 @@ class User extends React.Component {
                     <img src={ImgActiveStar} alt="ImgActiveStar" />
                   </span>
                 </span>
-                {this.props.match.params.id == 1 && (
-                  <div className="col-12">
-                    <Button
-                      type="fill"
-                      paddingVertical="11px"
-                      paddingHorizontal="30px"
-                      className="input-action"
-                    >
-                      Написать
-                    </Button>
-                  </div>
-                )}
+                <Button
+                  type="fill"
+                  paddingVertical="11px"
+                  paddingHorizontal="30px"
+                  className="input-action"
+                >
+                  Написать
+                </Button>
+                <Button
+                  type="empty"
+                  paddingVertical="11px"
+                  paddingHorizontal="30px"
+                  className="input-action"
+                >
+                  Предложить заказ
+                </Button>
               </div>
             </div>
           </div>

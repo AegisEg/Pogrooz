@@ -67,9 +67,9 @@ class OfferCreate1 extends React.Component {
               />
             </div>
           </div>
-          <div className="col-12 col-md-4 row  align-items-center">
+          <div className="col-12 col-md-4 ">
             <h4
-              className="f-16 col-12"
+              className="f-16"
               style={{
                 marginBottom: "20px",
                 fontWeight: "normal",
@@ -77,21 +77,24 @@ class OfferCreate1 extends React.Component {
             >
               Добавьте фото машины
             </h4>
-            <div className="col-12 d-inline-block align-self-center text-center">
-              <div className="d-inline-block px-4 mt-2">
-                <Button type="fill" className="f-17" paddingHorizontal="30px" paddingVertical="7px">
-                  Загрузить
-                </Button>
-              </div>
-              <img
-                src={ConfigSettings.defaultCar}
-                style={{
-                  verticalAlign: "top",
-                  marginTop: "10px",
-                }}
-                alt=""
-              />
+            <div className="d-inline-block pr-4 mt-2">
+              <Button
+                type="fill"
+                className="f-17"
+                paddingHorizontal="30px"
+                paddingVertical="7px"
+              >
+                Загрузить
+              </Button>
             </div>
+            <img
+              src={ConfigSettings.defaultCar}
+              style={{
+                verticalAlign: "top",
+                marginTop: "10px",
+              }}
+              alt=""
+            />
           </div>
         </div>
 
@@ -216,17 +219,17 @@ class OfferCreate1 extends React.Component {
                   </div>
                   <div className="mt-2">
                     <CheckBox id="cargo15" text="Безналичный расчет" />
-                    <div className="mt-2 pl-4">
-                      <Select
-                        className="select175px "
-                        options={[
-                          { value: 0, label: "не выбрано" },
-                          { value: 1, label: "с ндс" },
-                          { value: 2, label: "без ндс" },
-                        ]}
-                        placeholder="не выбрано"
-                      />
-                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <Select
+                      className="select175px "
+                      options={[
+                        { value: 0, label: "не выбрано" },
+                        { value: 1, label: "с ндс" },
+                        { value: 2, label: "без ндс" },
+                      ]}
+                      placeholder="не выбрано"
+                    />
                   </div>
                 </div>
               )}

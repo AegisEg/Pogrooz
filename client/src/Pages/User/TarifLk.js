@@ -85,7 +85,7 @@ class Support extends React.Component {
               </Button>
             </div>
           </div>
-          <h3 className="f-16 font-weight-normal mt-2">История пополнений</h3>
+          <h3 className="f-16 font-weight-normal mt-3">История пополнений</h3>
           <PayHistoryTable />
           <h3 className="f-16 font-weight-normal mt-4">Продлить тариф</h3>
           <Tarrifs />
