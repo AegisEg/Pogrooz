@@ -264,7 +264,12 @@ class InputRow extends React.Component {
               {this.state.isOpenActionList && (
                 <div className="pop-block">
                   {this.buttons.map((item, index) => {
-                    if (1) {
+                    if (
+                      (!item.status ||
+                        item.status.indexOf(this.props.article.status) != -1) &&
+                      (!item.articleType ||
+                        item.articleType == this.props.article.type)
+                    ) {
                       return (
                         <div
                           className="profile-menu-item"
