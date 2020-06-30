@@ -15,7 +15,7 @@ import raiting from "../img/raiting.svg";
 import gear from "../img/gear.svg";
 import notifications from "../img/notifications.png";
 import chatOrder from "../img/chat-order.png";
-import chatUser from "../img/chatUser.png";
+import chatUser from "../img/chatUser.svg";
 
 export default [
   {
@@ -129,12 +129,13 @@ export default [
   {
     name: "Сообщения",
     to: "",
+    className: "message-nav",
     icon: messages,
     childlist: [
       {
         name: "Сообщения по заказам, предложениям",
         to: "/messages-by-order",
-        icon: chatOrder,
+        icon: messages,
       },
       {
         name: "Сообщения пользователей",

@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import Button from "../Elements/Button";
 import Input from "../Elements/Input";
 import settings from "../config/settings.js";
-
+import { ReactComponent as CloseSVG  } from "../img/close.svg";
 class FeedbackModal extends React.Component {
   state = {
     isMailSend: false,
@@ -46,6 +46,7 @@ class FeedbackModal extends React.Component {
             Отправить
           </Button>
         </p>
+        <CloseSVG className="close-svg" onClick={this.props.onRequestClose}></CloseSVG>
       </Modal>
     );
   }

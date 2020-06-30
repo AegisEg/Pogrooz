@@ -80,9 +80,6 @@ class OrderCreate1 extends React.Component {
           </div>
           <div
             className="row typeGrooz"
-            style={{
-              marginBottom: "53px",
-            }}
           >
             <h4
               className="f-16 col-12 mb-1"
@@ -194,7 +191,7 @@ class OrderCreate1 extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-sm-6 mt-2">
+            <div className="col-12 col-sm-6 mt-4">
               <h4
                 className="f-16  mb-1"
                 style={{
@@ -207,7 +204,7 @@ class OrderCreate1 extends React.Component {
                 Загрузить
               </Button>
             </div>
-            <div className="col-12 col-sm-6 mt-2">
+            <div className="col-12 col-sm-6 mt-4">
               <h4
                 className="f-16  mb-1"
                 style={{

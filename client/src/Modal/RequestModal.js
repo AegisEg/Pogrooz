@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import Button from "../Elements/Button";
 import Input from "../Elements/Input";
 import settings from "../config/settings.js";
+import { ReactComponent as CloseSVG  } from "../img/close.svg";
 
 class RequestModal extends React.Component {
   constructor(props) {
@@ -74,7 +75,7 @@ class RequestModal extends React.Component {
               <Input type="time" placeholder="12:00" />
             </div>
             <div
-              className="d-inline-flex px-3 mr-auto mt-3 budjet_div"
+              className="d-inline-flex px-3 mt-3 budjet_div"
               style={{
                 marginLeft: "0",
                 marginRight: "0",
@@ -91,12 +92,13 @@ class RequestModal extends React.Component {
               type="fill"
               paddingVertical="11px"
               paddingHorizontal="36px"
-              className="mt-3 input-action"
+              className="mt-3 ml-auto mr-3 input-action"
             >
               Отправить
             </Button>
           </div>
         </div>
+        <CloseSVG className="close-svg" onClick={this.props.onRequestClose} className="close-svg"></CloseSVG>
       </Modal>
     );
   }

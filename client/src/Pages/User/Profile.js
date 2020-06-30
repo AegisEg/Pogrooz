@@ -282,7 +282,7 @@ class Profile extends React.Component {
                 />
               )}
             </div>
-            <div style={{ marginBottom: 8, lineHeight: "16px" }}>
+            <div style={{ lineHeight: "16px" }}>
               <CheckBox
                 value={this.state.typeContract === "self-employed"}
                 id="self-employed"
@@ -341,7 +341,7 @@ class Profile extends React.Component {
                     <img
                       className="d-block d-md-none"
                       style={{
-                        width: "20px",
+                        width: "18px",
                       }}
                       src={upload}
                       alt=""

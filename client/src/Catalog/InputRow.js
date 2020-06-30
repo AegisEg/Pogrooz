@@ -6,10 +6,25 @@ import { withRouter } from "react-router-dom";
 import ReviewsShow from "../Modal/ReviewsShow";
 import ArrowDown from "../img/arrowDownperple.svg";
 import ArrowDownPng from "../img/arrowDown.png";
-import reviews from "../img/reviews.png";
 import { Link } from "react-router-dom";
 // Elements
 import Button from "../Elements/Button";
+//IMG ACTION
+import { ReactComponent as Trash } from "../img/trash.svg";
+import { ReactComponent as Otmena } from "../img/otmena.svg";
+import { ReactComponent as ExecutorCancel } from "../img/executor-cancel.svg";
+import { ReactComponent as Refresh } from "../img/refresh.svg";
+import { ReactComponent as CanselRequest } from "../img/canselRequest.svg";
+import { ReactComponent as CompletedAction } from "../img/completedAction.svg";
+import { ReactComponent as Raiting } from "../img/raiting.svg";
+import { ReactComponent as Reviews } from "../img/reviews.svg";
+import { ReactComponent as GeoDetect } from "../img/geo-detect.svg";
+import { ReactComponent as Clone } from "../img/clone.svg";
+import { ReactComponent as LookHire } from "../img/sid-view.svg";
+import { ReactComponent as YellowAngle } from "../img/yellowAngle.svg";
+import { ReactComponent as Chat } from "../img/chat.svg";
+import { ReactComponent as Edit } from "../img/edit.svg";
+
 class InputRow extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +42,7 @@ class InputRow extends React.Component {
       /* Если Черновик или опубликовано */
       id: 1,
       label: "Удалить",
+      img: Trash,
       status: [1, 2],
       isButton: true,
       ButtonType: "empty",
@@ -35,6 +51,7 @@ class InputRow extends React.Component {
       /* Если статус опубликовано */
       id: 3,
       label: "Отменить",
+      img: Otmena,
       status: [2],
       isButton: true,
       ButtonType: "empty",
@@ -44,6 +61,7 @@ class InputRow extends React.Component {
       id: 4,
       label: "Отказаться от исполнителя",
       status: [3],
+      img: ExecutorCancel,
       articleType: 0,
       isButton: true,
       ButtonType: "empty",
@@ -53,6 +71,7 @@ class InputRow extends React.Component {
       id: 5,
       label: "Запросить отмену заказа",
       status: [3],
+      img: Refresh,
       articleType: 0,
       isButton: true,
       ButtonType: "empty",
@@ -62,6 +81,7 @@ class InputRow extends React.Component {
       id: 6,
       label: "Отказаться от грузовладельца",
       status: [3],
+      img: ExecutorCancel,
       articleType: 1,
       isButton: true,
       ButtonType: "empty",
@@ -70,6 +90,7 @@ class InputRow extends React.Component {
       /* Если статус Выбран исполнитель и это предложение */
       id: 6,
       label: " Запросить отмену",
+      img: CanselRequest,
       status: [3],
       articleType: 1,
       isButton: true,
@@ -79,8 +100,9 @@ class InputRow extends React.Component {
       /* Если статус Выбран исполнитель и это предложение */
       id: 7,
       label: "В пути",
+      img: GeoDetect,
       status: [3],
-      articleType: 1,
+      // articleType: 1,
       isButton: false,
       content: (
         <span className="pop-wrapper position-relative">
@@ -99,6 +121,7 @@ class InputRow extends React.Component {
     {
       id: 8,
       label: "Завершить",
+      img: CompletedAction,
       status: [4],
       isButton: true,
       ButtonType: "empty",
@@ -106,6 +129,7 @@ class InputRow extends React.Component {
     {
       id: 9,
       label: "Отследить",
+      img: GeoDetect,
       status: [4],
       isButton: true,
       articleType: 0,
@@ -115,6 +139,7 @@ class InputRow extends React.Component {
     {
       id: 10,
       label: "Смотреть отзыв",
+      img: Raiting,
       status: [5, 6, 7],
       isButton: false,
       mobileAction: () => {
@@ -122,7 +147,7 @@ class InputRow extends React.Component {
       },
       content: (
         <span className="reviews-pop input-action pop-wrapper">
-          <img src={reviews} alt="reviews" />
+          <Raiting></Raiting>
           <div className="ml-2">Смотреть отзыв</div>
           <ReviewsShow onMobile={this.props.onMobile} />
         </span>
@@ -132,6 +157,7 @@ class InputRow extends React.Component {
       id: 10,
       label: "Оставить отзыв",
       status: [5, 6],
+      img: Reviews,
       isButton: false,
       mobileAction: () => {
         this.ReviewsFormModal.openForm();
@@ -142,7 +168,7 @@ class InputRow extends React.Component {
             type="empty"
             className="input-action"
             onClick={() => {
-              this.ReviewsFormModal.openForm();
+              this.ReviewsFormModal.toogleform();
             }}
           >
             Оставить отзыв
@@ -163,6 +189,7 @@ class InputRow extends React.Component {
     {
       id: 11,
       label: "Копировать",
+      img: Clone,
       status: [5, 6],
       isButton: true,
       ButtonType: "empty",
@@ -170,6 +197,7 @@ class InputRow extends React.Component {
     {
       id: 12,
       label: "Смотреть",
+      img: LookHire,
       content: (
         <>
           {!this.props.onlyOpen && (
@@ -187,12 +215,14 @@ class InputRow extends React.Component {
       id: 13,
       label: "Опубликовать",
       status: [1],
+      img: YellowAngle,
       isButton: true,
       ButtonType: "fill",
     },
     {
       id: 14,
       label: "Написать",
+      img: Chat,
       status: [3, 4, 5, 6],
       isButton: true,
       ButtonType: "fill",
@@ -200,6 +230,7 @@ class InputRow extends React.Component {
     {
       id: 15,
       label: "Редактировать",
+      img: Edit,
       status: [1, 2],
       isButton: true,
       ButtonType: "fill",
@@ -207,6 +238,7 @@ class InputRow extends React.Component {
     {
       id: 16,
       label: "Восстановить",
+      img: Refresh,
       status: [7],
       isButton: true,
       ButtonType: "empty",
@@ -232,19 +264,16 @@ class InputRow extends React.Component {
               {this.state.isOpenActionList && (
                 <div className="pop-block">
                   {this.buttons.map((item, index) => {
-                    if (
-                      (!item.status ||
-                        item.status.indexOf(this.props.article.status) != -1) &&
-                      (!item.articleType ||
-                        item.articleType == this.props.article.type)
-                    ) {
+                    if (1) {
                       return (
                         <div
                           className="profile-menu-item"
+                          key={index}
                           onClick={
-                            item.mobileAction ? item.mobileAction : false
+                            item.mobileAction ? item.mobileAction : () => {}
                           }
                         >
+                          <item.img></item.img>
                           {item.label}
                         </div>
                       );
@@ -281,6 +310,7 @@ class InputRow extends React.Component {
                 if (item.isButton)
                   return (
                     <Button
+                      key={index}
                       type={item.ButtonType}
                       className={`input-action ${
                         item.className ? item.className : ""
@@ -386,14 +416,14 @@ class InputRow extends React.Component {
               >
                 ВЗЯТЬ
               </Button>
-              <RequestModal
-                isOpen={this.state.isOpenModalRequest}
-                onRequestClose={() => {
-                  this.setState({ isOpenModalRequest: false });
-                }}
-              />
             </>
           )}
+          <RequestModal
+            isOpen={this.state.isOpenModalRequest}
+            onRequestClose={() => {
+              this.setState({ isOpenModalRequest: false });
+            }}
+          />
         </>
       );
     return false;

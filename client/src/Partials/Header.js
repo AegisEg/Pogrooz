@@ -44,8 +44,6 @@ class Header extends React.Component {
     showTarrifPop: false,
   };
 
-  
-
   showProfileMenu() {
     this.setState({ showProfileMenu: true });
     document.addEventListener("click", this.hideProfileMenu);
@@ -301,10 +299,17 @@ class Header extends React.Component {
               <span>Тариф ДЕМО активен до 20.12.2025</span>
               {this.state.showTarrifPop && (
                 <div className="pop-block">
-                  <div className="pop-block-item">
-                    Тариф оплачен и в полном порядке
-                  </div>
-                  <div className="pop-block-additionally">Скрыть</div>
+                  <p>До окончания тарифа осталось 2 дня.</p>
+                  <p>
+                    Если его не продлить - ваш профиль и предлжения будут скрыты
+                    для других пользователей.
+                    <b>Вы не сможете брать заказы.</b>
+                  </p>
+                  <Link to="/mytarif">
+                    <Button type="fill" className="mt-2">
+                      Пополнить
+                    </Button>
+                  </Link>
                 </div>
               )}
             </div>

@@ -860,6 +860,17 @@ header ~ div {
   line-height: 14px;
   color: #171717;
 }
+.tarrif-pop .pop-block {
+  font-size: 12px;
+  padding: 21px 18px;
+  width: 169px;
+}
+.message-nav img {
+  min-width: 15px;
+}
+.tarrif-pop .pop-block p {
+  text-align: left;
+}
 @media (max-width: 585px) {
   .tarrif-pop,
   .header-fast-access {
@@ -1716,6 +1727,10 @@ a.mail {
     padding-bottom: 10px;
   }
 }
+.table-wrapper {
+  position: relative;
+  z-index: 0;
+}
 @media (min-width: 768px) {
   .main-cities-item {
     flex: 0 0 17%;
@@ -1908,9 +1923,23 @@ a.mail {
     padding: 0 15px;
     align-self: end;
   }
+  .action-list .pop-block .profile-menu-item {
+    display: flex;
+    padding-left: 20px !important;
+  }
+  .action-list .pop-block svg {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+  }
   .action-list .pop-block::before {
     right: 11px;
     left: unset;
+  }
+  .action-list .pop-block .profile-menu-item:hover,
+  .action-list .pop-block .profile-menu-item:hover svg * {
+    stroke: #9509ef;
+    color: #9509ef;
   }
   .action-list .pop-block::after {
     right: 11px;
@@ -2289,11 +2318,17 @@ a.href span {
 .about-page p span {
   color: #171717;
 }
-.profile-page hr,
+.profile-page hr {
+  border: none;
+  border-top: 1px solid #dddddd;
+  height: 0;
+}
+.profile-page > .row > div {
+  margin: 15px 0;
+}
 .about-page hr {
   border: none;
   border-top: 1px solid #dddddd;
-
   height: 0;
   margin: 30px 0;
 }
@@ -2613,7 +2648,6 @@ a.href span {
 }
 .profile-page hr {
   width: 100%;
-  margin: 15px 0;
 }
 .profile-page {
   padding-bottom: 40px;
@@ -2822,6 +2856,13 @@ a.href span {
   width: 100%;
   max-width: 320px;
 }
+.ReactModal__Content .close-svg {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  z-index: 1000;
+}
 .user-settings .gray {
   color: #6c6c6c;
 }
@@ -2865,6 +2906,7 @@ a.href span {
   padding: 0;
   line-height: 16px;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 @media (max-width: 480px) {
   .pagination {
@@ -3442,13 +3484,11 @@ a.href span {
   margin-right: -28px;
   padding-right: 15px;
   padding-left: 15px;
-  font-size: 16px;
-  line-height: 19px;
   text-align: center;
 }
 .create-page .header-statusBar span {
-  line-height: 17px;
-  font-size: 16px;
+  line-height: 15px;
+  font-size: 14px;
 }
 .create-page .carType {
   align-content: flex-start;
@@ -3462,16 +3502,20 @@ a.href span {
   }
   .create-page .header-statusBar > div {
     width: auto !important;
-    padding: 13px 5px !important;
+    padding: 13px 0 !important;
   }
   .header-statusBar > div .circle {
     display: inline-block;
-    margin: 0 13px;
+    margin: 0 7px;
+  }
+  .header-statusBar > div svg {
+    margin: 0 7px;
   }
   .header-statusBar > .go-prev .circle::after {
     background-color: #a038e3;
   }
-  .header-statusBar > .go-prev svg path {
+  .header-statusBar > .go-prev svg path,
+  .header-statusBar > .go-next svg path {
     stroke: #9509ef;
   }
   .header-statusBar > div .circle::after {
@@ -3496,6 +3540,7 @@ a.href span {
 }
 .create-page .header-statusBar > div.active {
   color: #9509ef;
+  padding: 13px !important;
 }
 .create-page .header-statusBar > div:not(.active) {
   color: #909090;
@@ -4278,8 +4323,7 @@ table {
 .input-chat .smiles,
 .input-chat .photo {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 10px;
   margin: auto;
 }
 .input-chat .smiles {
