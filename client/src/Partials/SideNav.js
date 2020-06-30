@@ -25,7 +25,7 @@ class MenuItem1 extends React.Component {
   render() {
     if (this.props.childlist && !!this.props.childlist.length) {
       return (
-        <span className="parent-item">
+        <span className={`parent-item ${this.props.className}`}>
           <div
             className={`side-nav-item label`}
             onClick={() => {
@@ -120,7 +120,6 @@ class SideNav extends React.Component {
                 childlist={item.childlist}
               />
             );
-          else return <></>;
         })}
 
         <span

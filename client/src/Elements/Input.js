@@ -10,7 +10,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 //DATE
-import EyeOpen from "../img/eye-open.png";
+import EyeOpen from "../img/sid-view.svg";
 import EyeClose from "../img/eye-close.png";
 
 class Input extends React.Component {

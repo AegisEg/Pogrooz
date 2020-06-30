@@ -14,32 +14,6 @@ class SearchPage extends React.Component {
   render() {
     return (
       <div className="search-page">
-        <div className="search-tabs background-gray tabs pb-lg-0 pb-xl-3 ">
-          <div className="container-fluid row  justify-content-center">
-            <div
-              className={`tab mx-3 text-uppercase ${
-                this.state.searchType === "offer" ? "active" : ""
-              }`}
-              onClick={() => {
-                this.setState({ searchType: "offer" });
-              }}
-            >
-              Услуги{" "}
-              <span className="d-380 d-sm-inline-block">перевозчиков</span>
-            </div>
-            <div
-              className={`tab mx-3 text-uppercase ${
-                this.state.searchType === "order" ? "active" : ""
-              }`}
-              onClick={() => {
-                this.setState({ searchType: "order" });
-              }}
-            >
-              Новые заказы
-              <span className="d-380 d-sm-inline-block">на перевозку</span>
-            </div>
-          </div>
-        </div>
         <Filter className="background-gray filter-main" />
         <Articles articlesList={articlestest} />
         <div className="text-center">

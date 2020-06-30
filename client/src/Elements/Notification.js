@@ -1,6 +1,6 @@
 // App
 import React from "react";
-import yellowAngle from "../img/yellowAngle.png";
+import yellowAngle from "../img/yellowAngle.svg";
 class Notification extends React.Component {
   render() {
     var text;

@@ -483,9 +483,6 @@ class OfferCreate3 extends React.Component {
           </div>
           <div
             className="row typeGrooz"
-            style={{
-              marginBottom: "53px",
-            }}
           >
             <h4
               className="f-16 col-12 mb-1"

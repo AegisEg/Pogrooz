@@ -8,6 +8,7 @@ import AngleUp from "../img/angle-up.png";
 import AngleDown from "../img/angle-down.png";
 import Modal from "react-modal";
 import settings from "../config/settings.js";
+import { ReactComponent as CloseSVG } from "../img/close.svg";
 
 class ReviewsFormModal extends React.Component {
   constructor(props) {
@@ -21,6 +22,9 @@ class ReviewsFormModal extends React.Component {
   };
   closeForm() {
     this.setState({ isOpen: false });
+  }
+  toogleform() {
+    this.setState({ isOpen: !this.state.isOpen });
   }
   openForm() {
     this.setState({ isOpen: true });
@@ -54,6 +58,10 @@ class ReviewsFormModal extends React.Component {
             style={settings.stylesModals}
           >
             {content}
+            <CloseSVG
+              className="close-svg"
+              onClick={this.closeForm}
+            ></CloseSVG>
           </Modal>
         );
       } else

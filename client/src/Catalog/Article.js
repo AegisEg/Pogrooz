@@ -11,10 +11,10 @@ import ImgActiveStar from "../img/active-star.png";
 import payIco from "../img/pay-ico.svg";
 import dogovor from "../img/dogovor.png";
 import passport from "../img/passport.png";
-import yellowAngle from "../img/yellowAngle.png";
+import yellowAngle from "../img/yellowAngle.svg";
 import profileOk from "../img/profile-ok.png";
 import geolocation from "../img/geolocation.png";
-import otmena from "../img/otmena.png";
+import otmena from "../img/otmena.svg";
 
 import basket from "../img/basket.png";
 
@@ -468,7 +468,7 @@ class Article extends React.Component {
               </div>
             )}
           </CSSTransitionGroup>
-          <div className="row mt-4">
+          <div className="row mt-2">
             {this.renderStatus()}
             <div className="row-input-controls">
               <InputRow

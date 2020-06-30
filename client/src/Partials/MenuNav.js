@@ -69,11 +69,6 @@ class MenuNav extends React.Component {
   }
 
   shouldComponentUpdate(a, b) {
-    console.log(new Date())
-    console.log(b)
-    console.log(this.state)
-    console.log(JSON.stringify(a) === JSON.stringify(this.props))
-    console.log(JSON.stringify(b) === JSON.stringify(this.state))
     return true
   }
 
