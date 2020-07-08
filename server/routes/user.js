@@ -1,6 +1,6 @@
 /**
  * user.js
- * Author: Roman Shuvalov
+ * Author: Vasilev Egor
  */
 'use strict';
 
@@ -9,6 +9,6 @@ const verifyToken = require('../middleware/verifyToken');
 const UserController = require('../controllers/UserController')
 
 // Get the user for this user
-router.get('/user', verifyToken, UserController.user);
+router.get('/', verifyToken, UserController.user);
 
 module.exports = router;

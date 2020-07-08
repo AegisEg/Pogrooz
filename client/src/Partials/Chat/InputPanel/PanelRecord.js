@@ -249,13 +249,6 @@ class PanelRecord extends React.Component {
             <Timer ref={this.timerref} />
           </div>
         </div>
-
-        <img
-          src={send}
-          className="ml-3"
-          onClick={this.props.recordReset}
-          alt="microphone"
-        />
         <audio
           ref={(ref) => {
             this.audio = ref;
@@ -263,6 +256,12 @@ class PanelRecord extends React.Component {
           style={{ display: "none" }}
           controls
         ></audio>
+        <img
+          src={send}
+          className="ml-3"
+          onClick={this.props.recordReset}
+          alt="microphone"
+        />
       </>
     );
   }

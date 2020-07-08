@@ -17,9 +17,9 @@ import upload from "../../img/upload.svg";
 
 class Profile extends React.Component {
   state = {
-    firstName: this.props.user.firstName,
-    middleName: this.props.user.middleName,
-    lastName: this.props.user.lastName,
+    firstName: this.props.user.name.first,
+    middleName: this.props.user.name.middle,
+    lastName: this.props.user.name.last,
     email: this.props.user.email,
     phone: this.props.user.phone,
     lastPassword: "",

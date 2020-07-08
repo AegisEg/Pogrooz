@@ -90,7 +90,7 @@ class SideNav extends React.Component {
     window.removeEventListener("resize", this.updateDimensions);
   }
   componentDidMount() {
-    this.updateDimensions();
+      this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions);
   }
   render() {

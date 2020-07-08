@@ -1,22 +1,24 @@
-import { 
-    USER_LOGIN,
-    USER_LOGOUT 
-} from '../constants'
+import { USER_LOGIN, USER_LOGOUT } from "../constants";
 
 const INITIAL_STATE = {
-    isAuth: false
-}
+  isAuth: false,
+};
 
 const user = (state = INITIAL_STATE, action) => {
-    switch(action.type) {
-        case USER_LOGIN: {
-            return { ...state, ...action.payload, isAuth: true }
-        }
-        case USER_LOGOUT:
-            return { isAuth: false }
-        default: 
-            return state
+  switch (action.type) {
+    case USER_LOGIN: {
+      return {
+        ...state,
+        ...action.payload.user,
+        apiToken: action.payload.apiToken,
+        isAuth: true,
+      };
     }
-}
+    case USER_LOGOUT:
+      return { isAuth: false };
+    default:
+      return state;
+  }
+};
 
-export default user
+export default user;

@@ -13,26 +13,30 @@ class PanelStandart extends React.Component {
   state = {
     text: "",
   };
+  setText(text) {
+    this.setState({ text });
+  }
   render() {
     return (
       <>
         <img
-          className="mr-3"
+          className="addMoreAttach"
           style={{
             width: "24px",
           }}
           src={addDocuments}
           alt="addDocuments"
         />
-        <div className="col input-chat">
+        <div className="input-chat">
           <textarea
-            className="col input-message"
+            className="input-message"
             id="input-message"
             onKeyDown={(e) => {
               if (e.keyCode === 13 && !e.shiftKey) {
                 e.preventDefault();
                 let inputMessage = document.getElementById("input-message");
                 inputMessage.style.maxHeight = "48px";
+                this.props.sendMessage(this.state.text);
               }
             }}
             onInput={() => {
@@ -46,6 +50,7 @@ class PanelStandart extends React.Component {
               }
             }}
             onChange={(e) => {
+              this.props.typing(e.target.value, this.state.text);
               this.setState({ text: e.target.value });
             }}
             value={this.state.text}
@@ -55,7 +60,7 @@ class PanelStandart extends React.Component {
           <img src={smiles} className="smiles" alt="smiles" />
         </div>
         <div
-          className="text-center position-relative left-tools"
+          className="sendAndMicro"
           style={{
             width: "26px",
             height: "26px",
@@ -76,7 +81,15 @@ class PanelStandart extends React.Component {
                 onClick={this.props.recordStart}
               />
             )}
-            {this.state.text && <img src={send} alt="microphone" />}
+            {this.state.text && (
+              <img
+                src={send}
+                onClick={() => {
+                  this.props.sendMessage(this.state.text);
+                }}
+                alt="microphone"
+              />
+            )}
           </CSSTransitionGroup>
         </div>
       </>

@@ -846,7 +846,7 @@ header ~ div {
 .lk-page:not(.messages) {
   min-height: 800px;
 }
-.lk-page {
+.lk-page:not(.messages) {
   padding-bottom: 40px;
 }
 .header-profile {
@@ -3925,8 +3925,11 @@ table {
   font-size: 18px;
   text-align: center;
 }
-.dialogs-block .dialog .last-message .text {
-  display: flex;
+.dialogs-block .dialog .last-message {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-right: 25px;
 }
 .dialogs-block .dialog .last-message .text > span {
   position: relative;
@@ -3938,15 +3941,15 @@ table {
   padding-right: 40px;
   color: #322f2f;
 }
-.dialogs-block .dialog .last-message .text .counter {
+.dialogs-block .dialog .last-message .counter {
   position: absolute;
   right: 9px;
   top: 0;
   bottom: 0;
   margin: auto;
-  height: 13px;
+  height: 20px;
 }
-.dialogs-block .dialog .unread .text > span {
+.dialogs-block .dialog.unread .last-message {
   background-color: #f7f7f7;
   border-radius: 5px;
 }
@@ -3958,18 +3961,37 @@ table {
 .dialog-user-name {
   font-size: 14px;
 }
-.dialog .dialog-content {
+
+.dialog .dialog-content,
+.messages-block .dialog-content {
   overflow: hidden;
+  padding-left: 5px !important;
 }
-.dialog .dialog-content .head {
+.messages-block .recentMessage {
+  padding: 10px 0;
+  margin-left: 0;
+}
+.dialog .dialog-content .head,
+.dialog .dialog-content .head-message {
+  display: flex;
   width: 100%;
+  justify-content: space-between;
+}
+.dialogs-block .dialog .last-message {
+  position: relative;
+}
+.dialog .dialog-content .head,
+.dialogs-block .dialog .last-message {
+  padding-left: 7px;
 }
 .dialog .dialog-content .head > * {
   display: inline-block;
   width: max-content;
 }
-.dialog .dialog-content .head > div:first-child {
-  float: left;
+.dialog .dialog-content .head .dialog-user-name {
+  width: 150px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #171717;
 }
 .dialog .dialog-content .head > div:last-child {
@@ -3983,7 +4005,7 @@ table {
     max-width: 76px;
   }
 }
-.messages-block .avatar-message img {
+.user-avatar-image {
   width: 100%;
   border-radius: 50%;
 }
@@ -4025,7 +4047,6 @@ table {
 }
 .description-chat {
   background: #f9f8f8;
-  margin-top: 10px;
   margin-left: -28px !important;
   margin-right: -28px !important;
   padding-left: 13px !important;
@@ -4034,16 +4055,26 @@ table {
   padding-bottom: 6px;
   align-items: center;
   border-top: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
 }
-
+.chat-header {
+  position: relative;
+}
+.chat-header hr {
+  width: calc(100% + 56px);
+  display: block;
+  height: 1px;
+  background-color: #dddddd;
+  margin-left: -28px !important;
+  margin-right: -28px !important;
+  border: none;
+}
 .message-container {
   display: flex;
   flex-wrap: wrap;
   position: relative;
   flex: 1;
   flex-direction: row;
-  height: calc(100vh - 360px);
+  height: calc(100vh - 242px);
   overflow-y: hidden;
   overflow-x: hidden;
   align-content: end;
@@ -4058,13 +4089,24 @@ table {
   margin-right: -15px;
   padding-left: 28px !important;
   padding-right: 28px !important;
-  margin-bottom: 20px;
+}
+.messages-block.padding {
+  padding-top: 10px;
+}
+.messages-block.not-my.padding .message-content {
+  padding-bottom: 10px;
+}
+.messages-block.my.unread .message-content {
+  background-color: #f7f7f7;
+}
+.messages-block.not-my.unread {
+  background-color: #f7f7f7;
 }
 .messages-block .name {
   width: 237px;
 }
-.messages-block .head-message {
-  margin-bottom: 15px;
+.messages-block .head-message > * {
+  margin-bottom: 10px;
 }
 .messages-block .time,
 .messages-block .name {
@@ -4101,11 +4143,22 @@ table {
   content: "\2026";
   width: 0;
 }
-.reply img {
-  width: 18px;
-  height: 10px;
+.reply-message {
+  opacity: 0;
 }
-.reply {
+.messages-block {
+  cursor: pointer;
+}
+.messages-block.selected,
+.messages-block:hover {
+  background-color: #ffe17654;
+}
+.messages-block:hover .reply-message {
+  opacity: 1;
+  transition: all 0.3s;
+}
+.reply-message,
+.error-retry {
   position: absolute;
   display: flex;
   align-items: center;
@@ -4114,6 +4167,33 @@ table {
   bottom: 0;
   margin: auto;
   cursor: pointer;
+}
+.error-retry .action-menu {
+  opacity: 0;
+  pointer-events: none;
+}
+.error-retry:hover .action-menu {
+  opacity: 1;
+  pointer-events: all;
+  transition: all 0.3s;
+}
+.action-menu > div {
+  padding: 5px 10px;
+}
+
+.action-menu > div:hover {
+  background-color: #f7f7f7;
+}
+.action-menu {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ffd12c;
+  border-radius: 5px;
+  top: -90%;
+  overflow: hidden;
+  right: -100%;
+  width: 160px;
+  font-size: 12px;
 }
 @keyframes ellipsis {
   to {
@@ -4133,8 +4213,28 @@ table {
 .head-message {
   display: flex;
 }
+.dialog-wrap > div:nth-child(2) {
+  pointer-events: none;
+}
 .head-message .name {
   max-width: 130px;
+}
+.recentMessage .recentContent .name,
+.head-message .name {
+  font-size: 14px;
+  line-height: 16px;
+  color: #171717;
+  font-weight: 700;
+}
+.messages-block .message-content,
+.recentMessage .recentContent .message-content {
+  color: #322f2f;
+  font-size: 14px;
+}
+.recentMessage .recentContent .message-content {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 /*DIALOG SCROLL */
 .scroll .track-vertical {
@@ -4185,9 +4285,29 @@ table {
   transition: height 0.2s;
 }
 .dialog-wrap > div {
-  padding-top: 17px;
+  padding-top: 50px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
+}
+.dialog-wrap .load-message {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  margin: auto;
+  margin-bottom: 20px;
+  width: 50px;
+  max-height: 0;
+  transition: all 0.3s;
+}
+.dialog-wrap .load-message.active {
+  opacity: 1;
+  max-height: 100px;
+  transition: all 0.3s;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 .scroll-to-bottom.active {
   transform: translateY(0) !important;
@@ -4251,7 +4371,7 @@ table {
   bottom: 0;
   left: 10px;
   margin: auto;
-  z-index: 2;
+  z-index: 3;
 }
 .single-char {
   max-width: 60px !important;
@@ -4277,9 +4397,6 @@ table {
   margin-top: 10px;
 }
 .message-panel {
-  display: flex;
-  align-items: flex-start;
-  align-content: center;
   border-top: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
   min-height: 68px;
@@ -4288,8 +4405,24 @@ table {
   margin-right: -28px !important;
   padding: 7px 28px !important;
 }
+
+.message-panel > .panel {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  align-content: center;
+}
+.message-panel .recentMessage {
+  width: auto;
+}
+.recentMessage .recentContent {
+  border-left: 2px solid #bfbfbf;
+  padding-left: 10px;
+}
 .input-chat {
   display: flex;
+  position: relative;
+  width: 100%;
 }
 .input-chat * {
   z-index: 2;
@@ -4297,7 +4430,20 @@ table {
 .lk-page.messages ~ footer {
   display: none;
 }
+.recentMessage,
+.input-chat {
+  margin: 0 40px;
+}
+.sendAndMicro {
+  right: 0;
+}
+.sendAndMicro,
+.addMoreAttach {
+  top: 10px;
+  position: absolute;
+}
 .input-chat textarea {
+  width: 100%;
   padding: 13px 80px 13px 22px;
   font-size: 14px;
   color: #000;
@@ -4310,10 +4456,10 @@ table {
 }
 .input-chat::after {
   content: "";
-  left: 14px;
+  left: -1px;
   top: -1px;
   position: absolute;
-  width: calc(100% - 28px);
+  width: calc(100% + 2px);
   height: calc(100% + 2px);
   z-index: 0;
   background-color: transparent;
@@ -4334,14 +4480,15 @@ table {
 }
 .input-chat .placeholder {
   position: absolute;
-  top: -4px;
+  top: -3px;
   bottom: 0;
   height: 14px;
-  left: 37px;
+  left: 22px;
   margin: auto;
   font-size: 14px;
   line-height: 16px;
   color: #322f2f;
+  pointer-events: none;
 }
 .left-tools * {
   position: absolute;

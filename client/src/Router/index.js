@@ -1,7 +1,7 @@
 // App
 import React from "react";
 import { withCookies } from "react-cookie";
-
+import SocketController from "../controllers/SocketController";
 import Header from "../Partials/Header";
 
 import SideNav from "../Partials/SideNav";
@@ -19,7 +19,7 @@ import * as userActions from "../redux/actions/user";
 import { bindActionCreators } from "redux";
 import configApi from "../config/api";
 
-function setTitle(path, routeArray) {
+export function setTitle(path, routeArray) {
   var pageTitle;
   for (var i = 0; i < routeArray.length; i++) {
     if (routeArray[i].path === path) {
@@ -48,11 +48,12 @@ class AppRouter extends React.Component {
           Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${apiToken}`,
-        },
+        }
       })
         .then((response) => response.json())
         .then((user) => {
-          this.props.userActions.loginUser(user);
+          SocketController.init(apiToken);
+          this.props.userActions.loginUser(user,apiToken);
           this.setState({ isRender: true });
         })
         .catch(() => {

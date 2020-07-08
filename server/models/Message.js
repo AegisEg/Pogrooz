@@ -1,0 +1,34 @@
+/**
+ * Message.js
+ * Author: Roman Shuvalov
+ */
+"use strict";
+
+const mongoose = require("../database");
+const Schema = mongoose.Schema;
+
+// The number of rounds to use when hashing a password with bcrypt
+
+const MessageSchema = new Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", select: true },
+  text: { type: String, default: "" },
+  images: [{ type: Object }],
+  sounds: [{ type: Object }],
+  files: [{ type: Object }],
+  recentMessage: {
+    type: mongoose.Schema.Types.ObjectId,
+    dafault: false,
+    ref: "Message",
+    select: true,
+  },
+  type: { type: String, default: "message" }, // message, call, voice
+  isRead: { type: Boolean, default: false },
+  pushId: { type: String, default: "" },
+  dialogId: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  buff: Buffer,
+});
+
+const Message = mongoose.model("Message", MessageSchema);
+
+module.exports = Message;

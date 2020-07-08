@@ -324,7 +324,12 @@ class InputRow extends React.Component {
                       {item.label}
                     </Button>
                   );
-                else return item.content;
+                else
+                  return (
+                    <div key={index} style={{ display: "contents" }}>
+                      item.content
+                    </div>
+                  );
               }
             })}
           {!this.props.isMore && !this.props.onMobile && (
