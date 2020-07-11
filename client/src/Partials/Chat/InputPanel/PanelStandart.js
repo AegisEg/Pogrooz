@@ -21,11 +21,22 @@ class PanelStandart extends React.Component {
       <>
         <img
           className="addMoreAttach"
-          style={{
-            width: "24px",
+          onClick={() => {
+            document.getElementById("uploadFile").click();
           }}
           src={addDocuments}
           alt="addDocuments"
+        />
+        <input
+          type="file"
+          multiple
+          hidden
+          onChange={(e) => {
+            this.props.addFile(e);
+          }}
+          id="uploadFile"
+          style={{ display: "none" }}
+          accept="image/jpeg,image/gif,image/jpeg,image/png,application/pdf,text/plain,application/x-zip-compressed,application/zip,application/msword,audio/mpeg"
         />
         <div className="input-chat">
           <textarea
@@ -59,13 +70,7 @@ class PanelStandart extends React.Component {
           <img src={photo} className="photo d-md-block d-none" alt="photo" />
           <img src={smiles} className="smiles" alt="smiles" />
         </div>
-        <div
-          className="sendAndMicro"
-          style={{
-            width: "26px",
-            height: "26px",
-          }}
-        >
+        <div className="sendAndMicro">
           <CSSTransitionGroup
             transitionName="erase-animation-item"
             transitionEnterTimeout={100}

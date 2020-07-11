@@ -34,3 +34,18 @@ export function randomInteger(min, max) {
   return Math.floor(rand);
 }
 
+export function padZero(v) {
+  return v < 10 ? "0" + v : v;
+}
+export function convertBlobToAudioBuffer(url, calback) {
+  let actx = new AudioContext();
+  let bufferX;
+  fetch(url)
+    .then(function (resp) {
+      return resp.arrayBuffer();
+    })
+    .then(actx.decodeAudioData.bind(actx))
+    .then(function (buffer) {
+      calback(buffer);
+    });
+}

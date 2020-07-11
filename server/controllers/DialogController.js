@@ -7,6 +7,8 @@
 const Dialog = require("../models/Dialog");
 const Message = require("../models/Message");
 const Investment = require("../models/Investment");
+const ffmetadata = require("ffmetadata");
+const musicDuration = require("music-duration");
 const User = require("../models/User");
 
 const {
@@ -180,7 +182,14 @@ module.exports = {
   },
   sendMessage: async (req, res, next) => {
     const { user } = res.locals;
-    let { userId, text, socketId, recentMessage } = req.body;
+    let {
+      userId,
+      text,
+      socketId,
+      recentMessage,
+      voiceSoundDuration,
+      voiceSoundRecordLine,
+    } = req.body;
 
     try {
       let query =
@@ -202,11 +211,38 @@ module.exports = {
       let images = [];
       let sounds = [];
       let files = [];
+      let voiceSound = false;
 
       if (req.files) {
         let maxCount = 10;
         let nowCount = 1;
-
+        if (req.files["voiceSound"]) {
+          let fileName = randomString(24);
+          if (req.files["voiceSound"].size / 1000 <= 10000) {
+            let filePath = "./uploads/" + user._id + "/" + fileName + ".mp3";
+            req.files["voiceSound"].mv(filePath, function(err) {
+              if (err) return res.status(500).send(err);
+            });
+            voiceSound = {
+              path:
+                process.env.API_URL +
+                "/media/" +
+                user._id +
+                "/" +
+                fileName +
+                ".mp3",
+              name: "Аудиозапись",
+              duration: voiceSoundDuration,
+              recordLine: voiceSoundRecordLine,
+            };
+          }
+          // else {
+          //   let err = {};
+          //   err.param = `all`;
+          //   err.msg = `max_size`;
+          //   return res.status(401).json({ error: true, errors: [err] });
+          // }
+        }
         for (let i = 0; i < 10; i++) {
           let fileName = randomString(24);
 
@@ -224,23 +260,6 @@ module.exports = {
                 if (err) return res.status(500).send(err);
               }
             );
-
-            let investment = new Investment();
-
-            investment.dialogId = dialogId;
-            investment.type = "image";
-            investment.data = {
-              path:
-                process.env.API_URL +
-                "/media/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["images" + i].name.split(".").pop(),
-            };
-
-            await investment.save();
 
             images.push({
               path:
@@ -280,24 +299,6 @@ module.exports = {
               }
             );
 
-            let investment = new Investment();
-
-            investment.dialogId = dialogId;
-            investment.type = "sound";
-            investment.data = {
-              path:
-                process.env.API_URL +
-                "/media/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["sounds" + i].name.split(".").pop(),
-              name: req.files["sounds" + i].name,
-            };
-
-            await investment.save();
-
             sounds.push({
               path:
                 process.env.API_URL +
@@ -336,25 +337,6 @@ module.exports = {
               }
             );
 
-            let investment = new Investment();
-
-            investment.dialogId = dialogId;
-            investment.type = "file";
-            investment.data = {
-              path:
-                process.env.API_URL +
-                "/media/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["files" + i].name.split(".").pop(),
-              name: req.files["files" + i].name,
-              size: req.files["files" + i].size / 1000,
-            };
-
-            await investment.save();
-
             files.push({
               path:
                 process.env.API_URL +
@@ -384,6 +366,7 @@ module.exports = {
       message.dialogId = dialogId;
       message.images = images;
       message.sounds = sounds;
+      message.voiceSound = voiceSound;
       message.files = files;
       if (recentMessage !== "undefined") {
         message.recentMessage = await Message.findById(recentMessage).populate([
@@ -493,7 +476,7 @@ module.exports = {
         readMessageDialog({ otherId, dialogId, userId: user._id, socketId });
       }
 
-      return next();
+      return res.json();
     } catch (e) {
       return next(new Error(e));
     }

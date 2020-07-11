@@ -9,8 +9,7 @@ const user = (state = INITIAL_STATE, action) => {
     case USER_LOGIN: {
       return {
         ...state,
-        ...action.payload.user,
-        apiToken: action.payload.apiToken,
+        ...action.payload,
         isAuth: true,
       };
     }

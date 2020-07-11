@@ -99,6 +99,7 @@ const dialogs = (state = INITIAL_STATE, action) => {
                         ...message,
                         isLoading: false,
                         _id: action.payload._newId,
+                        voiceSound: action.payload.voiceSound,
                       }
                     : message
                 ),

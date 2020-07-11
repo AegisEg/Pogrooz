@@ -3,12 +3,11 @@ import React from "react";
 import Avatar from "../../Elements/Avatar";
 import TimeTag from "./TimeTag";
 import { getHM, timeAt } from "../../controllers/TimeController";
-import { randomInteger } from "../../controllers/FunctionsController";
+import Audio from "./Audio";
 import { ReactComponent as ErrorSvg } from "../../img/error-red.svg";
 import { ReactComponent as Reply } from "../../img/reply.svg";
 import RecentMessage from "./RecentMessage";
-
-class Message extends React.PureComponent {
+class Message extends React.Component {
   state = {
     isSelected: false,
   };
@@ -18,12 +17,21 @@ class Message extends React.PureComponent {
       this.setState({ isSelected: true });
     } else this.setState({ isSelected: false });
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      JSON.stringify(nextProps.message) === JSON.stringify(this.props.message)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
   render() {
     let isHistoryDate = true;
     let moreHour = false;
-    if (this.props.messages[this.props.index - 1]) {
+    if (!!this.props.prevMessage) {
       let date1 = new Date(this.props.message.createdAt);
-      let date2 = new Date(this.props.messages[this.props.index - 1].createdAt);
+      let date2 = new Date(this.props.prevMessage.createdAt);
       if (
         date1.getFullYear() === date2.getFullYear() &&
         date1.getMonth() === date2.getMonth() &&
@@ -40,12 +48,12 @@ class Message extends React.PureComponent {
     }
     let myMessage = this.props.user._id == this.props.message.user._id;
     let isFirst =
-      (this.props.messages[this.props.index - 1] &&
-        this.props.messages[this.props.index - 1].user._id !==
-          this.props.message.user._id) ||
-      !this.props.messages[this.props.index - 1] ||
+      (this.props.prevMessage &&
+        this.props.prevMessage.user._id !== this.props.message.user._id) ||
+      !this.props.prevMessage ||
       moreHour;
     let isShowMoreElement = (isFirst || isHistoryDate) && !this.props.isRecent;
+    console.log("dasdasd");
     return (
       <>
         {isHistoryDate && (
@@ -84,6 +92,13 @@ class Message extends React.PureComponent {
             </div>
             <div className="col-12 message-content">
               {this.props.message.text}
+              {this.props.message.voiceSound && (
+                <Audio
+                  duration={this.props.message.voiceSound.duration}
+                  src={this.props.message.voiceSound.path}
+                  isLoading={this.props.message.isLoading}
+                />
+              )}
               {this.props.message.recentMessage && (
                 <RecentMessage
                   scrollTo={(top) => {

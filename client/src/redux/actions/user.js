@@ -1,9 +1,10 @@
 import { USER_LOGIN, USER_LOGOUT } from "../constants";
 
 export const loginUser = (user, apiToken) => (dispatch) => {
+  user.apiToken = apiToken;
   dispatch({
     type: USER_LOGIN,
-    payload: { user, apiToken },
+    payload: user,
   });
 };
 

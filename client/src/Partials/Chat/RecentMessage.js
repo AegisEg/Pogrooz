@@ -15,7 +15,10 @@ class RecentMessage extends React.Component {
             {this.props.message.user.name.middle}{" "}
             {this.props.message.user.name.first}
           </div>
-          <div className="message-content">{this.props.message.text}</div>
+          <div className="message-content">
+            {this.props.message.text}
+            {this.props.message.voiceSound && <div>Аудиозапись</div>}
+          </div>
         </div>
       </div>
     );

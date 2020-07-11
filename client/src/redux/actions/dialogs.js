@@ -14,7 +14,10 @@ import {
   DIALOGS_PRELOAD,
 } from "../constants";
 import store from "../store";
-import { randomInteger } from "../../controllers/FunctionsController";
+import {
+  randomInteger,
+  getDuration,
+} from "../../controllers/FunctionsController";
 import SocketController from "../../controllers/SocketController";
 import { toast } from "react-toastify";
 import api from "../../config/api";
@@ -229,7 +232,6 @@ export const retrySendMessage = (message, apiToken) => (dispatch) => {
 
   for (let i = 0; i < message.images.length; i++) {
     formData.append("images" + i, message.images[i].file);
-
     images.push(message.images[i].path);
   }
 
@@ -299,7 +301,7 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
   let images = [];
   let files = [];
   let sounds = [];
-
+  let voiceSound = false;
   for (let i = 0; i < message.images.length; i++) {
     formData.append("images" + i, message.images[i].file);
     message.images[i].file = false;
@@ -308,14 +310,18 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
 
   for (let i = 0; i < message.files.length; i++) {
     formData.append("files" + i, message.files[i].file);
-    message.files[i].file = false;
     files.push(message.files[i]);
   }
 
   for (let i = 0; i < message.sounds.length; i++) {
     formData.append("sounds" + i, message.sounds[i].file);
-    message.sounds[i].file = false;
     sounds.push(message.sounds[i]);
+  }
+  if (message.voiceSound) {
+    formData.append("voiceSound", message.voiceSound.file);
+    formData.append("voiceSoundDuration", message.voiceSound.duration);
+    formData.append("voiceSoundRecordLine", message.voiceSound.recordLine);
+    voiceSound = message.voiceSound;
   }
   let localMessage = {
     _id,
@@ -324,6 +330,7 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
     images,
     sounds,
     files,
+    voiceSound: voiceSound,
     isLoading: true,
     isError: false,
     isRead: false,
@@ -370,7 +377,12 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
       }
       dispatch({
         type: DIALOGS_SUCCESS_MESSAGE,
-        payload: { _id, _newId: messageRes._id, dialogId: message.dialogId },
+        payload: {
+          _id,
+          _newId: messageRes._id,
+          dialogId: message.dialogId,
+          voiceSound: message.voiceSound,
+        },
       });
     })
     .catch(() => {
@@ -418,36 +430,39 @@ export const readMessages = ({ dialogId, userId, otherId }, apiToken) => (
 };
 
 export const loadMessages = ({ dialogId }, apiToken) => (dispatch) => {
-  let lastMessage = store
-    .getState()
-    .dialogs.dialogs.find((x) => x._id === dialogId).messages[0];
-  dispatch({
-    type: DIALOGS_SET_LOADING,
-    payload: dialogId,
-  });
+  return new Promise((resolve, reject) => {
+    let lastMessage = store
+      .getState()
+      .dialogs.dialogs.find((x) => x._id === dialogId).messages[0];
+    dispatch({
+      type: DIALOGS_SET_LOADING,
+      payload: dialogId,
+    });
 
-  fetch(`${api.urlApi}/api/dialog/load-messages`, {
-    method: "post",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiToken}`,
-    },
-    body: JSON.stringify({
-      dialogId,
-      lastMessageId: lastMessage._id,
-    }),
-  })
-    .then((response) => response.json())
-    .then((messages) => {
-      dispatch({
-        type: DIALOGS_LOAD_MESSAGES,
-        payload: {
-          dialogId,
-          messages: messages.reverse(),
-          canLoad: messages.length === 50,
-        },
-      });
+    fetch(`${api.urlApi}/api/dialog/load-messages`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+      body: JSON.stringify({
+        dialogId,
+        lastMessageId: lastMessage._id,
+      }),
     })
-    .catch(() => {});
+      .then((response) => response.json())
+      .then((messages) => {
+        dispatch({
+          type: DIALOGS_LOAD_MESSAGES,
+          payload: {
+            dialogId,
+            messages: messages.reverse(),
+            canLoad: messages.length === 50,
+          },
+        });
+        resolve();
+      })
+      .catch(() => {});
+  });
 };

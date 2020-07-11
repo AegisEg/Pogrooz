@@ -60,6 +60,7 @@ app
   .use("/api/dialog", dialogsRoutes)
   // Serve static files
   .use(express.static(path.join(__dirname, "../client")))
+  .use("/media", express.static(path.join(__dirname, "./uploads")))
   // Enable history API
   .use(historyApiFallback());
 // Error middleware

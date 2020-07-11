@@ -15,13 +15,14 @@ const MessageSchema = new Schema({
   images: [{ type: Object }],
   sounds: [{ type: Object }],
   files: [{ type: Object }],
+  voiceSound: { type: Object },
   recentMessage: {
     type: mongoose.Schema.Types.ObjectId,
     dafault: false,
     ref: "Message",
     select: true,
   },
-  type: { type: String, default: "message" }, // message, call, voice
+  type: { type: String, default: "message" }, // message, voice
   isRead: { type: Boolean, default: false },
   pushId: { type: String, default: "" },
   dialogId: { type: String },

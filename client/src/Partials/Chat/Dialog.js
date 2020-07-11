@@ -5,12 +5,14 @@ import SocketController from "../../controllers/SocketController";
 import PanelRecord from "../../Partials/Chat/InputPanel/PanelRecord";
 import PanelStandart from "../../Partials/Chat/InputPanel/PanelStandart";
 import RecentMessage from "./RecentMessage";
+import { toast } from "react-toastify";
 //Redux
 import { connect } from "react-redux";
 import * as dialogsActions from "../../redux/actions/dialogs";
 import { bindActionCreators } from "redux";
 import ArrowDown from "../../img/arrowDownperple.svg";
 import LoadGif from "../../img/load.gif";
+import { convertBlobToAudioBuffer } from "../../controllers/FunctionsController";
 
 // Internet Explorer 6-11
 const isIE = /*@cc_on!@*/ false || !!document.documentMode;
@@ -19,14 +21,12 @@ const isIE = /*@cc_on!@*/ false || !!document.documentMode;
 const isEdge = !isIE && !!window.StyleMedia;
 let waitActiveUser = false;
 let waitFastRead = false;
-let viktoryInterval = 0;
 class ScrollBottom extends React.Component {
   render() {
     return (
       <div
-        className={`scroll-to-bottom ${
-          this.props.showFabToBottom ? "active" : ""
-        }`}
+        id="scroll-to-bottom"
+        className={`scroll-to-bottom`}
         onClick={() => {
           this.props.scrollToBottom();
         }}
@@ -40,33 +40,44 @@ class Dialog extends React.Component {
   constructor(props) {
     super(props);
     this.inputPanel = React.createRef();
+    this.activePage = false;
   }
   state = {
-    showFabToBottom: false,
-    activePage: false,
     scrollTop: 0,
     canTyping: true,
     recentMessage: false,
     sounds: [],
     files: [],
     images: [],
+    voiceSound: false,
     isRecord: false,
     setCordMessageScroll: false,
   };
   onScroll() {
+    let scroll =
+      this.messagesBlock.getScrollHeight() - this.messagesBlock.getScrollTop();
     this.setState({
-      scrollTop:
-        this.messagesBlock.getScrollHeight() -
-        this.messagesBlock.getScrollTop(),
+      scrollTop: scroll,
     });
+    document.getElementById("load-message-gif").style.top =
+      this.messagesBlock.getScrollTop() + "px";
+
     if (
       this.messagesBlock.getScrollTop() + this.messagesBlock.getClientHeight() <
       this.messagesBlock.getScrollHeight() - 100
     ) {
-      if (!this.state.showFabToBottom) this.setState({ showFabToBottom: true });
+      if (
+        !document
+          .getElementById("scroll-to-bottom")
+          .classList.contains("active")
+      ) {
+        document.getElementById("scroll-to-bottom").classList.add("active");
+      }
     } else {
-      if (this.state.showFabToBottom) {
-        this.setState({ showFabToBottom: false });
+      if (
+        document.getElementById("scroll-to-bottom").classList.contains("active")
+      ) {
+        document.getElementById("scroll-to-bottom").classList.remove("active");
         if (!!this.props.unRead) {
           this.readMessages();
         }
@@ -90,13 +101,9 @@ class Dialog extends React.Component {
     }
   }
   loadToVictory(top) {
-    this.loadMessages();
-    viktoryInterval = setInterval(() => {
-      if (!this.props.dialogs.isLoading) {
-        clearInterval(viktoryInterval);
-        this.scrollTo(top);
-      }
-    }, 1000);
+    this.loadMessages(false).then(() => {
+      this.scrollTo(top);
+    });
   }
   scrollTo(top) {
     let messageBlock = document.getElementById("message" + top);
@@ -115,8 +122,17 @@ class Dialog extends React.Component {
             behavior: "smooth",
           });
         }
+        document.getElementById("load-message-gif").classList.remove("active");
       }
-    } else this.loadToVictory(top);
+    } else {
+      if (
+        !document
+          .getElementById("load-message-gif")
+          .classList.contains("active")
+      )
+        document.getElementById("load-message-gif").classList.add("active");
+      this.loadToVictory(top);
+    }
   }
   shouldComponentUpdate(nextProps, nextState) {
     if (nextState.scrollTop !== this.state.scrollTop) {
@@ -136,19 +152,19 @@ class Dialog extends React.Component {
     } else {
       active = true;
     }
-    if (!this.state.activePage && active && !!this.props.unRead.length) {
+    if (!this.activePage && active && !!this.props.unRead.length) {
       if (waitActiveUser) clearTimeout(waitActiveUser);
 
       this.readMessages();
-      this.setState({ activePage: true });
+      this.activePage = true;
 
       waitActiveUser = setTimeout(() => {
-        this.setState({ activePage: false });
+        this.activePage = false;
       }, 3000);
     }
   }
   blurPage() {
-    this.setState({ activePage: false });
+    this.activePage = false;
   }
   componentDidMount() {
     window.addEventListener("blur", this.blurPage.bind(this));
@@ -173,13 +189,16 @@ class Dialog extends React.Component {
         prevProps.dialog.messages[prevProps.dialog.messages.length - 1].user
           ._id === this.props.user._id)
     ) {
-      if (this.state.activePage) {
+      if (this.activePage) {
         this.readMessages();
       }
 
       this.scrollToBottom();
 
-      if (this.state.showFabToBottom) this.setState({ showFabToBottom: false });
+      if (
+        document.getElementById("scroll-to-bottom").classList.contains("active")
+      )
+        document.getElementById("scroll-to-bottom").classList.remove("active");
     }
 
     if (
@@ -197,11 +216,24 @@ class Dialog extends React.Component {
     window.removeEventListener("blur", this.blurPage.bind(this));
     window.removeEventListener("mousemove", this.focusPage.bind(this));
   }
-  loadMessages() {
-    this.props.dialogsActions.loadMessages(
-      { dialogId: this.props.dialog._id },
-      this.props.user.apiToken
-    );
+  loadMessages(controlGif = true) {
+    if (controlGif) {
+      document.getElementById("load-message-gif").classList.add("active");
+    }
+    return new Promise((resolve, reject) => {
+      this.props.dialogsActions
+        .loadMessages(
+          { dialogId: this.props.dialog._id },
+          this.props.user.apiToken
+        )
+        .then(() => {
+          if (controlGif)
+            document
+              .getElementById("load-message-gif")
+              .classList.remove("active");
+          resolve();
+        });
+    });
   }
   //Отправка ввода
   typing(newText, prevText) {
@@ -229,36 +261,44 @@ class Dialog extends React.Component {
   }
   //Отправка сообщения
   sendMessage(text) {
-    if (
-      /\S/.test(text) ||
-      !!this.state.images.length ||
-      !!this.state.files.length ||
-      !!this.state.sounds.length
-    ) {
-      let drafts = { ...JSON.parse(localStorage.getItem("drafts")) };
-      delete drafts["draft-" + this.props.dialog._id];
-      localStorage.setItem("drafts", JSON.stringify(drafts));
-      this.props.dialogsActions.sendMessage(
-        {
-          text: text,
-          userId: this.props.dialog.user._id,
-          images: this.state.images,
-          files: this.state.files,
-          sounds: this.state.sounds,
-          recentMessage: this.state.recentMessage,
-          dialogId: this.props.dialog._id,
-        },
-        this.props.user.apiToken
-      );
+    return new Promise((resolve, reject) => {
+      if (
+        /\S/.test(text) ||
+        !!this.state.images.length ||
+        !!this.state.files.length ||
+        !!this.state.sounds.length ||
+        !!this.state.voiceSound
+      ) {
+        let drafts = { ...JSON.parse(localStorage.getItem("drafts")) };
+        delete drafts["draft-" + this.props.dialog._id];
+        localStorage.setItem("drafts", JSON.stringify(drafts));
+        this.props.dialogsActions.sendMessage(
+          {
+            text: !this.state.isRecord ? text : "",
+            userId: this.props.dialog.user._id,
+            images: this.state.images,
+            files: this.state.files,
+            voiceSound: this.state.voiceSound,
+            sounds: this.state.sounds,
+            recentMessage: this.state.recentMessage,
+            dialogId: this.props.dialog._id,
+          },
+          this.props.user.apiToken
+        );
 
-      this.setState({
-        images: [],
-        sounds: [],
-        files: [],
-        recentMessage: false,
-      });
-      this.inputPanel.current.setText("");
-    }
+        this.setState({
+          images: [],
+          sounds: [],
+          files: [],
+          voiceSound: false,
+          isRecord: false,
+          recentMessage: false,
+        });
+        if (!this.state.isRecord) this.inputPanel.current.setText("");
+      }
+      console.log("SendMess");
+      resolve();
+    });
   }
   //Повторная отправка ошибочного сообщения
   retrySendMessage(message) {
@@ -289,7 +329,154 @@ class Dialog extends React.Component {
       );
     }, 100);
   }
+  addVoiceSound(data, duration, recordLine) {
+    let voiceSound = false;
+    if (data)
+      voiceSound = {
+        path: URL.createObjectURL(data),
+        file: data,
+        name: "voiceSound",
+        duration: duration,
+        recordLine: recordLine,
+        type: "mp3",
+        size: data.size,
+      };
+    this.setState({ voiceSound });
+  }
+  addFile(e, paste = false, drag = false) {
+    let sounds = [...this.state.sounds];
+    let files = [...this.state.files];
+    let images = [...this.state.images];
+
+    let counter = sounds.length + files.length + images.length;
+
+    if (!paste && !drag) {
+      for (let i = 0; i < e.target.files.length; i++) {
+        if (counter > 9) {
+          toast.error("Max upload 10 attachments!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          break;
+        }
+
+        let file = {
+          path: (window.URL || window.webkitURL).createObjectURL(
+            new Blob([e.target.files[i]], { type: e.target.files[i].type })
+          ),
+          file: e.target.files[i],
+          name: e.target.files[i].name,
+          type: e.target.files[i].name.split(".").pop(),
+          size: e.target.files[i].size / 1000,
+        };
+
+        if (
+          file.type === "png" ||
+          file.type === "jpg" ||
+          file.type === "jpeg" ||
+          file.type === "gif"
+        ) {
+          file.id = images.length;
+          images.push(file);
+        }
+
+        if (
+          file.type === "txt" ||
+          file.type === "pdf" ||
+          file.type === "docx" ||
+          file.type === "zip" ||
+          file.type === "doc"
+        ) {
+          file.id = files.length;
+          files.push(file);
+        }
+
+        if (file.type === "mp3") {
+          file.id = sounds.length;
+          sounds.push(file);
+          convertBlobToAudioBuffer(file.path, (buffer) => {
+            file.buffer = buffer;
+          });
+        }
+
+        counter++;
+      }
+
+      e.target.value = null;
+    }
+
+    if (paste) {
+      if (counter > 9) {
+        toast.error("Max upload 10 attachment!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else {
+        let file = {
+          id: images.length,
+          path: (window.URL || window.webkitURL).createObjectURL(
+            new Blob([e], { type: e.type })
+          ),
+          file: e,
+          name: e.name,
+          type: e.name.split(".").pop(),
+        };
+
+        images.push(file);
+      }
+    }
+
+    if (drag) {
+      for (let i = 0; i < e.length; i++) {
+        if (counter > 9) {
+          toast.error("Max upload 10 attachment!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          break;
+        }
+
+        let file = {
+          path: (window.URL || window.webkitURL).createObjectURL(
+            new Blob([e[i]], { type: e[i].type })
+          ),
+          file: e[i],
+          name: e[i].name,
+          type: e[i].name.split(".").pop(),
+          size: e[i].size / 1000,
+        };
+
+        if (
+          file.type === "png" ||
+          file.type === "jpg" ||
+          file.type === "jpeg" ||
+          file.type === "gif"
+        ) {
+          file.id = images.length;
+          images.push(file);
+        }
+
+        if (
+          file.type === "txt" ||
+          file.type === "pdf" ||
+          file.type === "docx" ||
+          file.type === "zip" ||
+          file.type === "doc"
+        ) {
+          file.id = files.length;
+          files.push(file);
+        }
+
+        if (file.type === "mp3") {
+          file.id = sounds.length;
+          sounds.push(file);
+        }
+
+        counter++;
+      }
+    }
+
+    this.setState({ sounds, files, images });
+  }
   render() {
+    console.log(this.state.sounds);
     return (
       <>
         <div className="message-container  container-fluid">
@@ -307,15 +494,17 @@ class Dialog extends React.Component {
           >
             <img
               src={LoadGif}
-              className={`load-message ${
-                this.props.dialog.isLoading ? "active" : ""
-              }`}
+              id="load-message-gif"
+              className="load-message"
               alt=""
             />
             <div className="mt-auto"></div>
 
             {!!this.props.dialog.messages.length &&
               this.props.dialog.messages.map((message, index, messages) => {
+                let prevMessage = messages[index - 1]
+                  ? messages[index - 1]
+                  : false;
                 return (
                   <Message
                     key={message._id}
@@ -328,7 +517,7 @@ class Dialog extends React.Component {
                     retrySendMessage={this.retrySendMessage.bind(this)}
                     setRecentMessage={this.setRecentMessage.bind(this)}
                     deleteLocalMessage={this.deleteLocalMessage.bind(this)}
-                    messages={messages}
+                    prevMessage={prevMessage}
                     message={message}
                   ></Message>
                 );
@@ -354,7 +543,6 @@ class Dialog extends React.Component {
             )}
           </Scrollbars>
           <ScrollBottom
-            showFabToBottom={this.state.showFabToBottom}
             scrollToBottom={() => {
               this.scrollToBottom();
             }}
@@ -372,20 +560,19 @@ class Dialog extends React.Component {
                   recordStart={() => {
                     this.setState({ isRecord: true });
                   }}
-                  sendMessage={(text) => {
-                    this.sendMessage(text);
-                  }}
-                  typing={(newText, prevText) => {
-                    this.typing(newText, prevText);
-                  }}
+                  addFile={this.addFile.bind(this)}
+                  sendMessage={this.sendMessage.bind(this)}
+                  typing={this.typing.bind(this)}
                 />
               )}
               {this.state.isRecord && (
                 <>
                   <PanelRecord
+                    addVoiceSound={this.addVoiceSound.bind(this)}
                     stopRec={() => {
                       this.setState({ isRecord: false });
                     }}
+                    sendMessage={this.sendMessage.bind(this)}
                   />
                 </>
               )}
