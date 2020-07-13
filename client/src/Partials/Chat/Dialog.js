@@ -12,7 +12,7 @@ import * as dialogsActions from "../../redux/actions/dialogs";
 import { bindActionCreators } from "redux";
 import ArrowDown from "../../img/arrowDownperple.svg";
 import LoadGif from "../../img/load.gif";
-import { convertBlobToAudioBuffer } from "../../controllers/FunctionsController";
+import { getAudioBufferData } from "../../controllers/FunctionsController";
 
 // Internet Explorer 6-11
 const isIE = /*@cc_on!@*/ false || !!document.documentMode;
@@ -296,7 +296,6 @@ class Dialog extends React.Component {
         });
         if (!this.state.isRecord) this.inputPanel.current.setText("");
       }
-      console.log("SendMess");
       resolve();
     });
   }
@@ -329,29 +328,33 @@ class Dialog extends React.Component {
       );
     }, 100);
   }
-  addVoiceSound(data, duration, recordLine) {
+  async addVoiceSound(data, duration, recordLine) {
     let voiceSound = false;
-    if (data)
+
+    if (data) {
+      let audioUrl = URL.createObjectURL(data),
+        audioData = await getAudioBufferData(audioUrl);
       voiceSound = {
         path: URL.createObjectURL(data),
         file: data,
-        name: "voiceSound",
-        duration: duration,
-        recordLine: recordLine,
+        name: "Аудиозапись",
+        duration: audioData.duration,
+        recordLine: audioData.recordLine,
         type: "mp3",
         size: data.size,
       };
+    }
     this.setState({ voiceSound });
+    return Promise.resolve();
   }
-  addFile(e, paste = false, drag = false) {
+  async addFile(e, paste = false, drag = false) {
     let sounds = [...this.state.sounds];
     let files = [...this.state.files];
     let images = [...this.state.images];
-
+    let InputFile = document.getElementById("uploadFile");
     let counter = sounds.length + files.length + images.length;
-
     if (!paste && !drag) {
-      for (let i = 0; i < e.target.files.length; i++) {
+      for (let i = 0; i < InputFile.files.length; i++) {
         if (counter > 9) {
           toast.error("Max upload 10 attachments!", {
             position: toast.POSITION.TOP_CENTER,
@@ -361,12 +364,12 @@ class Dialog extends React.Component {
 
         let file = {
           path: (window.URL || window.webkitURL).createObjectURL(
-            new Blob([e.target.files[i]], { type: e.target.files[i].type })
+            new Blob([InputFile.files[i]], { type: InputFile.files[i].type })
           ),
-          file: e.target.files[i],
-          name: e.target.files[i].name,
-          type: e.target.files[i].name.split(".").pop(),
-          size: e.target.files[i].size / 1000,
+          file: InputFile.files[i],
+          name: InputFile.files[i].name,
+          type: InputFile.files[i].name.split(".").pop(),
+          size: InputFile.files[i].size / 1000,
         };
 
         if (
@@ -392,16 +395,16 @@ class Dialog extends React.Component {
 
         if (file.type === "mp3") {
           file.id = sounds.length;
-          sounds.push(file);
-          convertBlobToAudioBuffer(file.path, (buffer) => {
-            file.buffer = buffer;
-          });
+          let audioData = await getAudioBufferData(file.path);
+          let duration = audioData.duration;
+          let recordLine = audioData.recordLine;
+          sounds.push({ ...file, duration, recordLine });
         }
 
         counter++;
       }
 
-      e.target.value = null;
+      InputFile.value = null;
     }
 
     if (paste) {
@@ -476,7 +479,6 @@ class Dialog extends React.Component {
     this.setState({ sounds, files, images });
   }
   render() {
-    console.log(this.state.sounds);
     return (
       <>
         <div className="message-container  container-fluid">

@@ -6,6 +6,7 @@ import { ReactComponent as PlayArrowIcon } from "../../img/play.svg";
 import { ReactComponent as PauseIcon } from "../../img/pauseRecord.svg";
 import { randomInteger, padZero } from "../../controllers/FunctionsController";
 import loading from "../../img/loadAudio.gif";
+import { renderCanvas } from "../../controllers/FunctionsController";
 
 let audioDurationInterval = false;
 
@@ -16,18 +17,32 @@ class AudioX extends React.Component {
     randomId: randomInteger(0, 10000000),
   };
   componentDidMount() {
-    let thisAudio = document.getElementsByName(this.props.src);
+    let thisAudio = document.getElementsByName(this.props.sound.path);
     for (let audio of thisAudio) {
       audio.volume = 0.5;
-      this.setState({ audio });
+      this.setState({
+        audio,
+        duration:
+          padZero(parseInt(this.props.sound.duration / 60)) +
+          ":" +
+          padZero(parseInt(this.props.sound.duration % 60)),
+      });
       break;
     }
 
     let audio = document.getElementById(this.state.randomId);
-    audio.onpause = () => {
+    audio.onpause = (e) => {
       audio.parentElement.className = "message-sound";
+      console.log(Number(e.target.currentTime).toFixed(0));
+      console.log(this.props.sound.duration);
+      if (
+        Math.ceil(e.target.currentTime) === Math.ceil(this.props.sound.duration)
+      )
+        soundLine.style.maxWidth = "100%";
     };
-
+    let soundLine = document.getElementById(
+      "soundLine-" + this.props.sound.path
+    );
     audio.onplay = () => {
       audio.parentElement.className = "message-sound active";
     };
@@ -38,35 +53,24 @@ class AudioX extends React.Component {
           ":" +
           padZero(parseInt(e.target.currentTime % 60)),
       });
-    };
-    audio.onloadedmetadata = () => {
-      this.getDuration();
-    };
-  }
-  getDuration() {
-    function padZero(v) {
-      return v < 10 ? "0" + v : v;
-    }
-    let t = 0;
-    if (this.props.duration) {
-      t = this.props.duration;
-    } else {
-      let thisAudio = document.getElementsByName(this.props.src);
 
-      for (let audio of thisAudio) {
-        t = audio.duration;
-        break;
-      }
-    }
-    this.setState({
-      duration: padZero(parseInt(t / 60)) + ":" + padZero(parseInt(t % 60)),
-    });
+      soundLine.style.maxWidth =
+        (e.target.currentTime / this.props.sound.duration) * 100 + "%";
+    };
+    renderCanvas(
+      false,
+      "canvas-" + this.props.sound.path,
+      this.props.sound.recordLine,
+      true,
+      "#6C6C6C"
+    );
   }
   componentWillUnmount() {
     if (audioDurationInterval) this.stopTimer();
 
-    if (document.getElementsByName(this.props.src)) {
-      document.getElementsByName(this.props.src).className = "message-sound";
+    if (document.getElementsByName(this.props.sound.path)) {
+      document.getElementsByName(this.props.sound.path).className =
+        "message-sound";
       if (this.state.audio) this.state.audio.pause();
     }
   }
@@ -84,7 +88,7 @@ class AudioX extends React.Component {
         audio.pause();
       }
 
-      let thisAudio = document.getElementsByName(this.props.src);
+      let thisAudio = document.getElementsByName(this.props.sound.path);
 
       for (let audio of thisAudio) {
         audio.play();
@@ -100,13 +104,15 @@ class AudioX extends React.Component {
     let position = (e.nativeEvent.layerX * 100) / this.rangeBlock.clientWidth;
     let time = (this.state.audio.duration / 100) * position;
 
-    let thisAudio = document.getElementsByName(this.props.src);
+    let thisAudio = document.getElementsByName(this.props.sound.path);
 
     for (let audio of thisAudio) {
       audio.currentTime = time;
     }
 
-    let thisRange = document.getElementsByName(this.props.src + "-range");
+    let thisRange = document.getElementsByName(
+      this.props.sound.path + "-range"
+    );
 
     for (let range of thisRange) {
       range.style.width =
@@ -116,7 +122,9 @@ class AudioX extends React.Component {
 
   startTimer() {
     audioDurationInterval = setInterval(() => {
-      let thisRange = document.getElementsByName(this.props.src + "-range");
+      let thisRange = document.getElementsByName(
+        this.props.sound.path + "-range"
+      );
 
       for (let range of thisRange) {
         range.style.width =
@@ -129,31 +137,14 @@ class AudioX extends React.Component {
   stopTimer() {
     clearInterval(audioDurationInterval);
   }
-  getfrequencydata(audio) {
-    audio.load();
-    audio.play();
 
-    const ctx = new AudioContext();
-    const audioSrc = ctx.createMediaElementSource(audio);
-    const analyser = ctx.createAnalyser();
-
-    audioSrc.connect(analyser);
-    analyser.connect(ctx.destination);
-
-    analyser.fftSize = 256;
-    const bufferLength = analyser.frequencyBinCount;
-    const frequencyData = new Uint8Array(bufferLength);
-
-    setInterval(() => {
-      analyser.getByteFrequencyData(frequencyData);
-      console.log(frequencyData);
-    }, 1000);
-  }
   viewDurationAudio(e) {
     let position = (e.nativeEvent.layerX * 100) / this.rangeBlock.clientWidth;
     let time = (this.state.audio.duration / 100) * position;
 
-    let thisRange = document.getElementsByName(this.props.src + "-range");
+    let thisRange = document.getElementsByName(
+      this.props.sound.path + "-range"
+    );
 
     for (let range of thisRange) {
       range.style.width = (100 * time) / this.state.audio.duration + "%";
@@ -165,7 +156,7 @@ class AudioX extends React.Component {
 
     e.stopPropagation();
 
-    let thisAudio = document.getElementsByName(this.props.src);
+    let thisAudio = document.getElementsByName(this.props.sound.path);
 
     for (let audio of thisAudio) {
       audio.pause();
@@ -182,8 +173,8 @@ class AudioX extends React.Component {
             preload="metadata"
             className={`message-sounds-element`}
             id={this.state.randomId}
-            name={this.props.src}
-            src={this.props.src}
+            name={this.props.sound.path}
+            src={this.props.sound.path}
           />
           <span
             className="play"
@@ -204,9 +195,19 @@ class AudioX extends React.Component {
           {!this.props.isLoading && (
             <>
               <div className="message-sound-info">
-                <p className="message-sounds-name">{this.props.fileName}</p>
+                <div className="canvas-wrapper">
+                  <div
+                    className="soundLine"
+                    id={`soundLine-${this.props.sound.path}`}
+                  ></div>
+                  <canvas
+                    className="sound-canvas"
+                    id={`canvas-${this.props.sound.path}`}
+                  ></canvas>
+                </div>
+                <p className="message-sounds-name">{this.props.sound.name}</p>
                 <p className="message-sounds-duration">{this.state.duration}</p>
-              </div>             
+              </div>
             </>
           )}
         </div>

@@ -233,7 +233,7 @@ module.exports = {
                 ".mp3",
               name: "Аудиозапись",
               duration: voiceSoundDuration,
-              recordLine: voiceSoundRecordLine,
+              recordLine: voiceSoundRecordLine.split(","),
             };
           }
           // else {
@@ -298,6 +298,7 @@ module.exports = {
                 if (err) return res.status(500).send(err);
               }
             );
+            let dataSound = JSON.parse(req.body["soundsData" + i]);
 
             sounds.push({
               path:
@@ -309,6 +310,8 @@ module.exports = {
                 "." +
                 req.files["sounds" + i].name.split(".").pop(),
               name: req.files["sounds" + i].name,
+              duration: dataSound.duration,
+              recordLine: dataSound.recordLine,
             });
             nowCount++;
           } else {

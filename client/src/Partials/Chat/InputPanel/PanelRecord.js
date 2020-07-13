@@ -6,6 +6,7 @@ import stopRecord from "../../../img/stopRecord.svg";
 import RecordPlay from "../../../img/play.svg";
 import send from "../../../img/send.svg";
 import LoadGif from "../../../img/load.gif";
+import { renderCanvas } from "../../../controllers/FunctionsController";
 // Internet Explorer 6-11
 const isIE = /*@cc_on!@*/ false || !!document.documentMode;
 // Edge 20+
@@ -66,16 +67,15 @@ class PanelRecord extends React.Component {
     });
   }
   recordStop() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       let onRecordingReady = (e) => {
         if (this.audio) this.audio.src = URL.createObjectURL(e.data);
-        this.props.addVoiceSound(
-          e.data,
-          this.state.countdown,
-          this.state.RecordLine
-        );
-        this.setState({ isRecordPause: true });
-        resolve();
+        this.props
+          .addVoiceSound(e.data, this.state.countdown, this.state.RecordLine)
+          .then(() => {
+            this.setState({ isRecordPause: true });
+            resolve();
+          });
       };
       m.addEventListener("dataavailable", onRecordingReady);
       if (m) m.stop();
@@ -92,81 +92,19 @@ class PanelRecord extends React.Component {
       if (processor) processor.disconnect(ctx.destination);
       processor = false;
       ctx = false;
-      this.renderCanvas(false, "voice-canvas", this.state.RecordLine, true);
+      renderCanvas(
+        false,
+        "voice-canvas",
+        this.state.RecordLine,
+        true,
+        "#9933ff"
+      );
     });
   }
   componentWillUnmount() {
     this.recordStop();
   }
-  renderCanvas(ref, id, RecordLine, isAdaptive) {
-    let canvas;
-    let paddingStick = 2,
-      widthStick = 1; //Ширина полосок
-    if (!!ref) canvas = ref;
-    else canvas = document.getElementById(id);
-    if (canvas) {
-      let ctxCanvas = canvas.getContext("2d");
-      canvas.width = canvas.getBoundingClientRect().width - 88; //Ширина минус паддинги
-      canvas.height = canvas.getBoundingClientRect().height;
-      ctxCanvas.clearRect(0, 0, canvas.width, canvas.height);
-      ctxCanvas.fillStyle = "#9933ff";
-      RecordLine.slice().reverse();
-      if (isAdaptive) {
-        //Удалять каждый n элемент при выводе полного сообщения, если не умещается в канвас
-        let countAllSrick = canvas.width / (widthStick + paddingStick); //Всего допустимо полосок
-        let difference = Math.abs(RecordLine.length - countAllSrick);
-        if (RecordLine.length > countAllSrick) {
-          //Вычиследние с какой периодичностью удалять
-          let everyIndex = false;
-          everyIndex = Math.round(RecordLine.length / difference);
-          if (RecordLine.length > countAllSrick)
-            RecordLine = RecordLine.filter((item, index, array) => {
-              return !(
-                everyIndex &&
-                index % everyIndex == 0 &&
-                array.length > countAllSrick
-              );
-            });
-        }
-        if (RecordLine.length < countAllSrick) {
-          let countduple = Math.ceil(1 / (RecordLine.length / difference));
-          for (
-            let i = 0;
-            i < RecordLine.length && RecordLine.length < countAllSrick;
-            i++
-          ) {
-            let duplearray = [];
-            for (
-              let y = 0;
-              y < countduple &&
-              RecordLine.length + duplearray.length < countAllSrick;
-              y++
-            )
-              duplearray[y] = RecordLine[i];
-            RecordLine = [
-              ...RecordLine.slice(0, i),
-              ...duplearray,
-              ...RecordLine.slice(i),
-            ];
-            i += duplearray.length;
-          }
-        }
-      }
-      RecordLine.map((item, index) => {
-        let height = item / 180;
-        if (height > 1) height = canvas.height - 9;
-        else if (height === 0) height = 2;
-        else height = (canvas.height - 9) * height;
-        ctxCanvas.fillRect(
-          canvas.width -
-            (RecordLine.length - index) * (paddingStick + widthStick),
-          canvas.height / 2 - height / 2,
-          widthStick,
-          height
-        );
-      });
-    }
-  }
+
   renderAudioVolume(stream) {
     source = ctx.createMediaStreamSource(stream);
     analyser = ctx.createAnalyser();
@@ -189,7 +127,13 @@ class PanelRecord extends React.Component {
         this.setState({
           RecordLine: [...this.state.RecordLine, volumes[2].val],
         });
-        this.renderCanvas(false, "voice-canvas", this.state.RecordLine);
+        renderCanvas(
+          false,
+          "voice-canvas",
+          this.state.RecordLine,
+          false,
+          "#9933ff"
+        );
       }
     };
   }
@@ -204,7 +148,6 @@ class PanelRecord extends React.Component {
     window.removeEventListener("resize", this.updateDimensions);
   }
   render() {
-    console.log(this.state.RecordLine);
     return (
       <>
         <img

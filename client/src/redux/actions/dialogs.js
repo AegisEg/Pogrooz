@@ -14,10 +14,7 @@ import {
   DIALOGS_PRELOAD,
 } from "../constants";
 import store from "../store";
-import {
-  randomInteger,
-  getDuration,
-} from "../../controllers/FunctionsController";
+import { randomInteger } from "../../controllers/FunctionsController";
 import SocketController from "../../controllers/SocketController";
 import { toast } from "react-toastify";
 import api from "../../config/api";
@@ -315,6 +312,13 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
 
   for (let i = 0; i < message.sounds.length; i++) {
     formData.append("sounds" + i, message.sounds[i].file);
+    formData.append(
+      "soundsData" + i,
+      JSON.stringify({
+        duration: message.sounds[i].duration,
+        recordLine: message.sounds[i].recordLine,
+      })
+    );    
     sounds.push(message.sounds[i]);
   }
   if (message.voiceSound) {
@@ -338,7 +342,6 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
     createdAt: Date.now(),
     type: "message",
   };
-
   dispatch({
     type: DIALOGS_ADD_MESSAGE,
     payload: { message: localMessage, dialogId: message.dialogId },

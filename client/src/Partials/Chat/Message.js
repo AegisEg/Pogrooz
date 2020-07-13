@@ -53,7 +53,7 @@ class Message extends React.Component {
       !this.props.prevMessage ||
       moreHour;
     let isShowMoreElement = (isFirst || isHistoryDate) && !this.props.isRecent;
-    console.log("dasdasd");
+
     return (
       <>
         {isHistoryDate && (
@@ -95,10 +95,19 @@ class Message extends React.Component {
               {this.props.message.voiceSound && (
                 <Audio
                   duration={this.props.message.voiceSound.duration}
-                  src={this.props.message.voiceSound.path}
+                  sound={this.props.message.voiceSound}
                   isLoading={this.props.message.isLoading}
                 />
               )}
+              {this.props.message.sounds.map((item, index) => {
+                return (
+                  <Audio
+                    key={index}
+                    sound={item}
+                  />
+                );
+              })}
+
               {this.props.message.recentMessage && (
                 <RecentMessage
                   scrollTo={(top) => {
