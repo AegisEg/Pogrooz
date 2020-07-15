@@ -3961,7 +3961,9 @@ table {
 .dialog-user-name {
   font-size: 14px;
 }
-
+.messages-block .dialog-content {
+  padding-right: 30px;
+}
 .dialog .dialog-content,
 .messages-block .dialog-content {
   overflow: hidden;
@@ -4004,6 +4006,10 @@ table {
   .messages-block .avatar-message {
     max-width: 76px;
   }
+}
+.messages-block .avatar-message {
+  flex-basis: 0;
+  flex-grow: 1;
 }
 .user-avatar-image {
   width: 100%;
@@ -4070,25 +4076,16 @@ table {
 }
 .message-container {
   display: flex;
-  flex-wrap: wrap;
-  position: relative;
-  flex: 1;
-  flex-direction: row;
-  height: calc(100vh - 242px);
-  overflow-y: hidden;
-  overflow-x: hidden;
-  align-content: end;
-  margin-left: -28px !important;
-  margin-right: -28px !important;
+  width: 100%;
+  height: calc(100vh - 174px);
+  flex-direction: column;
 }
 .messages-block {
   position: relative;
   display: flex;
   width: 100%;
-  margin-left: -15px;
-  margin-right: -15px;
-  padding-left: 28px !important;
-  padding-right: 28px !important;
+  padding-left: 23px !important;
+  padding-right: 23px !important;
 }
 .messages-block.padding {
   padding-top: 10px;
@@ -4149,24 +4146,77 @@ table {
 .messages-block {
   cursor: pointer;
 }
-.messages-block.selected,
-.messages-block:hover {
+.messages-block.selected {
   background-color: #ffe17654;
 }
 .messages-block:hover .reply-message {
   opacity: 1;
   transition: all 0.3s;
 }
+.progress-bar {
+  width: 150px;
+  background-color: #e6e6e6;
+  border-radius: 5px;
+}
+.progress-bar .barLine {
+  height: 15px;
+  border-radius: 2px 0 0 2px;
+  transition: width 100ms linear;
+  background-position-x: 0;
+  background-position-y: 0;
+  animation: uploadProgressAnimation 1s linear infinite;
+}
+@keyframes uploadProgressAnimation {
+  0% {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 28px;
+  }
+}
+.loading-area .attach-item {
+  display: flex;
+  align-items: center;
+}
+.attach-item .file-name {
+  padding: 0 5px;
+  max-width: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.attach-item .attachDelete {
+  cursor: pointer;
+}
+.attath-area .attach-item {
+  position: relative;
+  width: max-content;
+  display: inline-block;
+}
+.attath-area .typeImg {
+  width: 20px;
+}
+.attath-area .attachDelete {
+  position: absolute;
+  width: 15px;
+  top: 0;
+  right: 0;
+}
+.attach-item img.image-message {
+  border-radius: 5px;
+  height: 60px;
+  background-color: #c4c4c4;
+}
 .reply-message,
 .error-retry {
   position: absolute;
   display: flex;
   align-items: center;
-  right: 9px;
-  top: 0;
-  bottom: 0;
-  margin: auto;
+  right: 15px;
+  top: 20px;
   cursor: pointer;
+  height: 30px;
+  width: 30px;
 }
 .error-retry .action-menu {
   opacity: 0;
@@ -4206,10 +4256,10 @@ table {
     width: 20px;
   }
 }
-.message-content {
-  padding-right: 38px !important;
+.message-content,
+.head-message {
+  padding: 0 9px;
 }
-
 .head-message {
   display: flex;
 }
@@ -4272,18 +4322,7 @@ table {
   transform: translateY(70px) !important;
   transition: transform 100ms ease-in !important;
 }
-.dialog-wrap {
-  height: max-content;
-  max-height: 100%;
-  display: block;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  transition: height 0.2s;
-}
+
 .dialog-wrap > div {
   padding-top: 50px;
   padding-bottom: 20px;
@@ -4392,10 +4431,7 @@ table {
 .message-panel {
   border-top: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
-  min-height: 68px;
   background: #f9f8f8;
-  margin-left: -28px !important;
-  margin-right: -28px !important;
   padding: 7px 28px !important;
 }
 
@@ -4425,7 +4461,8 @@ table {
   display: none;
 }
 .recentMessage,
-.input-chat {
+.input-chat,
+.filesAttach {
   margin: 0 40px;
 }
 .sendAndMicro,
@@ -4449,7 +4486,7 @@ table {
 }
 .input-chat textarea {
   width: 100%;
-  padding: 13px 80px 13px 22px;
+  padding: 13px 100px 13px 22px;
   font-size: 14px;
   color: #000;
   max-height: 48px;
@@ -4575,6 +4612,8 @@ table {
   height: 40px;
   background-color: #9933ff;
   opacity: 0.3;
+  z-index: 2;
+  pointer-events: none;
 }
 .message-sound .canvas-wrapper {
   position: relative;
@@ -4588,7 +4627,7 @@ table {
   display: inline-block;
 }
 .message-sound .sound-canvas {
-  height: 40px;
+  height: 30px;
 }
 .message-sound .message-sounds-name {
   width: 100%;
@@ -4624,4 +4663,54 @@ table {
   left: 0;
   width: 0%;
   background-color: #008ff7;
+}
+.message-content .message-images {
+  max-width: 450px;
+  margin: 1px -5px -5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5px;
+}
+.message-content .message-images .image:first-child {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+.message-content .message-images .image:not(:first-child):not(:last-child) {
+  grid-column-start: 3;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+.message-content .message-images .image:last-child {
+  grid-column-start: 3;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+.message-content .message-images img {
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  background-color: #eff4f8;
+  position: relative;
+}
+.message-files .message-file img {
+  margin-right: 10px;
+}
+.message-files .message-file .file-info .name {
+  font-size: 14px;
+  line-height: 16px;
+  color: #9509ef;
+}
+.message-files .message-file .file-info .size {
+  font-size: 14px;
+  line-height: 16px;
+  color: #6c6c6c;
+}
+.message-files .message-file {
+  display: flex;
+  padding: 10px 0;
 }

@@ -299,28 +299,10 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
   let files = [];
   let sounds = [];
   let voiceSound = false;
-  for (let i = 0; i < message.images.length; i++) {
-    formData.append("images" + i, message.images[i].file);
-    message.images[i].file = false;
-    images.push(message.images[i]);
-  }
 
-  for (let i = 0; i < message.files.length; i++) {
-    formData.append("files" + i, message.files[i].file);
-    files.push(message.files[i]);
-  }
-
-  for (let i = 0; i < message.sounds.length; i++) {
-    formData.append("sounds" + i, message.sounds[i].file);
-    formData.append(
-      "soundsData" + i,
-      JSON.stringify({
-        duration: message.sounds[i].duration,
-        recordLine: message.sounds[i].recordLine,
-      })
-    );    
-    sounds.push(message.sounds[i]);
-  }
+  formData.append("images", JSON.stringify(message.images));
+  formData.append("files", JSON.stringify(message.files));
+  formData.append("sounds", JSON.stringify(message.sounds));
   if (message.voiceSound) {
     formData.append("voiceSound", message.voiceSound.file);
     formData.append("voiceSoundDuration", message.voiceSound.duration);
@@ -331,9 +313,9 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
     _id,
     user: store.getState().user,
     text: message.text,
-    images,
-    sounds,
-    files,
+    images: message.images,
+    sounds: message.sounds,
+    files: message.files,
     voiceSound: voiceSound,
     isLoading: true,
     isError: false,
@@ -354,7 +336,6 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
   formData.append("dialogId", message.dialogId);
   formData.append("userId", message.userId);
   formData.append("socketId", SocketController.getSocketId());
-
   fetch(`${api.urlApi}/api/dialog/send-message`, {
     method: "post",
     headers: {

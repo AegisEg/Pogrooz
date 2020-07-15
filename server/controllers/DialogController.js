@@ -180,6 +180,39 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  loadFile: (req, res, next) => {
+    const { user } = res.locals;
+    if (req.files["file"].size / 1000 <= 10000) {
+      let fileName = randomString(24);
+      let filePath =
+        "./uploads/" +
+        user._id +
+        "/" +
+        fileName +
+        "." +
+        req.files["file"].name.split(".").pop();
+      req.files["file"].mv(filePath, function(err) {
+        if (err) return res.status(500).send(err);
+      });
+      return res.json({
+        path:
+          process.env.API_URL +
+          "/media/" +
+          user._id +
+          "/" +
+          fileName +
+          "." +
+          req.files["file"].name.split(".").pop(),
+        name: req.files["file"].name,
+        size: req.files["file"].size,
+      });
+    } else {
+      let err = {};
+      err.param = `all`;
+      err.msg = `max_size`;
+      return res.status(401).json({ error: true, errors: [err] });
+    }
+  },
   sendMessage: async (req, res, next) => {
     const { user } = res.locals;
     let {
@@ -190,7 +223,6 @@ module.exports = {
       voiceSoundDuration,
       voiceSoundRecordLine,
     } = req.body;
-
     try {
       let query =
         userId == user._id ? { $eq: [user._id] } : { $all: [user._id, userId] };
@@ -212,10 +244,7 @@ module.exports = {
       let sounds = [];
       let files = [];
       let voiceSound = false;
-
       if (req.files) {
-        let maxCount = 10;
-        let nowCount = 1;
         if (req.files["voiceSound"]) {
           let fileName = randomString(24);
           if (req.files["voiceSound"].size / 1000 <= 10000) {
@@ -243,123 +272,41 @@ module.exports = {
           //   return res.status(401).json({ error: true, errors: [err] });
           // }
         }
-        for (let i = 0; i < 10; i++) {
-          let fileName = randomString(24);
+      }
 
-          if (!req.files["images" + i] || nowCount >= maxCount) break;
+      let maxCount = 10;
+      let nowCount = 1;
+      req.body["images"] = JSON.parse(req.body["images"]);
+      for (let i = 0; i < 10; i++) {
+        if (!req.body["images"][i] || nowCount >= maxCount) break;
+        images.push({
+          path: req.body["images"][i].path,
+          name: req.body["images"][i].name,
+        });
+        nowCount++;
+      }
+      req.body["sounds"] = JSON.parse(req.body["sounds"]);
+      for (let i = 0; i < 10; i++) {
+        if (!req.body["sounds"][i] || nowCount >= maxCount) break;
+        console.log(req.body["sounds"].length);
+        sounds.push({
+          path: req.body["sounds"][i].path,
+          name: req.body["sounds"][i].name,
+          duration: req.body["sounds"][i].duration,
+          recordLine: req.body["sounds"][i].recordLine,
+        });
+        nowCount++;
+      }
+      req.body["files"] = JSON.parse(req.body["files"]);
+      for (let i = 0; i < 10; i++) {
+        if (!req.body["files"][i] || nowCount >= maxCount) break;
 
-          if (req.files["images" + i].size / 1000 <= 10000) {
-            req.files["images" + i].mv(
-              "./uploads/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["images" + i].name.split(".").pop(),
-              function(err) {
-                if (err) return res.status(500).send(err);
-              }
-            );
-
-            images.push({
-              path:
-                process.env.API_URL +
-                "/media/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["images" + i].name.split(".").pop(),
-              name: req.files["images" + i].name,
-            });
-            nowCount++;
-          } else {
-            let err = {};
-            err.param = `all`;
-            err.msg = `max_size`;
-            return res.status(401).json({ error: true, errors: [err] });
-          }
-        }
-
-        for (let i = 0; i < 10; i++) {
-          let fileName = randomString(24);
-
-          if (!req.files["sounds" + i] || nowCount >= maxCount) break;
-
-          if (req.files["sounds" + i].size / 1000 <= 10000) {
-            req.files["sounds" + i].mv(
-              "./uploads/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["sounds" + i].name.split(".").pop(),
-              function(err) {
-                if (err) return res.status(500).send(err);
-              }
-            );
-            let dataSound = JSON.parse(req.body["soundsData" + i]);
-
-            sounds.push({
-              path:
-                process.env.API_URL +
-                "/media/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["sounds" + i].name.split(".").pop(),
-              name: req.files["sounds" + i].name,
-              duration: dataSound.duration,
-              recordLine: dataSound.recordLine,
-            });
-            nowCount++;
-          } else {
-            let err = {};
-            err.param = `all`;
-            err.msg = `max_size`;
-            return res.status(401).json({ error: true, errors: [err] });
-          }
-        }
-
-        for (let i = 0; i < 10; i++) {
-          let fileName = randomString(24);
-
-          if (!req.files["files" + i] || nowCount >= maxCount) break;
-
-          if (req.files["files" + i].size / 1000 <= 10000) {
-            req.files["files" + i].mv(
-              "./uploads/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["files" + i].name.split(".").pop(),
-              function(err) {
-                if (err) return res.status(500).send(err);
-              }
-            );
-
-            files.push({
-              path:
-                process.env.API_URL +
-                "/media/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["files" + i].name.split(".").pop(),
-              name: req.files["files" + i].name,
-              size: req.files["files" + i].size / 1000,
-            });
-            nowCount++;
-          } else {
-            let err = {};
-            err.param = `all`;
-            err.msg = `max_size`;
-            return res.status(401).json({ error: true, errors: [err] });
-          }
-        }
+        files.push({
+          path: req.body["files"][i].path,
+          name: req.body["files"][i].name,
+          size: req.body["files"][i].size,
+        });
+        nowCount++;
       }
 
       message.text = text

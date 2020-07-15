@@ -5,7 +5,9 @@ import SocketController from "../../controllers/SocketController";
 import PanelRecord from "../../Partials/Chat/InputPanel/PanelRecord";
 import PanelStandart from "../../Partials/Chat/InputPanel/PanelStandart";
 import RecentMessage from "./RecentMessage";
+import ProgressBar from "../../Elements/ProgressBar";
 import { toast } from "react-toastify";
+import api from "../../config/api";
 //Redux
 import { connect } from "react-redux";
 import * as dialogsActions from "../../redux/actions/dialogs";
@@ -13,7 +15,10 @@ import { bindActionCreators } from "redux";
 import ArrowDown from "../../img/arrowDownperple.svg";
 import LoadGif from "../../img/load.gif";
 import { getAudioBufferData } from "../../controllers/FunctionsController";
-
+import { ReactComponent as CloseSVG } from "../../img/close.svg";
+import documentSvg from "../../img/document.svg";
+import musicSvg from "../../img/music.svg";
+import attachDelete from "../../img/attachDelete.svg";
 // Internet Explorer 6-11
 const isIE = /*@cc_on!@*/ false || !!document.documentMode;
 
@@ -41,17 +46,20 @@ class Dialog extends React.Component {
     super(props);
     this.inputPanel = React.createRef();
     this.activePage = false;
+    this.canLoadAttach = true;
   }
   state = {
     scrollTop: 0,
     canTyping: true,
+    voiceSound: false,
+    isRecord: false,
+    setCordMessageScroll: false,
+    //Отвеченные сообщения
     recentMessage: false,
     sounds: [],
     files: [],
     images: [],
-    voiceSound: false,
-    isRecord: false,
-    setCordMessageScroll: false,
+    loadingFiles: [],
   };
   onScroll() {
     let scroll =
@@ -347,141 +355,133 @@ class Dialog extends React.Component {
     this.setState({ voiceSound });
     return Promise.resolve();
   }
-  async addFile(e, paste = false, drag = false) {
+  recursiveLoad() {
+    let file = false;
+    if (this.state.loadingFiles.length) file = this.state.loadingFiles[0].file;
+    if (file) {
+      this.canLoadAttach = false;
+      let xhr = new XMLHttpRequest();
+      xhr.responseType = "json";
+      xhr.upload.onprogress = (event) => {
+        this.setState({
+          loadingFiles: this.state.loadingFiles.map((item, index) => {
+            if (item.file.name == file.name) {
+              item.percentage = (event.loaded / event.total) * 100;
+              return item;
+            } else return item;
+          }),
+        });
+      };
+      xhr.onerror = xhr.onabort = (e) => {
+        this.setState({
+          loadingFiles: this.state.loadingFiles.filter(
+            (item) => {
+              return item.file.name !== file.name;
+            },
+            () => {
+              this.canLoadAttach = true;
+            }
+          ),
+        });
+      };
+      xhr.onload = (e) => {
+        this.setState(
+          {
+            loadingFiles: this.state.loadingFiles.filter((item) => {
+              return item.file.name !== file.name;
+            }),
+          },
+          async () => {
+            await this.addFile(e.target.response, file);
+            this.canLoadAttach = true;
+            this.recursiveLoad();
+          }
+        );
+      };
+
+      xhr.open("POST", `${api.urlApi}/api/dialog/load-file`, true);
+      xhr.setRequestHeader(
+        "Authorization",
+        `Bearer ${this.props.user.apiToken}`
+      );
+      var formData = new FormData();
+      formData.append("file", file);
+      xhr.send(formData);
+    }
+  }
+  loadFiles(e) {
     let sounds = [...this.state.sounds];
     let files = [...this.state.files];
     let images = [...this.state.images];
-    let InputFile = document.getElementById("uploadFile");
+    let InputFile = e.target;
     let counter = sounds.length + files.length + images.length;
-    if (!paste && !drag) {
-      for (let i = 0; i < InputFile.files.length; i++) {
-        if (counter > 9) {
-          toast.error("Max upload 10 attachments!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
-          break;
-        }
-
-        let file = {
-          path: (window.URL || window.webkitURL).createObjectURL(
-            new Blob([InputFile.files[i]], { type: InputFile.files[i].type })
-          ),
-          file: InputFile.files[i],
-          name: InputFile.files[i].name,
-          type: InputFile.files[i].name.split(".").pop(),
-          size: InputFile.files[i].size / 1000,
-        };
-
-        if (
-          file.type === "png" ||
-          file.type === "jpg" ||
-          file.type === "jpeg" ||
-          file.type === "gif"
-        ) {
-          file.id = images.length;
-          images.push(file);
-        }
-
-        if (
-          file.type === "txt" ||
-          file.type === "pdf" ||
-          file.type === "docx" ||
-          file.type === "zip" ||
-          file.type === "doc"
-        ) {
-          file.id = files.length;
-          files.push(file);
-        }
-
-        if (file.type === "mp3") {
-          file.id = sounds.length;
-          let audioData = await getAudioBufferData(file.path);
-          let duration = audioData.duration;
-          let recordLine = audioData.recordLine;
-          sounds.push({ ...file, duration, recordLine });
-        }
-
-        counter++;
-      }
-
-      InputFile.value = null;
-    }
-
-    if (paste) {
+    let newFiles = [];
+    for (let i = 0; i < InputFile.files.length; i++) {
       if (counter > 9) {
-        toast.error("Max upload 10 attachment!", {
+        toast.error("Max upload 10 attachments!", {
           position: toast.POSITION.TOP_CENTER,
         });
-      } else {
-        let file = {
-          id: images.length,
-          path: (window.URL || window.webkitURL).createObjectURL(
-            new Blob([e], { type: e.type })
-          ),
-          file: e,
-          name: e.name,
-          type: e.name.split(".").pop(),
-        };
-
-        images.push(file);
+        break;
       }
+      newFiles.push({
+        file: InputFile.files[i],
+        percentage: 0,
+      });
+    }
+    this.setState(
+      {
+        loadingFiles: [...this.state.loadingFiles, ...newFiles],
+      },
+      () => {
+        if (this.canLoadAttach) this.recursiveLoad();
+      }
+    );
+  }
+  async addFile(fileUrl, fileBlob) {
+    let sounds = [...this.state.sounds];
+    let files = [...this.state.files];
+    let images = [...this.state.images];
+    fileUrl.type = fileBlob.name.split(".").pop();
+    if (
+      fileUrl.type === "png" ||
+      fileUrl.type === "jpg" ||
+      fileUrl.type === "jpeg" ||
+      fileUrl.type === "gif"
+    ) {
+      fileUrl.id = images.length;
+      images.push(fileUrl);
     }
 
-    if (drag) {
-      for (let i = 0; i < e.length; i++) {
-        if (counter > 9) {
-          toast.error("Max upload 10 attachment!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
-          break;
-        }
-
-        let file = {
-          path: (window.URL || window.webkitURL).createObjectURL(
-            new Blob([e[i]], { type: e[i].type })
-          ),
-          file: e[i],
-          name: e[i].name,
-          type: e[i].name.split(".").pop(),
-          size: e[i].size / 1000,
-        };
-
-        if (
-          file.type === "png" ||
-          file.type === "jpg" ||
-          file.type === "jpeg" ||
-          file.type === "gif"
-        ) {
-          file.id = images.length;
-          images.push(file);
-        }
-
-        if (
-          file.type === "txt" ||
-          file.type === "pdf" ||
-          file.type === "docx" ||
-          file.type === "zip" ||
-          file.type === "doc"
-        ) {
-          file.id = files.length;
-          files.push(file);
-        }
-
-        if (file.type === "mp3") {
-          file.id = sounds.length;
-          sounds.push(file);
-        }
-
-        counter++;
-      }
+    if (
+      fileUrl.type === "txt" ||
+      fileUrl.type === "pdf" ||
+      fileUrl.type === "docx" ||
+      fileUrl.type === "zip" ||
+      fileUrl.type === "doc"
+    ) {
+      fileUrl.id = files.length;
+      files.push(fileUrl);
     }
 
-    this.setState({ sounds, files, images });
+    if (fileUrl.type === "mp3") {
+      fileUrl.id = sounds.length;
+      let audioData = await getAudioBufferData(
+        (window.URL || window.webkitURL).createObjectURL(
+          new Blob([fileBlob], { type: fileBlob.type })
+        )
+      );
+      let duration = audioData.duration;
+      let recordLine = audioData.recordLine;
+      sounds.push({ ...fileUrl, duration, recordLine });
+    }
+    this.setState({ sounds, files, images }, () => {
+      return Promise.resolve();
+    });
   }
   render() {
     return (
       <>
-        <div className="message-container  container-fluid">
+        <div className="message-container">
           <Scrollbars
             onScroll={() => {
               this.onScroll();
@@ -549,8 +549,6 @@ class Dialog extends React.Component {
               this.scrollToBottom();
             }}
           />
-        </div>
-        <div className="container-fluid">
           <div className="message-panel ">
             {this.state.recentMessage && (
               <RecentMessage message={this.state.recentMessage} />
@@ -562,7 +560,7 @@ class Dialog extends React.Component {
                   recordStart={() => {
                     this.setState({ isRecord: true });
                   }}
-                  addFile={this.addFile.bind(this)}
+                  loadFiles={this.loadFiles.bind(this)}
                   sendMessage={this.sendMessage.bind(this)}
                   typing={this.typing.bind(this)}
                 />
@@ -578,6 +576,74 @@ class Dialog extends React.Component {
                   />
                 </>
               )}
+            </div>
+            <div className="filesAttach">
+              <div className="loading-area">
+                {this.state.loadingFiles.map((item, index) => {
+                  return (
+                    <>
+                      <div key={index} className="attach-item">
+                        <ProgressBar percent={item.percentage} />
+                        <span className="file-name">{item.file.name}</span>
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+              <div className="images-area attath-area">
+                {this.state.images.map((item, index) => {
+                  return (
+                    <>
+                      <div key={index} className="attach-item">
+                        <img src={item.path} className="image-message" alt="" />
+                        <img
+                          className="attachDelete"
+                          src={attachDelete}
+                          alt="attachDelete"
+                        />
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+              <div className="sounds-area attath-area">
+                {this.state.sounds.map((item, index) => {
+                  return (
+                    <>
+                      <div key={index} className="attach-item">
+                        <img
+                          className="typeImg"
+                          src={musicSvg}
+                          alt="musicSvg"
+                        />
+                        <span className="file-name">{item.name}</span>
+                        <img
+                          className="attachDelete"
+                          src={attachDelete}
+                          alt="attachDelete"
+                        />
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+              <div className="files-area attath-area">
+                {this.state.files.map((item, index) => {
+                  return (
+                    <>
+                      <div className="attach-item">
+                        <img className="typeImg" src={documentSvg} alt="" />
+                        <span className="file-name">{item.name}</span>
+                        <img
+                          className="attachDelete"
+                          src={attachDelete}
+                          alt="attachDelete"
+                        />
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

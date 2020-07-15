@@ -108,6 +108,12 @@ class Dialog extends React.Component {
               {!this.props.dialog.typing && (
                 <>{this.props.dialog.lastMessage.text}</>
               )}
+              {!this.props.dialog.typing &&
+                !!!this.props.dialog.lastMessage.text &&
+                (this.props.dialog.lastMessage.voiseSound ||
+                  this.props.dialog.lastMessage.sound ||
+                  this.props.dialog.lastMessage.images ||
+                  this.props.dialog.lastMessage.files) && <>Вложения</>}
               {this.props.dialog.typing && (
                 <div className="reading-status">печатает</div>
               )}

@@ -32,7 +32,7 @@ class PanelStandart extends React.Component {
           multiple
           hidden
           onChange={(e) => {
-            this.props.addFile(e);
+            this.props.loadFiles(e);
           }}
           id="uploadFile"
           style={{ display: "none" }}

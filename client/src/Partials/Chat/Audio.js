@@ -162,7 +162,15 @@ class AudioX extends React.Component {
       audio.pause();
     }
   }
-
+  changeDurationAudio(e) {
+    e.stopPropagation();
+    let position = (e.nativeEvent.layerX * 100) / this.rangeBlock.clientWidth;
+    let time = (this.props.sound.duration / 100) * position;
+    let thisAudio = document.getElementsByName(this.props.sound.path);
+    for (let audio of thisAudio) {
+      audio.currentTime = time;
+    }
+  }
   render() {
     return (
       <>
@@ -202,10 +210,19 @@ class AudioX extends React.Component {
                   ></div>
                   <canvas
                     className="sound-canvas"
+                    ref={(ref) => {
+                      this.rangeBlock = ref;
+                    }}
+                    width="auto"
+                    onClick={(e) => {
+                      this.changeDurationAudio(e);
+                    }}
                     id={`canvas-${this.props.sound.path}`}
                   ></canvas>
                 </div>
-                <p className="message-sounds-name">{this.props.sound.name}</p>
+                {!this.props.isVoiceSound && (
+                  <p className="message-sounds-name">{this.props.sound.name}</p>
+                )}
                 <p className="message-sounds-duration">{this.state.duration}</p>
               </div>
             </>

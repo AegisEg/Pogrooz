@@ -4,9 +4,11 @@ import Avatar from "../../Elements/Avatar";
 import TimeTag from "./TimeTag";
 import { getHM, timeAt } from "../../controllers/TimeController";
 import Audio from "./Audio";
+import { Link } from "react-router-dom";
 import { ReactComponent as ErrorSvg } from "../../img/error-red.svg";
 import { ReactComponent as Reply } from "../../img/reply.svg";
 import RecentMessage from "./RecentMessage";
+import documentSvg from "../../img/document.svg";
 class Message extends React.Component {
   state = {
     isSelected: false,
@@ -67,7 +69,7 @@ class Message extends React.Component {
             this.state.isSelected ? "selected" : ""
           }`}
         >
-          <div className="col avatar-message pl-3 pr-1 f-14 d-flex">
+          <div className="avatar-message d-flex">
             {(isFirst || isHistoryDate) && !this.props.isRecent && (
               <Avatar
                 name={
@@ -78,7 +80,7 @@ class Message extends React.Component {
             )}
           </div>
           <div className="col dialog-content">
-            <div className="col-12 head-message">
+            <div className="head-message">
               {isShowMoreElement && (
                 <span className="name">
                   {this.props.message.user.name.first}
@@ -90,24 +92,71 @@ class Message extends React.Component {
                 </span>
               )}
             </div>
-            <div className="col-12 message-content">
+            <div className="message-content">
               {this.props.message.text}
               {this.props.message.voiceSound && (
                 <Audio
                   duration={this.props.message.voiceSound.duration}
                   sound={this.props.message.voiceSound}
+                  isVoiceSound={true}
                   isLoading={this.props.message.isLoading}
                 />
               )}
               {this.props.message.sounds.map((item, index) => {
-                return (
-                  <Audio
-                    key={index}
-                    sound={item}
-                  />
-                );
+                return <Audio key={index} sound={item} />;
               })}
+              {!!this.props.message.images.length && (
+                <div className="message-images">
+                  {this.props.message.images.map((image, index, images) => {
+                    let width;
+                    let isBlur = false;
 
+                    if (images.length > 4 && index === 3) isBlur = true;
+
+                    if (index > 3) return null;
+
+                    if (isBlur)
+                      return (
+                        <div key={index} className="image" style={{ width }}>
+                          <div className="image-blur">
+                            <span>{`+${images.length - 3}`}</span>
+                            <img
+                              key={index}
+                              src={image.path}
+                              alt={image.name}
+                            />
+                          </div>
+                        </div>
+                      );
+
+                    return (
+                      <div key={index} className="image">
+                        <img src={image.path} alt={image.name} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {!!this.props.message.files.length && (
+                <div className="message-files">
+                  {this.props.message.files.map((item, index) => {
+                    return (
+                      <div key={index} className="message-file">
+                        <img src={documentSvg} alt="" />
+                        <div className="file-info">
+                          <div className="name">{item.name}</div>
+                          <div className="size">
+                            {item.size > 1048576
+                              ? Math.floor(item.size / 1048576) + "Мб."
+                              : Math.floor(item.size / 1024) + "Кб."}
+                          </div>
+                        </div>
+                        <a className="sharected-link" href={item.path}></a>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
               {this.props.message.recentMessage && (
                 <RecentMessage
                   scrollTo={(top) => {
