@@ -1,11 +1,13 @@
 import React from "react";
 import Message from "./Message";
 import { Scrollbars } from "react-custom-scrollbars";
+import { CSSTransitionGroup } from "react-transition-group";
 import SocketController from "../../controllers/SocketController";
 import PanelRecord from "../../Partials/Chat/InputPanel/PanelRecord";
 import PanelStandart from "../../Partials/Chat/InputPanel/PanelStandart";
 import RecentMessage from "./RecentMessage";
 import ProgressBar from "../../Elements/ProgressBar";
+import Fancybox from "../../Elements/Fancybox.js";
 import { toast } from "react-toastify";
 import api from "../../config/api";
 //Redux
@@ -15,7 +17,6 @@ import { bindActionCreators } from "redux";
 import ArrowDown from "../../img/arrowDownperple.svg";
 import LoadGif from "../../img/load.gif";
 import { getAudioBufferData } from "../../controllers/FunctionsController";
-import { ReactComponent as CloseSVG } from "../../img/close.svg";
 import documentSvg from "../../img/document.svg";
 import musicSvg from "../../img/music.svg";
 import attachDelete from "../../img/attachDelete.svg";
@@ -60,6 +61,10 @@ class Dialog extends React.Component {
     files: [],
     images: [],
     loadingFiles: [],
+    dataFancybox: {
+      images: false,
+      index: false,
+    },
   };
   onScroll() {
     let scroll =
@@ -340,14 +345,12 @@ class Dialog extends React.Component {
     let voiceSound = false;
 
     if (data) {
-      let audioUrl = URL.createObjectURL(data),
-        audioData = await getAudioBufferData(audioUrl);
       voiceSound = {
         path: URL.createObjectURL(data),
         file: data,
         name: "Аудиозапись",
-        duration: audioData.duration,
-        recordLine: audioData.recordLine,
+        duration: duration,
+        recordLine: recordLine,
         type: "mp3",
         size: data.size,
       };
@@ -478,6 +481,14 @@ class Dialog extends React.Component {
       return Promise.resolve();
     });
   }
+  addImageToFancyBox(images, index) {
+    this.setState({
+      dataFancybox: {
+        images,
+        index,
+      },
+    });
+  }
   render() {
     return (
       <>
@@ -521,6 +532,7 @@ class Dialog extends React.Component {
                     deleteLocalMessage={this.deleteLocalMessage.bind(this)}
                     prevMessage={prevMessage}
                     message={message}
+                    addImageToFancyBox={this.addImageToFancyBox.bind(this)}
                   ></Message>
                 );
               })}
@@ -560,6 +572,11 @@ class Dialog extends React.Component {
                   recordStart={() => {
                     this.setState({ isRecord: true });
                   }}
+                  isContent={
+                    !!this.state.sounds.length ||
+                    !!this.state.images.length ||
+                    !!this.state.files.length
+                  }
                   loadFiles={this.loadFiles.bind(this)}
                   sendMessage={this.sendMessage.bind(this)}
                   typing={this.typing.bind(this)}
@@ -647,6 +664,23 @@ class Dialog extends React.Component {
             </div>
           </div>
         </div>
+        <CSSTransitionGroup
+          transitionName="fancybox-animation"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={300}
+        >
+          {this.state.dataFancybox.images && (
+            <Fancybox
+              close={() => {
+                this.setState({
+                  dataFancybox: { images: false, index: false },
+                });
+              }}
+              images={this.state.dataFancybox.images}
+              index={this.state.dataFancybox.index}
+            />
+          )}
+        </CSSTransitionGroup>
       </>
     );
   }

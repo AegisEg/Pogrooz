@@ -79,14 +79,14 @@ class PanelStandart extends React.Component {
               display: "contents",
             }}
           >
-            {!this.state.text && (
+            {!this.state.text && !this.props.isContent && (
               <img
                 src={microphone}
                 alt="microphone"
                 onClick={this.props.recordStart}
               />
             )}
-            {this.state.text && (
+            {(this.state.text || this.props.isContent) && (
               <img
                 src={send}
                 onClick={() => {

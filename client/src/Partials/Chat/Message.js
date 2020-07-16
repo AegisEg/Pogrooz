@@ -106,7 +106,13 @@ class Message extends React.Component {
                 return <Audio key={index} sound={item} />;
               })}
               {!!this.props.message.images.length && (
-                <div className="message-images">
+                <div
+                  className={`message-images ${
+                    this.props.message.images.length >= 3 ? "more" : ""
+                  }
+                  ${this.props.message.images.length === 1 ? "one" : ""}
+                  ${this.props.message.images.length === 2 ? "two" : ""}`}
+                >
                   {this.props.message.images.map((image, index, images) => {
                     let width;
                     let isBlur = false;
@@ -117,7 +123,13 @@ class Message extends React.Component {
 
                     if (isBlur)
                       return (
-                        <div key={index} className="image" style={{ width }}>
+                        <div
+                          key={index}
+                          className="image"
+                          onClick={() => {
+                            this.props.addImageToFancyBox(images, index);
+                          }}
+                        >
                           <div className="image-blur">
                             <span>{`+${images.length - 3}`}</span>
                             <img
@@ -130,7 +142,13 @@ class Message extends React.Component {
                       );
 
                     return (
-                      <div key={index} className="image">
+                      <div
+                        key={index}
+                        className="image"
+                        onClick={() => {
+                          this.props.addImageToFancyBox(images, index);
+                        }}
+                      >
                         <img src={image.path} alt={image.name} />
                       </div>
                     );

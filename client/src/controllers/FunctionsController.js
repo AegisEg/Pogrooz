@@ -35,9 +35,10 @@ export function randomInteger(min, max) {
 }
 
 export function padZero(v) {
-  return v < 10 ? "0" + v : v;
+  let one = parseInt(v / 60),
+    two = parseInt(v % 60);
+  return (one < 10 ? "0" + one : one) + ":" + (two % 60 < 10 ? "0" + two : two);
 }
-
 export function renderCanvas(ref, id, RecordLine, isAdaptive, color) {
   let canvas;
   let paddingStick = 2,

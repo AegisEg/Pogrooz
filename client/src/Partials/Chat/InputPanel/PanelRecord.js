@@ -1,9 +1,8 @@
 // App
 import React from "react";
-import ffmpeg from "ffmpeg";
+import AudioVoice from "../AudioVoice";
 import ResetRecord from "../../../img/ResetRecord.svg";
 import stopRecord from "../../../img/stopRecord.svg";
-import RecordPlay from "../../../img/play.svg";
 import send from "../../../img/send.svg";
 import LoadGif from "../../../img/load.gif";
 import { renderCanvas } from "../../../controllers/FunctionsController";
@@ -14,20 +13,14 @@ const isEdge = !isIE && !!window.StyleMedia;
 
 let m, localStream, source, analyser, processor, ctx, audioChunks;
 class PanelRecord extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   state = {
     isRecordPause: false,
     isAudioPlay: false,
     isSending: false,
     RecordLine: [],
     countdown: 0,
+    audioSrc: false,
   };
-  //Timer
-  setTime(startval) {
-    this.setState({ countdown: startval });
-  }
   startTimer() {
     this.timer = setInterval(() => {
       if (this.timer) this.setState({ countdown: ++this.state.countdown });
@@ -68,37 +61,34 @@ class PanelRecord extends React.Component {
   }
   recordStop() {
     return new Promise(async (resolve, reject) => {
-      let onRecordingReady = (e) => {
-        if (this.audio) this.audio.src = URL.createObjectURL(e.data);
-        this.props
-          .addVoiceSound(e.data, this.state.countdown, this.state.RecordLine)
-          .then(() => {
-            this.setState({ isRecordPause: true });
-            resolve();
-          });
-      };
-      m.addEventListener("dataavailable", onRecordingReady);
-      if (m) m.stop();
-      m = false;
-      if (localStream) {
-        localStream.getAudioTracks()[0].stop();
-        localStream = false;
-      }
-      if (source) {
-        source.disconnect(analyser);
-        source.disconnect(processor);
-      }
-      source = false;
-      if (processor) processor.disconnect(ctx.destination);
-      processor = false;
-      ctx = false;
-      renderCanvas(
-        false,
-        "voice-canvas",
-        this.state.RecordLine,
-        true,
-        "#9933ff"
-      );
+      if (!this.state.isRecordPause) {
+        let onRecordingReady = (e) => {
+          this.props
+            .addVoiceSound(e.data, this.state.countdown, this.state.RecordLine)
+            .then(() => {
+              this.setState({
+                isRecordPause: true,
+                audioSrc: URL.createObjectURL(e.data),
+              });
+              resolve();
+            });
+        };
+        m.addEventListener("dataavailable", onRecordingReady);
+        if (m) m.stop();
+        m = false;
+        if (localStream) {
+          localStream.getAudioTracks()[0].stop();
+          localStream = false;
+        }
+        if (source) {
+          source.disconnect(analyser);
+          source.disconnect(processor);
+        }
+        source = false;
+        if (processor) processor.disconnect(ctx.destination);
+        processor = false;
+        ctx = false;
+      } else resolve();
     });
   }
   componentWillUnmount() {
@@ -123,29 +113,22 @@ class PanelRecord extends React.Component {
       for (let i = 0; i < data.length; i++) {
         volumes.push({ arg: i, val: data[i] });
       }
-      if (count % 1 === 0) {
-        this.setState({
-          RecordLine: [...this.state.RecordLine, volumes[2].val],
-        });
-        renderCanvas(
-          false,
-          "voice-canvas",
-          this.state.RecordLine,
-          false,
-          "#9933ff"
-        );
-      }
+
+      this.setState({
+        RecordLine: [...this.state.RecordLine, volumes[2].val],
+      });
+      renderCanvas(
+        false,
+        "voice-canvas",
+        this.state.RecordLine,
+        false,
+        "#9933ff"
+      );
     };
   }
 
-  updateDimensions = () => {};
   componentDidMount() {
-    this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
     this.recordStart();
-  }
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
   }
   render() {
     return (
@@ -154,68 +137,42 @@ class PanelRecord extends React.Component {
           src={ResetRecord}
           className="resetRecord"
           onClick={async () => {
-            if (!this.state.isRecordPause) {
-              this.recordStop();
-            }
-            await this.props.stopRec();
-            await this.props.addVoiceSound(false);
+            if (!this.state.isRecordPause)
+              this.recordStop().then(async () => {
+                await this.props.stopRec();
+                await this.props.addVoiceSound(false);
+              });
           }}
           alt="ResetRecord"
         />
         <div className="input-chat">
           {!this.state.isRecordPause && (
-            <img
-              src={stopRecord}
-              onClick={() => {
-                this.setState({ isRecordPause: true });
-                this.recordStop();
+            <>
+              <img
+                src={stopRecord}
+                onClick={() => {
+                  this.setState({ isRecordPause: true });
+                  this.recordStop();
+                }}
+                className="RecordPauseStart"
+                alt="stopRecord"
+              />
+              <canvas id="voice-canvas"></canvas>
+              <div className="timer">
+                {String(this.state.countdown).toTimer()}
+              </div>
+            </>
+          )}
+          {this.state.isRecordPause && this.state.audioSrc && (
+            <AudioVoice
+              sound={{
+                duration: this.state.countdown,
+                path: this.state.audioSrc,
+                recordLine: this.state.RecordLine,
               }}
-              className="RecordPauseStart"
-              alt="stopRecord"
             />
           )}
-          {this.state.isRecordPause && (
-            <img
-              src={RecordPlay}
-              className="RecordPauseStart"
-              onClick={() => {
-                if (this.state.isAudioPlay) {
-                  this.audio.pause();
-                } else this.audio.play();
-                this.audio.onplaying = (e) => {
-                  this.setTime(e.target.currentTime);
-                  this.startTimer();
-                };
-                this.audio.onpause = this.audio.onended = () => {
-                  this.stopTimer();
-                };
-                this.setState({ isAudioPlay: !this.state.isAudioPlay });
-              }}
-              alt="RecordPlay"
-            />
-          )}
-          <canvas id="voice-canvas"></canvas>
-          <div className="canvas-overlay">
-            <div
-              onClick={(e) => {
-                let bodyRect = document.body.getBoundingClientRect(),
-                  elemRect = e.target.getBoundingClientRect(),
-                  offset = elemRect.left - bodyRect.left,
-                  clickedX = e.clientX - offset;
-                this.audio.currentTime =
-                  clickedX / e.target.getBoundingClientRect().width;
-              }}
-            ></div>
-          </div>
-          <div className="timer">{String(this.state.countdown).toTimer()}</div>
         </div>
-        <audio
-          ref={(ref) => {
-            this.audio = ref;
-          }}
-          style={{ display: "none" }}
-          controls
-        ></audio>
         <img
           src={this.state.isSending ? LoadGif : send}
           className="sendRecord"
