@@ -101,11 +101,11 @@ class PanelStandart extends React.Component {
               <Picker
                 showPreview={false}
                 onClick={(emoji, event) => {
-                  console.log(emoji);
                   this.setState({
                     text: this.state.text + emoji.native,
                   });
                 }}
+                native={true}
                 showSearch={false}
                 showSkinTones={false}
                 i18n={settings.localizateEmoji}
