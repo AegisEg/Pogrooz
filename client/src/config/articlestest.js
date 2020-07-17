@@ -28,7 +28,7 @@ export default [
     comments:
       "Аккцратный водитель, по пути заеду еще в одно место, поэтому время доставки увеличится на 1 час.  Аккцратный водитель, по пути заеду еще в одно место, поэтому время доставки увеличится на 1 час. Аккцратный водитель, по пути заеду еще в одно место, поэтому время доставки увеличится на 1 час. Аккцратный водитель, по пути заеду еще в одно место, поэтому время доставки увеличится на 1 час. ",
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -142,7 +142,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -175,7 +175,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -208,7 +208,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -241,7 +241,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -274,7 +274,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -307,7 +307,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -340,7 +340,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -373,7 +373,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -406,7 +406,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -439,7 +439,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -472,7 +472,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 
@@ -505,7 +505,7 @@ export default [
       "https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/w_2560%2Cc_limit/Transpo_G70_TA-518126.jpg",
     tags: ["Услуги грузчика", "Мед. книжка"],
     user: {
-      id: 1,
+      id: "5f007e35c6c7ee1f74d43486",
       avatar: avatar,
       fio: `Максимов 
             Максим 

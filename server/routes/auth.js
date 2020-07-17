@@ -1,6 +1,6 @@
 /**
  * auth.js
- * Author: Roman Shuvalov
+ * Author: Vasilev Egor
  */
 'use strict';
 

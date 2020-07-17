@@ -124,7 +124,7 @@ class Header extends React.Component {
                   <Link to="/register" className="register">
                     <Button
                       type="fill"
-                      paddingVertical={"13px"}
+                      paddingVertical={"8px"}
                       paddingHorizontal={"27px"}
                     >
                       Регистрация
@@ -133,7 +133,7 @@ class Header extends React.Component {
                   <Link to="/login" className="login">
                     <Button
                       type="empty"
-                      paddingVertical={"13px"}
+                      paddingVertical={"8px"}
                       paddingHorizontal={"27px"}
                     >
                       Вход
@@ -229,7 +229,7 @@ class Header extends React.Component {
                     lineHeight: "16px",
                     minWidth: "123px",
                   }}
-                >{`${this.props.user.lastName} ${this.props.user.firstName}`}</p>
+                >{`${this.props.user.name.last} ${this.props.user.name.first}`}</p>
                 <p style={{ margin: 0, fontSize: 12, lineHeight: "14px" }}>
                   Физ лицо
                 </p>

@@ -2,7 +2,8 @@
 import React from "react";
 import Input from "../../Elements/Input";
 import configApi from "../../config/api";
-
+import { toast } from "react-toastify";
+import { withRouter } from "react-router-dom";
 // Elements
 import Button from "../../Elements/Button";
 import Select from "../../Elements/Select";
@@ -54,6 +55,8 @@ class Register extends React.Component {
           this.setState({ error: true, errors: data.errors });
         }
         this.setState({ isFetching: false });
+        this.props.history.push("/");
+        toast.success("Регистрация прошла успешно");
       });
   }
 
@@ -230,4 +233,4 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default withRouter(Register);

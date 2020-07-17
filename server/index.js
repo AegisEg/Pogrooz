@@ -1,34 +1,44 @@
 /**
  * server.js
- * Author: Roman Shuvalov
+ * Author: Vasilev Egor
  */
-'use strict';
+"use strict";
 
-const setup = require('./setup');
-const express = require('express');
-const fileUpload = require('express-fileupload');
-const cors = require('cors');
-const morgan = require('morgan')
-const bodyParser = require('body-parser');
-const path = require('path');
-const historyApiFallback = require('connect-history-api-fallback');
+const express = require("express");
+const fileUpload = require("express-fileupload");
+const cors = require("cors");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const path = require("path");
+const historyApiFallback = require("connect-history-api-fallback");
+const { initSocket } = require("./controllers/SocketController");
 // const errors = require('./middleware/errors');
 
+//ENV load
+const envFound = require("dotenv").config();
+if (!envFound) {
+  console.log(
+    "⚠️  No .env file for HYPER10N found: this file contains" +
+      "your Stripe API key and other secrets.\nTry copying .env.example to .env" +
+      "(and make sure to include your own keys!)"
+  );
+  process.exit(0);
+}
 // If produciton
-if(process.env.MODE == 'production') {
-  var https = require("https")
-  const fs = require("fs")
+if (process.env.MODE == "production") {
+  var https = require("https");
+  const fs = require("fs");
 
   var sslCerts = {
     key: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/privkey.pem"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/fullchain.pem")
-  }
+    cert: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/fullchain.pem"),
+  };
 }
 
 // Routes
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
-
+const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
+const dialogsRoutes = require("./routes/dialog");
 // Use Express as our web server
 const app = express();
 
@@ -38,48 +48,42 @@ app
   // Cors
   .use(cors())
   // Enable files upload
-  .use(fileUpload({
-    createParentPath: true
-  }))
-  .use(morgan('dev'))
+  .use(
+    fileUpload({
+      createParentPath: true,
+    })
+  )
+  .use(morgan("dev"))
   // Enable routes
-  .use('/auth', authRoutes)
-  .use('/api', userRoutes)
+  .use("/auth", authRoutes)
+  .use("/api/user", userRoutes)
+  .use("/api/dialog", dialogsRoutes)
   // Serve static files
-  .use(express.static(path.join(__dirname, '../client')))
+  .use(express.static(path.join(__dirname, "../client")))
+  .use("/media", express.static(path.join(__dirname, "./uploads")))
   // Enable history API
-  .use(historyApiFallback())
-  // Error middleware
+  .use(historyApiFallback());
+// Error middleware
 //   .use(errors);
-
 
 // Starts the HYPER10N server
 async function startServer() {
-  // Check if our database is setup with the right tables
-  try {
-    const ready = await setup.checkTables();
-    if (!ready) {
-      console.log('⚠️ No database tables found. Run `npm run setup` before starting ' + 'the server.\n');
-      process.exit(0);
-    }
-  } catch (e) {
-    console.log(e);
-  }
-
   // Start the Express server
-  if(process.env.MODE == 'development') {
-    app.listen(process.env.PORT, err => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+  if (process.env.MODE == "development") {
+    const http = require("http").createServer(app);
+
+    const io = require("socket.io")(http);
+
+    initSocket(io);
+
+    http.listen(process.env.PORT, () => {
       console.log(
-        `⚡️ POGROOZ server started: http://localhost:${process.env.PORT}`
+        `⚡️ HEVACHAT server started: http://localhost:${process.env.PORT}`
       );
     });
   }
 
-  if(process.env.MODE == 'production') {
+  if (process.env.MODE == "production") {
     https.createServer(sslCerts, app).listen(8080);
   }
 }

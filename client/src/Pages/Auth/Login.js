@@ -13,6 +13,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as userActions from "../../redux/actions/user";
 import { bindActionCreators } from "redux";
+import SocketController from "../../controllers/SocketController";
 
 class Login extends React.Component {
   state = {
@@ -42,7 +43,8 @@ class Login extends React.Component {
         } else {
           const { cookies } = this.props;
           cookies.set("apiToken", data.token, { path: "/" });
-          this.props.userActions.loginUser(data.user);
+          SocketController.init(data.token);
+          this.props.userActions.loginUser(data.user, data.token);
           if (data.user.type == "carrier")
             this.props.history.push("/my-orders-open");
           else this.props.history.push("/taken-offers");

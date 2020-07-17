@@ -52,7 +52,7 @@ class MyOrders extends React.Component {
     //Ставлю статус(0,1 - открытый, 2,3 - в работе, 3,4 - закрытый) и Тип(Заказ
     //или Предложение) для отображения
     let articlesList = articlestest.filter((item) => {
-      if (item.user.id == this.props.user.id)
+      if (item.user.id == this.props.user._id)
         if (item.type === this.props.typeArticle) {
           if (this.state.currentStatus === "all") {
             return this.props.statusArticle.find((x) => {

@@ -1,13 +1,15 @@
 /**
  * AuthController.js
- * Author: Roman Shuvalov
+ * Author: Vasilev Egor
  */
 "use strict";
 
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const User = require("../models/User");
-
+const crypto = require("crypto");
+const NUM_ROUNDS = 12;
 module.exports = {
   // Register method
   register: async (req, res, next) => {
@@ -28,8 +30,8 @@ module.exports = {
 
     try {
       // Make sure there isn't an existing user in our database
-      const existingUserEmail = await User.getByEmail(user.email);
-      const existingUserPhone = await User.getByPhone(user.phone);
+      const existingUserEmail = await User.findOne({ email: user.email });
+      const existingUserPhone = await User.findOne({ phone: user.phone });
 
       if (existingUserEmail || existingUserPhone) {
         // Conflict: the resource already exists (HTTP 409)
@@ -38,12 +40,28 @@ module.exports = {
         err.msg = `That email or phone is already taken.`;
         return res.status(409).json({ error: true, errors: [err] });
       }
-
-      const newUser = await User.create(user);
-
+      /*СОздание юзера*/
+      const newUser = new User();
+      newUser.name = {
+        first: user.firstName,
+        middle: user.middleName,
+        last: user.lastName,
+      };
+      newUser.email = user.email;
+      newUser.phone = user.phone;
+      newUser.country = user.country;
+      newUser.type = user.type;
+      newUser.password = await bcrypt.hash(user.password, 12);
+      await newUser.save();
       let token = generateToken(newUser.id);
-
-      return res.json({ token, user: newUser.getJSON() });
+      /*СОздание юзера*/
+      /*Обнуление перменных редакса*/
+      const dialogs = [];
+      let noReadCount = 0;
+      const noReadDialog = [];
+      const noReadNotifications = [];
+      /*Обнуление перменных редакса*/
+      return res.json({ token, user: newUser });
     } catch (e) {
       console.log(e);
       return next(new Error(e));
@@ -63,9 +81,9 @@ module.exports = {
 
     try {
       // Get the user for this email address
-      const user = await User.getByPhone(phone);
+      const user = await User.findOne({ phone }).select("+password");
       if (user) {
-        const verifiedPassword = await user.comparePassword(password);
+        const verifiedPassword = await bcrypt.compare(password, user.password);
 
         if (verifiedPassword) {
           // Success: generate and respond with the JWT
@@ -94,10 +112,22 @@ module.exports = {
     }
     try {
       // Make sure there is an existing user in our database
-      const existingUserEmail = await User.getByEmail(email);
+      const existingUserEmail = await User.findOne({ email }).select(
+        "+resetPasswordExpires"
+      );
       if (existingUserEmail) {
-        if (existingUserEmail.user.resetPasswordExpires < Date.now()) {
-          let ResetToken = User.generatePasswordReset(email);
+        if (
+          !existingUserEmail.resetPasswordExpires ||
+          existingUserEmail.resetPasswordExpires < Date.now()
+        ) {
+          //Генерация
+          const resetPasswordToken = crypto.randomBytes(20).toString("hex");
+          const resetPasswordExpires = Date.now() + 86400000;
+          //Генерация
+
+          existingUserEmail.resetPasswordToken = resetPasswordToken;
+          existingUserEmail.resetPasswordExpires = resetPasswordExpires;
+          existingUserEmail.save();
           //Отправка на почту письма
           return res.json({
             status: "sended",
@@ -135,13 +165,19 @@ module.exports = {
     }
     try {
       // Make sure there is an existing user in our database
-      const existingUserEmail = await User.getByResetPasswordToken(token);
-      
+
+      const existingUserEmail = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gte: Date.now() },
+      });
+
       if (existingUserEmail) {
-        existingUserEmail.updatePassword(password);
-        // Сообщение о сбросе пароля
+        existingUserEmail.password = await bcrypt.hash(password, NUM_ROUNDS);
+        existingUserEmail.resetPasswordExpires = 0;
+        existingUserEmail.save();
+        //Сообщение о сбросе пароля
         return res.json({
-          status: "success"
+          status: "success",
         });
       } else {
         // Conflict: the resource already exists (HTTP 409)
