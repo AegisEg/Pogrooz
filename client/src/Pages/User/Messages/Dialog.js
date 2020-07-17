@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import * as dialogsActions from "../../../redux/actions/dialogs";
 import { bindActionCreators } from "redux";
-import { OnlineDate } from "../../../Controllers/TimeController";
+import { OnlineDate } from "../../../controllers/TimeController";
 class Messages extends React.Component {
   componentDidMount() {
     if (
