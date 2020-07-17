@@ -84,6 +84,8 @@ async function startServer() {
   }
 
   if (process.env.MODE == "production") {
+    const io = require("socket.io")(http);
+    initSocket(io);
     https.createServer(sslCerts, app).listen(8080);
   }
 }
