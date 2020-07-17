@@ -430,15 +430,16 @@ class Dialog extends React.Component {
         file: InputFile.files[i],
         percentage: 0,
       });
+      counter++;
+      this.setState(
+        {
+          loadingFiles: [...this.state.loadingFiles, ...newFiles],
+        },
+        () => {
+          if (this.canLoadAttach) this.recursiveLoad();
+        }
+      );
     }
-    this.setState(
-      {
-        loadingFiles: [...this.state.loadingFiles, ...newFiles],
-      },
-      () => {
-        if (this.canLoadAttach) this.recursiveLoad();
-      }
-    );
   }
   async addFile(fileUrl, fileBlob) {
     let sounds = [...this.state.sounds];
@@ -595,79 +596,120 @@ class Dialog extends React.Component {
               )}
             </div>
             <div className="filesAttach">
-              <div className="loading-area">
-                {this.state.loadingFiles.map((item, index) => {
-                  return (
-                    <>
-                      <div key={index} className="attach-item">
-                        <ProgressBar percent={item.percentage} />
-                        <span className="file-name">{item.file.name}</span>
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
-              <div className="images-area attath-area">
-                {this.state.images.map((item, index) => {
-                  return (
-                    <>
-                      <div key={index} className="attach-item">
-                        <img src={item.path} className="image-message" alt="" />
-                        <img
-                          className="attachDelete"
-                          src={attachDelete}
-                          alt="attachDelete"
-                        />
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
-              <div className="sounds-area attath-area">
-                {this.state.sounds.map((item, index) => {
-                  return (
-                    <>
-                      <div key={index} className="attach-item">
-                        <img
-                          className="typeImg"
-                          src={musicSvg}
-                          alt="musicSvg"
-                        />
-                        <span className="file-name">{item.name}</span>
-                        <img
-                          className="attachDelete"
-                          src={attachDelete}
-                          alt="attachDelete"
-                        />
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
-              <div className="files-area attath-area">
-                {this.state.files.map((item, index) => {
-                  return (
-                    <>
-                      <div className="attach-item">
-                        <img className="typeImg" src={documentSvg} alt="" />
-                        <div>
-                          <div className="file-name">{item.name}</div>
-                          <div className="file-size">
-                            {item.size > 1048576
-                              ? Math.floor(item.size / 1048576) + "Мб."
-                              : Math.floor(item.size / 1024) + "Кб."}
-                          </div>
+              <Scrollbars
+                renderTrackVertical={(props) => (
+                  <div className="track-vertical" />
+                )}
+                renderThumbVertical={(props) => (
+                  <div className="thumb-vertical" />
+                )}
+                autoHide
+              >
+                <div className="loading-area">
+                  {this.state.loadingFiles.map((item, index) => {
+                    return (
+                      <>
+                        <div key={index} className="attach-item">
+                          <ProgressBar percent={item.percentage} />
+                          <span className="file-name">{item.file.name}</span>
                         </div>
-                        <img
-                          className="attachDelete"
-                          src={attachDelete}
-                          alt="attachDelete"
-                        />
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
+                      </>
+                    );
+                  })}
+                </div>
+                <div className="images-area attath-area">
+                  {this.state.images.map((item, index) => {
+                    return (
+                      <>
+                        <div key={index} className="attach-item">
+                          <img
+                            src={item.path}
+                            className="image-message"
+                            alt=""
+                          />
+                          <img
+                            className="attachDelete"
+                            onClick={() => {
+                              this.setState({
+                                images: this.state.images.filter(
+                                  (item, indexR) => {
+                                    return indexR != index;
+                                  }
+                                ),
+                              });
+                            }}
+                            src={attachDelete}
+                            alt="attachDelete"
+                          />
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+                <div className="sounds-area attath-area">
+                  {this.state.sounds.map((item, index) => {
+                    return (
+                      <>
+                        <div key={index} className="attach-item">
+                          <img
+                            className="typeImg"
+                            src={musicSvg}
+                            alt="musicSvg"
+                          />
+                          <span className="file-name">{item.name}</span>
+                          <img
+                            className="attachDelete"
+                            onClick={() => {
+                              this.setState({
+                                sounds: this.state.sounds.filter(
+                                  (item, indexR) => {
+                                    return indexR != index;
+                                  }
+                                ),
+                              });
+                            }}
+                            src={attachDelete}
+                            alt="attachDelete"
+                          />
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+                <div className="files-area attath-area">
+                  {this.state.files.map((item, index) => {
+                    return (
+                      <>
+                        <div className="attach-item">
+                          <img className="typeImg" src={documentSvg} alt="" />
+                          <div>
+                            <div className="file-name">{item.name}</div>
+                            <div className="file-size">
+                              {item.size > 1048576
+                                ? Math.floor(item.size / 1048576) + "Мб."
+                                : Math.floor(item.size / 1024) + "Кб."}
+                            </div>
+                          </div>
+                          <img
+                            className="attachDelete"
+                            src={attachDelete}
+                            onClick={() => {
+                              this.setState({
+                                files: this.state.files.filter(
+                                  (item, indexR) => {
+                                    return indexR != index;
+                                  }
+                                ),
+                              });
+                            }}
+                            alt="attachDelete"
+                          />
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </Scrollbars>
             </div>
           </div>
         </div>

@@ -4154,7 +4154,7 @@ table {
   transition: all 0.3s;
 }
 .progress-bar {
-  width: 150px;
+  min-width: 100px;
   background-color: #e6e6e6;
   border-radius: 5px;
 }
@@ -4174,16 +4174,19 @@ table {
     background-position-x: 28px;
   }
 }
+
 .loading-area .attach-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+
+  max-width: 253px;
 }
+
 .attach-item .file-size,
 .attach-item .file-name {
   padding: 0 5px;
-  max-width: 150px;
   font-size: 14px;
-  color: #6C6C6C;
+  color: #6c6c6c;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -4194,12 +4197,10 @@ table {
 .attach-item .attachDelete {
   cursor: pointer;
 }
-.attath-area
-{
+.attath-area {
   margin: 0 -5px;
 }
-.attach-item
-{
+.attach-item {
   margin: 10px 5px;
 }
 .attath-area:not(.files-area) .attach-item {
@@ -4217,10 +4218,28 @@ table {
   top: 0;
   right: 0;
 }
+@media (max-width: 551px) {
+  .attach-item img.image-message {
+    width: 50px;
+    height: 50px;
+  }
+}
+@media (min-width: 552px) {
+  .attach-item img.image-message {
+    height: 100px;
+    width: 100px;
+  }
+  .filesAttach {
+    margin: 0 40px;
+  }
+}
+.filesAttach {
+  max-height: 179px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 .attach-item img.image-message {
   border-radius: 5px;
-  height: 100px;
-  width: 100px;
   object-fit: cover;
   background-color: #c4c4c4;
 }
@@ -4292,8 +4311,7 @@ table {
   color: #171717;
   font-weight: 700;
 }
-.message-content
-{
+.message-content {
   position: relative;
 }
 .messages-block .message-content,
@@ -4487,8 +4505,7 @@ table {
   display: none;
 }
 .recentMessage,
-.input-chat,
-.filesAttach {
+.input-chat {
   margin: 0 40px;
 }
 .sendAndMicro,
@@ -4548,12 +4565,11 @@ table {
 .input-chat .smiles,
 .input-chat .photo {
   position: absolute;
-  top: 10px;
-  margin: auto;
+  top: 16px;
   cursor: pointer;
 }
 .input-chat .smiles {
-  right: 38px;
+  right: 23px;
 }
 .input-chat .photo {
   right: 68px;
@@ -4780,7 +4796,7 @@ table {
   border-radius: 5px;
   width: 100%;
   height: 100%;
-  object-fit: scale-down;
+  object-fit: cover;
   background-color: #eff4f8;
   position: relative;
 }
@@ -4801,6 +4817,8 @@ table {
   display: flex;
   padding: 10px 0;
   position: relative;
+  width: max-content;
+  max-width: 100%;
 }
 .message-images .image-blur {
   position: relative;
