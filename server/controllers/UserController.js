@@ -23,4 +23,15 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  getOnline: async (req, res, next) => {
+    const { userId } = req.body;
+
+    try {
+      let user = await User.findById(userId).select(["online", "onlineAt"]);
+
+      return res.json(user);
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
 };
