@@ -595,7 +595,17 @@ class Dialog extends React.Component {
                 </>
               )}
             </div>
-            <div className="filesAttach">
+            <div
+              className="filesAttach"
+              style={{
+                height:
+                  !!this.state.images.length ||
+                  !!this.state.files.length ||
+                  !!this.state.sounds.length
+                    ? "250px"
+                    : "",
+              }}
+            >
               <Scrollbars
                 renderTrackVertical={(props) => (
                   <div className="track-vertical" />
