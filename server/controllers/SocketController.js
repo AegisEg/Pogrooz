@@ -37,10 +37,9 @@ function initSocket(initIo) {
     });
     socket.on("disconnect", async () => {
       if (user) {
-        user.update({
-          onlineAt: new Date().toLocaleString(),
-          online: false,
-        });
+        user.onlineAt = Date.now();
+        user.online = false;
+        await user.save();
       }
     });
     socket.on("typingDialog", ({ otherId, userId }) => {
