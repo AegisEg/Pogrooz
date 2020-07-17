@@ -28,11 +28,9 @@ function initSocket(initIo) {
       // Set online status for user
       user = await User.findById(userVerify.data.userId);
       if (user) {
-        socket.join(`user.${user._id}`);
-        user.update({
-          onlineAt: new Date().toLocaleString(),
-          online: true,
-        });
+        socket.join(`user.${user._id}`);        
+        user.online = false;
+        await user.save();
       }
     });
     socket.on("disconnect", async () => {
