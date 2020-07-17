@@ -73,15 +73,9 @@ class Messages extends React.Component {
                   </span>
                   <span className="online">
                     {!dialog.user.online && (
-                      <p className="last-message">
-                        {OnlineDate(dialog.user.onlineAt)}
-                      </p>
+                      <>{OnlineDate(dialog.user.onlineAt)}</>
                     )}
-                    {dialog.user.online && (
-                      <p className="last-message" style={{ color: "#35E551" }}>
-                        online
-                      </p>
-                    )}
+                    {dialog.user.online && <>"online"</>}
                   </span>
                 </div>
                 {/* <div className="row description-chat">
