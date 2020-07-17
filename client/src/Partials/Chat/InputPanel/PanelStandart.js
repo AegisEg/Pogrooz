@@ -1,20 +1,35 @@
 // App
 import React from "react";
 import { CSSTransitionGroup } from "react-transition-group";
-import ReactResizeDetector from "react-resize-detector";
-
+import { Picker } from "emoji-mart";
 import addDocuments from "../../../img/addDocuments.svg";
 import send from "../../../img/send.svg";
 import smiles from "../../../img/smiles.svg";
 import photo from "../../../img/photo.svg";
 import microphone from "../../../img/microphone.svg";
-
+import settings from "../../../config/settings";
 class PanelStandart extends React.Component {
+  constructor() {
+    super();
+    this.showEmoji = this.showEmoji.bind(this);
+    this.hideEmoji = this.hideEmoji.bind(this);
+  }
   state = {
     text: "",
+    showEmoji: false,
   };
   setText(text) {
     this.setState({ text });
+  }
+  showEmoji() {
+    this.setState({ showEmoji: true });
+    document.addEventListener("click", this.hideEmoji);
+  }
+  hideEmoji(e) {
+    if (!e.target.closest(".emoji-mart")) {
+      this.setState({ showEmoji: false });
+      document.removeEventListener("click", this.hideEmoji);
+    }
   }
   render() {
     return (
@@ -67,8 +82,36 @@ class PanelStandart extends React.Component {
             value={this.state.text}
           ></textarea>
           {!this.state.text && <span className="placeholder">Сообщение</span>}
-          <img src={photo} className="photo d-md-block d-none" alt="photo" />
-          <img src={smiles} className="smiles" alt="smiles" />
+          {/* <img src={photo} className="photo d-md-block d-none" alt="photo" /> */}
+          <img
+            src={smiles}
+            onClick={this.showEmoji}
+            className="smiles"
+            alt="smiles"
+          />
+          <CSSTransitionGroup
+            transitionName="emoji-animation-item"
+            transitionEnterTimeout={100}
+            transitionLeaveTimeout={100}
+            style={{
+              display: "contents",
+            }}
+          >
+            {this.state.showEmoji && (
+              <Picker
+                showPreview={false}
+                onClick={(emoji, event) => {
+                  console.log(emoji);
+                  this.setState({
+                    text: this.state.text + emoji.native,
+                  });
+                }}
+                showSearch={false}
+                showSkinTones={false}
+                i18n={settings.localizateEmoji}
+              />
+            )}
+          </CSSTransitionGroup>
         </div>
         <div className="sendAndMicro">
           <CSSTransitionGroup

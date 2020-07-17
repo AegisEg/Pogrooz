@@ -183,6 +183,18 @@ class Message extends React.Component {
                   message={this.props.message.recentMessage}
                 />
               )}
+              {!this.props.message.isError &&
+                !myMessage &&
+                !this.props.isRecent && (
+                  <span
+                    className="reply-message"
+                    onClick={() => {
+                      this.props.setRecentMessage(this.props.message);
+                    }}
+                  >
+                    <Reply />
+                  </span>
+                )}
             </div>
           </div>
           {this.props.message.isError && (
@@ -204,16 +216,6 @@ class Message extends React.Component {
                   Удалить
                 </div>
               </div>
-            </span>
-          )}
-          {!this.props.message.isError && !myMessage && !this.props.isRecent && (
-            <span
-              className="reply-message"
-              onClick={() => {
-                this.props.setRecentMessage(this.props.message);
-              }}
-            >
-              <Reply />
             </span>
           )}
         </div>

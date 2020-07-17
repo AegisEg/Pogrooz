@@ -39,9 +39,40 @@ export function padZero(v) {
     two = parseInt(v % 60);
   return (one < 10 ? "0" + one : one) + ":" + (two % 60 < 10 ? "0" + two : two);
 }
+CanvasRenderingContext2D.prototype.roundedRect = function (
+  x,
+  y,
+  width,
+  height,
+  radius
+) {
+  // Because the function is added to the context prototype
+  // the 'this' variable is actually the context
+
+  // Save the existing state of the canvas so that it can be restored later
+  this.save();
+
+  // Translate to the given X/Y coordinates
+  this.translate(x, y);
+
+  // Move to the center of the top horizontal line
+  this.moveTo(width / 2, 0);
+
+  // Draw the rounded corners. The connecting lines in between them are drawn automatically
+  this.arcTo(width, 0, width, height, Math.min(height / 2, radius));
+  this.arcTo(width, height, 0, height, Math.min(width / 2, radius));
+  this.arcTo(0, height, 0, 0, Math.min(height / 2, radius));
+  this.arcTo(0, 0, radius, 0, Math.min(width / 2, radius));
+
+  // Draw a line back to the start coordinates
+  this.lineTo(width / 2, 0);
+
+  // Restore the state of the canvas to as it was before the save
+  this.restore();
+};
 export function renderCanvas(ref, id, RecordLine, isAdaptive, color) {
   let canvas;
-  let paddingStick = 2,
+  let paddingStick = 3,
     widthStick = 1; //Ширина полосок
   if (!!ref) canvas = ref;
   else canvas = document.getElementById(id);
@@ -51,60 +82,23 @@ export function renderCanvas(ref, id, RecordLine, isAdaptive, color) {
     canvas.height = canvas.getBoundingClientRect().height;
     ctxCanvas.clearRect(0, 0, canvas.width, canvas.height);
     ctxCanvas.fillStyle = color;
+    ctxCanvas.strokeStyle = color;
     RecordLine.slice().reverse();
-    if (isAdaptive) {
-      //Удалять каждый n элемент при выводе полного сообщения, если не умещается в канвас
-      let countAllSrick = canvas.width / (widthStick + paddingStick); //Всего допустимо полосок
-      let difference = Math.abs(RecordLine.length - countAllSrick);
-      if (RecordLine.length > countAllSrick) {
-        //Вычиследние с какой периодичностью удалять
-        let everyIndex = false;
-        everyIndex = Math.round(RecordLine.length / difference);
-        if (RecordLine.length > countAllSrick)
-          RecordLine = RecordLine.filter((item, index, array) => {
-            return !(
-              everyIndex &&
-              index % everyIndex == 0 &&
-              array.length > countAllSrick
-            );
-          });
-      }
-      if (RecordLine.length < countAllSrick) {
-        let countduple = Math.ceil(1 / (RecordLine.length / difference));
-        for (
-          let i = 0;
-          i < RecordLine.length && RecordLine.length < countAllSrick;
-          i++
-        ) {
-          let duplearray = [];
-          for (
-            let y = 0;
-            y < countduple &&
-            RecordLine.length + duplearray.length < countAllSrick;
-            y++
-          )
-            duplearray[y] = RecordLine[i];
-          RecordLine = [
-            ...RecordLine.slice(0, i),
-            ...duplearray,
-            ...RecordLine.slice(i),
-          ];
-          i += duplearray.length;
-        }
-      }
-    }
     RecordLine.map((item, index) => {
       let height = item / 180;
       if (height > 1) height = canvas.height - 9;
       else if (height === 0) height = 2;
       else height = (canvas.height - 9) * height;
-      ctxCanvas.fillRect(
+      ctxCanvas.beginPath();
+      ctxCanvas.roundedRect(
         canvas.width -
           (RecordLine.length - index) * (paddingStick + widthStick),
         canvas.height / 2 - height / 2,
         widthStick,
-        height
+        height,
+        1
       );
+      ctxCanvas.stroke();
     });
   }
 }

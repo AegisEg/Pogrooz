@@ -37,4 +37,32 @@ export default {
       transform: "translate(-50%, -50%)",
     },
   },
+  localizateEmoji: {
+    search: "Поиск",
+    clear: "Отчистить", // Accessible label on "clear" button
+    notfound: "Не найдено",
+    skintext: "Выберете тон",
+    categories: {
+      search: "Результаты поиска",
+      recent: "Часто используемые",
+      smileys: "Смайлики и эмоции",
+      people: "Люди",
+      nature: "Жывотные и природа",
+      foods: "Еда",
+      activity: "Деятельность",
+      places: "Путешествия",
+      objects: "Предметы",
+      symbols: "Символы",
+      flags: "Флаги",
+    },
+    categorieslabel: "Emoji categories", // Accessible title for the list of categories
+    skintones: {
+      1: "Default Skin Tone",
+      2: "Light Skin Tone",
+      3: "Medium-Light Skin Tone",
+      4: "Medium Skin Tone",
+      5: "Medium-Dark Skin Tone",
+      6: "Dark Skin Tone",
+    },
+  },
 };

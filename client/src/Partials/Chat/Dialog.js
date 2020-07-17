@@ -650,7 +650,14 @@ class Dialog extends React.Component {
                     <>
                       <div className="attach-item">
                         <img className="typeImg" src={documentSvg} alt="" />
-                        <span className="file-name">{item.name}</span>
+                        <div>
+                          <div className="file-name">{item.name}</div>
+                          <div className="file-size">
+                            {item.size > 1048576
+                              ? Math.floor(item.size / 1048576) + "Мб."
+                              : Math.floor(item.size / 1024) + "Кб."}
+                          </div>
+                        </div>
                         <img
                           className="attachDelete"
                           src={attachDelete}
