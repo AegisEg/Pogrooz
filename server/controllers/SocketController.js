@@ -29,7 +29,7 @@ function initSocket(initIo) {
       user = await User.findById(userVerify.data.userId);
       if (user) {
         socket.join(`user.${user._id}`);        
-        user.online = false;
+        user.online = true;
         await user.save();
       }
     });
