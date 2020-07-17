@@ -84,7 +84,17 @@ async function startServer() {
   }
 
   if (process.env.MODE == "production") {
-    const io = require("socket.io")(http);
+    const fs = require("fs");
+
+    var sslCerts = {
+      key: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/privkey.pem"),
+      cert: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/fullchain.pem"),
+    };
+
+    const https = require("https").createServer(sslCerts, app);
+
+    const io = require("socket.io")(https);
+
     initSocket(io);
     https.createServer(sslCerts, app).listen(8080);
   }
