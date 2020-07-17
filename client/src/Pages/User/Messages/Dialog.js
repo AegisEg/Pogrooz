@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import * as dialogsActions from "../../../redux/actions/dialogs";
 import { bindActionCreators } from "redux";
-import ArrowDown from "../../../img/arrowDownperple.svg";
+import { OnlineDate } from "../../Controllers/TimeController";
 class Messages extends React.Component {
   componentDidMount() {
     if (
@@ -71,7 +71,18 @@ class Messages extends React.Component {
                     {dialog.user.name.last} {dialog.user.name.first}{" "}
                     {dialog.user.name.middle}
                   </span>
-                  <span className="online">online</span>
+                  <span className="online">
+                    {!dialog.user.online && (
+                      <p className="last-message">
+                        {OnlineDate(dialog.user.onlineAt)}
+                      </p>
+                    )}
+                    {dialog.user.online && (
+                      <p className="last-message" style={{ color: "#35E551" }}>
+                        online
+                      </p>
+                    )}
+                  </span>
                 </div>
                 {/* <div className="row description-chat">
                   <div
