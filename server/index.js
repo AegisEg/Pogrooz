@@ -24,16 +24,6 @@ if (!envFound) {
   );
   process.exit(0);
 }
-// If produciton
-if (process.env.MODE == "production") {
-  var https = require("https");
-  const fs = require("fs");
-
-  var sslCerts = {
-    key: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/privkey.pem"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/fullchain.pem"),
-  };
-}
 
 // Routes
 const authRoutes = require("./routes/auth");
@@ -85,18 +75,14 @@ async function startServer() {
 
   if (process.env.MODE == "production") {
     const fs = require("fs");
-
     var sslCerts = {
       key: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/privkey.pem"),
       cert: fs.readFileSync("/etc/letsencrypt/live/pogrooz.ru/fullchain.pem"),
     };
-
     const https = require("https").createServer(sslCerts, app);
-
     const io = require("socket.io")(https);
-
     initSocket(io);
-    https.createServer(sslCerts, app).listen(8080);
+    https.listen(8080);
   }
 }
 
