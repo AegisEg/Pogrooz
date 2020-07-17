@@ -431,40 +431,6 @@ module.exports = {
       return next(new Error(e));
     }
   },
-
-  getInvestments: async (req, res, next) => {
-    const { user } = res.locals;
-    const { type, userId } = req.body;
-
-    try {
-      if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.json([]);
-      }
-
-      let query = { $all: [user._id, userId] };
-      let dialog = await Dialog.findOne({ users: query }).populate(
-        "lastMessage"
-      );
-
-      if (!dialog) {
-        return res.json([]);
-      }
-
-      const dialogId = String(dialog._id);
-
-      let investments = await Investment.find({ dialogId, type })
-        .sort({ createdAt: "DESC" })
-        .limit(20);
-
-      if (investments) {
-        return res.json(investments);
-      } else {
-        return res.json([]);
-      }
-    } catch (e) {
-      return next(new Error(e));
-    }
-  },
 };
 
 function randomInteger(min, max) {

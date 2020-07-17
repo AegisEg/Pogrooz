@@ -105,55 +105,47 @@ export function LastMessageDate(timeR) {
   return r;
 }
 
-// export function OnlineDate(timeR) {
-//   let lang = store.getState().user.lang;
-//   var time = new Date(timeR);
+export function OnlineDate(timeR) {
+  var time = new Date(timeR);
 
-//   var hours = time.getHours();
-//   var minutes = time.getMinutes();
+  var hours = time.getHours();
+  var minutes = time.getMinutes();
 
-//   if (minutes.toString().length === 1) {
-//     minutes = "0" + minutes;
-//   }
-//   if (hours.toString().length === 1) {
-//     hours = "0" + hours;
-//   }
+  if (minutes.toString().length === 1) {
+    minutes = "0" + minutes;
+  }
+  if (hours.toString().length === 1) {
+    hours = "0" + hours;
+  }
 
-//   var diff = (new Date().getTime() - time.getTime()) / 1000,
-//     day_diff = new Date().getDay() - time.getDay();
-//   var month_diff = new Date().getMonth() + 1 - (time.getMonth() + 1);
-//   var year = time.getFullYear(),
-//     month = time.getMonth() + 1,
-//     day = time.getDate();
+  var diff = (new Date().getTime() - time.getTime()) / 1000,
+    day_diff = new Date().getDay() - time.getDay();
+  var month_diff = new Date().getMonth() + 1 - (time.getMonth() + 1);
+  var year = time.getFullYear(),
+    month = time.getMonth() + 1,
+    day = time.getDate();
 
-//   if (isNaN(day_diff) || day_diff < 0 || month_diff >= 1)
-//     return (
-//       year.toString() +
-//       "." +
-//       (month < 10 ? "0" + month.toString() : month.toString()) +
-//       "." +
-//       (day < 10
-//         ? "0" + day.toString() + " in " + hours + ":" + minutes
-//         : day.toString() + " in " + hours + ":" + minutes)
-//     );
+  if (isNaN(day_diff) || day_diff < 0 || month_diff >= 1)
+    return (
+      year.toString() +
+      "." +
+      (month < 10 ? "0" + month.toString() : month.toString()) +
+      "." +
+      (day < 10
+        ? "0" + day.toString() + " in " + hours + ":" + minutes
+        : day.toString() + " in " + hours + ":" + minutes)
+    );
 
-//   var r =
-//     (day_diff === 0 &&
-//       ((diff < 60 && languages[lang].just_now) ||
-//         (diff < 120 && "1 minute ago") ||
-//         (diff < 3600 && Math.floor(diff / 60) + "minutes ago") ||
-//         (diff < 7200 && "1 hour ago") ||
-//         (diff < 86400 && Math.floor(diff / 3600) + "hours ago"))) ||
-//     (day_diff === 1 &&
-//       languages[lang].yerstaday + languages[lang].in + hours + ":" + minutes) ||
-//     (day_diff < 7 &&
-//       day_diff + "days ago" + languages[lang].in + hours + ":" + minutes) ||
-//     (day_diff < 31 &&
-//       Math.ceil(day_diff / 7) +
-//         "weeks ago" +
-//         languages[lang].in +
-//         hours +
-//         ":" +
-//         minutes);
-//   return r;
-// }
+  var r =
+    (day_diff === 0 &&
+      ((diff < 60 && "Только что") ||
+        (diff < 120 && "1 минуту назад") ||
+        (diff < 3600 && Math.floor(diff / 60) + "минут. назад") ||
+        (diff < 7200 && "1 час назад") ||
+        (diff < 86400 && Math.floor(diff / 3600) + "часов назад"))) ||
+    (day_diff === 1 && "Вчера в" + hours + ":" + minutes) ||
+    (day_diff < 7 && day_diff + "дн. назад в" + hours + ":" + minutes) ||
+    (day_diff < 31 &&
+      Math.ceil(day_diff / 7) + "недел. в" + hours + ":" + minutes);
+  return r;
+}
