@@ -67,7 +67,7 @@ class Messages extends React.Component {
                   >
                     Назад
                   </Link>
-                  <span className="f-18 text-left mr-3">
+                  <span className="d-inline-block f-18 text-left mr-3">
                     {dialog.user.name.last} {dialog.user.name.first}{" "}
                     {dialog.user.name.middle}
                   </span>

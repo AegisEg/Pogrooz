@@ -1597,7 +1597,7 @@ a.mail {
   width: 42px;
   height: 20px;
   text-align: center;
-  top: 58px;
+  top: 25px;
   right: 30px;
 }
 .btn-block .btn-prev {
@@ -3971,7 +3971,7 @@ table {
 .dialog-user-name {
   font-size: 14px;
 }
-.messages-block .dialog-content {
+.messages-block .message-content {
   padding-right: 30px;
 }
 .dialog .dialog-content,
@@ -4027,7 +4027,7 @@ table {
 }
 @media (max-width: 551px) {
   .messages-block .avatar-message {
-    max-width: 50px;
+    max-width: 20px;
   }
   .dialog .with-article * {
     display: inline-block;
@@ -4257,10 +4257,21 @@ table {
 .reply-message,
 .error-retry {
   position: absolute;
-  right: 15px;
   top: 0;
   cursor: pointer;
   width: 30px;
+}
+@media (max-width:551px) {
+  .reply-message,
+  .error-retry {
+    right: -10px;
+  }
+}
+@media (min-width:552px) {
+  .reply-message,
+  .error-retry {
+    right: 15px;
+  }
 }
 .error-retry {
   display: flex;
@@ -4875,11 +4886,12 @@ table {
 }
 .message-images .image-blur {
   position: relative;
+  height: 100%;
 }
-.message-images .image .image-blur img {
+/* .message-images .image .image-blur img {
   -webkit-filter: blur(2px) brightness(0.7);
   filter: blur(2px) brightness(0.7);
-}
+} */
 .message-images .image-blur span {
   position: absolute;
   top: 0;
