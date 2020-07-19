@@ -6,9 +6,6 @@
 
 const Dialog = require("../models/Dialog");
 const Message = require("../models/Message");
-const Investment = require("../models/Investment");
-const ffmetadata = require("ffmetadata");
-const musicDuration = require("music-duration");
 const User = require("../models/User");
 
 const {

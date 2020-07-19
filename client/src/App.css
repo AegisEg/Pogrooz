@@ -3681,12 +3681,16 @@ a.href span {
   flex: 0 0 100%;
   max-width: 100%;
 }
+.order-swicher-wrapper
+{
+  align-items: flex-start;
+}
 .cheked-list > div {
   display: flex;
 }
 .row-parametrs > * {
-  padding-right: 10px;
-  padding-left: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 @media screen and (max-width: 576px) {
@@ -4057,6 +4061,7 @@ table {
 .online {
   color: #b9b9b9;
   font-size: 14px;
+  display: inline-block;
 }
 .chat-header > * {
   display: inline-block;

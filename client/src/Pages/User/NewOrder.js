@@ -5,6 +5,7 @@ import ConfigSettings from "../../config/settings";
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
 import Select from "../../Elements/Select";
+import AdressSelect from "../../Elements/AdressSelect";
 import CheckBoxSwitcher from "../../Elements/CheckBoxSwitcher";
 import CheckBox from "../../Elements/CheckBox";
 import { Link } from "react-router-dom";
@@ -15,7 +16,6 @@ import { connect } from "react-redux";
 import HeaderCreate from "../../Partials/CreateElements/HeaderCreate";
 
 import { CSSTransitionGroup } from "react-transition-group";
-
 
 class OrderCreate1 extends React.Component {
   state = {
@@ -47,7 +47,7 @@ class OrderCreate1 extends React.Component {
                   return itemY === item.id;
                 }) !== false;
               return (
-                <div className="col box-grooz-wrapper">
+                <div key={index} className="col box-grooz-wrapper">
                   <div
                     className={`box-grooz ${isSelect ? "active" : ""}`}
                     onClick={
@@ -78,9 +78,7 @@ class OrderCreate1 extends React.Component {
               );
             })}
           </div>
-          <div
-            className="row typeGrooz"
-          >
+          <div className="row typeGrooz">
             <h4
               className="f-16 col-12 mb-1"
               style={{
@@ -200,7 +198,12 @@ class OrderCreate1 extends React.Component {
               >
                 Добавьте фото груза
               </h4>
-              <Button type="fill" className="f-17" paddingHorizontal="30px" paddingVertical="7px">
+              <Button
+                type="fill"
+                className="f-17"
+                paddingHorizontal="30px"
+                paddingVertical="7px"
+              >
                 Загрузить
               </Button>
             </div>
@@ -257,7 +260,7 @@ class OrderCreate2 extends React.Component {
                 Маршрут
               </h4>
               <div className="col-12 col-sm-6 mt-2">
-                <Input type="text" placeholder="Откуда" />
+                <AdressSelect />
                 <div
                   style={{
                     marginTop: "21px",
@@ -491,7 +494,7 @@ class OrderCreate3 extends React.Component {
                     <div className="mt-2">
                       <CheckBox id="cargo5" text="Нужны поддоны" />
                     </div>
-                    <div className="mt-2 d-sm-flex">
+                    <div className="mt-2">
                       <CheckBox id="cargo6" text="Сопровождение" />
                       <div className="mt-2 pl-4">
                         <Select
@@ -501,8 +504,10 @@ class OrderCreate3 extends React.Component {
                         />
                       </div>
                     </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo27" text="Услуги грузчика" />
+                    <div className="row">
+                      <div className="col-12">
+                        <CheckBox id="cargo27" text="Услуги грузчика" />
+                      </div>
                       <div className="d-flex row-parametrs">
                         <div className="f-16">На погрузке</div>
                         <div>
@@ -518,7 +523,7 @@ class OrderCreate3 extends React.Component {
                         <span className="f-14">этаж</span>
                       </div>
                       <div className="d-flex mt-2 row-parametrs">
-                        <div className="f-16">На погрузке</div>
+                        <div className="f-16">На выгрузке</div>
                         <div>
                           <CheckBox id="asd2" text="есть лифт" />
                         </div>
@@ -696,7 +701,7 @@ class OrderCreate4 extends React.Component {
 }
 class OrderCreate extends React.Component {
   state = {
-    currentTab: 1,
+    currentTab: 2,
   };
   render() {
     return (
@@ -719,7 +724,6 @@ class OrderCreate extends React.Component {
           </div>
           <div className="steps-create">
             <OrderCreate1
-              key="1"
               className={`${this.state.currentTab === 1 ? "active" : ""} 
               ${this.state.currentTab > 1 ? "deactive" : ""}`}
               next={() => {
@@ -734,7 +738,6 @@ class OrderCreate extends React.Component {
               }}
             />
             <OrderCreate2
-              key="2"
               className={`${this.state.currentTab === 2 ? "active" : ""} ${
                 this.state.currentTab > 2 ? "deactive" : ""
               }`}

@@ -22,7 +22,6 @@ const MessageSchema = new Schema({
     ref: "Message",
     select: true,
   },
-  type: { type: String, default: "message" }, // message, voice
   isRead: { type: Boolean, default: false },
   pushId: { type: String, default: "" },
   dialogId: { type: String },
