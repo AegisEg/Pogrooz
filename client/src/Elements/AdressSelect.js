@@ -1,6 +1,7 @@
 // App
 import React from "react";
-import SelectX, { components } from "react-select";
+import { components } from "react-select";
+import SelectX from "react-select/async";
 //SVG
 import svgIcon from "../img/icon_angle.svg";
 
@@ -87,7 +88,27 @@ const colourStyles = {
     },
   }),
 };
-class Select extends React.Component {
+class AdressSelect extends React.Component {
+  apiHelper(query) {
+    let url = "https://cleaner.dadata.ru/api/v1/clean/address";
+    let token = "785593333b42c2580ed331bce76f43452287efe4";
+    let secret = "d2b478b051d3292c4cf43a3b647f75cf1d0997b6";
+
+    let options = {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + token,
+        "X-Secret": secret,
+      },
+      body: JSON.stringify([query]),
+    };
+
+    fetch(url, options).then((response) => {
+      console.log(response.data.suggestions);
+    });
+  }
   render() {
     return (
       <>
@@ -99,7 +120,7 @@ class Select extends React.Component {
           }}
           className={`select ${this.props.className}`}
           onChange={this.props.onChange}
-          placeholder={this.props.placeholder}
+          placeholder="Введите адрес"
           ref={(ref) => {
             if (this.props.getRef) {
               this.select = ref;
@@ -109,11 +130,9 @@ class Select extends React.Component {
           noOptionsMessage={
             this.props.noOptionsMessage
               ? this.props.noOptionsMessage
-              : () =>
-                  this.props.notFoundText
-                    ? this.props.notFoundText
-                    : "Нет элементов"
+              : () => "Нет адреса по запросу"
           }
+          loadOptions={this.apiHelper}
           styles={colourStyles}
           options={this.props.options}
         />
@@ -122,4 +141,4 @@ class Select extends React.Component {
   }
 }
 
-export default Select;
+export default AdressSelect;

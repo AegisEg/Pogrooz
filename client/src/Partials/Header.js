@@ -267,7 +267,7 @@ class Header extends React.Component {
                   {menu.map((item, index) => {
                     if (item.mobile || item.onlyMobile)
                       return (
-                        <Link to={item.to}>
+                        <Link key={index} to={item.to}>
                           <div className="profile-menu-item">
                             <img src={item.icon} alt="Профиль" />
                             {item.name}
