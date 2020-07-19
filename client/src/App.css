@@ -4261,13 +4261,19 @@ table {
   cursor: pointer;
   width: 30px;
 }
-@media (max-width:551px) {
+@media (max-width: 768px) {
+  .emoji-mart,
+  .input-chat .smiles {
+    display: none!important;
+  }
+}
+@media (max-width: 551px) {
   .reply-message,
   .error-retry {
     right: -10px;
   }
 }
-@media (min-width:552px) {
+@media (min-width: 552px) {
   .reply-message,
   .error-retry {
     right: 15px;
