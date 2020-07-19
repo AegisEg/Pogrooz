@@ -91,7 +91,7 @@ const colourStyles = {
 class AdressSelect extends React.Component {
   apiHelper(query) {
     let url = "https://cleaner.dadata.ru/api/v1/clean/address";
-    let token = "785593333b42c2580ed331bce76f43452287efe4";
+    let token = "3faba2850d7dac147e2e6a8717af604ed3bfbf67";
     let secret = "d2b478b051d3292c4cf43a3b647f75cf1d0997b6";
 
     let options = {
