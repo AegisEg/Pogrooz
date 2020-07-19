@@ -72,8 +72,8 @@ class Header extends React.Component {
   logout() {
     const { cookies } = this.props;
     cookies.remove("apiToken", { path: "/" });
-
     this.props.userActions.logoutUser();
+    window.location.reload();
   }
 
   render() {

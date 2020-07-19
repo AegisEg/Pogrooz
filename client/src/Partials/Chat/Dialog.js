@@ -494,69 +494,86 @@ class Dialog extends React.Component {
     return (
       <>
         <div className="message-container">
-          <Scrollbars
-            onScroll={() => {
-              this.onScroll();
-            }}
-            ref={(ref) => {
-              this.messagesBlock = ref;
-            }}
-            renderTrackVertical={(props) => <div className="track-vertical" />}
-            renderThumbVertical={(props) => <div className="thumb-vertical" />}
-            className="dialog-wrap scroll"
-            autoHide
-          >
-            <img
-              src={LoadGif}
-              id="load-message-gif"
-              className="load-message"
-              alt=""
-            />
-            <div className="mt-auto"></div>
+          <div className="dialog-wrap">
+            <Scrollbars
+              onScroll={() => {
+                this.onScroll();
+              }}
+              ref={(ref) => {
+                this.messagesBlock = ref;
+              }}
+              renderTrackVertical={(props) => (
+                <div className="track-vertical" />
+              )}
+              renderThumbVertical={(props) => (
+                <div className="thumb-vertical" />
+              )}
+              className="dialog scroll"
+              autoHide
+            >
+              <img
+                src={LoadGif}
+                id="load-message-gif"
+                className="load-message"
+                alt=""
+              />
 
-            {!!this.props.dialog.messages.length &&
-              this.props.dialog.messages.map((message, index, messages) => {
-                let prevMessage = messages[index - 1]
-                  ? messages[index - 1]
-                  : false;
-                return (
-                  <Message
-                    key={message._id}
-                    index={index}
-                    scrollingMessage={this.state.setCordMessageScroll}
-                    user={this.props.user}
-                    scrollTo={(top) => {
-                      this.scrollTo(top);
-                    }}
-                    retrySendMessage={this.retrySendMessage.bind(this)}
-                    setRecentMessage={this.setRecentMessage.bind(this)}
-                    deleteLocalMessage={this.deleteLocalMessage.bind(this)}
-                    prevMessage={prevMessage}
-                    message={message}
-                    addImageToFancyBox={this.addImageToFancyBox.bind(this)}
-                  ></Message>
-                );
-              })}
-            {!this.props.dialog.messages.length && (
-              <div className="messages-block">
-                <div className="col pl-0 avatar-message"></div>
-                <div className="col row pl-0">
-                  <div className="col-12">Сообщений еще небыло</div>
-                </div>
-              </div>
-            )}
-            {this.props.dialog.typing && (
-              <div className="messages-block">
-                <div className="col pl-0 avatar-message"></div>
-                <div className="col row pl-0">
-                  <div className="col-12 reading-status">
-                    {this.props.dialog.user.name.last}&#8194;
-                    {this.props.dialog.user.name.first} печатает
+              {!!this.props.dialog.messages.length &&
+                this.props.dialog.messages.map((message, index, messages) => {
+                  let prevMessage = messages[index - 1]
+                    ? messages[index - 1]
+                    : false;
+                  return (
+                    <Message
+                      key={message._id}
+                      index={index}
+                      scrollingMessage={this.state.setCordMessageScroll}
+                      user={this.props.user}
+                      scrollTo={(top) => {
+                        this.scrollTo(top);
+                      }}
+                      retrySendMessage={this.retrySendMessage.bind(this)}
+                      setRecentMessage={this.setRecentMessage.bind(this)}
+                      deleteLocalMessage={this.deleteLocalMessage.bind(this)}
+                      prevMessage={prevMessage}
+                      message={message}
+                      addImageToFancyBox={this.addImageToFancyBox.bind(this)}
+                    ></Message>
+                  );
+                })}
+              {!this.props.dialog.messages.length && (
+                <div className="messages-block">
+                  <div className="col pl-0 avatar-message"></div>
+                  <div className="col row pl-0">
+                    <div className="col-12">Сообщений еще небыло</div>
                   </div>
                 </div>
+              )}
+
+              <div className="dialog-typers">
+                <div
+                  class="messages-block"
+                  style={{
+                    height: "21px",
+                  }}
+                >
+                  {this.props.dialog.typing && (
+                    <>
+                      <div class="avatar-message d-flex"></div>
+                      <div class="col dialog-content">
+                        <div class="message-content">
+                          <div className="reading-status">
+                            {this.props.dialog.user.name.last}&#8194;
+                            {this.props.dialog.user.name.first} печатает
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
-            )}
-          </Scrollbars>
+            </Scrollbars>
+          </div>
           <ScrollBottom
             scrollToBottom={() => {
               this.scrollToBottom();
@@ -601,7 +618,8 @@ class Dialog extends React.Component {
                 height:
                   !!this.state.images.length ||
                   !!this.state.files.length ||
-                  !!this.state.sounds.length
+                  !!this.state.sounds.length ||
+                  !!this.state.loadingFiles.length
                     ? "250px"
                     : "",
               }}
@@ -612,6 +630,20 @@ class Dialog extends React.Component {
                 )}
                 renderThumbVertical={(props) => (
                   <div className="thumb-vertical" />
+                )}
+                renderTrackHorizontal={(props) => (
+                  <div
+                    {...props}
+                    className="track-horizontal"
+                    style={{ display: "none" }}
+                  />
+                )}
+                renderThumbHorizontal={(props) => (
+                  <div
+                    {...props}
+                    className="thumb-horizontal"
+                    style={{ display: "none" }}
+                  />
                 )}
                 autoHide
               >
@@ -690,7 +722,7 @@ class Dialog extends React.Component {
                   {this.state.files.map((item, index) => {
                     return (
                       <>
-                        <div className="attach-item">
+                        <div key={index} className="attach-item">
                           <img className="typeImg" src={documentSvg} alt="" />
                           <div>
                             <div className="file-name">{item.name}</div>

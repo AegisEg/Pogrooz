@@ -3359,8 +3359,9 @@ a.href span {
 .send-input-action {
   min-width: 148px;
 }
+
 .request-article,
-.dialog {
+.dialogs-block .dialog {
   position: relative;
   padding: 20px 28px;
   margin-left: -28px;
@@ -3947,7 +3948,16 @@ table {
   top: 0;
   bottom: 0;
   margin: auto;
-  height: 20px;
+  height: 19px;
+  width: max-content;
+  padding: 0 6px;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #a038e3;
 }
 .dialogs-block .dialog.unread .last-message {
   background-color: #f7f7f7;
@@ -4093,10 +4103,8 @@ table {
 .messages-block.not-my.padding .message-content {
   padding-bottom: 10px;
 }
-.messages-block.my.unread .message-content {
-  background-color: #f7f7f7;
-}
-.messages-block.not-my.unread {
+
+.messages-block.unread {
   background-color: #f7f7f7;
 }
 .messages-block .name {
@@ -4130,6 +4138,7 @@ table {
 }
 .reading-status {
   color: #909090;
+  font-size: 14px;
 }
 .reading-status:after {
   overflow: hidden;
@@ -4192,7 +4201,9 @@ table {
   white-space: nowrap;
 }
 .files-area .attach-item {
-  display: flex;
+  display: inline-flex;
+  position: relative;
+  width: max-content;
 }
 .attach-item .attachDelete {
   cursor: pointer;
@@ -4246,12 +4257,18 @@ table {
 .reply-message,
 .error-retry {
   position: absolute;
-  display: flex;
-  align-items: center;
   right: 15px;
   top: 0;
   cursor: pointer;
   width: 30px;
+}
+.error-retry {
+  display: flex;
+  align-items: center;
+}
+
+.reply-message svg path {
+  fill: #c670fd;
 }
 .error-retry .action-menu {
   opacity: 0;
@@ -4298,7 +4315,7 @@ table {
 .head-message {
   display: flex;
 }
-.dialog-wrap > div:nth-child(2) {
+.dialog-wrap .scroll > div:nth-child(2) {
   pointer-events: none;
 }
 .head-message .name {
@@ -4354,12 +4371,36 @@ table {
   background-color: #999;
   border-radius: 5px;
 }
-
-.dialog-wrap > div {
-  padding-top: 50px;
-  padding-bottom: 20px;
+.dialog-wrap {
+  width: 100%;
+  position: relative;
   display: flex;
+  flex: 1 1;
+}
+.dialog-wrap .dialog-typers {
+  padding: 6px 0;
+}
+.dialog-wrap .dialog > div {
+  margin-top: auto;
+}
+.dialog-wrap > .dialog {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  max-height: 100%;
+  display: block;
   flex-direction: column;
+  justify-content: flex-end;
+  bottom: 0;
+  transition: height 0.2s;
+}
+.dialog-wrap .scroll > div {
+  display: block;
+  flex-direction: column;
+  max-height: 100%;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
 }
 .dialog-wrap .load-message {
   position: absolute;
@@ -4439,6 +4480,7 @@ table {
   left: 10px;
   margin: auto;
   z-index: 3;
+  height: 32px;
 }
 .single-char {
   max-width: 60px !important;
@@ -4618,6 +4660,7 @@ table {
   width: 100%;
   position: relative;
   background-color: #fff;
+  border-radius: 26px;
 }
 .voice-sound.active .play {
   display: none;
@@ -4643,7 +4686,8 @@ table {
   align-items: center;
   width: 100%;
   height: 46px;
-  padding-left: 40px;
+  border-radius: 26px;
+  padding-left: 50px;
   padding-right: 50px;
 }
 .voice-sounds-duration {
@@ -4739,6 +4783,15 @@ table {
   left: 0;
   width: 0%;
   background-color: #008ff7;
+}
+.message-content .message-images.more {
+  height: 237px;
+}
+.message-content .message-images.one {
+  height: 350px;
+}
+.message-content .message-images.two {
+  height: 300px;
 }
 .message-content .message-images {
   max-width: 450px;
@@ -4837,9 +4890,7 @@ table {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  height: -webkit-max-content;
-  height: -moz-max-content;
-  height: max-content;
+  height: 35px;
   color: #fff;
   z-index: 1;
   font-weight: 600;

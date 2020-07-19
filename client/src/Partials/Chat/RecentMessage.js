@@ -18,6 +18,9 @@ class RecentMessage extends React.Component {
           <div className="message-content">
             {this.props.message.text}
             {this.props.message.voiceSound && <div>Аудиозапись</div>}
+            {(!!this.props.message.images.length ||
+              !!this.props.message.files.length ||
+              !!this.props.message.sounds.length) && <div>Вложения</div>}
           </div>
         </div>
       </div>
