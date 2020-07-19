@@ -84,7 +84,7 @@ class RecordLineSvg extends React.Component {
       >
         {RecordLine.map((item, index, items) => {
           let height = (item / maxValue) * this.state.height;
-          if (height == 0) height = 1;
+          if (!height) height = 1;
           return (
             <rect
               key={index}
