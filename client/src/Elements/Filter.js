@@ -4,6 +4,7 @@ import Button from "./Button";
 import Input from "./Input";
 import { Link } from "react-router-dom";
 import Select from "../Elements/Select";
+import AdressSelect from "./AdressSelect";
 
 import ImgActiveStar from "../img/active-star.png";
 import closePng from "../img/close.png";
@@ -76,7 +77,7 @@ class Filter extends React.Component {
                   this.setState({ showPop1: true });
                 }}
               >
-                <Input type="text" placeholder="Откуда" />
+                <AdressSelect />
                 {this.state.showPop1 && (
                   <div className="pop-block">
                     Начните вводить адрес с области
