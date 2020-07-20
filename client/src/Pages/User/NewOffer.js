@@ -13,7 +13,9 @@ import Article from "../../Catalog/Article";
 import articlestest from "../../config/articlestest.js";
 import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
+import AdressSelect from "../../Elements/AdressSelect";
 import HeaderCreate from "../../Partials/CreateElements/HeaderCreate";
+import { Map, Placemark } from "react-yandex-maps";
 
 class OfferCreate1 extends React.Component {
   state = {
@@ -84,7 +86,12 @@ class OfferCreate1 extends React.Component {
               </h4>
               <div className="col-12 d-inline-block align-self-center ">
                 <div className="d-inline-block mr-4 mt-2">
-                  <Button type="fill" className="f-17" paddingHorizontal="30px" paddingVertical="7px">
+                  <Button
+                    type="fill"
+                    className="f-17"
+                    paddingHorizontal="30px"
+                    paddingVertical="7px"
+                  >
                     Загрузить
                   </Button>
                 </div>
@@ -274,6 +281,8 @@ class OfferCreate2 extends React.Component {
   state = {
     isTime: false,
     isTimeInterval: false,
+    addressFrom: false,
+    addressTo: false,
   };
   render() {
     return (
@@ -290,26 +299,75 @@ class OfferCreate2 extends React.Component {
                 Маршрут
               </h4>
               <div className="col-12 col-sm-6 mt-2">
-                <Input type="text" placeholder="Откуда" />
-                <div
+                <AdressSelect
+                  placeholder="Откуда"
+                  onChange={(val) => {
+                    this.setState({ addressTo: val }, () => {
+                      if (val.data.geo_lat && val.data.geo_lon) {
+                        console.log(val.data.geo_lat + "  " + val.data.geo_lon);
+                        this.mapFrom.panTo(
+                          [Number(val.data.geo_lat), Number(val.data.geo_lon)],
+                          {
+                            delay: 1500,
+                          }
+                        );
+                      }
+                    });
+                  }}
+                />
+                <Map
+                  instanceRef={(ref) => {
+                    this.mapFrom = ref;
+                  }}
+                  defaultState={{
+                    center: [55.684758, 37.738521],
+                    zoom: 4,
+                  }}
                   style={{
                     marginTop: "21px",
-                    height: "120px",
+                    height: "220px",
                     width: "100%",
-                    backgroundColor: "#F7F7F7",
                   }}
-                ></div>
+                >
+                  {this.state.addressTo &&
+                    this.state.addressTo.data.geo_lat &&
+                    this.state.addressTo.data.geo_lon && (
+                      <Placemark
+                        geometry={[
+                          this.state.addressTo.data.geo_lat,
+                          this.state.addressTo.data.geo_lon,
+                        ]}
+                      />
+                    )}
+                </Map>
               </div>
               <div className="col-12 col-sm-6 mt-2">
-                <Input type="text" placeholder="Куда" />
-                <div
+                <AdressSelect placeholder="Куда" />
+                <Map
+                  instanceRef={(ref) => {
+                    this.mapTo = ref;
+                  }}
+                  defaultState={{
+                    center: [55.684758, 37.738521],
+                    zoom: 15,
+                  }}
                   style={{
                     marginTop: "21px",
-                    height: "120px",
+                    height: "220px",
                     width: "100%",
-                    backgroundColor: "#F7F7F7",
                   }}
-                ></div>
+                >
+                  {this.state.addressTo &&
+                    this.state.addressTo.data.geo_lat &&
+                    this.state.addressTo.data.geo_lon && (
+                      <Placemark
+                        geometry={[
+                          this.state.addressTo.data.geo_lat,
+                          this.state.addressTo.data.geo_lon,
+                        ]}
+                      />
+                    )}
+                </Map>
               </div>
             </div>
             <div className="col-xl-4 mt-2 col-12 row">
@@ -450,7 +508,7 @@ class OfferCreate3 extends React.Component {
                   return itemY === item.id;
                 }) !== false;
               return (
-                <div className="col box-grooz-wrapper">
+                <div key={index} className="col box-grooz-wrapper">
                   <div
                     className={`box-grooz ${isSelect ? "active" : ""}`}
                     onClick={
@@ -481,9 +539,7 @@ class OfferCreate3 extends React.Component {
               );
             })}
           </div>
-          <div
-            className="row typeGrooz"
-          >
+          <div className="row typeGrooz">
             <h4
               className="f-16 col-12 mb-1"
               style={{
@@ -664,7 +720,7 @@ class OfferCreate4 extends React.Component {
 }
 class OfferCreate extends React.Component {
   state = {
-    currentTab: 1,
+    currentTab: 2,
   };
   render() {
     return (

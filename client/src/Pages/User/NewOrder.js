@@ -260,7 +260,7 @@ class OrderCreate2 extends React.Component {
                 Маршрут
               </h4>
               <div className="col-12 col-sm-6 mt-2">
-                <AdressSelect />
+                <AdressSelect placeholder="Откуда" />
                 <div
                   style={{
                     marginTop: "21px",
@@ -271,7 +271,7 @@ class OrderCreate2 extends React.Component {
                 ></div>
               </div>
               <div className="col-12 col-sm-6 mt-2">
-                <Input type="text" placeholder="Куда" />
+                <AdressSelect placeholder="Куда" />
                 <div
                   style={{
                     marginTop: "21px",

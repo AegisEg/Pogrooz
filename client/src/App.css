@@ -3681,8 +3681,7 @@ a.href span {
   flex: 0 0 100%;
   max-width: 100%;
 }
-.order-swicher-wrapper
-{
+.order-swicher-wrapper {
   align-items: flex-start;
 }
 .cheked-list > div {
@@ -4269,7 +4268,7 @@ table {
 @media (max-width: 768px) {
   .emoji-mart,
   .input-chat .smiles {
-    display: none!important;
+    display: none !important;
   }
 }
 @media (max-width: 551px) {
@@ -5430,4 +5429,15 @@ table {
 .emoji-animation-item-leave.emoji-animation-item-leave-active {
   opacity: 0;
   transition: all 0.1s;
+}
+.react-dadata__container {
+ padding: 0;
+}
+.react-dadata__input {
+  border-color: transparent !important;
+  border-radius: 50px!important;
+}
+.react-dadata__suggestion-note
+{
+  display: none!important;
 }

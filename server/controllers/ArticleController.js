@@ -18,5 +18,6 @@ module.exports = {
     } catch (e) {
       return next(new Error(e));
     }
-  },  
+  },
+  
 };
