@@ -528,9 +528,31 @@ input[type="checkbox"]:checked ~ label::after,
     max-width: 166px;
   }
 }
-.create-page .carType > div {
+@media (min-width: 552px) {
+  .create-page .carType {
+    width: 230px;
+  }
+}
+.create-page .carInfo > div {
   padding: 0 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+.create-page .carInfo .carName {
+  flex: 1;
+  max-width: 100%;
+}
+@media (max-width: 551px) {
+  .create-page .carInfo > div {
+    width: 100%;
+  }
+}
+.create-order-page .carPhoto {
+  vertical-align: top;
+  margin-top: 10px;
+  width: 119px;
+  height: 95px;
+  background-color: #d9d9d9;
+  object-fit: cover;
 }
 .filter-input-title {
   line-height: 16px;
@@ -1902,16 +1924,6 @@ a.mail {
 }
 .border-yellow {
   border-color: #ffd12c;
-}
-@media (max-width: 768px) {
-  .create-page .carType > div {
-    width: 200px;
-  }
-}
-@media (min-width: 769px) {
-  .create-page .carType > div {
-    width: 230px;
-  }
 }
 @media (max-width: 992px) {
   .articles-header {
@@ -3406,7 +3418,7 @@ a.href span {
   }
 }
 /* CheckBoxSwitcher*/
-.order-swicher-wrapper > div {
+.swicher-wrapper > div {
   display: flex;
   flex-wrap: wrap;
   margin-top: 40px;
@@ -3414,6 +3426,12 @@ a.href span {
 .CheckBoxSwitcher-wrapper {
   width: 100%;
   display: flex;
+}
+.swicher-wrapper .checkboxGroup{
+  margin-top: 20px;
+}
+.swicher-wrapper .checkboxParam{
+  margin-bottom: 8px;
 }
 .CheckBoxSwitcher {
   background: #eeeeee;
@@ -3491,7 +3509,7 @@ a.href span {
   line-height: 15px;
   font-size: 14px;
 }
-.create-page .carType {
+.create-page .carInfo {
   align-content: flex-start;
 }
 @media (max-width: 480px) {
@@ -3681,7 +3699,7 @@ a.href span {
   flex: 0 0 100%;
   max-width: 100%;
 }
-.order-swicher-wrapper {
+.swicher-wrapper {
   align-items: flex-start;
 }
 .cheked-list > div {
@@ -5431,13 +5449,12 @@ table {
   transition: all 0.1s;
 }
 .react-dadata__container {
- padding: 0;
+  padding: 0;
 }
 .react-dadata__input {
   border-color: transparent !important;
-  border-radius: 50px!important;
+  border-radius: 50px !important;
 }
-.react-dadata__suggestion-note
-{
-  display: none!important;
+.react-dadata__suggestion-note {
+  display: none !important;
 }

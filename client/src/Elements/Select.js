@@ -1,6 +1,7 @@
 // App
 import React from "react";
 import SelectX, { components } from "react-select";
+import SelectAsync from "react-select/async";
 //SVG
 import svgIcon from "../img/icon_angle.svg";
 
@@ -89,36 +90,74 @@ const colourStyles = {
 };
 class Select extends React.Component {
   render() {
-    return (
-      <>
-        <SelectX
-          theme={{ borderRadius: 20 }}
-          components={{
-            IndicatorSeparator: () => null,
-            DropdownIndicator,
-          }}
-          className={`select ${this.props.className}`}
-          onChange={this.props.onChange}
-          placeholder={this.props.placeholder}
-          ref={(ref) => {
-            if (this.props.getRef) {
-              this.select = ref;
-              this.props.getRef(ref);
+    if (this.props.async)
+      return (
+        <>
+          <SelectAsync
+            theme={{ borderRadius: 20 }}
+            components={{
+              IndicatorSeparator: () => null,
+              DropdownIndicator,
+            }}
+            cacheOptions
+            defaultOptions
+            loadOptions={this.props.loadOptions}
+            className={`select ${this.props.className}`}
+            onChange={this.props.onChange}
+            isSearchable={this.props.isSearchable}
+            placeholder={this.props.placeholder}
+            value={this.props.value}
+            ref={(ref) => {
+              if (this.props.getRef) {
+                this.select = ref;
+                this.props.getRef(ref);
+              }
+            }}
+            noOptionsMessage={
+              this.props.noOptionsMessage
+                ? this.props.noOptionsMessage
+                : () =>
+                    this.props.notFoundText
+                      ? this.props.notFoundText
+                      : "Нет элементов"
             }
-          }}
-          noOptionsMessage={
-            this.props.noOptionsMessage
-              ? this.props.noOptionsMessage
-              : () =>
-                  this.props.notFoundText
-                    ? this.props.notFoundText
-                    : "Нет элементов"
-          }
-          styles={colourStyles}
-          options={this.props.options}
-        />
-      </>
-    );
+            styles={colourStyles}
+          />
+        </>
+      );
+    else
+      return (
+        <>
+          <SelectX
+            theme={{ borderRadius: 20 }}
+            components={{
+              IndicatorSeparator: () => null,
+              DropdownIndicator,
+            }}
+            className={`select ${this.props.className}`}
+            onChange={this.props.onChange}
+            placeholder={this.props.placeholder}
+            ref={(ref) => {
+              if (this.props.getRef) {
+                this.select = ref;
+                this.props.getRef(ref);
+              }
+            }}
+            value={this.props.value}
+            isSearchable={this.props.isSearchable}
+            noOptionsMessage={
+              this.props.noOptionsMessage
+                ? this.props.noOptionsMessage
+                : () =>
+                    this.props.notFoundText
+                      ? this.props.notFoundText
+                      : "Нет элементов"
+            }
+            styles={colourStyles}
+            options={this.props.options}
+          />
+        </>
+      );
   }
 }
 

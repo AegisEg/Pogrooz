@@ -5,7 +5,7 @@
 "use strict";
 
 const router = require("express").Router();
-const openApi = require("../controllers/OpenApiController");
-
+const openApiController = require("../controllers/OpenApiController");
+router.post("/carTypes", openApiController.carTypesList);
 
 module.exports = router;

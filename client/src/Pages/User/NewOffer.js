@@ -10,25 +10,40 @@ import CheckBoxSwitcher from "../../Elements/CheckBoxSwitcher";
 import CheckBox from "../../Elements/CheckBox";
 import ArticleHeader from "../../Catalog/ArticleHeader";
 import Article from "../../Catalog/Article";
-import articlestest from "../../config/articlestest.js";
 import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
 import AdressSelect from "../../Elements/AdressSelect";
 import HeaderCreate from "../../Partials/CreateElements/HeaderCreate";
 import { Map, Placemark } from "react-yandex-maps";
+//Configs
+import carList from "../../config/baseInfo/carTypesList";
+import cargoList from "../../config/baseInfo/cargoTypesList";
+import {
+  extraParams,
+  contractParams,
+  paymentParams,
+} from "../../config/baseInfo/carParams";
+import articlestest from "../../config/articlestest.js";
 
 class OfferCreate1 extends React.Component {
   state = {
-    extraOptions: false,
-    doContract: false,
-    paymentMethods: false,
+    extraParams: false,
+    contractParams: false,
+    paymentParams: false,
   };
+  getIfExit(array, item, prop) {
+    let element = false;
+    if ((element = array.find((itemX) => itemX.id == item)))
+      return element[prop] ? element[prop] : "";
+    else return "";
+  }
+
   render() {
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
           <div className="row">
-            <div className="mt-3 col-12 col-md-8 mx-0 px-0 row carType">
+            <div className="mt-3 col-12 col-md-8 mx-0 px-0 row carInfo">
               <h4
                 className="f-16 col-12 mb-1"
                 style={{
@@ -37,39 +52,28 @@ class OfferCreate1 extends React.Component {
               >
                 Тип авто
               </h4>
-              <div className="mt-3">
+              <div className="mt-3 carType">
                 <Select
-                  options={[{ value: 4, label: "Машина" }]}
                   placeholder="Тип  машины"
+                  options={carList.map((item) => {
+                    return {
+                      value: item.id,
+                      label: item.name,
+                    };
+                  })}
+                  value={this.props.car.type}
                   onChange={(val) => {
-                    if (val) this.setState({ carType: val.value });
+                    this.props.onChange(val, "carType");
                   }}
                 />
               </div>
-              <div className=" mt-3">
-                <Select
-                  options={[{ value: 4, label: "Машина" }]}
-                  placeholder="Тип  машины"
+              <div className="carName mt-3">
+                <Input
+                  type="text"
+                  value={this.props.car.name}
+                  placeholder="Марка, модель"
                   onChange={(val) => {
-                    if (val) this.setState({ carType: val.value });
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <Select
-                  options={[{ value: 4, label: "Машина" }]}
-                  placeholder="Тип  машины"
-                  onChange={(val) => {
-                    if (val) this.setState({ carType: val.value });
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <Select
-                  options={[{ value: 4, label: "Машина" }]}
-                  placeholder="Тип  машины"
-                  onChange={(val) => {
-                    if (val) this.setState({ carType: val.value });
+                    this.props.onChange(val.target.value, "carName");
                   }}
                 />
               </div>
@@ -91,30 +95,48 @@ class OfferCreate1 extends React.Component {
                     className="f-17"
                     paddingHorizontal="30px"
                     paddingVertical="7px"
+                    onClick={() => {
+                      document.getElementById("photoCar").click();
+                    }}
                   >
                     Загрузить
                   </Button>
+                  <input
+                    id="photoCar"
+                    onChange={(e) => {
+                      let file = e.target.files[0];
+                      this.props.onChange(
+                        { ...file, path: URL.createObjectURL(file) },
+                        "carPhoto"
+                      );
+                    }}
+                    type="file"
+                    accept="image/jpeg,image/png"
+                    hidden
+                  />
                 </div>
-                <img
-                  src={ConfigSettings.defaultCar}
-                  style={{
-                    verticalAlign: "top",
-                    marginTop: "10px",
-                  }}
-                  alt=""
-                />
+                {this.props.car.photo && (
+                  <img
+                    src={
+                      this.props.car.photo ? this.props.car.photo.path : false
+                    }
+                    className="carPhoto"
+                    alt=""
+                  />
+                )}
+                {!this.props.car.photo && <div className="carPhoto" />}
               </div>
             </div>
           </div>
-          <div className="row order-swicher-wrapper">
+          <div className="row swicher-wrapper">
             <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
                   lableClassname="f-16"
-                  val={this.state.extraOptions}
+                  val={this.state.extraParams}
                   onChange={() => {
                     this.setState({
-                      extraOptions: !this.state.extraOptions,
+                      extraParams: !this.state.extraParams,
                     });
                   }}
                   lable="Дополнительные параметры"
@@ -128,23 +150,50 @@ class OfferCreate1 extends React.Component {
                   display: "contents",
                 }}
               >
-                {this.state.extraOptions && (
-                  <div className="pt-2">
-                    <div className="mt-2">
-                      <CheckBox id="cargo" text="Услуги грузчика" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox
-                        id="cargo2"
-                        text="Страхование груза водителем"
-                      />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo3" text="Пломбирование" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo4" text="Мед. книжка" />
-                    </div>
+                {this.state.extraParams && (
+                  <div className="checkboxGroup">
+                    {extraParams.map((item, index) => {
+                      return (
+                        <div key={index} className="checkboxParam">
+                          <CheckBox
+                            id={`extraParams${item.id}`}
+                            name={`extraParams${item.id}`}
+                            value={this.props.car.extraParams.find(
+                              (itemX) => itemX.id == item.id
+                            )}
+                            onChange={() => {
+                              this.props.onChangeParams("extraParams", item.id);
+                            }}
+                            text={item.name}
+                          />
+                          {item.additionFields &&
+                            this.props.car.extraParams.find(
+                              (itemX) => itemX.id === item.id
+                            ) &&
+                            item.additionFields.map((itemField, index) => {
+                              return (
+                                <itemField.field
+                                  key={index}
+                                  {...itemField.props}
+                                  value={this.getIfExit(
+                                    this.props.car.extraParams,
+                                    item.id,
+                                    itemField.name
+                                  )}
+                                  onChange={(e) => {
+                                    this.props.onChangeParamsFiels(
+                                      "extraParams",
+                                      item.id,
+                                      itemField.name,
+                                      e.target.value
+                                    );
+                                  }}
+                                ></itemField.field>
+                              );
+                            })}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </CSSTransitionGroup>
@@ -152,9 +201,11 @@ class OfferCreate1 extends React.Component {
             <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
-                  val={this.state.doContract}
+                  val={this.state.contractParams}
                   onChange={() => {
-                    this.setState({ doContract: !this.state.doContract });
+                    this.setState({
+                      contractParams: !this.state.contractParams,
+                    });
                   }}
                   lable="Заключение договора"
                 />
@@ -167,23 +218,54 @@ class OfferCreate1 extends React.Component {
                   display: "contents",
                 }}
               >
-                {this.state.doContract && (
-                  <div className="pt-2">
-                    <div className="mt-2">
-                      <CheckBox id="cargo5" text="Услуги грузчика" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox
-                        id="cargo52"
-                        text="Страхование груза водителем"
-                      />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo53" text="Пломбирование" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo54" text="Мед. книжка" />
-                    </div>
+                {this.state.contractParams && (
+                  <div className="checkboxGroup">
+                    {contractParams.map((item, index) => {
+                      return (
+                        <div key={index} className="checkboxParam">
+                          <CheckBox
+                            id={`contractParams${item.id}`}
+                            name={`contractParams`}
+                            value={this.props.car.contractParams.find(
+                              (itemX) => itemX.id == item.id
+                            )}
+                            onChange={() => {
+                              this.props.onChangeParams(
+                                "contractParams",
+                                item.id,
+                                true
+                              );
+                            }}
+                            text={item.name}
+                          />
+                          {item.additionFields &&
+                            this.props.car.contractParams.find(
+                              (itemX) => itemX.id === item.id
+                            ) &&
+                            item.additionFields.map((itemField, index) => {
+                              return (
+                                <itemField.field
+                                  key={index}
+                                  {...itemField.props}
+                                  value={this.getIfExit(
+                                    this.props.car.contractParams,
+                                    item.id,
+                                    itemField.name
+                                  )}
+                                  onChange={(e) => {
+                                    this.props.onChangeParamsFiels(
+                                      "contractParams",
+                                      item.id,
+                                      itemField.name,
+                                      e.target.value
+                                    );
+                                  }}
+                                ></itemField.field>
+                              );
+                            })}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </CSSTransitionGroup>
@@ -191,10 +273,10 @@ class OfferCreate1 extends React.Component {
             <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
-                  val={this.state.paymentMethods}
+                  val={this.state.paymentParams}
                   onChange={() => {
                     this.setState({
-                      paymentMethods: !this.state.paymentMethods,
+                      paymentParams: !this.state.paymentParams,
                     });
                   }}
                   lable="Способы оплаты водителю"
@@ -208,29 +290,53 @@ class OfferCreate1 extends React.Component {
                   display: "contents",
                 }}
               >
-                {this.state.paymentMethods && (
-                  <div className="pt-2">
-                    <div className="mt-2">
-                      <CheckBox id="cargo6" text="Услуги грузчика" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox
-                        id="cargo62"
-                        text="Страхование груза водителем"
-                      />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo63" text="Пломбирование" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo64" text="Мед. книжка" />
-                    </div>
-                    <div className="mt-2">
-                      <Select
-                        options={[{ value: 4, label: "Машина" }]}
-                        placeholder="Тип  машины"
-                      />
-                    </div>
+                {this.state.paymentParams && (
+                  <div className="checkboxGroup">
+                    {paymentParams.map((item, index) => {
+                      return (
+                        <div key={index} className="checkboxParam">
+                          <CheckBox
+                            id={`paymentParams${item.id}`}
+                            name={`paymentParams${item.id}`}
+                            value={this.props.car.paymentParams.find(
+                              (itemX) => itemX.id == item.id
+                            )}
+                            onChange={() => {
+                              this.props.onChangeParams(
+                                "paymentParams",
+                                item.id
+                              );
+                            }}
+                            text={item.name}
+                          />
+                          {item.additionFields &&
+                            this.props.car.paymentParams.find(
+                              (itemX) => itemX.id === item.id
+                            ) &&
+                            item.additionFields.map((itemField, index) => {
+                              return (
+                                <itemField.field
+                                  key={index}
+                                  {...itemField.props}
+                                  value={this.getIfExit(
+                                    this.props.car.paymentParams,
+                                    item.id,
+                                    itemField.name
+                                  )}
+                                  onChange={(e) => {
+                                    this.props.onChangeParamsFiels(
+                                      "paymentParams",
+                                      item.id,
+                                      itemField.name,
+                                      e.target.value
+                                    );
+                                  }}
+                                ></itemField.field>
+                              );
+                            })}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </CSSTransitionGroup>
@@ -241,9 +347,11 @@ class OfferCreate1 extends React.Component {
               <div className="mb-2 f-16">Комментарий</div>
               <textarea
                 className="w-100"
+                onChange={this.props.onChangeComment}
                 style={{
                   height: "70px",
                 }}
+                value={this.props.comment ? this.props.comment : ""}
               ></textarea>
             </div>
             <div className="col-12 col-sm-4 mt-4">
@@ -255,6 +363,8 @@ class OfferCreate1 extends React.Component {
                     marginRight: "7px",
                   }}
                   type="number"
+                  onChange={this.props.onChangeBudget}
+                  value={this.props.budget ? this.props.budget : ""}
                   placeholder="0"
                 />
                 <span>руб</span>
@@ -303,8 +413,8 @@ class OfferCreate2 extends React.Component {
                   placeholder="Откуда"
                   onChange={(val) => {
                     this.setState({ addressTo: val }, () => {
+                      console.log(val);
                       if (val.data.geo_lat && val.data.geo_lon) {
-                        console.log(val.data.geo_lat + "  " + val.data.geo_lon);
                         this.mapFrom.panTo(
                           [Number(val.data.geo_lat), Number(val.data.geo_lon)],
                           {
@@ -321,7 +431,7 @@ class OfferCreate2 extends React.Component {
                   }}
                   defaultState={{
                     center: [55.684758, 37.738521],
-                    zoom: 4,
+                    zoom: 10,
                   }}
                   style={{
                     marginTop: "21px",
@@ -342,14 +452,29 @@ class OfferCreate2 extends React.Component {
                 </Map>
               </div>
               <div className="col-12 col-sm-6 mt-2">
-                <AdressSelect placeholder="Куда" />
+                <AdressSelect
+                  placeholder="Откуда"
+                  onChange={(val) => {
+                    this.setState({ addressTo: val }, () => {
+                      if (val.data.geo_lat && val.data.geo_lon) {
+                        console.log(val.data.geo_lat + "  " + val.data.geo_lon);
+                        this.mapFrom.panTo(
+                          [Number(val.data.geo_lat), Number(val.data.geo_lon)],
+                          {
+                            delay: 1500,
+                          }
+                        );
+                      }
+                    });
+                  }}
+                />
                 <Map
                   instanceRef={(ref) => {
-                    this.mapTo = ref;
+                    this.mapFrom = ref;
                   }}
                   defaultState={{
                     center: [55.684758, 37.738521],
-                    zoom: 15,
+                    zoom: 10,
                   }}
                   style={{
                     marginTop: "21px",
@@ -483,7 +608,7 @@ class OfferCreate3 extends React.Component {
     volumeWh: 0,
     volumeW: 0,
     volumeH: 0,
-    cargoTypes: [],
+    isPro: false,
   };
   render() {
     return (
@@ -501,42 +626,29 @@ class OfferCreate3 extends React.Component {
                 Открыть Pro список
               </Link>
             </h4>
-            {ConfigSettings.cargoTypes.map((item, index) => {
-              //Проверка на отмеченность
-              let isSelect =
-                !!this.state.cargoTypes.find((itemY, indexY) => {
-                  return itemY === item.id;
-                }) !== false;
-              return (
-                <div key={index} className="col box-grooz-wrapper">
-                  <div
-                    className={`box-grooz ${isSelect ? "active" : ""}`}
-                    onClick={
-                      !isSelect
-                        ? () => {
-                            this.setState({
-                              cargoTypes: [...this.state.cargoTypes, item.id],
-                            });
-                          }
-                        : () => {
-                            this.setState({
-                              cargoTypes: this.state.cargoTypes.filter(
-                                (itemX, index) => {
-                                  if (itemX === item.id) return false;
-                                  else return true;
-                                }
-                              ),
-                            });
-                          }
-                    }
-                  >
-                    <div className="text-center">
-                      <img src={item.img} alt="box" />
-                      <span className="d-block">{item.label}</span>
+            {cargoList.map((item, index) => {
+              if (!item.isPro) {
+                //Проверка на отмеченность
+                let isSelect =
+                  !!this.props.cargoTypes.find((itemY, indexY) => {
+                    return itemY === item.id;
+                  }) !== false;
+                return (
+                  <div key={index} className="col box-grooz-wrapper">
+                    <div
+                      className={`box-grooz ${isSelect ? "active" : ""}`}
+                      onClick={() => {
+                        this.props.onChangeCargoTypes(item.id);
+                      }}
+                    >
+                      <div className="text-center">
+                        <img src={item.img} alt="box" />
+                        <span className="d-block">{item.name}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
+                );
+              }
             })}
           </div>
           <div className="row typeGrooz">
@@ -720,8 +832,18 @@ class OfferCreate4 extends React.Component {
 }
 class OfferCreate extends React.Component {
   state = {
-    currentTab: 2,
+    currentTab: 1,
+    type: "offer",
+    car: {
+      extraParams: [],
+      contractParams: [],
+      paymentParams: [],
+    },
+    comment: false,
+    budget: false,
+    cargoTypes: [],
   };
+  componentDidMount() {}
   render() {
     return (
       <>
@@ -756,6 +878,80 @@ class OfferCreate extends React.Component {
                   this.setState({ currentTab: this.state.currentTab - 1 });
                 }
               }}
+              onChange={(val, prop) => {
+                let car = this.state.car;
+                switch (prop) {
+                  case "carType":
+                    car = { ...car, type: val };
+                    break;
+                  case "carName":
+                    car = { ...car, name: val };
+                    break;
+                  case "carPhoto":
+                    car = { ...car, photo: val };
+                    break;
+                }
+                this.setState({
+                  car: car,
+                });
+              }}
+              onChangeParams={(prop, val, isSingle = false) => {
+                let car = { ...this.state.car };
+                if (!isSingle) {
+                  if (
+                    car[prop].find((item) => {
+                      return item.id === val;
+                    })
+                  ) {
+                    car[prop] = car[prop].filter((item, index) => {
+                      return item.id !== val;
+                    });
+                  } else {
+                    car[prop].push({ id: val });
+                  }
+                  this.setState({
+                    car: car,
+                  });
+                } else {
+                  if (
+                    !car[prop].find((item) => {
+                      return item.id === val;
+                    })
+                  ) {
+                    car[prop] = [{ id: val }];
+                    this.setState({
+                      car: car,
+                    });
+                  }
+                }
+              }}
+              onChangeParamsFiels={(prop, idProp, name, val) => {
+                let car = { ...this.state.car };
+                if (
+                  car[prop].find((item) => {
+                    return item.id === idProp;
+                  })
+                ) {
+                  car[prop] = car[prop].map((item) => {
+                    if (item.id === idProp) {
+                      item[name] = val;
+                      return item;
+                    } else return item;
+                  });
+                  this.setState({
+                    car: car,
+                  });
+                }
+              }}
+              onChangeComment={(e) => {
+                this.setState({ comment: e.target.value });
+              }}
+              onChangeBudget={(e) => {
+                this.setState({ budget: e.target.value });
+              }}
+              car={this.state.car}
+              comment={this.state.comment}
+              budget={this.state.budget}
             />
             <OfferCreate2
               key="2"
@@ -786,6 +982,24 @@ class OfferCreate extends React.Component {
                 if (this.state.currentTab > 1) {
                   this.setState({ currentTab: this.state.currentTab - 1 });
                 }
+              }}
+              cargoTypes={this.state.cargoTypes}
+              onChangeCargoTypes={(typeId) => {
+                if (
+                  !this.state.cargoTypes.find((itemY, indexY) => {
+                    return itemY === typeId;
+                  })
+                )
+                  this.setState({
+                    cargoTypes: [...this.state.cargoTypes, typeId],
+                  });
+                else
+                  this.setState({
+                    cargoTypes: this.state.cargoTypes.filter((itemX, index) => {
+                      if (itemX === typeId) return false;
+                      else return true;
+                    }),
+                  });
               }}
             />
 
