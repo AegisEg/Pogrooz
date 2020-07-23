@@ -12,7 +12,7 @@ import DateFnsUtils from "@date-io/date-fns";
 //DATE
 import EyeOpen from "../img/sid-view.svg";
 import EyeClose from "../img/eye-close.png";
-
+import ruLocale from "date-fns/locale/ru";
 class Input extends React.Component {
   state = {
     showPassword: false,
@@ -63,7 +63,7 @@ class Input extends React.Component {
             paddingBottom: this.props.error ? "10px" : "0px",
           }}
         >
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <MuiPickersUtilsProvider locale={ruLocale} utils={DateFnsUtils}>
             <TimePicker
               onFocus={() => {
                 this.setState({ isFocus: true });
@@ -98,7 +98,7 @@ class Input extends React.Component {
             paddingBottom: this.props.error ? "10px" : "0px",
           }}
         >
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <MuiPickersUtilsProvider locale={ruLocale} utils={DateFnsUtils}>
             <DatePicker
               onFocus={() => {
                 this.setState({ isFocus: true });
@@ -108,8 +108,9 @@ class Input extends React.Component {
               }}
               InputProps={{
                 className: "input-date",
-              }}
-              format="MM.dd.yyyy"
+              }}              
+              format="dd.MM.yyyy"
+              disablePast
               value={this.props.value}
               placeholder={this.props.placeholder}
               minDate={this.props.minDate}

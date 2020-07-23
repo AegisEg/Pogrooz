@@ -26,11 +26,7 @@ const ArticleSchema = new Schema({
   comment: { type: String },
   budget: { type: Number },
   paramOnePlace: {
-    weight: Number,
-    weightUnit: Number,
-    length: Number,
-    width: Number,
-    height: Number,
+    type: Object,
   },
   from: {
     coords: String,
@@ -40,7 +36,11 @@ const ArticleSchema = new Schema({
     coords: String,
     description: String,
   },
-  startDate: { type: Date, default: Date.now },
+  startDate: {
+    date,
+    timeFrom,
+    timeTo,
+  },
   updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
   buff: Buffer,

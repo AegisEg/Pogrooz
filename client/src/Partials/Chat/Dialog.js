@@ -552,16 +552,16 @@ class Dialog extends React.Component {
 
               <div className="dialog-typers">
                 <div
-                  class="messages-block"
+                  className="messages-block"
                   style={{
                     height: "21px",
                   }}
                 >
                   {this.props.dialog.typing && (
                     <>
-                      <div class="avatar-message d-flex"></div>
-                      <div class="col dialog-content">
-                        <div class="message-content">
+                      <div className="avatar-message d-flex"></div>
+                      <div className="col dialog-content">
+                        <div className="message-content">
                           <div className="reading-status">
                             {this.props.dialog.user.name.last}&#8194;
                             {this.props.dialog.user.name.first} печатает

@@ -473,6 +473,9 @@ input[type="checkbox"] ~ label {
 .articles-block {
   width: 100%;
 }
+.moreParams > * {
+  padding: 0 15px;
+}
 input[type="checkbox"]:checked ~ label::after,
 .left-angle:before {
   content: "";
@@ -3427,10 +3430,10 @@ a.href span {
   width: 100%;
   display: flex;
 }
-.swicher-wrapper .checkboxGroup{
+.swicher-wrapper .checkboxGroup {
   margin-top: 20px;
 }
-.swicher-wrapper .checkboxParam{
+.swicher-wrapper .checkboxParam {
   margin-bottom: 8px;
 }
 .CheckBoxSwitcher {
@@ -4111,6 +4114,7 @@ table {
   width: 100%;
   height: calc(100vh - 174px);
   flex-direction: column;
+  position: relative;
 }
 .messages-block {
   position: relative;

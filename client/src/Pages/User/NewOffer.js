@@ -1,6 +1,5 @@
 // App
 import React from "react";
-import ConfigSettings from "../../config/settings";
 // Elements
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
@@ -70,7 +69,7 @@ class OfferCreate1 extends React.Component {
               <div className="carName mt-3">
                 <Input
                   type="text"
-                  value={this.props.car.name}
+                  value={this.props.car.name || ""}
                   placeholder="Марка, модель"
                   onChange={(val) => {
                     this.props.onChange(val.target.value, "carName");
@@ -391,8 +390,6 @@ class OfferCreate2 extends React.Component {
   state = {
     isTime: false,
     isTimeInterval: false,
-    addressFrom: false,
-    addressTo: false,
   };
   render() {
     return (
@@ -412,8 +409,7 @@ class OfferCreate2 extends React.Component {
                 <AdressSelect
                   placeholder="Откуда"
                   onChange={(val) => {
-                    this.setState({ addressTo: val }, () => {
-                      console.log(val);
+                    this.props.onChangeAddress("From", val, () => {
                       if (val.data.geo_lat && val.data.geo_lon) {
                         this.mapFrom.panTo(
                           [Number(val.data.geo_lat), Number(val.data.geo_lon)],
@@ -439,13 +435,13 @@ class OfferCreate2 extends React.Component {
                     width: "100%",
                   }}
                 >
-                  {this.state.addressTo &&
-                    this.state.addressTo.data.geo_lat &&
-                    this.state.addressTo.data.geo_lon && (
+                  {this.props.addressInfo.addressFrom &&
+                    this.props.addressInfo.addressFrom.data.geo_lat &&
+                    this.props.addressInfo.addressFrom.data.geo_lon && (
                       <Placemark
                         geometry={[
-                          this.state.addressTo.data.geo_lat,
-                          this.state.addressTo.data.geo_lon,
+                          this.props.addressInfo.addressFrom.data.geo_lat,
+                          this.props.addressInfo.addressFrom.data.geo_lon,
                         ]}
                       />
                     )}
@@ -453,12 +449,11 @@ class OfferCreate2 extends React.Component {
               </div>
               <div className="col-12 col-sm-6 mt-2">
                 <AdressSelect
-                  placeholder="Откуда"
+                  placeholder="Куда"
                   onChange={(val) => {
-                    this.setState({ addressTo: val }, () => {
+                    this.props.onChangeAddress("To", val, () => {
                       if (val.data.geo_lat && val.data.geo_lon) {
-                        console.log(val.data.geo_lat + "  " + val.data.geo_lon);
-                        this.mapFrom.panTo(
+                        this.mapTo.panTo(
                           [Number(val.data.geo_lat), Number(val.data.geo_lon)],
                           {
                             delay: 1500,
@@ -470,7 +465,7 @@ class OfferCreate2 extends React.Component {
                 />
                 <Map
                   instanceRef={(ref) => {
-                    this.mapFrom = ref;
+                    this.mapTo = ref;
                   }}
                   defaultState={{
                     center: [55.684758, 37.738521],
@@ -482,13 +477,13 @@ class OfferCreate2 extends React.Component {
                     width: "100%",
                   }}
                 >
-                  {this.state.addressTo &&
-                    this.state.addressTo.data.geo_lat &&
-                    this.state.addressTo.data.geo_lon && (
+                  {this.props.addressInfo.addressTo &&
+                    this.props.addressInfo.addressTo.data.geo_lat &&
+                    this.props.addressInfo.addressTo.data.geo_lon && (
                       <Placemark
                         geometry={[
-                          this.state.addressTo.data.geo_lat,
-                          this.state.addressTo.data.geo_lon,
+                          this.props.addressInfo.addressTo.data.geo_lat,
+                          this.props.addressInfo.addressTo.data.geo_lon,
                         ]}
                       />
                     )}
@@ -520,6 +515,10 @@ class OfferCreate2 extends React.Component {
                   type="date"
                   style={{ width: "130px" }}
                   placeholder="21.12.2020"
+                  value={this.props.addressInfo.startDate || new Date()}
+                  onChange={(val) => {
+                    this.props.onChangeTimeInfo("date", val);
+                  }}
                 />
               </div>
               <div
@@ -531,8 +530,13 @@ class OfferCreate2 extends React.Component {
               >
                 <CheckBox
                   id="isTime"
+                  value={this.state.isTime}
                   onChange={() => {
-                    this.setState({ isTime: !this.state.isTime });
+                    this.setState({ isTime: !this.state.isTime }, () => {
+                      if (this.state.isTime)
+                        this.props.onChangeTimeInfo("From", new Date());
+                      else this.props.onChangeTimeInfo("From", false);
+                    });
                   }}
                   text="Указать время"
                 />
@@ -546,15 +550,25 @@ class OfferCreate2 extends React.Component {
                       maxWidth: "172px",
                     }}
                   >
-                    <CheckBox
-                      id="isTimeInterval"
-                      onChange={() => {
-                        this.setState({
-                          isTimeInterval: !this.state.isTimeInterval,
-                        });
-                      }}
-                      text="Добавить интервал"
-                    />
+                    {this.props.addressInfo.startTimeFrom && (
+                      <CheckBox
+                        id="isTimeInterval"
+                        onChange={() => {
+                          this.setState(
+                            {
+                              isTimeInterval: !this.state.isTimeInterval,
+                            },
+                            () => {
+                              if (this.state.isTimeInterval)
+                                this.props.onChangeTimeInfo("To", new Date());
+                              else this.props.onChangeTimeInfo("To", false);
+                            }
+                          );
+                        }}
+                        value={this.state.isTimeInterval}
+                        text="Добавить интервал"
+                      />
+                    )}
                   </div>
                   <div
                     className="d-inline-flex  col-12 mt-3"
@@ -566,13 +580,31 @@ class OfferCreate2 extends React.Component {
                     <span className="filter-input-title mb-0">
                       Время<br></br>погрузки
                     </span>
-                    <Input type="time" placeholder="12:00" />
+                    <Input
+                      type="time"
+                      placeholder="12:00"
+                      value={this.props.addressInfo.startTimeFrom || new Date()}
+                      onChange={(val) => {
+                        if (new Date() <= val)
+                          this.props.onChangeTimeInfo("From", val);
+                      }}
+                    />
                     {this.state.isTimeInterval && (
                       <>
                         <span className="filter-input-title mb-0">
                           &nbsp;&nbsp;-
                         </span>
-                        <Input type="time" placeholder="12:00" />
+                        <Input
+                          type="time"
+                          placeholder="12:00"
+                          value={
+                            this.props.addressInfo.startTimeTo || new Date()
+                          }
+                          onChange={(val) => {
+                            if (this.props.addressInfo.startTimeTo < val)
+                              this.props.onChangeTimeInfo("To", val);
+                          }}
+                        />
                       </>
                     )}
                   </div>
@@ -611,6 +643,9 @@ class OfferCreate3 extends React.Component {
     isPro: false,
   };
   render() {
+    let currentCargoType = cargoList.find(
+      (item) => this.props.cargoInfo.cargoType === item.id
+    );
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
@@ -622,144 +657,185 @@ class OfferCreate3 extends React.Component {
               }}
             >
               Тип груза
-              <Link to="/" className="href f-14 ml-4">
-                Открыть Pro список
-              </Link>
-            </h4>
-            {cargoList.map((item, index) => {
-              if (!item.isPro) {
-                //Проверка на отмеченность
-                let isSelect =
-                  !!this.props.cargoTypes.find((itemY, indexY) => {
-                    return itemY === item.id;
-                  }) !== false;
-                return (
-                  <div key={index} className="col box-grooz-wrapper">
-                    <div
-                      className={`box-grooz ${isSelect ? "active" : ""}`}
-                      onClick={() => {
-                        this.props.onChangeCargoTypes(item.id);
-                      }}
-                    >
-                      <div className="text-center">
-                        <img src={item.img} alt="box" />
-                        <span className="d-block">{item.name}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-            })}
-          </div>
-          <div className="row typeGrooz">
-            <h4
-              className="f-16 col-12 mb-1"
-              style={{
-                fontWeight: "normal",
-              }}
-            >
-              Параметры одного места и количество мест
-            </h4>
-            <div
-              className="col"
-              style={{
-                maxWidth: "217px",
-                minWidth: "217px",
-              }}
-            >
-              <Select
-                type="text"
-                placeholder="Ед. измерения"
-                getRef={() => {}}
-              />
-            </div>
-            <div
-              className="col"
-              style={{
-                maxWidth: "177px",
-              }}
-            >
-              <Input type="text" style={{ width: "147px" }} placeholder="Вес" />
-            </div>
-            <div
-              className="row colspan-input px-3"
-              style={{
-                marginLeft: "0",
-                alignItems: "center",
-              }}
-            >
-              <Input
-                type="number"
-                placeholder="Длина"
-                className="text-center"
-                onChange={(e) => {
-                  this.setState({ volumeWh: e.target.value });
-                }}
-                style={{ margin: "0 0 0 0" }}
-              />
-              <Input
-                type="number"
-                placeholder="Ширина"
-                className="text-center"
-                onChange={(e) => {
-                  this.setState({ volumeW: e.target.value });
-                }}
-                style={{ margin: "0 0 0 0" }}
-              />
-              <Input
-                type="number"
-                className="text-center"
-                onChange={(e) => {
-                  this.setState({ volumeH: e.target.value });
-                }}
-                placeholder="Высота"
-              />
-              <span
-                className="filter-input-title"
-                style={{
-                  minWidth: "90px",
+              <Link
+                to="/"
+                className="href f-14 ml-4"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.setState({ isPro: !this.state.isPro });
                 }}
               >
-                &nbsp;&nbsp;=&nbsp;
-                {this.state.volumeH * this.state.volumeW * this.state.volumeW}
-                &nbsp;м<sup>3</sup>
-              </span>
-            </div>
-            <div
-              className="row col mx-0"
-              style={{
-                marginLeft: "0",
-                marginRight: "0",
-                maxWidth: "159px",
-                minWidth: "159px",
-                alignItems: "center",
-              }}
-            >
-              <span className="filter-input-title">
-                Кол-во<br></br>мест
-              </span>
-              <Input
-                type="number"
-                min="0"
-                style={{
-                  width: "79px",
+                {!this.state.isPro && <>Открыть</>}
+                {this.state.isPro && <>Закрыть</>} Pro список
+              </Link>
+            </h4>
+            {!this.state.isPro && (
+              <>
+                {cargoList.map((item, index) => {
+                  if (!item.isPro) {
+                    //Проверка на отмеченность
+                    let isSelect = this.props.cargoInfo.cargoType === item.id;
+                    return (
+                      <div key={index} className="col box-grooz-wrapper">
+                        <div
+                          className={`box-grooz ${isSelect ? "active" : ""}`}
+                          onClick={() => {
+                            this.props.onChangeCargoType(item.id);
+                          }}
+                        >
+                          <div className="text-center">
+                            <img src={item.img} alt="box" />
+                            <span className="d-block">{item.name}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              </>
+            )}
+            {this.state.isPro && (
+              <Select
+                placeholder="Тип Груза"
+                options={cargoList.map((item) => {
+                  return {
+                    value: item.id,
+                    label: item.name,
+                  };
+                })}
+                value={this.props.cargoInfo.cargoType}
+                onChange={(val) => {
+                  this.props.onChangeCargoType(val.value);
                 }}
-                placeholder="1"
               />
-            </div>
-            <div
-              className="row col mx-0"
-              style={{
-                maxWidth: "150px",
-                minWidth: "150px",
-                alignItems: "center",
-              }}
-            >
-              <span className="filter-input-title">
-                Общий<br></br>вес
-              </span>
-              <span className="d-inline-block ml-4">= 0 кг</span>
-            </div>
+            )}
+          </div>
+          <div className="row typeGrooz">
+            {currentCargoType && (
+              <>
+                <div className="moreParams">
+                  {currentCargoType.fields &&
+                    currentCargoType.fields(
+                      this.props.onChangeCargoData,
+                      this.props.cargoInfo.cargoData
+                    )}
+                </div>
+                <h4
+                  className="f-16 col-12 mb-1"
+                  style={{
+                    fontWeight: "normal",
+                  }}
+                >
+                  Параметры одного места и количество мест
+                </h4>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "217px",
+                    minWidth: "217px",
+                  }}
+                >
+                  <Select
+                    type="text"
+                    placeholder="Ед. измерения"
+                    getRef={() => {}}
+                  />
+                </div>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "177px",
+                  }}
+                >
+                  <Input
+                    type="text"
+                    style={{ width: "147px" }}
+                    placeholder="Вес"
+                  />
+                </div>
+                <div
+                  className="row colspan-input px-3"
+                  style={{
+                    marginLeft: "0",
+                    alignItems: "center",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    placeholder="Длина"
+                    className="text-center"
+                    onChange={(e) => {
+                      this.setState({ volumeWh: e.target.value });
+                    }}
+                    style={{ margin: "0 0 0 0" }}
+                  />
+                  <Input
+                    type="number"
+                    placeholder="Ширина"
+                    className="text-center"
+                    onChange={(e) => {
+                      this.setState({ volumeW: e.target.value });
+                    }}
+                    style={{ margin: "0 0 0 0" }}
+                  />
+                  <Input
+                    type="number"
+                    className="text-center"
+                    onChange={(e) => {
+                      this.setState({ volumeH: e.target.value });
+                    }}
+                    placeholder="Высота"
+                  />
+                  <span
+                    className="filter-input-title"
+                    style={{
+                      minWidth: "90px",
+                    }}
+                  >
+                    &nbsp;&nbsp;=&nbsp;
+                    {this.state.volumeH *
+                      this.state.volumeW *
+                      this.state.volumeW}
+                    &nbsp;м<sup>3</sup>
+                  </span>
+                </div>
+                <div
+                  className="row col mx-0"
+                  style={{
+                    marginLeft: "0",
+                    marginRight: "0",
+                    maxWidth: "159px",
+                    minWidth: "159px",
+                    alignItems: "center",
+                  }}
+                >
+                  <span className="filter-input-title">
+                    Кол-во<br></br>мест
+                  </span>
+                  <Input
+                    type="number"
+                    min="0"
+                    style={{
+                      width: "79px",
+                    }}
+                    placeholder="1"
+                  />
+                </div>
+                <div
+                  className="row col mx-0"
+                  style={{
+                    maxWidth: "150px",
+                    minWidth: "150px",
+                    alignItems: "center",
+                  }}
+                >
+                  <span className="filter-input-title">
+                    Общий<br></br>вес
+                  </span>
+                  <span className="d-inline-block ml-4">= 0 кг</span>
+                </div>
+              </>
+            )}
           </div>
           <div className="row slide-step justify-content-end">
             <Button
@@ -834,6 +910,7 @@ class OfferCreate extends React.Component {
   state = {
     currentTab: 1,
     type: "offer",
+    //Step1
     car: {
       extraParams: [],
       contractParams: [],
@@ -841,10 +918,19 @@ class OfferCreate extends React.Component {
     },
     comment: false,
     budget: false,
-    cargoTypes: [],
+    //Step2
+    addressFrom: false,
+    addressTo: false,
+    startDate: false,
+    startTimeFrom: false,
+    startTimeTo: false,
+    //Step3
+    cargoType: false,
+    cargoData: [],
   };
   componentDidMount() {}
   render() {
+    console.log(this.state);
     return (
       <>
         <div className="create-page create-order-page">
@@ -865,7 +951,7 @@ class OfferCreate extends React.Component {
           </div>
           <div className="steps-create">
             <OfferCreate1
-              key="1"
+              key="OfferCreate1"
               className={`${this.state.currentTab === 1 ? "active" : ""} 
               ${this.state.currentTab > 1 ? "deactive" : ""}`}
               next={() => {
@@ -954,7 +1040,7 @@ class OfferCreate extends React.Component {
               budget={this.state.budget}
             />
             <OfferCreate2
-              key="2"
+              key="OfferCreate2"
               className={`${this.state.currentTab === 2 ? "active" : ""} ${
                 this.state.currentTab > 2 ? "deactive" : ""
               }`}
@@ -968,8 +1054,39 @@ class OfferCreate extends React.Component {
                   this.setState({ currentTab: this.state.currentTab - 1 });
                 }
               }}
+              onChangeAddress={(prop, val, callback) => {
+                switch (prop) {
+                  case "From":
+                    this.setState({ addressFrom: val }, callback);
+                    break;
+                  case "To":
+                    this.setState({ addressTo: val }, callback);
+                    break;
+                }
+              }}
+              onChangeTimeInfo={(prop, val, callback) => {
+                switch (prop) {
+                  case "date":
+                    this.setState({ startDate: val }, callback);
+                    break;
+                  case "From":
+                    this.setState({ startTimeFrom: val }, callback);
+                    break;
+                  case "To":
+                    this.setState({ startTimeTo: val }, callback);
+                    break;
+                }
+              }}
+              addressInfo={{
+                addressFrom: this.state.addressFrom,
+                addressTo: this.state.addressTo,
+                startDate: this.state.startDate,
+                startTimeFrom: this.state.startTimeFrom,
+                startTimeTo: this.state.startTimeTo,
+              }}
             />
             <OfferCreate3
+              key="OfferCreate3"
               className={`${this.state.currentTab === 3 ? "active" : ""} ${
                 this.state.currentTab > 3 ? "deactive" : ""
               }`}
@@ -983,27 +1100,22 @@ class OfferCreate extends React.Component {
                   this.setState({ currentTab: this.state.currentTab - 1 });
                 }
               }}
-              cargoTypes={this.state.cargoTypes}
-              onChangeCargoTypes={(typeId) => {
-                if (
-                  !this.state.cargoTypes.find((itemY, indexY) => {
-                    return itemY === typeId;
-                  })
-                )
-                  this.setState({
-                    cargoTypes: [...this.state.cargoTypes, typeId],
-                  });
-                else
-                  this.setState({
-                    cargoTypes: this.state.cargoTypes.filter((itemX, index) => {
-                      if (itemX === typeId) return false;
-                      else return true;
-                    }),
-                  });
+              cargoInfo={{
+                cargoType: this.state.cargoType,
+                cargoData: this.state.cargoData,
+              }}
+              onChangeCargoType={(val) => {
+                this.setState({ cargoType: val });
+              }}
+              onChangeCargoData={(prop, val) => {
+                let cargoDataX = this.state.cargoData;
+                cargoDataX[prop] = val;
+                this.setState({ cargoData: cargoDataX });
               }}
             />
 
             <OfferCreate4
+             key="OfferCreate4"
               className={`${this.state.currentTab === 4 ? "active" : ""}`}
               next={() => {
                 if (this.state.currentTab < 4) {
