@@ -4,18 +4,16 @@
  */
 "use strict";
 
-const mongoose = require("../database");
+const mongoose = require("../../database");
 const Schema = mongoose.Schema;
 //Типы машин
 const CarTypeSchema = new Schema({
+  type: { type: mongoose.Schema.Types.ObjectId, ref: "CarType" },
   name: { type: String },
-  car: {
-    type: { type: mongoose.Schema.Types.ObjectId, ref: "CarType" },
-    name: { type: String },
-    additionally: { type: Object },
-    contractInfo: { type: Object },
-    paymentInfo: { type: Object },
-  },
+  additionally: { type: Object },
+  contractInfo: { type: Object },
+  paymentInfo: { type: Object },
+
   buff: Buffer,
 });
 

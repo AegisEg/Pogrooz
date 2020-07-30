@@ -29,7 +29,6 @@ class Message extends React.Component {
     return true;
   }
   render() {
-    console.log("Message render");
     let isHistoryDate = true;
     let moreHour = false;
     if (!!this.props.prevMessage) {

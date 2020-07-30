@@ -43,42 +43,49 @@ const colourStyles = {
   menuList: (base) => ({
     paddingBottom: 0,
   }),
-  valueContainer: (base) => ({
+  valueContainer: (base, state) => ({
     ...base,
-    height: 42,
+    height: state.isMulti ? "auto" : 42,
+    minHeight: state.isMulti ? 42 : "",
     padding: "5px 15px",
+    paddingRight: "30px",
   }),
   container: (base, state) => ({
     ...base,
-    maxHeight: 42,
+    maxHeight: state.isMulti ? "auto" : 42,
     flexGrow: 1,
   }),
-  control: (base, state) => ({
-    ...base,
-    borderColor: "#B9B9B9",
-    borderBottomLeftRadius: state.menuIsOpen ? "0" : "",
-    borderBottomColor: state.menuIsOpen ? "transparent" : "",
-    borderBottomRightRadius: state.menuIsOpen ? "0" : "",
-    boxShadow: "0 0 0 0px #B9B9B9",
-    transition: "none",
-    "&:hover": {
+  control: (base, state) => {
+    let isError = state.selectProps.className.indexOf("errRequired") !== -1;
+    return {
+      ...base,
       borderColor: "#B9B9B9",
+      borderBottomLeftRadius: state.menuIsOpen ? "0" : "",
       borderBottomColor: state.menuIsOpen ? "transparent" : "",
-    },
-    "&::after": state.menuIsOpen
-      ? {
-          content: "''",
-          position: "absolute",
-          right: "0",
-          left: "0",
-          bottom: "0",
-          margin: "auto",
-          width: "90%",
-          height: "1px",
-          backgroundColor: "#B9B9B9",
-        }
-      : "",
-  }),
+      borderBottomRightRadius: state.menuIsOpen ? "0" : "",
+      boxShadow: !isError
+        ? "0 0 0 0px #B9B9B9"
+        : "0px 0px 5px 1px rgba(221, 30, 30)",
+      transition: "none",
+      "&:hover": {
+        borderColor: "#B9B9B9",
+        borderBottomColor: state.menuIsOpen ? "transparent" : "",
+      },
+      "&::after": state.menuIsOpen
+        ? {
+            content: "''",
+            position: "absolute",
+            right: "0",
+            left: "0",
+            bottom: "0",
+            margin: "auto",
+            width: "90%",
+            height: "1px",
+            backgroundColor: "#B9B9B9",
+          }
+        : "",
+    };
+  },
   option: (base, state) => ({
     padding: "5px 15px",
     cursor: "pointer",
@@ -134,6 +141,7 @@ class Select extends React.Component {
               IndicatorSeparator: () => null,
               DropdownIndicator,
             }}
+            isMulti={this.props.isMulti}
             className={`select ${this.props.className}`}
             onChange={this.props.onChange}
             placeholder={this.props.placeholder}

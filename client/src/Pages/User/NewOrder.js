@@ -1,6 +1,5 @@
 // App
 import React from "react";
-import ConfigSettings from "../../config/settings";
 // Elements
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
@@ -11,182 +10,480 @@ import CheckBox from "../../Elements/CheckBox";
 import { Link } from "react-router-dom";
 import ArticleHeader from "../../Catalog/ArticleHeader";
 import Article from "../../Catalog/Article";
-import articlestest from "../../config/articlestest.js";
+import { toast } from "react-toastify";
 import { connect } from "react-redux";
 import HeaderCreate from "../../Partials/CreateElements/HeaderCreate";
-
+import { Map, Placemark } from "react-yandex-maps";
 import { CSSTransitionGroup } from "react-transition-group";
-
+import { withCookies } from "react-cookie";
+import { withRouter } from "react-router-dom";
+//Configs
+import cargoList from "../../config/baseInfo/cargoTypesList";
+import {
+  extraParams,
+  contractParams,
+  paymentParams,
+} from "../../config/baseInfo/carParams";
+import carTypesList from "../../config/baseInfo/carTypesList";
+import cargoUnit from "../../config/baseInfo/unitCargo";
+import configApi from "../../config/api";
+//Configs
 class OrderCreate1 extends React.Component {
   state = {
-    volumeWh: 0,
-    volumeW: 0,
-    volumeH: 0,
+    isPro: false,
     cargoTypes: [],
+    cargoData: [],
+    cargoStandartData: [],
+    comment: "",
+    cargoPhoto: [],
+    errRequired: [],
+  };
+  componentDidMount() {
+    let currentCargoTypes = cargoList.filter((item) => {
+      return (
+        !!this.props.cargoTypes &&
+        !!this.props.cargoTypes.find((itemX) => {
+          return itemX === item.id;
+        })
+      );
+    });
+    //Инициализация
+    let newState = {};
+    if (this.props.cargoTypes)
+      newState = {
+        cargoTypes: this.props.cargoTypes,
+      };
+    if (currentCargoTypes.find((item) => item.isPro))
+      newState = {
+        ...newState,
+        isPro: true,
+      };
+    if (this.props.cargoData)
+      newState = {
+        ...newState,
+        cargoData: this.props.cargoData,
+      };
+    if (this.props.comment)
+      newState = {
+        ...newState,
+        comment: this.props.comment,
+      };
+    if (this.props.cargoStandartData)
+      newState = {
+        ...newState,
+        cargoStandartData: this.props.cargoStandartData,
+      };
+    this.setState({
+      ...newState,
+    });
+  }
+  getArticlesInfo() {
+    let errorArr = {};
+    let isError = false;
+    if (!this.state.cargoTypes.length) {
+      errorArr["cargoTypes"] = true;
+      isError = true;
+    }
+    if (isError) {
+      this.setState({ errRequired: { ...errorArr } });
+      return false;
+    } else {
+      return {
+        cargoTypes: this.state.cargoTypes,
+        cargoData: this.state.cargoData,
+        cargoStandartData: this.state.cargoStandartData,
+        cargoPhoto: this.state.cargoPhoto,
+        comment: this.state.comment,
+      };
+    }
+  }
+  //Динамические данные не учавствующие  в поиске
+  onChangeCargoData = (typeID, prop, val) => {
+    let cargoDataX = this.state.cargoData;
+    if (!cargoDataX[typeID]) cargoDataX[typeID] = {};
+    cargoDataX[typeID][prop] = val;
+    this.setState({ cargoData: cargoDataX });
+  };
+  //Стандартные данные который участвуют в поиске
+  onChangeCargoStandartData = (typeID, prop, val) => {
+    let cargoStandartDataX = this.state.cargoStandartData;
+    if (!cargoStandartDataX[typeID]) cargoStandartDataX[typeID] = {};
+    cargoStandartDataX[typeID][prop] = val;
+    this.setState({ cargoStandartData: cargoStandartDataX });
   };
   render() {
+    let currentCargoTypes = cargoList.filter((item) => {
+      return !!this.state.cargoTypes.find((itemX) => {
+        return itemX === item.id;
+      });
+    });
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
           <div className="box-grooz-wrapper-row align-items-start justify-content-start">
             <h4
-              className="f-16 col-12 mb-1"
+              className={`f-16 col-12 mb-1`}
               style={{
                 fontWeight: "normal",
               }}
             >
-              Тип груза
-              <Link to="/" className="href f-14 ml-4">
-                Открыть Pro список
-              </Link>
+              <span
+                className={` ${
+                  this.state.errRequired.cargoTypes ? "errRequired" : ""
+                }`}
+              >
+                Тип груза
+              </span>
+              {!currentCargoTypes.find((item) => item.isPro) && (
+                <Link
+                  to="/"
+                  className="href f-14 ml-4"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    this.setState({ isPro: !this.state.isPro });
+                  }}
+                >
+                  {!this.state.isPro && <>Открыть</>}
+                  {this.state.isPro && <>Закрыть</>} Pro список
+                </Link>
+              )}
             </h4>
-            {ConfigSettings.cargoTypes.map((item, index) => {
-              //Проверка на отмеченность
-              let isSelect =
-                !!this.state.cargoTypes.find((itemY, indexY) => {
-                  return itemY === item.id;
-                }) !== false;
-              return (
-                <div key={index} className="col box-grooz-wrapper">
-                  <div
-                    className={`box-grooz ${isSelect ? "active" : ""}`}
-                    onClick={
-                      !isSelect
-                        ? () => {
+            {!this.state.isPro && (
+              <>
+                {cargoList.map((item, index) => {
+                  if (!item.isPro) {
+                    //Проверка на отмеченность
+                    let isSelect = currentCargoTypes.find((itemX) => {
+                      return itemX.id === item.id;
+                    });
+
+                    return (
+                      <div key={index} className="col box-grooz-wrapper">
+                        <div
+                          className={`box-grooz ${isSelect ? "active" : ""}`}
+                          onClick={() => {
                             this.setState({
-                              cargoTypes: [...this.state.cargoTypes, item.id],
+                              errRequired: {
+                                ...this.state.errRequired,
+                                cargoTypes: false,
+                              },
                             });
-                          }
-                        : () => {
+
                             this.setState({
-                              cargoTypes: this.state.cargoTypes.filter(
-                                (itemX, index) => {
-                                  if (itemX === item.id) return false;
-                                  else return true;
-                                }
-                              ),
+                              cargoTypes: [item.id],
                             });
-                          }
-                    }
-                  >
-                    <div className="text-center">
-                      <img src={item.img} alt="box" />
-                      <span className="d-block">{item.label}</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                          }}
+                        >
+                          <div className="text-center">
+                            <img src={item.img} alt="box" />
+                            <span className="d-block">{item.name}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              </>
+            )}
+            {this.state.isPro && (
+              <Select
+                placeholder="Тип Груза"
+                options={cargoList.map((item) => {
+                  return {
+                    value: item.id,
+                    label: item.name,
+                  };
+                })}
+                className="selectTypeCargo"
+                value={currentCargoTypes.map((item) => {
+                  return {
+                    value: item.id,
+                    label: item.name,
+                  };
+                })}
+                onChange={(val) => {
+                  this.setState({
+                    errRequired: {
+                      ...this.state.errRequired,
+                      cargoTypes: false,
+                    },
+                  });
+                  this.setState({
+                    cargoTypes: [val.value],
+                  });
+                }}
+              />
+            )}
           </div>
           <div className="row typeGrooz">
-            <h4
-              className="f-16 col-12 mb-1"
-              style={{
-                fontWeight: "normal",
-              }}
-            >
-              Параметры одного места и количество мест
-            </h4>
-            <div
-              className="col"
-              style={{
-                maxWidth: "217px",
-                minWidth: "217px",
-              }}
-            >
-              <Select
-                type="text"
-                placeholder="Ед. измерения"
-                getRef={() => {}}
-              />
-            </div>
-            <div
-              className="col"
-              style={{
-                maxWidth: "177px",
-              }}
-            >
-              <Input type="text" style={{ width: "147px" }} placeholder="Вес" />
-            </div>
-            <div
-              className="row colspan-input px-3"
-              style={{
-                marginLeft: "0",
-                alignItems: "center",
-              }}
-            >
-              <Input
-                type="number"
-                placeholder="Длина"
-                className="text-center"
-                onChange={(e) => {
-                  this.setState({ volumeWh: e.target.value });
-                }}
-                style={{ margin: "0 0 0 0" }}
-              />
-              <Input
-                type="number"
-                placeholder="Ширина"
-                className="text-center"
-                onChange={(e) => {
-                  this.setState({ volumeW: e.target.value });
-                }}
-                style={{ margin: "0 0 0 0" }}
-              />
-              <Input
-                type="number"
-                className="text-center"
-                onChange={(e) => {
-                  this.setState({ volumeH: e.target.value });
-                }}
-                placeholder="Высота"
-              />
-              <span
-                className="filter-input-title"
-                style={{
-                  minWidth: "90px",
-                }}
-              >
-                &nbsp;&nbsp;=&nbsp;
-                {this.state.volumeH * this.state.volumeW * this.state.volumeW}
-                &nbsp;м<sup>3</sup>
-              </span>
-            </div>
-            <div
-              className="row col mx-0"
-              style={{
-                marginLeft: "0",
-                marginRight: "0",
-                maxWidth: "159px",
-                minWidth: "159px",
-                alignItems: "center",
-              }}
-            >
-              <span className="filter-input-title">
-                Кол-во<br></br>мест
-              </span>
-              <Input
-                type="number"
-                min="0"
-                style={{
-                  width: "79px",
-                }}
-                placeholder="1"
-              />
-            </div>
-            <div
-              className="row col mx-0"
-              style={{
-                maxWidth: "150px",
-                minWidth: "150px",
-                alignItems: "center",
-              }}
-            >
-              <span className="filter-input-title">
-                Общий<br></br>вес
-              </span>
-              <span className="d-inline-block ml-4">= 0 кг</span>
-            </div>
+            {!!currentCargoTypes.length &&
+              currentCargoTypes.map((item, index) => {
+                return (
+                  <div key={index} className="rowParams">
+                    <h4
+                      className="f-16 col-12 mb-1"
+                      style={{
+                        fontWeight: "normal",
+                      }}
+                    >
+                      <div className="typeName">{item.name}</div>Параметры
+                      одного места и количество мест
+                    </h4>
+                    <div className="moreParams">
+                      {item.fields &&
+                        item.fields(
+                          this.onChangeCargoData,
+                          this.state.cargoData[item.id] || []
+                        )}
+                    </div>
+                    {item.isStandart && (
+                      <div className="standartParams">
+                        <div
+                          className="col"
+                          style={{
+                            maxWidth: "217px",
+                            minWidth: "217px",
+                          }}
+                        >
+                          <Select
+                            type="text"
+                            placeholder="Ед. измерения"
+                            options={cargoUnit}
+                            value={
+                              this.state.cargoStandartData[item.id] &&
+                              this.state.cargoStandartData[item.id]["unit"]
+                                ? {
+                                    value: this.state.cargoStandartData[
+                                      item.id
+                                    ]["unit"],
+                                    label: cargoUnit.find(
+                                      (itemX) =>
+                                        itemX.value ===
+                                        this.state.cargoStandartData[item.id][
+                                          "unit"
+                                        ]
+                                    ).label,
+                                  }
+                                : ""
+                            }
+                            onChange={(val) => {
+                              this.onChangeCargoStandartData(
+                                item.id,
+                                "unit",
+                                val.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div
+                          className="col"
+                          style={{
+                            maxWidth: "177px",
+                          }}
+                        >
+                          <Input
+                            type="number"
+                            style={{ width: "147px" }}
+                            placeholder="Вес"
+                            value={
+                              this.state.cargoStandartData[item.id] &&
+                              this.state.cargoStandartData[item.id]["weight"]
+                                ? this.state.cargoStandartData[item.id][
+                                    "weight"
+                                  ]
+                                : ""
+                            }
+                            onChange={(e) => {
+                              this.onChangeCargoStandartData(
+                                item.id,
+                                "weight",
+                                e.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div
+                          className="row colspan-input px-3"
+                          style={{
+                            marginLeft: "0",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Input
+                            type="number"
+                            placeholder="Длина"
+                            className="text-center"
+                            style={{ margin: "0 0 0 0" }}
+                            value={
+                              this.state.cargoStandartData[item.id] &&
+                              this.state.cargoStandartData[item.id]["length"]
+                                ? this.state.cargoStandartData[item.id][
+                                    "length"
+                                  ]
+                                : ""
+                            }
+                            onChange={(e) => {
+                              this.setState({ volumeWh: e.target.value });
+                              this.onChangeCargoStandartData(
+                                item.id,
+                                "length",
+                                e.target.value
+                              );
+                            }}
+                          />
+                          <Input
+                            type="number"
+                            placeholder="Ширина"
+                            className="text-center"
+                            value={
+                              this.state.cargoStandartData[item.id] &&
+                              this.state.cargoStandartData[item.id]["width"]
+                                ? this.state.cargoStandartData[item.id]["width"]
+                                : ""
+                            }
+                            onChange={(e) => {
+                              this.onChangeCargoStandartData(
+                                item.id,
+                                "width",
+                                e.target.value
+                              );
+                            }}
+                            style={{ margin: "0 0 0 0" }}
+                          />
+                          <Input
+                            type="number"
+                            className="text-center"
+                            value={
+                              this.state.cargoStandartData[item.id] &&
+                              this.state.cargoStandartData[item.id]["height"]
+                                ? this.state.cargoStandartData[item.id][
+                                    "height"
+                                  ]
+                                : ""
+                            }
+                            onChange={(e) => {
+                              this.onChangeCargoStandartData(
+                                item.id,
+                                "height",
+                                e.target.value
+                              );
+                            }}
+                            placeholder="Высота"
+                          />
+                          <span
+                            className="filter-input-title"
+                            style={{
+                              minWidth: "90px",
+                            }}
+                          >
+                            &nbsp;&nbsp;=&nbsp;
+                            <div className="valumeCalculate">
+                              {this.state.cargoStandartData[item.id] &&
+                                this.state.cargoStandartData[item.id][
+                                  "height"
+                                ] &&
+                                this.state.cargoStandartData[item.id][
+                                  "width"
+                                ] &&
+                                this.state.cargoStandartData[item.id][
+                                  "length"
+                                ] && (
+                                  <>
+                                    {this.state.cargoStandartData[item.id][
+                                      "length"
+                                    ] *
+                                      this.state.cargoStandartData[item.id][
+                                        "width"
+                                      ] *
+                                      this.state.cargoStandartData[item.id][
+                                        "height"
+                                      ]}
+                                  </>
+                                )}
+                              &nbsp;
+                            </div>
+                            м<sup>3</sup>
+                          </span>
+                        </div>
+                        <div
+                          className="row col mx-0"
+                          style={{
+                            marginLeft: "0",
+                            marginRight: "0",
+                            maxWidth: "159px",
+                            minWidth: "159px",
+                            alignItems: "center",
+                          }}
+                        >
+                          <span className="filter-input-title">
+                            Кол-во<br></br>мест
+                          </span>
+                          <Input
+                            type="number"
+                            min="0"
+                            style={{
+                              width: "79px",
+                            }}
+                            placeholder="1"
+                            value={
+                              this.state.cargoStandartData[item.id] &&
+                              this.state.cargoStandartData[item.id]["count"]
+                                ? this.state.cargoStandartData[item.id]["count"]
+                                : ""
+                            }
+                            onChange={(e) => {
+                              this.onChangeCargoStandartData(
+                                item.id,
+                                "count",
+                                e.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div
+                          className="row col mx-0"
+                          style={{
+                            maxWidth: "170px",
+                            minWidth: "150px",
+                            alignItems: "center",
+                          }}
+                        >
+                          <span className="filter-input-title">
+                            Общий<br></br>вес
+                          </span>
+                          <span className="d-inline-block ml-4">
+                            =
+                            <div
+                              className="valumeCalculate"
+                              style={{
+                                maxWidth: "40px",
+                              }}
+                            >
+                              {this.state.cargoStandartData[item.id] &&
+                                this.state.cargoStandartData[item.id][
+                                  "weight"
+                                ] &&
+                                this.state.cargoStandartData[item.id][
+                                  "count"
+                                ] && (
+                                  <>
+                                    {this.state.cargoStandartData[item.id][
+                                      "weight"
+                                    ] *
+                                      this.state.cargoStandartData[item.id][
+                                        "count"
+                                      ]}
+                                  </>
+                                )}
+                            </div>
+                            кг
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
           </div>
           <div className="row">
             <div className="col-12 col-sm-6 mt-4">
@@ -203,9 +500,52 @@ class OrderCreate1 extends React.Component {
                 className="f-17"
                 paddingHorizontal="30px"
                 paddingVertical="7px"
+                onClick={() => {
+                  document.getElementById("cargoPhoto").click();
+                }}
               >
                 Загрузить
               </Button>
+              <input
+                id="cargoPhoto"
+                onChange={(e) => {
+                  let files = [];
+                  for (let i = 0; i < e.target.files.length; i++) {
+                    if (e.target.files[i].size / 1000 > 10000) {
+                      toast.error("Изображение больше 10 мб!", {
+                        position: toast.POSITION.TOP_CENTER,
+                      });
+                      continue;
+                    }
+                    if (this.state.cargoPhoto.length + files.length < 9)
+                      files.push({
+                        file: e.target.files[i],
+                        path: URL.createObjectURL(e.target.files[i]),
+                        isNew: true,
+                      });
+                    else {
+                      toast.error("Максимум 9 фото!", {
+                        position: toast.POSITION.TOP_CENTER,
+                      });
+                      break;
+                    }
+                  }
+                  if (!!files.length)
+                    this.setState({
+                      cargoPhoto: [...this.state.cargoPhoto, ...files],
+                    });
+                }}
+                type="file"
+                accept="image/jpeg,image/png"
+                hidden
+                multiple
+              />
+              <div className="cargoPhotos">
+                {!!this.state.cargoPhoto.length &&
+                  this.state.cargoPhoto.map((item, index) => {
+                    return <img key={index} src={item.path} alt="" />;
+                  })}
+              </div>
             </div>
             <div className="col-12 col-sm-6 mt-4">
               <h4
@@ -222,7 +562,13 @@ class OrderCreate1 extends React.Component {
                 style={{
                   height: "102px",
                 }}
-              ></textarea>
+                value={this.state.comment}
+                onChange={(e) => {
+                  this.setState({ comment: e.target.value });
+                }}
+              >
+                {this.state.comment}
+              </textarea>
             </div>
           </div>
           <div className="row slide-step justify-content-end">
@@ -244,6 +590,109 @@ class OrderCreate2 extends React.Component {
   state = {
     isTime: false,
     isTimeInterval: false,
+    addressFrom: false,
+    addressTo: false,
+    startDate: false,
+    startTimeFrom: false,
+    startTimeTo: false,
+    errRequired: {},
+  };
+  getArticlesInfo() {
+    let errorArr = {};
+    let isError = false;
+    if (
+      !this.state.addressFrom ||
+      Number(this.state.addressFrom.data.fias_level) !== 8
+    ) {
+      errorArr["addressFrom"] = true;
+      isError = true;
+    }
+    if (
+      !this.state.addressTo ||
+      Number(this.state.addressTo.data.fias_level) !== 8
+    ) {
+      errorArr["addressTo"] = true;
+      isError = true;
+    }
+    if (!this.state.startDate) {
+      errorArr["startDate"] = true;
+      isError = true;
+    }
+    if (isError) {
+      this.setState({ errRequired: { ...errorArr } });
+      return false;
+    } else
+      return {
+        startDate: {
+          timeFrom: this.state.startTimeFrom,
+          timeTo: this.state.startTimeTo,
+          date: this.state.startDate,
+        },
+        from: this.state.addressFrom,
+        to: this.state.addressTo,
+      };
+  }
+  componentDidMount() {
+    //Инициализация
+    let newState = {};
+    if (this.props.addressFrom)
+      newState = {
+        addressFrom: this.props.addressFrom,
+      };
+    if (this.props.addressTo)
+      newState = {
+        ...newState,
+        addressTo: this.props.addressTo,
+      };
+    if (this.props.startDate) {
+      if (this.props.startDate.date)
+        newState = {
+          ...newState,
+          startDate: this.props.startDate.date,
+        };
+      if (this.props.startDate.date)
+        newState = {
+          ...newState,
+          startTimeFrom: this.props.startDate.timeFrom,
+        };
+      if (this.props.startDate.date)
+        newState = {
+          ...newState,
+          startTimeTo: this.props.startDate.timeTo,
+        };
+    }
+    this.setState({
+      ...newState,
+    });
+  }
+  componentDidUpdate() {
+    if (this.state.startTimeFrom && !this.state.isTime)
+      this.setState({ isTime: true });
+    if (this.state.startTimeTo && !this.state.isTimeInterval)
+      this.setState({ isTimeInterval: true });
+  }
+  onChangeAddress = (prop, val, callback) => {
+    switch (prop) {
+      case "From":
+        this.setState({ addressFrom: val }, callback);
+        break;
+      case "To":
+        this.setState({ addressTo: val }, callback);
+        break;
+    }
+  };
+  onChangeTimeInfo = (prop, val, callback) => {
+    switch (prop) {
+      case "date":
+        this.setState({ startDate: val }, callback);
+        break;
+      case "From":
+        this.setState({ startTimeFrom: val }, callback);
+        break;
+      case "To":
+        this.setState({ startTimeTo: val }, callback);
+        break;
+    }
   };
   render() {
     return (
@@ -260,26 +709,123 @@ class OrderCreate2 extends React.Component {
                 Маршрут
               </h4>
               <div className="col-12 col-sm-6 mt-2">
-                <AdressSelect placeholder="Откуда" />
-                <div
+                <AdressSelect
+                  placeholder="Откуда"
+                  className={`${
+                    this.state.errRequired.addressFrom ? "errRequired" : ""
+                  }`}
+                  value={
+                    this.state.addressFrom ? this.state.addressFrom.value : ""
+                  }
+                  onChange={(val) => {
+                    if (Number(val.data.fias_level) === 8)
+                      this.setState({
+                        errRequired: {
+                          ...this.state.errRequired,
+                          addressFrom: false,
+                        },
+                      });
+
+                    this.onChangeAddress("From", val, () => {
+                      if (val.data.geo_lat && val.data.geo_lon) {
+                        this.mapFrom.panTo(
+                          [Number(val.data.geo_lat), Number(val.data.geo_lon)],
+                          {
+                            delay: 1500,
+                          }
+                        );
+                      }
+                    });
+                  }}
+                />
+                <Map
+                  instanceRef={(ref) => {
+                    this.mapFrom = ref;
+                  }}
+                  defaultState={{
+                    center: this.state.addressFrom
+                      ? [
+                          this.state.addressFrom.data.geo_lat,
+                          this.state.addressFrom.data.geo_lon,
+                        ]
+                      : [55.684758, 37.738521],
+                    zoom: 10,
+                  }}
                   style={{
                     marginTop: "21px",
-                    height: "120px",
+                    height: "220px",
                     width: "100%",
-                    backgroundColor: "#F7F7F7",
                   }}
-                ></div>
+                >
+                  {this.state.addressFrom &&
+                    this.state.addressFrom.data.geo_lat &&
+                    this.state.addressFrom.data.geo_lon && (
+                      <Placemark
+                        geometry={[
+                          this.state.addressFrom.data.geo_lat,
+                          this.state.addressFrom.data.geo_lon,
+                        ]}
+                      />
+                    )}
+                </Map>
               </div>
               <div className="col-12 col-sm-6 mt-2">
-                <AdressSelect placeholder="Куда" />
-                <div
+                <AdressSelect
+                  placeholder="Куда"
+                  className={`${
+                    this.state.errRequired.addressTo ? "errRequired" : ""
+                  }`}
+                  value={this.state.addressTo ? this.state.addressTo.value : ""}
+                  onChange={(val) => {
+                    if (Number(val.data.fias_level) === 8)
+                      this.setState({
+                        errRequired: {
+                          ...this.state.errRequired,
+                          addressTo: false,
+                        },
+                      });
+                    this.onChangeAddress("To", val, () => {
+                      if (val.data.geo_lat && val.data.geo_lon) {
+                        this.mapTo.panTo(
+                          [Number(val.data.geo_lat), Number(val.data.geo_lon)],
+                          {
+                            delay: 1500,
+                          }
+                        );
+                      }
+                    });
+                  }}
+                />
+                <Map
+                  instanceRef={(ref) => {
+                    this.mapTo = ref;
+                  }}
+                  defaultState={{
+                    center: this.state.addressTo
+                      ? [
+                          this.state.addressTo.data.geo_lat,
+                          this.state.addressTo.data.geo_lon,
+                        ]
+                      : [55.684758, 37.738521],
+                    zoom: 10,
+                  }}
                   style={{
                     marginTop: "21px",
-                    height: "120px",
+                    height: "220px",
                     width: "100%",
-                    backgroundColor: "#F7F7F7",
                   }}
-                ></div>
+                >
+                  {this.state.addressTo &&
+                    this.state.addressTo.data.geo_lat &&
+                    this.state.addressTo.data.geo_lon && (
+                      <Placemark
+                        geometry={[
+                          this.state.addressTo.data.geo_lat,
+                          this.state.addressTo.data.geo_lon,
+                        ]}
+                      />
+                    )}
+                </Map>
               </div>
             </div>
             <div className="col-xl-4 mt-2 col-12 row">
@@ -305,8 +851,21 @@ class OrderCreate2 extends React.Component {
                 </span>
                 <Input
                   type="date"
+                  className={`${
+                    this.state.errRequired.startDate ? "errRequired" : ""
+                  }`}
                   style={{ width: "130px" }}
-                  placeholder="21.12.2020"
+                  placeholder="Введите дату"
+                  value={this.state.startDate || null}
+                  onChange={(val) => {
+                    this.setState({
+                      errRequired: {
+                        ...this.state.startDate,
+                        startDate: false,
+                      },
+                    });
+                    this.onChangeTimeInfo("date", val);
+                  }}
                 />
               </div>
               <div
@@ -318,7 +877,9 @@ class OrderCreate2 extends React.Component {
               >
                 <CheckBox
                   id="isTime"
+                  value={this.state.isTime}
                   onChange={() => {
+                    if (this.state.isTime) this.onChangeTimeInfo("From", false);
                     this.setState({ isTime: !this.state.isTime });
                   }}
                   text="Указать время"
@@ -333,15 +894,20 @@ class OrderCreate2 extends React.Component {
                       maxWidth: "172px",
                     }}
                   >
-                    <CheckBox
-                      id="isTimeInterval"
-                      onChange={() => {
-                        this.setState({
-                          isTimeInterval: !this.state.isTimeInterval,
-                        });
-                      }}
-                      text="Добавить интервал"
-                    />
+                    {this.state.startTimeFrom && (
+                      <CheckBox
+                        id="isTimeInterval"
+                        onChange={() => {
+                          if (this.state.isTimeInterval)
+                            this.onChangeTimeInfo("To", false);
+                          this.setState({
+                            isTimeInterval: !this.state.isTimeInterval,
+                          });
+                        }}
+                        value={this.state.isTimeInterval}
+                        text="Добавить интервал"
+                      />
+                    )}
                   </div>
                   <div
                     className="d-inline-flex  col-12 mt-3"
@@ -353,13 +919,27 @@ class OrderCreate2 extends React.Component {
                     <span className="filter-input-title mb-0">
                       Время<br></br>погрузки
                     </span>
-                    <Input type="time" placeholder="12:00" />
+                    <Input
+                      type="time"
+                      placeholder="Введите время"
+                      value={this.state.startTimeFrom || null}
+                      onChange={(val) => {
+                        this.onChangeTimeInfo("From", val);
+                      }}
+                    />
                     {this.state.isTimeInterval && (
                       <>
                         <span className="filter-input-title mb-0">
                           &nbsp;&nbsp;-
                         </span>
-                        <Input type="time" placeholder="12:00" />
+                        <Input
+                          type="time"
+                          placeholder="Введите время"
+                          value={this.state.startTimeTo || null}
+                          onChange={(val) => {
+                            this.onChangeTimeInfo("To", val);
+                          }}
+                        />
                       </>
                     )}
                   </div>
@@ -392,44 +972,290 @@ class OrderCreate2 extends React.Component {
 }
 class OrderCreate3 extends React.Component {
   state = {
-    volumeWh: 0,
-    volumeW: 0,
-    volumeH: 0,
-    cargoTypes: [],
+    isExtra: false,
+    isContract: false,
+    isPayment: false,
+    //Step1
+    car: {},
+    isPro: false,
+    budget: false,
+    errRequired: {},
   };
+  getArticlesInfo() {
+    let errorArr = {};
+    let isError = false;
+    if (!this.state.car.typesCar || !this.state.car.typesCar.length) {
+      errorArr["typesCar"] = true;
+      isError = true;
+    }
+    if (isError) {
+      this.setState({ errRequired: { ...errorArr } });
+      return false;
+    } else
+      return {
+        car: this.state.car,
+        budget: this.state.budget,
+      };
+  }
+
+  componentDidMount() {
+    //Инициализация
+    let newState = {};
+    if (this.props.budget)
+      newState = {
+        ...newState,
+        budget: this.props.budget,
+      };
+    if (this.props.car)
+      newState = {
+        ...newState,
+        isExtra: !!this.props.car.additionally.length,
+        isContract: !!this.props.car.contractParam,
+        isPayment: !!this.props.car.paymentInfo.length,
+      };
+    this.setState({
+      car: {
+        extraParams: [],
+        contractParam: {},
+        paymentParams: [],
+        ...this.props.car,
+      },
+      ...newState,
+    });
+  }
+  getIfExit(array, item, prop) {
+    let element = false;
+    if ((element = array.find((itemX) => itemX.id == item)))
+      return element[prop] ? element[prop] : "";
+    else return "";
+  }
+  onChange = (val, prop) => {
+    let car = this.state.car;
+    switch (prop) {
+      case "carType":
+        car = { ...car, typesCar: [val] };
+        break;
+      case "carName":
+        car = { ...car, name: val };
+        break;
+      case "carPhoto":
+        car = { ...car, photo: val };
+        break;
+    }
+    this.setState({
+      car: car,
+    });
+  };
+  onChangeParams = (prop, val, isSingle = false) => {
+    let car = { ...this.state.car };
+    if (!isSingle) {
+      if (
+        car[prop].find((item) => {
+          return item.id === val;
+        })
+      ) {
+        car[prop] = car[prop].filter((item, index) => {
+          return item.id !== val;
+        });
+      } else {
+        car[prop].push({ id: val });
+      }
+      this.setState({
+        car: car,
+      });
+    } else {
+      car[prop] = { id: val };
+      this.setState({
+        car: car,
+      });
+    }
+  };
+  onChangeParamsFiels = (prop, idProp, name, val, isSingle = false) => {
+    let car = { ...this.state.car };
+    if (!isSingle) {
+      if (
+        car[prop].find((item) => {
+          return item.id === idProp;
+        })
+      ) {
+        car[prop] = car[prop].map((item) => {
+          if (item.id === idProp) {
+            item[name] = val;
+            return item;
+          } else return item;
+        });
+      }
+    } else {
+      car[prop][name] = val;
+    }
+    this.setState({
+      car: car,
+    });
+  };
+  componentDidUpdate() {
+    let isProNeedOpen =
+      this.state.car.typesCar &&
+      !!carTypesList.filter((item) => {
+        return (
+          !!this.state.car.typesCar.find((itemX) => item.id === itemX) &&
+          item.isPro
+        );
+      }).length;
+    if (!this.state.isPro && isProNeedOpen) this.setState({ isPro: true });
+  }
   render() {
+    let currentCarTypes =
+      this.state.car.typesCar && !!this.state.car.typesCar.length
+        ? carTypesList.filter((item) => {
+            return this.state.car.typesCar.find((itemX) => item.id === itemX);
+          })
+        : false;
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
           <div className="row">
-            <div className="list-type-auto-wrapper">
+            <div className="list-type-auto-wrapper col-12 col-md-8">
               <h4
-                className="f-16 mb-1 w-auto"
+                className="f-16 mb-1 w-auto "
                 style={{
                   fontWeight: "normal",
                 }}
               >
-                Тип авто
-                <Link to="/" className="href f-14 ml-4">
-                  Открыть Pro список
-                </Link>
+                <span
+                  className={`${
+                    this.state.errRequired.typesCar ? "errRequired" : ""
+                  }`}
+                >
+                  Тип авто
+                </span>
+
+                {(!currentCarTypes ||
+                  !currentCarTypes.find((item) => item.isPro)) && (
+                  <Link
+                    to="/"
+                    className="href f-14 ml-4"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.setState({ isPro: !this.state.isPro });
+                    }}
+                  >
+                    {!this.state.isPro && <>Открыть</>}
+                    {this.state.isPro && <>Закрыть</>} Pro список
+                  </Link>
+                )}
               </h4>
               <div className="list-type-auto">
-                <div>
-                  <CheckBox id="all" text="Любой"></CheckBox>
-                </div>
-                <div>
-                  <CheckBox id="all" text="Газель"></CheckBox>
-                </div>
-                <div>
-                  <CheckBox id="all" text="Самосвал"></CheckBox>
-                </div>
-                <div>
-                  <CheckBox id="all" text="Легковой"></CheckBox>
-                </div>
+                {!this.state.isPro && (
+                  <>
+                    {carTypesList.map((item, index) => {
+                      if (!item.isPro)
+                        return (
+                          <div key={index}>
+                            <CheckBox
+                              id={`carType${item.id}`}
+                              text={item.name}
+                              value={
+                                currentCarTypes &&
+                                currentCarTypes.find(
+                                  (itemX) => itemX.id === item.id
+                                )
+                              }
+                              onChange={() => {
+                                this.setState({
+                                  errRequired: {
+                                    ...this.state.errRequired,
+                                    typesCar: false,
+                                  },
+                                });
+                                let car = this.state.car;
+                                if (!car.typesCar) car.typesCar = [];
+                                if (
+                                  currentCarTypes &&
+                                  currentCarTypes.find(
+                                    (itemX) => itemX.id === item.id
+                                  )
+                                ) {
+                                  car.typesCar = car.typesCar.filter(
+                                    (itemX) => itemX !== item.id
+                                  );
+                                } else
+                                  car.typesCar = [...car.typesCar, item.id];
+
+                                this.setState({
+                                  car: car,
+                                });
+                              }}
+                            ></CheckBox>
+                          </div>
+                        );
+                      else return false;
+                    })}
+                    <div>
+                      <CheckBox
+                        id={`carTypeall`}
+                        value={currentCarTypes.length === carTypesList.length}
+                        onChange={() => {
+                          this.setState({
+                            errRequired: {
+                              ...this.state.errRequired,
+                              typesCar: false,
+                            },
+                          });
+                          let car = this.state.car;
+                          car.typesCar = carTypesList.map((item) => item.id);
+
+                          this.setState({
+                            car: car,
+                          });
+                        }}
+                        text="Любой"
+                      ></CheckBox>
+                    </div>
+                  </>
+                )}
+                {this.state.isPro && (
+                  <Select
+                    placeholder="Тип Груза"
+                    options={carTypesList.map((item) => {
+                      return {
+                        value: item.id,
+                        label: item.name,
+                      };
+                    })}
+                    isMulti={true}
+                    className="selectTypeCar"
+                    value={
+                      currentCarTypes &&
+                      currentCarTypes.map((item) => {
+                        return {
+                          value: item.id,
+                          label: item.name,
+                        };
+                      })
+                    }
+                    onChange={(val) => {
+                      this.setState({
+                        errRequired: {
+                          ...this.state.errRequired,
+                          typesCar: false,
+                        },
+                      });
+                      let car = this.state.car;
+                      if (val)
+                        val = val.map((item) => {
+                          return item.value;
+                        });
+                      else val = [];
+                      car.typesCar = val;
+                      this.setState({
+                        car: car,
+                      });
+                    }}
+                  />
+                )}
               </div>
             </div>
-            <div className="px-3  align-items-center">
+            <div className="align-items-center col-12 col-md-4">
               <h4
                 className="f-16 "
                 style={{
@@ -447,6 +1273,10 @@ class OrderCreate3 extends React.Component {
                   }}
                   type="number"
                   placeholder="0"
+                  value={this.state.budget || ""}
+                  onChange={(e) => {
+                    this.setState({ budget: e.target.value });
+                  }}
                 />
                 <span>руб</span>
               </div>
@@ -457,10 +1287,10 @@ class OrderCreate3 extends React.Component {
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
                   lableClassname="f-16"
-                  val={this.state.extraOptions}
+                  val={this.state.isExtra}
                   onChange={() => {
                     this.setState({
-                      extraOptions: !this.state.extraOptions,
+                      isExtra: !this.state.isExtra,
                     });
                   }}
                   lable="Дополнительные параметры"
@@ -474,69 +1304,50 @@ class OrderCreate3 extends React.Component {
                   display: "contents",
                 }}
               >
-                {this.state.extraOptions && (
-                  <div className="pt-2 cheked-list">
-                    <div className="mt-2">
-                      <CheckBox id="cargo" text="Попутный груз" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox
-                        id="cargo2"
-                        text="Страхование груза водителем"
-                      />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo3" text="Пломбирование" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo4" text="Мед. книжка" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo5" text="Нужны поддоны" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo6" text="Сопровождение" />
-                      <div className="mt-2 pl-4">
-                        <Select
-                          className="select175px "
-                          options={[{ value: 4, label: "1 человек" }]}
-                          placeholder="1 человек"
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12">
-                        <CheckBox id="cargo27" text="Услуги грузчика" />
-                      </div>
-                      <div className="d-flex row-parametrs">
-                        <div className="f-16">На погрузке</div>
-                        <div>
-                          <CheckBox id="asd" text="есть лифт" />
+                {this.state.isExtra && (
+                  <div className="checkboxGroup">
+                    {extraParams.map((item, index) => {
+                      return (
+                        <div key={index} className="checkboxParam">
+                          <CheckBox
+                            id={`extraParams${item.id}`}
+                            name={`extraParams${item.id}`}
+                            value={this.state.car.additionally.find(
+                              (itemX) => itemX.id == item.id
+                            )}
+                            onChange={() => {
+                              this.onChangeParams("additionally", item.id);
+                            }}
+                            text={item.name}
+                          />
+                          {item.additionFields &&
+                            this.state.car.additionally.find(
+                              (itemX) => itemX.id === item.id
+                            ) &&
+                            item.additionFields.map((itemField, index) => {
+                              return (
+                                <itemField.field
+                                  key={index}
+                                  {...itemField.props}
+                                  value={this.getIfExit(
+                                    this.state.car.additionally,
+                                    item.id,
+                                    itemField.name
+                                  )}
+                                  onChange={(e) => {
+                                    this.onChangeParamsFiels(
+                                      "additionally",
+                                      item.id,
+                                      itemField.name,
+                                      e.target.value
+                                    );
+                                  }}
+                                ></itemField.field>
+                              );
+                            })}
                         </div>
-                        <Input
-                          type="number"
-                          placeholder="1"
-                          style={{
-                            width: "79px",
-                          }}
-                        />
-                        <span className="f-14">этаж</span>
-                      </div>
-                      <div className="d-flex mt-2 row-parametrs">
-                        <div className="f-16">На выгрузке</div>
-                        <div>
-                          <CheckBox id="asd2" text="есть лифт" />
-                        </div>
-                        <Input
-                          type="number"
-                          placeholder="1"
-                          style={{
-                            width: "79px",
-                          }}
-                        />
-                        <span className="f-14">этаж</span>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </div>
                 )}
               </CSSTransitionGroup>
@@ -544,9 +1355,11 @@ class OrderCreate3 extends React.Component {
             <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
-                  val={this.state.doContract}
+                  val={this.state.isContract}
                   onChange={() => {
-                    this.setState({ doContract: !this.state.doContract });
+                    this.setState({
+                      isContract: !this.state.isContract,
+                    });
                   }}
                   lable="Заключение договора"
                 />
@@ -559,20 +1372,51 @@ class OrderCreate3 extends React.Component {
                   display: "contents",
                 }}
               >
-                {this.state.doContract && (
-                  <div className="pt-2 cheked-list">
-                    <div className="mt-2">
-                      <CheckBox id="cargo7" text="Физ лицо" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo8" text="ООО" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo9" text="ИП" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo10" text="Самозанятый" />
-                    </div>
+                {this.state.isContract && (
+                  <div className="checkboxGroup">
+                    {contractParams.map((item, index) => {
+                      return (
+                        <div key={index} className="checkboxParam">
+                          <CheckBox
+                            id={`contractParams${item.id}`}
+                            name={`contractParams`}
+                            value={this.state.car.contractParam.id === item.id}
+                            onChange={() => {
+                              this.onChangeParams(
+                                "contractParam",
+                                item.id,
+                                true
+                              );
+                            }}
+                            text={item.name}
+                          />
+                          {item.additionFields &&
+                            this.state.car.contractParam.id === item.id &&
+                            item.additionFields.map((itemField, index) => {
+                              return (
+                                <itemField.field
+                                  key={index}
+                                  {...itemField.props}
+                                  value={
+                                    this.state.car.contractParam[
+                                      itemField.props.name
+                                    ] || ""
+                                  }
+                                  onChange={(e) => {
+                                    this.onChangeParamsFiels(
+                                      "contractParam",
+                                      item.id,
+                                      itemField.props.name,
+                                      e.target.value,
+                                      true
+                                    );
+                                  }}
+                                ></itemField.field>
+                              );
+                            })}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </CSSTransitionGroup>
@@ -580,10 +1424,10 @@ class OrderCreate3 extends React.Component {
             <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">
                 <CheckBoxSwitcher
-                  val={this.state.paymentMethods}
+                  val={this.state.isPayment}
                   onChange={() => {
                     this.setState({
-                      paymentMethods: !this.state.paymentMethods,
+                      isPayment: !this.state.isPayment,
                     });
                   }}
                   lable="Способы оплаты водителю"
@@ -597,34 +1441,53 @@ class OrderCreate3 extends React.Component {
                   display: "contents",
                 }}
               >
-                {this.state.paymentMethods && (
-                  <div className="pt-2 cheked-list">
-                    <div className="mt-2">
-                      <CheckBox id="cargo11" text="Наличные" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo12" text="На банковскую карту" />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox
-                        id="cargo13"
-                        text="Блиц-перевод (перевод через систему мгновенных денежных переводов)"
-                      />
-                    </div>
-                    <div className="mt-2">
-                      <CheckBox id="cargo14" text="Безналичный расчет" />
-                      <div className="mt-2 pl-4">
-                        <Select
-                          className="select175px "
-                          options={[
-                            { value: 0, label: "не выбрано" },
-                            { value: 1, label: "с ндс" },
-                            { value: 2, label: "без ндс" },
-                          ]}
-                          placeholder="не выбрано"
-                        />
-                      </div>
-                    </div>
+                {this.state.isPayment && (
+                  <div className="checkboxGroup">
+                    {paymentParams.map((item, index) => {
+                      return (
+                        <div key={index} className="checkboxParam">
+                          <CheckBox
+                            id={`paymentParams${item.id}`}
+                            name={`paymentParams${item.id}`}
+                            value={
+                              this.state.car.paymentInfo.length &&
+                              !!this.state.car.paymentInfo.find(
+                                (itemX) => itemX.id === item.id
+                              )
+                            }
+                            onChange={() => {
+                              this.onChangeParams("paymentInfo", item.id);
+                            }}
+                            text={item.name}
+                          />
+                          {item.additionFields &&
+                            this.state.car.paymentInfo.find(
+                              (itemX) => itemX === item.id
+                            ) &&
+                            item.additionFields.map((itemField, index) => {
+                              return (
+                                <itemField.field
+                                  key={index}
+                                  {...itemField.props}
+                                  value={
+                                    this.state.car.paymentInfo[
+                                      itemField.props.name
+                                    ]
+                                  }
+                                  onChange={(e) => {
+                                    this.onChangeParamsFiels(
+                                      "paymentInfo",
+                                      item.id,
+                                      itemField.props.name,
+                                      e.target.value
+                                    );
+                                  }}
+                                ></itemField.field>
+                              );
+                            })}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </CSSTransitionGroup>
@@ -632,14 +1495,6 @@ class OrderCreate3 extends React.Component {
           </div>
 
           <div className="row slide-step justify-content-end">
-            <Button
-              type="empty"
-              className=" input-action"
-              paddingHorizontal="40px"
-              onClick={this.props.prev}
-            >
-              Назад
-            </Button>
             <Button
               type="fill"
               className=" input-action"
@@ -662,18 +1517,46 @@ class OrderCreate4 extends React.Component {
       article: {},
     },
   };
+  createAricle() {
+    let apiToken = this.props.cookies.get("apiToken");
+    let formData = new FormData();
+    formData.append("article", JSON.stringify(this.props.article));
+    if (
+      this.props.article.cargoPhoto &&
+      !!this.props.article.cargoPhoto.length
+    ) {
+      let files = [];
+      this.props.article.cargoPhoto.map((item, index) => {
+        formData.append("cargoPhoto" + index, item.file);
+      });
+    }
+    if (apiToken) {
+      fetch(`${configApi.urlApi}/api/article/createArticle`, {
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+        },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.error) this.props.history.push("/my-orders-open");
+        });
+    }
+  }
   render() {
-    let article = articlestest[0];
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="articles-block full">
           <ArticleHeader></ArticleHeader>
-          <Article
-            isManage={false}
-            onlyOpen={true}
-            singlePage={true}
-            article={article}
-          />
+          {this.props.article && (
+            <Article
+              isManage={false}
+              onlyOpen={true}
+              singlePage={true}
+              article={this.props.article}
+            />
+          )}
         </div>
         <div className="container-fluid">
           <div className="row slide-step justify-content-end">
@@ -689,7 +1572,9 @@ class OrderCreate4 extends React.Component {
               type="fill"
               className=" input-action"
               paddingHorizontal="40px"
-              onClick={() => {}}
+              onClick={() => {
+                this.createAricle();
+              }}
             >
               Опубликовать
             </Button>
@@ -699,10 +1584,52 @@ class OrderCreate4 extends React.Component {
     );
   }
 }
+let OrderCreate4Cookies = withRouter(withCookies(OrderCreate4));
+let defaultArticle = false;
 class OrderCreate extends React.Component {
+  constructor(props) {
+    super(props);
+    if (defaultArticle) this.article = defaultArticle;
+    else this.article = {};
+  }
   state = {
-    currentTab: 2,
+    currentTab: 1,
+    article: false,
   };
+  getRef(number) {
+    switch (number) {
+      case 1:
+        return this.step1;
+      case 2:
+        return this.step2;
+      case 3:
+        return this.step3;
+    }
+  }
+
+  nexTab(number) {
+    let error = false;
+    let data;
+    let article = { type: "order", status: 2 };
+    Array.from(Array(number - 1), (_, i) => i + 1).map((item) => {
+      if ((data = this.getRef(item).getArticlesInfo()))
+        article = {
+          ...article,
+          ...data,
+        };
+      else error = true;
+    });
+    if (!error) {
+      if (number === 4) {
+        this.setState(
+          { article: { ...article, autor: this.props.user } },
+          () => {
+            this.setState({ currentTab: number });
+          }
+        );
+      } else this.setState({ currentTab: number });
+    }
+  }
   render() {
     return (
       <>
@@ -711,7 +1638,7 @@ class OrderCreate extends React.Component {
             <h2 className="title">{this.props.title}</h2>
             <HeaderCreate
               changeTub={(setTub) => {
-                this.setState({ currentTab: setTub });
+                this.nexTab(setTub);
               }}
               currentTab={this.state.currentTab}
               tabs={[
@@ -724,61 +1651,63 @@ class OrderCreate extends React.Component {
           </div>
           <div className="steps-create">
             <OrderCreate1
+              ref={(ref) => (this.step1 = ref)}
               className={`${this.state.currentTab === 1 ? "active" : ""} 
               ${this.state.currentTab > 1 ? "deactive" : ""}`}
               next={() => {
-                if (this.state.currentTab < 4) {
-                  this.setState({ currentTab: this.state.currentTab + 1 });
-                }
+                this.nexTab(2);
               }}
               prev={() => {
                 if (this.state.currentTab > 1) {
                   this.setState({ currentTab: this.state.currentTab - 1 });
                 }
               }}
+              cargoTypes={this.article.cargoTypes}
+              cargoData={this.article.cargoData}
+              cargoStandartData={this.article.cargoStandartData}
+              comment={this.article.comment}
             />
             <OrderCreate2
+              ref={(ref) => (this.step2 = ref)}
               className={`${this.state.currentTab === 2 ? "active" : ""} ${
                 this.state.currentTab > 2 ? "deactive" : ""
               }`}
               next={() => {
-                if (this.state.currentTab < 4) {
-                  this.setState({ currentTab: this.state.currentTab + 1 });
-                }
+                this.nexTab(3);
               }}
               prev={() => {
                 if (this.state.currentTab > 1) {
                   this.setState({ currentTab: this.state.currentTab - 1 });
                 }
               }}
+              addressFrom={this.article.from}
+              addressTo={this.article.to}
+              startDate={this.article.startDate}
             />
             <OrderCreate3
+              ref={(ref) => (this.step3 = ref)}
               className={`${this.state.currentTab === 3 ? "active" : ""} ${
                 this.state.currentTab > 3 ? "deactive" : ""
               }`}
               next={() => {
-                if (this.state.currentTab < 4) {
-                  this.setState({ currentTab: this.state.currentTab + 1 });
-                }
+                this.nexTab(4);
               }}
               prev={() => {
                 if (this.state.currentTab > 1) {
                   this.setState({ currentTab: this.state.currentTab - 1 });
                 }
               }}
+              car={this.article.car}
+              budget={this.article.budget}
             />
-            <OrderCreate4
+            <OrderCreate4Cookies
               className={`${this.state.currentTab === 4 ? "active" : ""}`}
-              next={() => {
-                if (this.state.currentTab < 4) {
-                  this.setState({ currentTab: this.state.currentTab + 1 });
-                }
-              }}
               prev={() => {
                 if (this.state.currentTab > 1) {
                   this.setState({ currentTab: this.state.currentTab - 1 });
                 }
               }}
+              article={this.state.article}
             />
           </div>
         </div>

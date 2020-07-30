@@ -11,6 +11,7 @@ export default {
   defaultAvatar: defaultAvatar,
   defaultPassport: defaultPassport,
   defaultCar: defaultCar,
+  countArticleOnPage: 10,
   cargoTypes: [
     { id: 1, label: "Коробка", img: box },
     { id: 2, label: "Мебель", img: divan },

@@ -135,6 +135,9 @@ a {
     font-size: 20px;
   }
 }
+.search-tabs {
+  margin: 0 !important;
+}
 .lk-page .articles-header {
   padding-top: 6px;
   padding-bottom: 6px;
@@ -473,6 +476,9 @@ input[type="checkbox"] ~ label {
 .articles-block {
   width: 100%;
 }
+.selectTypeCargo {
+  padding: 0 15px;
+}
 .moreParams > * {
   padding: 0 15px;
 }
@@ -551,7 +557,6 @@ input[type="checkbox"]:checked ~ label::after,
 }
 .create-order-page .carPhoto {
   vertical-align: top;
-  margin-top: 10px;
   width: 119px;
   height: 95px;
   background-color: #d9d9d9;
@@ -763,6 +768,7 @@ input:-ms-input-placeholder {
   padding: 34px 8px;
   height: 100%;
   transition: 0.2s;
+  font-size: 14px;
 }
 header ~ div {
   min-height: 80vh;
@@ -2061,7 +2067,11 @@ a.mail {
   color: #9509ef;
   transition: all 0.2s;
 }
+.article-block .property-user img {
+  vertical-align: middle;
+}
 .article-block .property-user {
+  display: block;
   margin-top: 5px;
 }
 .property-user {
@@ -3067,15 +3077,18 @@ a.href span {
   margin: auto;
 }
 @media (max-width: 768px) {
+  .public-page ~ .header,
   .public-page .container-fluid {
     padding: 0 20px;
   }
 }
 @media (min-width: 769px) {
+  .public-page ~ .header,
   .public-page .container-fluid {
     padding: 0 70px;
   }
 }
+.public-page ~ .header,
 .public-page .container-fluid {
   max-width: 1500px;
   margin: auto;
@@ -3657,10 +3670,36 @@ a.href span {
 .typeGrooz > div {
   margin-top: 15px;
 }
+.typeGrooz .typeName {
+  color: #909090;
+  font-size: 14px;
+}
+.typeGrooz .rowParams {
+  width: 100%;
+}
+.typeGrooz .standartParams {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-bottom: 15px;
+}
+.typeGrooz .standartParams > *,
+.typeGrooz .moreParams > * {
+  padding-bottom: 15px;
+}
+.valumeCalculate {
+  display: inline-block;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
 .steps-create {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  min-height: 80vh;
 }
 .step-create:not(:last-child) {
   padding-top: 20px;
@@ -3677,6 +3716,14 @@ a.href span {
 .steps-create > .step-create.active {
   opacity: 1;
   margin-left: 0px;
+  transition: all 0.3s;
+}
+.steps-create > .step-create:not(.active) {
+  max-height: 0;
+  transition: all 0.3s;
+}
+.steps-create > .step-create.active {
+  max-height: 1000000000000px;
   transition: all 0.3s;
 }
 .steps-create > .step-create:not(.active):not(.deactive) {
@@ -5461,4 +5508,74 @@ table {
 }
 .react-dadata__suggestion-note {
   display: none !important;
+}
+.textarea.errRequired,
+.input input.errRequired,
+.inputPhoto.errRequired,
+.errRequired > input,
+.errRequired > .input-date {
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(221, 30, 30);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(221, 30, 30);
+  box-shadow: 0px 0px 5px 1px rgba(221, 30, 30);
+}
+.errRequired,
+.errRequired .react-dadata__input {
+  border-color: transparent !important;
+}
+.addPhotoCarBlock {
+  justify-content: center;
+}
+.inputPhoto {
+  display: inline-block;
+  position: relative;
+}
+.inputPhoto .placeholder {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  font-size: 17px;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.inputPhoto .placeholder:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  opacity: 1;
+}
+.inputPhoto .placeholder span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  height: 24px;
+  text-align: center;
+}
+.article-block .car-description {
+  word-wrap: break-word;
+  color: #171717;
+  font-size: 14px;
+}
+span.errRequired {
+  box-shadow: 0px 0px 5px 1px rgba(221, 30, 30);
+}
+.cargoPhotos {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+.cargoPhotos img {
+  width: 119px;
+  height: 95px;
+  object-fit: cover;
+  margin: 5px;
+}
+#root {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  flex-direction: row-reverse;
+}
+#root > * {
+  width: 100%;
 }

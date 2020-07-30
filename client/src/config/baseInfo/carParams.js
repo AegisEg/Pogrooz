@@ -34,10 +34,12 @@ let contractParams = [
   {
     id: 1,
     name: "Физ лицо",
+    label: "Договор с Физ Лицом",
   },
   {
     id: 2,
     name: "ООО",
+    label: "Договор с ООО",
     additionFields: [
       {
         field: Input,
@@ -52,6 +54,7 @@ let contractParams = [
   {
     id: 3,
     name: "ИП",
+    label: "Договор с ИП",
     additionFields: [
       {
         field: Input,
@@ -66,16 +69,18 @@ let contractParams = [
   {
     id: 4,
     name: "Самозанятый",
+    label: "Договор с самозанятым водителем",
   },
 ];
 let paymentParams = [
-  { id: 1, name: "Наличные" },
-  { id: 2, name: "На банковскую карту" },
+  { id: 1, name: "Наличные", label: "наличными" },
+  { id: 2, name: "На банковскую карту", label: "на карту банка" },
   {
     id: 3,
     name: `Блиц-перевод (перевод через систему 
     мгновенных денежных переводов)`,
+    label: "системы первода",
   },
-  { id: 4, name: "Безналичный расчет" },
+  { id: 4, name: "Безналичный расчет", label: "на р/c" },
 ];
 export { extraParams, contractParams, paymentParams };

@@ -108,8 +108,9 @@ class Input extends React.Component {
               }}
               InputProps={{
                 className: "input-date",
-              }}              
+              }}
               format="dd.MM.yyyy"
+              className={this.props.className}
               disablePast
               value={this.props.value}
               placeholder={this.props.placeholder}

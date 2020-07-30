@@ -327,12 +327,12 @@ class InputRow extends React.Component {
                 else
                   return (
                     <div key={index} style={{ display: "contents" }}>
-                      item.content
+                      {item.content}
                     </div>
                   );
               }
             })}
-          {!this.props.isMore && !this.props.onMobile && (
+          {!this.props.isMore && !this.props.onMobile && !this.props.onlyOpen && (
             <Link
               to="/"
               className="mr-3 d-640-none f-12 href more-click in-row-manage"

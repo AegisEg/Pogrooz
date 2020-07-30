@@ -28,6 +28,7 @@ if (!envFound) {
 // Routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const articleRoutes = require("./routes/article");
 const dialogsRoutes = require("./routes/dialog");
 const openApi = require("./routes/openApi");
 // Use Express as our web server
@@ -46,8 +47,9 @@ app
   )
   .use(morgan("dev"))
   // Enable routes
-  .use("/auth", authRoutes)  
+  .use("/auth", authRoutes)
   .use("/openApi", openApi)
+  .use("/api/article", articleRoutes)
   .use("/api/user", userRoutes)
   .use("/api/dialog", dialogsRoutes)
   // Serve static files

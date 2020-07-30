@@ -6,44 +6,45 @@
 
 const mongoose = require("../database");
 const Schema = mongoose.Schema;
+const autoIncrement = require("mongoose-auto-increment");
 
-// The number of rounds to use when hashing a password with bcrypt
+autoIncrement.initialize(mongoose);
 
 const ArticleSchema = new Schema({
-  autorId: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  numberID: { type: Number, default: 0 },
+  autor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   type: { type: String, enum: ["offer", "order"], select: true },
-  cargoTypes: [{ type: mongoose.Schema.Types.ObjectId, ref: "CargoType" }],
+  cargoTypes: [{ type: Number }],
+  cargoData: [{ type: Object }],
+  cargoStandartData: [{ type: Object }],
   cargoPhoto: [{ type: Object }],
+  status: { type: Number },
   car: {
-    type: { type: mongoose.Schema.Types.ObjectId, ref: "CarType" },
+    typesCar: [{ type: Number }],
     name: { type: String },
     photo: { type: Object },
-    additionally: { type: Object },
+    additionally: [{ type: Object }],
     contractInfo: { type: Object },
-    paymentInfo: { type: Object },
+    paymentInfo: [{ type: Object }],
   },
   carTemplate: { type: mongoose.Schema.Types.ObjectId, ref: "CarTemplate" },
   comment: { type: String },
   budget: { type: Number },
-  paramOnePlace: {
-    type: Object,
-  },
-  from: {
-    coords: String,
-    description: String,
-  },
-  to: {
-    coords: String,
-    description: String,
-  },
+  from: { type: Object },
+  to: { type: Object },
   startDate: {
-    date,
-    timeFrom,
-    timeTo,
+    date: Date,
+    timeFrom: Date,
+    timeTo: Date,
   },
   updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
   buff: Buffer,
+});
+
+ArticleSchema.plugin(autoIncrement.plugin, {
+  model: "Article",
+  field: "articleId",
 });
 
 const Article = mongoose.model("Article", ArticleSchema);
