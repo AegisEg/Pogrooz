@@ -65,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "compression-webpack-plugin": "^4.0.0",
     "terser": "^3.14.1"
   }
 }
