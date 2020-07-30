@@ -430,15 +430,16 @@ class Dialog extends React.Component {
         file: InputFile.files[i],
         percentage: 0,
       });
+      counter++;
+      this.setState(
+        {
+          loadingFiles: [...this.state.loadingFiles, ...newFiles],
+        },
+        () => {
+          if (this.canLoadAttach) this.recursiveLoad();
+        }
+      );
     }
-    this.setState(
-      {
-        loadingFiles: [...this.state.loadingFiles, ...newFiles],
-      },
-      () => {
-        if (this.canLoadAttach) this.recursiveLoad();
-      }
-    );
   }
   async addFile(fileUrl, fileBlob) {
     let sounds = [...this.state.sounds];
@@ -731,17 +732,26 @@ class Dialog extends React.Component {
                                 : Math.floor(item.size / 1024) + "Кб."}
                             </div>
                           </div>
+                          <img
+                            className="attachDelete"
+                            src={attachDelete}
+                            onClick={() => {
+                              this.setState({
+                                files: this.state.files.filter(
+                                  (item, indexR) => {
+                                    return indexR != index;
+                                  }
+                                ),
+                              });
+                            }}
+                            alt="attachDelete"
+                          />
                         </div>
-                        <img
-                          className="attachDelete"
-                          src={attachDelete}
-                          alt="attachDelete"
-                        />
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </Scrollbars>
             </div>
           </div>
         </div>
