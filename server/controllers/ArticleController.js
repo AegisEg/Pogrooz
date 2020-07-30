@@ -6,7 +6,6 @@
 
 const Article = require("../models/Article");
 const carTemplate = require("../models/Car/carTemplate");
-const User = require("../models/User");
 const { Error } = require("mongoose");
 
 module.exports = {
