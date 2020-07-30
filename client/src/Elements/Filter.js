@@ -77,7 +77,7 @@ class Filter extends React.Component {
                   this.setState({ showPop1: true });
                 }}
               >
-                <AdressSelect />
+                <AdressSelect placeholder="Откуда" />
                 {this.state.showPop1 && (
                   <div className="pop-block">
                     Начните вводить адрес с области
@@ -96,7 +96,7 @@ class Filter extends React.Component {
                   this.setState({ showPop2: true });
                 }}
               >
-                <Input type="text" placeholder="Куда" />
+                <AdressSelect placeholder="Куда" />
                 {this.state.showPop2 && (
                   <div className="pop-block">
                     Начните вводить адрес с области

@@ -98,7 +98,7 @@ class OfferCreate1 extends React.Component {
           </div>
         </div>
 
-        <div className="row order-swicher-wrapper">
+        <div className="row swicher-wrapper">
           <div className="col-sm-6 col-md-4">
             <div className="CheckBoxSwitcher-wrapper">
               <CheckBoxSwitcher

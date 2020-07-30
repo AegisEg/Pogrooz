@@ -285,7 +285,6 @@ module.exports = {
       req.body["sounds"] = JSON.parse(req.body["sounds"]);
       for (let i = 0; i < 10; i++) {
         if (!req.body["sounds"][i] || nowCount >= maxCount) break;
-        console.log(req.body["sounds"].length);
         sounds.push({
           path: req.body["sounds"][i].path,
           name: req.body["sounds"][i].name,

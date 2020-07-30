@@ -9,7 +9,7 @@ class CheckBox extends React.Component {
           type="checkbox"
           id={this.props.id}
           name={this.props.name}
-          checked={this.props.value}
+          checked={this.props.value || ""}
           className={`input-${this.props.type}`}
           onChange={this.props.onChange ? this.props.onChange : () => {}}
         />

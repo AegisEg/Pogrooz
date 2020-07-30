@@ -32,6 +32,7 @@ export function setTitle(path, routeArray) {
 class AppRouter extends React.Component {
   state = {
     isRender: false,
+    isPublic: false,
   };
   componentDidMount() {
     this.props.history.listen(() => {
@@ -48,12 +49,12 @@ class AppRouter extends React.Component {
           Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${apiToken}`,
-        }
+        },
       })
         .then((response) => response.json())
         .then((user) => {
           SocketController.init(apiToken);
-          this.props.userActions.loginUser(user,apiToken);
+          this.props.userActions.loginUser(user, apiToken);
           this.setState({ isRender: true });
         })
         .catch(() => {
@@ -128,6 +129,8 @@ class AppRouter extends React.Component {
               <NoMatch />
             </this.PublicRoute>
           </Switch>
+
+          <Header />
         </>
       )
     );
@@ -141,7 +144,6 @@ class AppRouter extends React.Component {
           this.props.user.isAuth ? (
             !role || this.props.user.type === role ? (
               <>
-                <Header className="different-width" />
                 <div className="row mx-0">
                   <SideNav />
                   <div className="content col">
@@ -167,7 +169,7 @@ class AppRouter extends React.Component {
     );
   };
 
-  AuthRoute = ({ children, ...rest }) => {
+  AuthRoute = ({ children, ref, ...rest }) => {
     return (
       <div className="public-page">
         <Route
@@ -175,7 +177,6 @@ class AppRouter extends React.Component {
           render={() =>
             !this.props.user.isAuth ? (
               <>
-                <Header />
                 {children}
                 <Footer />
               </>
@@ -198,7 +199,6 @@ class AppRouter extends React.Component {
           {...rest}
           render={() => (
             <>
-              <Header />
               {children}
               <Footer />
             </>
@@ -214,7 +214,6 @@ class AppRouter extends React.Component {
         render={() =>
           this.props.user.isAuth ? (
             <>
-              <Header className="different-width" />
               <div className="row mx-0">
                 <SideNav />
                 <div className="content col">
@@ -225,11 +224,8 @@ class AppRouter extends React.Component {
             </>
           ) : (
             <>
-              <div className="public-page">
-                <Header />
-                <div className="page-common">{children}</div>
-                <Footer />
-              </div>
+              <div className="page-common">{children}</div>
+              <Footer />
             </>
           )
         }

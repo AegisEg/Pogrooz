@@ -15,13 +15,19 @@ import yellowAngle from "../img/yellowAngle.svg";
 import profileOk from "../img/profile-ok.png";
 import geolocation from "../img/geolocation.png";
 import otmena from "../img/otmena.svg";
-
 import basket from "../img/basket.png";
-
 // Router
 import { Link } from "react-router-dom";
-
+//Configs
+import CargoTypeList from "../config/baseInfo/cargoTypesList";
+import {
+  extraParams,
+  contractParams,
+  paymentParams,
+} from "../config/baseInfo/carParams";
 import { Map } from "react-yandex-maps";
+import carTypesList from "../config/baseInfo/carTypesList.js";
+import settings from "../config/settings";
 
 class Article extends React.Component {
   state = {
@@ -33,7 +39,7 @@ class Article extends React.Component {
     isHoverHref: false,
   };
   renderStatus = () => {
-    if (this.props.article.user.id == this.props.user.id)
+    if (this.props.article.autor.id == this.props.user.id)
       return (
         <div className="status-area">
           {this.props.article.status === 1 && (
@@ -143,9 +149,23 @@ class Article extends React.Component {
           {!this.state.onMobile ? (
             <>
               <div className="row position-relative">
-                <div className="ID-col">{this.props.article.id}</div>
+                <div className="ID-col">
+                  {this.props.article.articleId || ""}
+                </div>
                 <div className="car-col">
-                  <span>{this.props.article.carName}</span>
+                  <div className="car-description">
+                    {this.props.article.car.typesCar.map(
+                      (item, index, items) => {
+                        let type = carTypesList.find(
+                          (itemX) => item === itemX.id
+                        );
+                        return (
+                          type.name + (items.length - 1 === index ? "." : ", ")
+                        );
+                      }
+                    )}
+                  </div>
+                  <span>{this.props.article.car.name}</span>
                   <CSSTransitionGroup
                     transitionName="height-animation-item"
                     transitionEnterTimeout={500}
@@ -154,26 +174,28 @@ class Article extends React.Component {
                       display: "contents",
                     }}
                   >
-                    {this.state.showMore ||
-                      (this.props.onlyOpen && (
+                    {(this.state.showMore || this.props.onlyOpen) &&
+                      this.props.article.car.photo && (
                         <img
                           className="w-100  moreinfo"
                           onClick={() => {
                             this.setState({
                               dataFancybox: {
-                                images: [{ path: this.props.article.carImg }],
+                                images: [
+                                  { path: this.props.article.car.photo.path },
+                                ],
                                 index: 0,
                               },
                             });
                           }}
-                          src={this.props.article.carImg}
+                          src={this.props.article.car.photo.path}
                           alt=""
                         />
-                      ))}
+                      )}
                   </CSSTransitionGroup>
                 </div>
                 <div className="FromL-col">
-                  <span>{this.props.article.fromLocation}</span>
+                  <span>{this.props.article.from.value}</span>
 
                   <CSSTransitionGroup
                     transitionName="height-animation-item"
@@ -201,7 +223,7 @@ class Article extends React.Component {
                   </CSSTransitionGroup>
                 </div>
                 <div className="ToLoc-col">
-                  <span>{this.props.article.toLocation}</span>
+                  <span>{this.props.article.to.value}</span>
                   <CSSTransitionGroup
                     transitionName="height-animation-item"
                     transitionEnterTimeout={500}
@@ -229,16 +251,50 @@ class Article extends React.Component {
                 </div>
                 <div className="Grooz-col">
                   <span>
-                    <span className="d-block">
-                      {this.props.article.parametrs}
-                      <br />
-                      {this.props.article.count}
-                    </span>
-                    <br />
-                    {this.props.article.cargo.map((item, index) => {
+                    {this.props.article.cargoTypes.map((item, index) => {
                       return (
                         <span key={index} className="d-block">
-                          {item}
+                          {CargoTypeList.find((itemX) => itemX.id == item).name}
+                          {CargoTypeList.find((itemX) => itemX.id == item)
+                            .isStandart &&
+                            this.props.article.cargoStandartData[item] && (
+                              <div className="property-cargo">
+                                {
+                                  this.props.article.cargoStandartData[item]
+                                    .weight
+                                }
+                                кг/
+                                {this.props.article.cargoStandartData[item]
+                                  .length *
+                                  this.props.article.cargoStandartData[item]
+                                    .width *
+                                  this.props.article.cargoStandartData[item]
+                                    .height}
+                                <span>
+                                  м<sup>3</sup>
+                                </span>
+                                <div>
+                                  {
+                                    this.props.article.cargoStandartData[item]
+                                      .count
+                                  }
+                                  шт
+                                </div>
+                              </div>
+                            )}
+                          {this.props.article.cargoData[item] && (
+                            <div className="property-cargo">
+                              {Object.entries(
+                                this.props.article.cargoData[item]
+                              ).map((item) => {
+                                return (
+                                  <div>
+                                    {item[0]}:{item[1]}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
                         </span>
                       );
                     })}
@@ -246,20 +302,41 @@ class Article extends React.Component {
                 </div>
                 <div className="Date-col">
                   <span>
-                    {this.props.article.date.date}
-                    <br />
-                    <br />
-                    {this.props.article.date.time}
+                    {new Date(this.props.article.startDate.date).toDateR()}
+                    {this.props.article.startDate.timeFrom && (
+                      <>
+                        <br />
+                        <br />
+                        {new Date(
+                          this.props.article.startDate.timeFrom
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                      </>
+                    )}
+                    {this.props.article.startDate.timeTo && (
+                      <>
+                        до
+                        <br />
+                        {new Date(
+                          this.props.article.startDate.timeTo
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </>
+                    )}
                   </span>
                 </div>
                 <div className="Price-col">
-                  <span>{this.props.article.price}</span>
+                  <span>{this.props.article.budget} руб</span>
                 </div>
                 <div className="More-col">
                   <span>
                     Рейтинг: &nbsp;
                     <span className="d-inline-block">
-                      {this.props.article.rating}
+                      2
                       <img
                         src={ImgActiveStar}
                         style={{
@@ -281,7 +358,7 @@ class Article extends React.Component {
                     onMouseLeave={() => {
                       this.setState({ isHoverHref: false });
                     }}
-                    to={`/order/${this.props.article.id}`}
+                    to={`/${this.props.article.type}/${this.props.article.articleId}`}
                   ></Link>
                 )}
               </div>
@@ -290,27 +367,27 @@ class Article extends React.Component {
             <>
               <div className="row mobile-row-article">
                 <div className="col-12 ">
-                  <span>#{this.props.article.id}</span>
-                  <span className="ml-3">{this.props.article.carName}</span>
+                  <span>#{this.props.article.numberID}</span>
+                  <span className="ml-3">{this.props.article.car.name}</span>
                   {this.props.onlyOpen && (
                     <img
                       className="moreinfo"
                       onClick={() => {
                         this.setState({
                           dataFancybox: {
-                            images: [{ path: this.props.article.carImg }],
+                            images: [{ path: this.props.article.car.photo }],
                             index: 0,
                           },
                         });
                       }}
-                      src={this.props.article.carImg}
+                      src={this.props.article.car.photo}
                       alt=""
                     />
                   )}
                 </div>
                 <div className="col-12 col-sm-4 ">
                   <h3 className="title-column">Откуда</h3>
-                  <span>{this.props.article.fromLocation}</span>
+                  <span>{this.props.article.from.value}</span>
                   {this.props.onlyOpen && (
                     <div
                       className="moreinfo"
@@ -328,7 +405,7 @@ class Article extends React.Component {
                 </div>
                 <div className="col-12 col-sm-4 pr-0 pr-sm-2">
                   <h3 className="title-column">Куда</h3>
-                  <span>{this.props.article.toLocation}</span>
+                  <span>{this.props.article.to.value}</span>
                   {this.props.onlyOpen && (
                     <div
                       className="moreinfo"
@@ -346,35 +423,50 @@ class Article extends React.Component {
                 </div>
                 <div className="col-6 col-sm-4  pl-sm-2">
                   <h3 className="title-column">Груз</h3>
-                  {this.props.article.cargo.map((item, i) => {
+                  {this.props.article.cargoTypes.map((item, index) => {
                     return (
-                      <span key={i} className="d-block">
-                        {item}
+                      <span key={index} className="d-block">
+                        {CargoTypeList.find((itemX) => itemX.id == item).name}
                       </span>
                     );
                   })}
                 </div>
                 <div className="col-6 col-sm ">
                   <h3 className="title-column">Параметры</h3>
-                  <span>{this.props.article.parametrs}</span>
                 </div>
                 <div className="col  pl-sm-3">
                   <h3 className="title-column">Дата</h3>
-                  <span>{this.props.article.date.date}</span>
+                  <span>
+                    {new Date(this.props.article.startDate.date).toDateR()}
+                  </span>
                 </div>
                 <div className="col d-none d-sm-block">
                   <h3 className="title-column">Время</h3>
-                  <span>{this.props.article.date.time}</span>
+                  <span>
+                    {new Date(
+                      this.props.article.startDate.timeFrom
+                    ).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}{" "}
+                    до{" "}
+                    {new Date(
+                      this.props.article.startDate.timeTo
+                    ).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
                 </div>
                 <div className="col">
                   <h3 className="title-column">Цена</h3>
-                  <span>{this.props.article.price}</span>
+                  <span>{this.props.article.budget}</span>
                 </div>
                 <div className="col pr-0">
                   <h3 className="title-column">Рейтинг</h3>
                   <span>
                     <span className="d-inline-block">
-                      {this.props.article.rating}
+                      3
                       <img src={ImgActiveStar} alt="ImgActiveStar" />
                     </span>
                   </span>
@@ -390,54 +482,111 @@ class Article extends React.Component {
             {(this.state.showMore || this.props.onlyOpen) && (
               <div className="row moreinfo_block">
                 <div className="col-12 mb-3">
-                  {this.props.article.tags.map((item, i) => {
-                    return (
-                      <span
-                        key={i}
-                        className="d-inline-block position-relative left-angle"
-                      >
-                        {item}
-                      </span>
-                    );
-                  })}
+                  {this.props.article.car.additionally &&
+                    this.props.article.car.additionally.map((item, i) => {
+                      return (
+                        <span
+                          key={i}
+                          className="d-inline-block position-relative left-angle"
+                        >
+                          {
+                            extraParams.find((itemX) => item.id === itemX.id)
+                              .name
+                          }
+                        </span>
+                      );
+                    })}
                 </div>
-                <div className="col mx-0 row">
+                <div className="col row">
                   <div className="col-12 col-sm user-avatar-wrapper">
                     <img
-                      src={this.props.article.user.avatar}
+                      src={settings.defaultAvatar}
                       className="user-avatar"
                       alt="avatar"
                     />
                   </div>
                   <div className="col text-left ">
                     <div className="fio">
-                      <Link to="/user/1">{this.props.article.user.fio}</Link>
+                      <Link to="/user/1">
+                        {this.props.article.autor.name.last}{" "}
+                        {this.props.article.autor.name.first}{" "}
+                        {this.props.article.autor.name.middle}
+                      </Link>
                     </div>
                     <div className="mt-2">
-                      {this.props.article.user.passport && (
+                      {/* this.props.article.autor.passport  */}
+                      {true && (
                         <span className="property-user d-block">
                           <img src={passport} alt="passport" />
                           Пасспорт загружен
                         </span>
                       )}
-                      {this.props.article.user.dogovor && (
-                        <span className="property-user">
-                          <img src={dogovor} alt="dogovor" />
-                          Договор с ИП, ООО
-                        </span>
-                      )}
-                      {this.props.article.user.paynal && (
-                        <span className="property-user">
-                          <img src={payIco} alt="payIco" />
-                          Оплата наличными, на р/c
-                        </span>
-                      )}
+                      {this.props.article.car.contractParam &&
+                        !!this.props.article.car.contractParam &&
+                        Object.keys(this.props.article.car.contractParam)
+                          .length !== 0 &&
+                        this.props.article.car.contractParam.constructor !==
+                          Object && (
+                          <span className="property-user">
+                            <img src={dogovor} alt="dogovor" />
+                            {
+                              contractParams.find(
+                                (item) =>
+                                  item.id ===
+                                  this.props.article.car.contractParam.id
+                              ).label
+                            }
+                          </span>
+                        )}
+                      {this.props.article.car.paymentInfo &&
+                        !!this.props.article.car.paymentInfo.length && (
+                          <span className="property-user">
+                            <img src={payIco} alt="dogovor" />
+                            Оплата{" "}
+                            {this.props.article.car.paymentInfo.map(
+                              (item, index, items) => {
+                                return (
+                                  paymentParams.find(
+                                    (itemX) => itemX.id === item.id
+                                  ).label +
+                                  (items.length - 1 === index ? "." : ",")
+                                );
+                              }
+                            )}
+                          </span>
+                        )}
                     </div>
                   </div>
                 </div>
                 <div className="col-12 col-sm content">
                   <div>
-                    <b>Комментарий:</b> {this.props.article.comments}
+                    <b>Комментарий:</b> {this.props.article.comment}
+                    {this.props.article.type === "order" && (
+                      <div className="imgs-content">
+                        {this.props.article.cargoPhoto.map((item, index) => {
+                          return (
+                            <img
+                              key={index}
+                              src={item.path}
+                              onClick={() => {
+                                this.setState({
+                                  dataFancybox: {
+                                    images: this.props.article.cargoPhoto,
+                                    index: index,
+                                  },
+                                });
+                              }}
+                              alt={index}
+                              style={{
+                                width: "75px",
+                                height: "57px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                   <div className="imgs-content">
                     {this.props.article.images &&
@@ -474,7 +623,7 @@ class Article extends React.Component {
               <InputRow
                 article={this.props.article}
                 onMobile={this.state.onMobile}
-                isManage={this.props.article.user.id == this.props.user.id}
+                isManage={this.props.article.autor.id == this.props.user.id}
                 onlyOpen={this.props.onlyOpen}
                 user={this.props.user}
                 articleOpen={this.state.showMore}

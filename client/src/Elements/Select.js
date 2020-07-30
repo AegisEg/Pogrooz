@@ -1,6 +1,7 @@
 // App
 import React from "react";
 import SelectX, { components } from "react-select";
+import SelectAsync from "react-select/async";
 //SVG
 import svgIcon from "../img/icon_angle.svg";
 
@@ -42,42 +43,49 @@ const colourStyles = {
   menuList: (base) => ({
     paddingBottom: 0,
   }),
-  valueContainer: (base) => ({
+  valueContainer: (base, state) => ({
     ...base,
-    height: 42,
+    height: state.isMulti ? "auto" : 42,
+    minHeight: state.isMulti ? 42 : "",
     padding: "5px 15px",
+    paddingRight: "30px",
   }),
   container: (base, state) => ({
     ...base,
-    maxHeight: 42,
+    maxHeight: state.isMulti ? "auto" : 42,
     flexGrow: 1,
   }),
-  control: (base, state) => ({
-    ...base,
-    borderColor: "#B9B9B9",
-    borderBottomLeftRadius: state.menuIsOpen ? "0" : "",
-    borderBottomColor: state.menuIsOpen ? "transparent" : "",
-    borderBottomRightRadius: state.menuIsOpen ? "0" : "",
-    boxShadow: "0 0 0 0px #B9B9B9",
-    transition: "none",
-    "&:hover": {
+  control: (base, state) => {
+    let isError = state.selectProps.className.indexOf("errRequired") !== -1;
+    return {
+      ...base,
       borderColor: "#B9B9B9",
+      borderBottomLeftRadius: state.menuIsOpen ? "0" : "",
       borderBottomColor: state.menuIsOpen ? "transparent" : "",
-    },
-    "&::after": state.menuIsOpen
-      ? {
-          content: "''",
-          position: "absolute",
-          right: "0",
-          left: "0",
-          bottom: "0",
-          margin: "auto",
-          width: "90%",
-          height: "1px",
-          backgroundColor: "#B9B9B9",
-        }
-      : "",
-  }),
+      borderBottomRightRadius: state.menuIsOpen ? "0" : "",
+      boxShadow: !isError
+        ? "0 0 0 0px #B9B9B9"
+        : "0px 0px 5px 1px rgba(221, 30, 30)",
+      transition: "none",
+      "&:hover": {
+        borderColor: "#B9B9B9",
+        borderBottomColor: state.menuIsOpen ? "transparent" : "",
+      },
+      "&::after": state.menuIsOpen
+        ? {
+            content: "''",
+            position: "absolute",
+            right: "0",
+            left: "0",
+            bottom: "0",
+            margin: "auto",
+            width: "90%",
+            height: "1px",
+            backgroundColor: "#B9B9B9",
+          }
+        : "",
+    };
+  },
   option: (base, state) => ({
     padding: "5px 15px",
     cursor: "pointer",
@@ -89,36 +97,75 @@ const colourStyles = {
 };
 class Select extends React.Component {
   render() {
-    return (
-      <>
-        <SelectX
-          theme={{ borderRadius: 20 }}
-          components={{
-            IndicatorSeparator: () => null,
-            DropdownIndicator,
-          }}
-          className={`select ${this.props.className}`}
-          onChange={this.props.onChange}
-          placeholder={this.props.placeholder}
-          ref={(ref) => {
-            if (this.props.getRef) {
-              this.select = ref;
-              this.props.getRef(ref);
+    if (this.props.async)
+      return (
+        <>
+          <SelectAsync
+            theme={{ borderRadius: 20 }}
+            components={{
+              IndicatorSeparator: () => null,
+              DropdownIndicator,
+            }}
+            cacheOptions
+            defaultOptions
+            loadOptions={this.props.loadOptions}
+            className={`select ${this.props.className}`}
+            onChange={this.props.onChange}
+            isSearchable={this.props.isSearchable}
+            placeholder={this.props.placeholder}
+            value={this.props.value}
+            ref={(ref) => {
+              if (this.props.getRef) {
+                this.select = ref;
+                this.props.getRef(ref);
+              }
+            }}
+            noOptionsMessage={
+              this.props.noOptionsMessage
+                ? this.props.noOptionsMessage
+                : () =>
+                    this.props.notFoundText
+                      ? this.props.notFoundText
+                      : "Нет элементов"
             }
-          }}
-          noOptionsMessage={
-            this.props.noOptionsMessage
-              ? this.props.noOptionsMessage
-              : () =>
-                  this.props.notFoundText
-                    ? this.props.notFoundText
-                    : "Нет элементов"
-          }
-          styles={colourStyles}
-          options={this.props.options}
-        />
-      </>
-    );
+            styles={colourStyles}
+          />
+        </>
+      );
+    else
+      return (
+        <>
+          <SelectX
+            theme={{ borderRadius: 20 }}
+            components={{
+              IndicatorSeparator: () => null,
+              DropdownIndicator,
+            }}
+            isMulti={this.props.isMulti}
+            className={`select ${this.props.className}`}
+            onChange={this.props.onChange}
+            placeholder={this.props.placeholder}
+            ref={(ref) => {
+              if (this.props.getRef) {
+                this.select = ref;
+                this.props.getRef(ref);
+              }
+            }}
+            value={this.props.value}
+            isSearchable={this.props.isSearchable}
+            noOptionsMessage={
+              this.props.noOptionsMessage
+                ? this.props.noOptionsMessage
+                : () =>
+                    this.props.notFoundText
+                      ? this.props.notFoundText
+                      : "Нет элементов"
+            }
+            styles={colourStyles}
+            options={this.props.options}
+          />
+        </>
+      );
   }
 }
 

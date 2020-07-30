@@ -135,6 +135,9 @@ a {
     font-size: 20px;
   }
 }
+.search-tabs {
+  margin: 0 !important;
+}
 .lk-page .articles-header {
   padding-top: 6px;
   padding-bottom: 6px;
@@ -473,6 +476,12 @@ input[type="checkbox"] ~ label {
 .articles-block {
   width: 100%;
 }
+.selectTypeCargo {
+  padding: 0 15px;
+}
+.moreParams > * {
+  padding: 0 15px;
+}
 input[type="checkbox"]:checked ~ label::after,
 .left-angle:before {
   content: "";
@@ -528,9 +537,30 @@ input[type="checkbox"]:checked ~ label::after,
     max-width: 166px;
   }
 }
-.create-page .carType > div {
+@media (min-width: 552px) {
+  .create-page .carType {
+    width: 230px;
+  }
+}
+.create-page .carInfo > div {
   padding: 0 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+.create-page .carInfo .carName {
+  flex: 1;
+  max-width: 100%;
+}
+@media (max-width: 551px) {
+  .create-page .carInfo > div {
+    width: 100%;
+  }
+}
+.create-order-page .carPhoto {
+  vertical-align: top;
+  width: 119px;
+  height: 95px;
+  background-color: #d9d9d9;
+  object-fit: cover;
 }
 .filter-input-title {
   line-height: 16px;
@@ -738,6 +768,7 @@ input:-ms-input-placeholder {
   padding: 34px 8px;
   height: 100%;
   transition: 0.2s;
+  font-size: 14px;
 }
 header ~ div {
   min-height: 80vh;
@@ -1903,16 +1934,6 @@ a.mail {
 .border-yellow {
   border-color: #ffd12c;
 }
-@media (max-width: 768px) {
-  .create-page .carType > div {
-    width: 200px;
-  }
-}
-@media (min-width: 769px) {
-  .create-page .carType > div {
-    width: 230px;
-  }
-}
 @media (max-width: 992px) {
   .articles-header {
     display: none;
@@ -2046,7 +2067,11 @@ a.mail {
   color: #9509ef;
   transition: all 0.2s;
 }
+.article-block .property-user img {
+  vertical-align: middle;
+}
 .article-block .property-user {
+  display: block;
   margin-top: 5px;
 }
 .property-user {
@@ -3052,15 +3077,18 @@ a.href span {
   margin: auto;
 }
 @media (max-width: 768px) {
+  .public-page ~ .header,
   .public-page .container-fluid {
     padding: 0 20px;
   }
 }
 @media (min-width: 769px) {
+  .public-page ~ .header,
   .public-page .container-fluid {
     padding: 0 70px;
   }
 }
+.public-page ~ .header,
 .public-page .container-fluid {
   max-width: 1500px;
   margin: auto;
@@ -3406,7 +3434,7 @@ a.href span {
   }
 }
 /* CheckBoxSwitcher*/
-.order-swicher-wrapper > div {
+.swicher-wrapper > div {
   display: flex;
   flex-wrap: wrap;
   margin-top: 40px;
@@ -3414,6 +3442,12 @@ a.href span {
 .CheckBoxSwitcher-wrapper {
   width: 100%;
   display: flex;
+}
+.swicher-wrapper .checkboxGroup {
+  margin-top: 20px;
+}
+.swicher-wrapper .checkboxParam {
+  margin-bottom: 8px;
 }
 .CheckBoxSwitcher {
   background: #eeeeee;
@@ -3491,7 +3525,7 @@ a.href span {
   line-height: 15px;
   font-size: 14px;
 }
-.create-page .carType {
+.create-page .carInfo {
   align-content: flex-start;
 }
 @media (max-width: 480px) {
@@ -3636,10 +3670,36 @@ a.href span {
 .typeGrooz > div {
   margin-top: 15px;
 }
+.typeGrooz .typeName {
+  color: #909090;
+  font-size: 14px;
+}
+.typeGrooz .rowParams {
+  width: 100%;
+}
+.typeGrooz .standartParams {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-bottom: 15px;
+}
+.typeGrooz .standartParams > *,
+.typeGrooz .moreParams > * {
+  padding-bottom: 15px;
+}
+.valumeCalculate {
+  display: inline-block;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
 .steps-create {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  min-height: 80vh;
 }
 .step-create:not(:last-child) {
   padding-top: 20px;
@@ -3656,6 +3716,14 @@ a.href span {
 .steps-create > .step-create.active {
   opacity: 1;
   margin-left: 0px;
+  transition: all 0.3s;
+}
+.steps-create > .step-create:not(.active) {
+  max-height: 0;
+  transition: all 0.3s;
+}
+.steps-create > .step-create.active {
+  max-height: 1000000000000px;
   transition: all 0.3s;
 }
 .steps-create > .step-create:not(.active):not(.deactive) {
@@ -3681,8 +3749,7 @@ a.href span {
   flex: 0 0 100%;
   max-width: 100%;
 }
-.order-swicher-wrapper
-{
+.swicher-wrapper {
   align-items: flex-start;
 }
 .cheked-list > div {
@@ -4094,6 +4161,7 @@ table {
   width: 100%;
   height: calc(100vh - 174px);
   flex-direction: column;
+  position: relative;
 }
 .messages-block {
   position: relative;
@@ -4269,7 +4337,7 @@ table {
 @media (max-width: 768px) {
   .emoji-mart,
   .input-chat .smiles {
-    display: none!important;
+    display: none !important;
   }
 }
 @media (max-width: 551px) {
@@ -5430,4 +5498,84 @@ table {
 .emoji-animation-item-leave.emoji-animation-item-leave-active {
   opacity: 0;
   transition: all 0.1s;
+}
+.react-dadata__container {
+  padding: 0;
+}
+.react-dadata__input {
+  border-color: transparent !important;
+  border-radius: 50px !important;
+}
+.react-dadata__suggestion-note {
+  display: none !important;
+}
+.textarea.errRequired,
+.input input.errRequired,
+.inputPhoto.errRequired,
+.errRequired > input,
+.errRequired > .input-date {
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(221, 30, 30);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(221, 30, 30);
+  box-shadow: 0px 0px 5px 1px rgba(221, 30, 30);
+}
+.errRequired,
+.errRequired .react-dadata__input {
+  border-color: transparent !important;
+}
+.addPhotoCarBlock {
+  justify-content: center;
+}
+.inputPhoto {
+  display: inline-block;
+  position: relative;
+}
+.inputPhoto .placeholder {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  font-size: 17px;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.inputPhoto .placeholder:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  opacity: 1;
+}
+.inputPhoto .placeholder span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  height: 24px;
+  text-align: center;
+}
+.article-block .car-description {
+  word-wrap: break-word;
+  color: #171717;
+  font-size: 14px;
+}
+span.errRequired {
+  box-shadow: 0px 0px 5px 1px rgba(221, 30, 30);
+}
+.cargoPhotos {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+.cargoPhotos img {
+  width: 119px;
+  height: 95px;
+  object-fit: cover;
+  margin: 5px;
+}
+#root {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  flex-direction: row-reverse;
+}
+#root > * {
+  width: 100%;
 }

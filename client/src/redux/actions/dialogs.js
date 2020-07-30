@@ -339,8 +339,6 @@ export const sendMessage = (message, apiToken) => (dispatch) => {
   fetch(`${api.urlApi}/api/dialog/send-message`, {
     method: "post",
     headers: {
-      // 'Accept': 'application/json',
-      // 'Content-Type': 'application/json',
       Authorization: `Bearer ${apiToken}`,
     },
     body: formData,
