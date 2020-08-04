@@ -25,7 +25,7 @@ import {
   contractParams,
   paymentParams,
 } from "../config/baseInfo/carParams";
-import { Map } from "react-yandex-maps";
+import { Map, Placemark } from "react-yandex-maps";
 import carTypesList from "../config/baseInfo/carTypesList.js";
 import settings from "../config/settings";
 
@@ -154,16 +154,50 @@ class Article extends React.Component {
                 </div>
                 <div className="car-col">
                   <div className="car-description">
-                    {this.props.article.car.typesCar.map(
-                      (item, index, items) => {
-                        let type = carTypesList.find(
-                          (itemX) => item === itemX.id
-                        );
-                        return (
-                          type.name + (items.length - 1 === index ? "." : ", ")
-                        );
-                      }
-                    )}
+                    {this.props.article.car.typesCar.length ===
+                      carTypesList.length && "Любая"}
+                    {this.props.article.car.typesCar.length !==
+                      carTypesList.length &&
+                      this.props.article.car.typesCar.map(
+                        (item, index, items) => {
+                          let type = carTypesList.find(
+                            (itemX) => item === itemX.id
+                          );
+                          return (
+                            <div key={index}>
+                              <div>
+                                <b>{type.name}</b>
+                              </div>
+                              {this.props.article.car.info &&
+                                this.props.article.car.info.find(
+                                  (itemX) => itemX.carId === item
+                                ) &&
+                                Object.entries(
+                                  this.props.article.car.info.find(
+                                    (itemX) => itemX.carId === item
+                                  )
+                                ).map((itemY, index) => {
+                                  if (itemY[0] !== "carId") {
+                                    let name;
+                                    if (itemY[0] === "capacity")
+                                      name = "Грузоподъемность";
+                                    if (itemY[0] === "awning")
+                                      name = "Тентовый";
+                                    if (itemY[0] === "typeGazel")
+                                      name = "Тип Газели";
+                                    if (name) {
+                                      return (
+                                        <div key={index}>
+                                          {name} : {itemY[1]}
+                                        </div>
+                                      );
+                                    }
+                                  }
+                                })}
+                            </div>
+                          );
+                        }
+                      )}
                   </div>
                   <span>{this.props.article.car.name}</span>
                   <CSSTransitionGroup
@@ -196,7 +230,6 @@ class Article extends React.Component {
                 </div>
                 <div className="FromL-col">
                   <span>{this.props.article.from.value}</span>
-
                   <CSSTransitionGroup
                     transitionName="height-animation-item"
                     transitionEnterTimeout={500}
@@ -205,21 +238,43 @@ class Article extends React.Component {
                       display: "contents",
                     }}
                   >
-                    {this.state.showMore ||
-                      (this.props.onlyOpen && (
-                        <div
-                          className="moreinfo"
+                    {(this.state.showMore || this.props.onlyOpen) && (
+                      <div
+                        className="moreinfo"
+                        style={{
+                          height: "100px",
+                        }}
+                      >
+                        <Map
+                          defaultState={{
+                            center:
+                              this.props.article.from.data.geo_lat &&
+                              this.props.article.from.data.geo_lon
+                                ? [
+                                    this.props.article.from.data.geo_lat,
+                                    this.props.article.from.data.geo_lon,
+                                  ]
+                                : [55.684758, 37.738521],
+                            zoom: 10,
+                          }}
                           style={{
+                            marginTop: "21px",
                             height: "100px",
+                            width: "100%",
                           }}
                         >
-                          <Map
-                            defaultState={{ center: [55.75, 37.57], zoom: 15 }}
-                            width="100%"
-                            height="100px"
-                          />
-                        </div>
-                      ))}
+                          {this.props.article.from.data.geo_lat &&
+                            this.props.article.from.data.geo_lon && (
+                              <Placemark
+                                geometry={[
+                                  this.props.article.from.data.geo_lat,
+                                  this.props.article.from.data.geo_lon,
+                                ]}
+                              />
+                            )}
+                        </Map>
+                      </div>
+                    )}
                   </CSSTransitionGroup>
                 </div>
                 <div className="ToLoc-col">
@@ -232,66 +287,95 @@ class Article extends React.Component {
                       display: "contents",
                     }}
                   >
-                    {this.state.showMore ||
-                      (this.props.onlyOpen && (
-                        <div
-                          className="moreinfo"
+                    {(this.state.showMore || this.props.onlyOpen) && (
+                      <div
+                        className="moreinfo"
+                        style={{
+                          height: "100px",
+                        }}
+                      >
+                        <Map
+                          defaultState={{
+                            center:
+                              this.props.article.to.data.geo_lat &&
+                              this.props.article.to.data.geo_lon
+                                ? [
+                                    this.props.article.to.data.geo_lat,
+                                    this.props.article.to.data.geo_lon,
+                                  ]
+                                : [55.684758, 37.738521],
+                            zoom: 10,
+                          }}
                           style={{
+                            marginTop: "21px",
                             height: "100px",
+                            width: "100%",
                           }}
                         >
-                          <Map
-                            defaultState={{ center: [55.75, 37.57], zoom: 15 }}
-                            width="100%"
-                            height="100px"
-                          />
-                        </div>
-                      ))}
+                          {this.props.article.to.data.geo_lat &&
+                            this.props.article.to.data.geo_lon && (
+                              <Placemark
+                                geometry={[
+                                  this.props.article.to.data.geo_lat,
+                                  this.props.article.to.data.geo_lon,
+                                ]}
+                              />
+                            )}
+                        </Map>
+                      </div>
+                    )}
                   </CSSTransitionGroup>
                 </div>
                 <div className="Grooz-col">
                   <span>
+                    {this.props.article.cargoStandartData && (
+                      <div className="property-cargo">
+                        {this.props.article.cargoStandartData.weight}
+                        кг/
+                        {this.props.article.cargoStandartData.length *
+                          this.props.article.cargoStandartData.width *
+                          this.props.article.cargoStandartData.height}
+                        <span>
+                          м<sup>3</sup>
+                        </span>
+                        <div>
+                          {this.props.article.cargoStandartData.count}
+                          шт
+                        </div>
+                      </div>
+                    )}
                     {this.props.article.cargoTypes.map((item, index) => {
                       return (
                         <span key={index} className="d-block">
-                          {CargoTypeList.find((itemX) => itemX.id == item).name}
-                          {CargoTypeList.find((itemX) => itemX.id == item)
-                            .isStandart &&
-                            this.props.article.cargoStandartData[item] && (
-                              <div className="property-cargo">
-                                {
-                                  this.props.article.cargoStandartData[item]
-                                    .weight
-                                }
-                                кг/
-                                {this.props.article.cargoStandartData[item]
-                                  .length *
-                                  this.props.article.cargoStandartData[item]
-                                    .width *
-                                  this.props.article.cargoStandartData[item]
-                                    .height}
-                                <span>
-                                  м<sup>3</sup>
-                                </span>
-                                <div>
-                                  {
-                                    this.props.article.cargoStandartData[item]
-                                      .count
-                                  }
-                                  шт
-                                </div>
-                              </div>
-                            )}
-                          {this.props.article.cargoData[item] && (
+                          <b>
+                            {
+                              CargoTypeList.find((itemX) => itemX.id == item)
+                                .name
+                            }
+                          </b>
+
+                          {this.props.article.cargoData.find(
+                            (itemX) => itemX.typeID == item
+                          ) && (
                             <div className="property-cargo">
                               {Object.entries(
-                                this.props.article.cargoData[item]
-                              ).map((item) => {
-                                return (
-                                  <div>
-                                    {item[0]}:{item[1]}
-                                  </div>
-                                );
+                                this.props.article.cargoData.find(
+                                  (itemX) => itemX.typeID == item
+                                )
+                              ).map((itemY, index) => {
+                                if (itemY[0] !== "typeID")
+                                  return (
+                                    <div key={index}>
+                                      <span
+                                        dangerouslySetInnerHTML={{
+                                          __html: CargoTypeList.find(
+                                            (itemX) => itemX.id === item
+                                          ).fieldsLabel[itemY[0]],
+                                        }}
+                                      />
+                                      : {itemY[1]}
+                                    </div>
+                                  );
                               })}
                             </div>
                           )}
@@ -302,35 +386,51 @@ class Article extends React.Component {
                 </div>
                 <div className="Date-col">
                   <span>
-                    {new Date(this.props.article.startDate.date).toDateR()}
-                    {this.props.article.startDate.timeFrom && (
-                      <>
-                        <br />
-                        <br />
-                        {new Date(
-                          this.props.article.startDate.timeFrom
-                        ).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}{" "}
-                      </>
-                    )}
-                    {this.props.article.startDate.timeTo && (
-                      <>
-                        до
-                        <br />
-                        {new Date(
-                          this.props.article.startDate.timeTo
-                        ).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </>
+                    {this.props.article.startDate &&
+                      this.props.article.startDate.date && (
+                        <>
+                          {new Date(
+                            this.props.article.startDate.date
+                          ).toDateR()}
+                          {this.props.article.startDate.timeFrom && (
+                            <>
+                              <br />
+                              <br />
+                              {new Date(
+                                this.props.article.startDate.timeFrom
+                              ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}{" "}
+                            </>
+                          )}
+                          {this.props.article.startDate.timeTo && (
+                            <>
+                              до
+                              <br />
+                              {new Date(
+                                this.props.article.startDate.timeTo
+                              ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </>
+                          )}
+                        </>
+                      )}
+                    {(!this.props.article.startDate ||
+                      !this.props.article.startDate.date) && (
+                      <>Дата не указана</>
                     )}
                   </span>
                 </div>
                 <div className="Price-col">
-                  <span>{this.props.article.budget} руб</span>
+                  <span>
+                    {!!this.props.article.budget && (
+                      <>{this.props.article.budget} руб</>
+                    )}
+                    {!this.props.article.budget && <>Цена не указана</>}
+                  </span>
                 </div>
                 <div className="More-col">
                   <span>
@@ -437,27 +537,45 @@ class Article extends React.Component {
                 <div className="col  pl-sm-3">
                   <h3 className="title-column">Дата</h3>
                   <span>
-                    {new Date(this.props.article.startDate.date).toDateR()}
+                    {this.props.article.startDate &&
+                      this.props.article.startDate.date && (
+                        <>
+                          {new Date(
+                            this.props.article.startDate.date
+                          ).toDateR()}
+                        </>
+                      )}
+                    {(!this.props.article.startDate ||
+                      !this.props.article.startDate.date) && (
+                      <>Дата не указана</>
+                    )}
                   </span>
                 </div>
-                <div className="col d-none d-sm-block">
-                  <h3 className="title-column">Время</h3>
-                  <span>
-                    {new Date(
-                      this.props.article.startDate.timeFrom
-                    ).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}{" "}
-                    до{" "}
-                    {new Date(
-                      this.props.article.startDate.timeTo
-                    ).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                </div>
+                {this.props.article.startDate &&
+                  this.props.article.startDate.timeFrom && (
+                    <div className="col d-none d-sm-block">
+                      <h3 className="title-column">Время</h3>
+                      <span>
+                        {new Date(
+                          this.props.article.startDate.timeFrom
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                        {this.props.article.startDate.timeTo && (
+                          <>
+                            до{" "}
+                            {new Date(
+                              this.props.article.startDate.timeTo
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </>
+                        )}
+                      </span>
+                    </div>
+                  )}
                 <div className="col">
                   <h3 className="title-column">Цена</h3>
                   <span>{this.props.article.budget}</span>
@@ -522,20 +640,19 @@ class Article extends React.Component {
                         </span>
                       )}
                       {this.props.article.car.contractParam &&
-                        !!this.props.article.car.contractParam &&
-                        Object.keys(this.props.article.car.contractParam)
-                          .length !== 0 &&
-                        this.props.article.car.contractParam.constructor !==
-                          Object && (
+                        !!this.props.article.car.contractParam.length && (
                           <span className="property-user">
                             <img src={dogovor} alt="dogovor" />
-                            {
-                              contractParams.find(
-                                (item) =>
-                                  item.id ===
-                                  this.props.article.car.contractParam.id
-                              ).label
-                            }
+                            {this.props.article.car.contractParam.map(
+                              (item, index, items) => {
+                                return (
+                                  contractParams.find(
+                                    (itemX) => itemX.id === item.id
+                                  ).label +
+                                  (items.length + 1 === index ? "." : ", ")
+                                );
+                              }
+                            )}
                           </span>
                         )}
                       {this.props.article.car.paymentInfo &&

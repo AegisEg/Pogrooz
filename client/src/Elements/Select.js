@@ -55,6 +55,10 @@ const colourStyles = {
     maxHeight: state.isMulti ? "auto" : 42,
     flexGrow: 1,
   }),
+  singleValue: (base, state) => ({
+    ...base,
+    maxWidth: "calc(100% - 45px)",
+  }),
   control: (base, state) => {
     let isError = state.selectProps.className.indexOf("errRequired") !== -1;
     return {

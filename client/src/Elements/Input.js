@@ -1,7 +1,7 @@
 // App
 import React from "react";
 //PHONE
-import InputMask from "react-input-mask";
+import ReactPhoneInput from "react-phone-input-2";
 //DATE
 import {
   DatePicker,
@@ -34,18 +34,19 @@ class Input extends React.Component {
             paddingBottom: this.props.error ? "10px" : "0px",
           }}
         >
-          <InputMask
-            type={this.props.type}
-            mask="+9 (999) 999-99-99"
+          <ReactPhoneInput
             value={this.props.value}
-            name={this.props.name}
+            inputExtraProps={{
+              name: "phone",
+            }}
+            disableDropdown={false}
             style={this.props.style}
-            className={`col input-text ${this.props.className} ${
+            inputClass={`col input-text ${this.props.className} ${
               this.props.error ? "input-error" : ""
             }`}
             placeholder={this.props.placeholder}
-            onChange={(e) => {
-              this.props.onChange(e.target.value);
+            onChange={(val) => {
+              this.props.onChange(val);
             }}
           />
           {this.props.error && (

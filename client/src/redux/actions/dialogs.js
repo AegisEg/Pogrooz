@@ -201,22 +201,30 @@ export const updateOnline = (userId, apiToken) => (dispatch) => {
 export const retrySendMessage = (message, apiToken) => (dispatch) => {
   let dialogId = message.dialogId;
   let formData = new FormData();
-  let images = [];
-
+  let voiceSound = false;
+  if (message.voiceSound) {
+    formData.append("voiceSound", message.voiceSound.file);
+    formData.append("voiceSoundDuration", message.voiceSound.duration);
+    formData.append("voiceSoundRecordLine", message.voiceSound.recordLine);
+    voiceSound = message.voiceSound;
+  }
+  formData.append("images", JSON.stringify(message.images));
+  formData.append("files", JSON.stringify(message.files));
+  formData.append("sounds", JSON.stringify(message.sounds));
   let localMessage = {
     _id: message._id,
     user: store.getState().user,
     text: message.text,
     images: message.images,
-    sounds: [],
-    files: [],
+    sounds: message.sounds,
+    files: message.files,
+    voiceSound: voiceSound,
     isLoading: true,
     isError: false,
     recentMessage: message.recentMessage,
     createdAt: Date.now(),
     type: "message",
   };
-
   dispatch({
     type: DIALOGS_DELETE_MESSAGE,
     payload: { dialogId, messageIds: [message._id], lastMessage: false },
@@ -226,11 +234,6 @@ export const retrySendMessage = (message, apiToken) => (dispatch) => {
     type: DIALOGS_ADD_MESSAGE,
     payload: { message: localMessage, dialogId: message.dialogId },
   });
-
-  for (let i = 0; i < message.images.length; i++) {
-    formData.append("images" + i, message.images[i].file);
-    images.push(message.images[i].path);
-  }
 
   message.socketId = SocketController.getSocketId();
   formData.append("text", message.text);

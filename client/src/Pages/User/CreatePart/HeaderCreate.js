@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { ReactComponent as AngleSvg } from "../../img/angle-right.svg";
+import { ReactComponent as AngleSvg } from "../../../img/angle-right.svg";
 
 class HeaderCreate extends React.Component {
   state = {
@@ -92,7 +92,7 @@ class HeaderCreate extends React.Component {
                   <AngleSvg />
                   {Array.apply(null, { length: 4 - this.props.currentTab }).map(
                     (item, index) => {
-                      return <div className="circle"></div>;
+                      return <div key={index} className="circle"></div>;
                     }
                   )}
                 </div>
