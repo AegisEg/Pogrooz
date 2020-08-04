@@ -9,34 +9,30 @@ import nextQuest from "../img/nextQuest.png";
 import nextQuestEnable from "../img/nextQuestEnable.png";
 
 class Pagination extends React.Component {
-  state = {
-    currentpage: 1,
-    offset: 0,
-  };
   handlePageClick = (data) => {
-    let selected = data.selected + 1;
-    let offset = Math.ceil(selected * this.props.perPage);
-    this.setState({ currentpage: selected, offset: offset });
+    let selected = data.selected;
+    this.props.onPageChange(selected);
   };
   render() {
     return (
       <div className="container-fluid">
         <ReactPaginate
           previousLabel={
-            this.state.currentpage === 1 ? (
+            this.props.currentPage === 1 ? (
               <img src={prevQuest} alt="nextQuest" />
             ) : (
               <img src={prevQuestEnable} alt="nextQuestEnable" />
             )
           }
           nextLabel={
-            this.state.currentpage === this.props.pageCount ? (
+            this.props.currentPage === this.props.pageCount ? (
               <img src={nextQuest} alt="nextQuest" />
             ) : (
               <img src={nextQuestEnable} alt="nextQuestEnable" />
             )
           }
-          pageCount={this.props.pageCount}
+          pageCount={this.props.pageCount + 1}
+          forcePage={this.props.currentPage}
           breakLabel={"..."}
           onPageChange={this.handlePageClick}
           breakClassName={"break-me"}

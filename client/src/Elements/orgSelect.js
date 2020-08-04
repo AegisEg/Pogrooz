@@ -1,17 +1,17 @@
 // App
 import React, { useRef } from "react";
-import { AddressSuggestions } from "react-dadata";
+import { PartySuggestions } from "react-dadata";
 import "react-dadata/dist/react-dadata.css";
 import configApi from "../config/api";
 
-class AdressSelect extends React.Component {
+class orgSelect extends React.Component {
   componentDidUpdate() {
     this.ref.setInputValue(this.props.value);
   }
   render() {
     return (
       <>
-        <AddressSuggestions
+        <PartySuggestions
           ref={(ref) => (this.ref = ref)}
           token={configApi.daDataToken}
           inputProps={{
@@ -33,4 +33,4 @@ class AdressSelect extends React.Component {
   }
 }
 
-export default AdressSelect;
+export default orgSelect;

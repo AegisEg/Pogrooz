@@ -12,6 +12,7 @@ class CheckBox extends React.Component {
           checked={this.props.value || ""}
           className={`input-${this.props.type}`}
           onChange={this.props.onChange ? this.props.onChange : () => {}}
+          disabled={this.props.disable}
         />
         <label
           htmlFor={this.props.id}

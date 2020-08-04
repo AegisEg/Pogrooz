@@ -1,4 +1,5 @@
 import Input from "../../Elements/Input";
+import orgSelect from "../../Elements/orgSelect";
 
 let extraParams = [
   {
@@ -42,11 +43,10 @@ let contractParams = [
     label: "Договор с ООО",
     additionFields: [
       {
-        field: Input,
+        field: orgSelect,
         props: {
-          type: "text",
-          placeholder: "Введите ОГРН",
-          name: "codeOrg",
+          placeholder: "Введите ИНН или Название",
+          name: "org",
         },
       },
     ],
@@ -60,8 +60,8 @@ let contractParams = [
         field: Input,
         props: {
           type: "text",
-          placeholder: "Введите ИНН",
-          name: "codeOrg",
+          placeholder: "Введите ИНН или Название",
+          name: "org",
         },
       },
     ],

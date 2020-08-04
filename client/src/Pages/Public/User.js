@@ -2,7 +2,6 @@
 import React from "react";
 
 import Articles from "../../Catalog/Articles";
-import articlestest from "../../config/articlestest.js";
 
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -82,15 +81,7 @@ class User extends React.Component {
   render() {
     //Ставлю статус(0,1 - открытый, 2,3 - в работе, 3,4 - закрытый) и Тип(Заказ
     //или Предложение) для отображения
-    let articlesList = articlestest.filter((item) => {
-      if (this.state.currentStatus === "all") {
-        return this.statusArticle.find((x) => {
-          return x === item.status;
-        });
-      } else {
-        return item.status === this.state.currentStatus;
-      }
-    });
+    
     return (
       <div className="standart-page user-page">
         <div className="container-fluid">
@@ -184,7 +175,7 @@ class User extends React.Component {
         </div>
         {this.props.match.params.id == 1 && (
           <div className="lk-order-page">
-            <Articles articlesList={articlesList} />
+            <Articles />
           </div>
         )}
         {this.props.match.params.id == 2 && (

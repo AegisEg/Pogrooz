@@ -1,6 +1,7 @@
 // App
 import React from "react";
 import { CSSTransitionGroup } from "react-transition-group";
+import { Scrollbars } from "react-custom-scrollbars";
 import { NavLink, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 // Images
@@ -76,52 +77,52 @@ let MenuItem = withRouter(MenuItem1);
 class SideNav extends React.Component {
   state = {
     isOpen: false,
-    height: "auto",
   };
-  updateDimensions = () => {
-    let height = document.getElementsByClassName("content")[0].offsetHeight;
-    if (window.innerWidth <= 1024)
-      this.setState({
-        height: height,
-      });
-    else this.setState({ height: "auto" });
-  };
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
-  }
-  componentDidMount() {
-      this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
-  }
+  // updateDimensions = () => {
+  //   let height = document.getElementsByClassName("content")[0].offsetHeight;
+  //   if (window.innerWidth <= 1024)
+  //     this.setState({
+  //       height: height,
+  //     });
+  //   else this.setState({ height: "auto" });
+  // };
+  // componentWillUnmount() {
+  //   window.removeEventListener("resize", this.updateDimensions);
+  // }
+  // componentDidMount() {
+  //     this.updateDimensions();
+  //   window.addEventListener("resize", this.updateDimensions);
+  // }
   render() {
     return (
       <div
         className={`side-nav ${this.state.isOpen ? "open" : ""}`}
-        style={{
-          height: this.state.height,
-        }}
         onClick={() => {
           if (window.innerWidth <= 800 && !this.state.isOpen)
             this.setState({ isOpen: true });
         }}
       >
-        {menu.map((item, index) => {
-          if (
-            (!item.role || item.role === this.props.user.type) &&
-            !item.onlyMobile
-          )
-            return (
-              <MenuItem
-                key={index}
-                to={item.to}
-                icon={item.icon}
-                className={item.className}
-                name={item.name}
-                childlist={item.childlist}
-              />
-            );
-        })}
-
+        <Scrollbars
+          autoHide
+          renderTrackVertical={(props) => <div className="d-none track-vertical" />}
+        >
+          {menu.map((item, index) => {
+            if (
+              (!item.role || item.role === this.props.user.type) &&
+              !item.onlyMobile
+            )
+              return (
+                <MenuItem
+                  key={index}
+                  to={item.to}
+                  icon={item.icon}
+                  className={item.className}
+                  name={item.name}
+                  childlist={item.childlist}
+                />
+              );
+          })}
+        </Scrollbars>
         <span
           className="toogle-sideBar"
           onClick={() => {

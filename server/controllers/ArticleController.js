@@ -85,6 +85,7 @@ module.exports = {
             typesCar: article.car.typesCar,
             name: article.car.name,
             additionally: article.car.additionally,
+            info: article.car.info,
             contractInfo: article.car.contractParam,
             paymentInfo: article.car.paymentInfo,
           };
@@ -125,9 +126,8 @@ module.exports = {
         newArticle.from = article.from;
         if (!article.to) return res.json({ error: true, errorType: "to" });
         newArticle.to = article.to;
-        if (!article.startDate.date)
-          return res.json({ error: true, errorType: "date" });
-        newArticle.startDate.date = article.startDate.date;
+        if (article.startDate.date)
+          newArticle.startDate.date = article.startDate.date;
         if (article.startDate.timeFrom)
           newArticle.startDate.timeFrom = article.startDate.timeFrom;
         if (article.startDate.timeTo)
@@ -140,13 +140,18 @@ module.exports = {
     }
   },
   getArticles: async (req, res, next) => {
-    let { filter } = req.body;
+    let count = 6;
+    let { filter, page } = req.body;
     if (filter.allStatus) {
       filter.status = { $in: filter.allStatus };
       delete filter.allStatus;
     }
-    let articles = await Article.find(filter).populate("autor");
-    return res.json({ articles });
+    let countAll = await Article.find(filter).count();
+    let articles = await Article.find(filter)
+      .populate("autor")
+      .skip(page * count)
+      .limit(6);
+    return res.json({ articles, pageAll: Math.floor(countAll / count) });
   },
   getArticle: async (req, res, next) => {
     const { id, type } = req.body;

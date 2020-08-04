@@ -228,7 +228,14 @@ module.exports = {
       );
       const dialogId = String(dialog._id);
 
-      if (!/\S/.test(text) && !recentMessage && !req.files) {
+      if (
+        !/\S/.test(text) &&
+        !recentMessage &&
+        !req.files &&
+        !req.body["images"] &&
+        !req.body["files"] &&
+        !req.body["sounds"]
+      ) {
         let err = {};
         err.param = `all`;
         err.msg = `empty_message`;
@@ -262,47 +269,47 @@ module.exports = {
               recordLine: voiceSoundRecordLine.split(","),
             };
           }
-          // else {
-          //   let err = {};
-          //   err.param = `all`;
-          //   err.msg = `max_size`;
-          //   return res.status(401).json({ error: true, errors: [err] });
-          // }
         }
       }
 
       let maxCount = 10;
       let nowCount = 1;
-      req.body["images"] = JSON.parse(req.body["images"]);
-      for (let i = 0; i < 10; i++) {
-        if (!req.body["images"][i] || nowCount >= maxCount) break;
-        images.push({
-          path: req.body["images"][i].path,
-          name: req.body["images"][i].name,
-        });
-        nowCount++;
+      if (req.body["images"]) {
+        req.body["images"] = JSON.parse(req.body["images"]);
+        for (let i = 0; i < 10; i++) {
+          if (!req.body["images"][i] || nowCount >= maxCount) break;
+          images.push({
+            path: req.body["images"][i].path,
+            name: req.body["images"][i].name,
+          });
+          nowCount++;
+        }
       }
-      req.body["sounds"] = JSON.parse(req.body["sounds"]);
-      for (let i = 0; i < 10; i++) {
-        if (!req.body["sounds"][i] || nowCount >= maxCount) break;
-        sounds.push({
-          path: req.body["sounds"][i].path,
-          name: req.body["sounds"][i].name,
-          duration: req.body["sounds"][i].duration,
-          recordLine: req.body["sounds"][i].recordLine,
-        });
-        nowCount++;
+      if (req.body["sounds"]) {
+        req.body["sounds"] = JSON.parse(req.body["sounds"]);
+        for (let i = 0; i < 10; i++) {
+          if (!req.body["sounds"][i] || nowCount >= maxCount) break;
+          sounds.push({
+            path: req.body["sounds"][i].path,
+            name: req.body["sounds"][i].name,
+            duration: req.body["sounds"][i].duration,
+            recordLine: req.body["sounds"][i].recordLine,
+          });
+          nowCount++;
+        }
       }
-      req.body["files"] = JSON.parse(req.body["files"]);
-      for (let i = 0; i < 10; i++) {
-        if (!req.body["files"][i] || nowCount >= maxCount) break;
+      if (req.body["files"]) {
+        req.body["files"] = JSON.parse(req.body["files"]);
+        for (let i = 0; i < 10; i++) {
+          if (!req.body["files"][i] || nowCount >= maxCount) break;
 
-        files.push({
-          path: req.body["files"][i].path,
-          name: req.body["files"][i].name,
-          size: req.body["files"][i].size,
-        });
-        nowCount++;
+          files.push({
+            path: req.body["files"][i].path,
+            name: req.body["files"][i].name,
+            size: req.body["files"][i].size,
+          });
+          nowCount++;
+        }
       }
 
       message.text = text

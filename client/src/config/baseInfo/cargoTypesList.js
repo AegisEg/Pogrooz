@@ -8,6 +8,12 @@ import CheckBox from "../../Elements/CheckBox";
 import Input from "../../Elements/Input";
 import Select from "../../Elements/Select";
 import React from "react";
+//fieldsLabel  Лейблы полей для вывода
+//Fields функция вывода полей для типа груза
+//fields функция принимает
+//1)Функцию изменения параметра
+//2)Параметры для вставки в значение полей
+//3) Типы машин, для уловного рендеринга полей. Некоторые отсутсвуют в каком то типе машин
 export default [
   {
     id: 1,
@@ -25,9 +31,30 @@ export default [
     id: 3,
     name: "Строительные грузы",
     img: list,
-    isStandart: true,
-    fields: (callback, obj) => {
-      let arrayCheck = ["Сыпучие", "Наливные", "Обычные ", "Бетон"];
+    fieldsLabel: {
+      type: "Тип",
+      volumeInLiter: "Объем в литрах",
+      volumeInMetr: "Объем в м&sup3;",
+      weight: "Вес в тоннах",
+    },
+    fields: (callback, obj, car = false) => {
+      let arrayCheck = ["Насыпные", "Наливные", "Обычные"];
+      if (
+        car &&
+        car.find(
+          (item) =>
+            item === 1 ||
+            item === 9 ||
+            item === 11 ||
+            item === 12 ||
+            item === 2 ||
+            item === 3
+        )
+      )
+        arrayCheck = [arrayCheck[2]];
+      if (car && car.find((item) => item === 10 || item === 7))
+        arrayCheck = [arrayCheck[0]];
+      if (car && car.find((item) => item === 6)) arrayCheck = [arrayCheck[1]];
       return (
         <>
           {arrayCheck.map((item, index) => {
@@ -40,10 +67,119 @@ export default [
               >
                 <CheckBox
                   id={`constructionType${index}`}
-                  name={`Вид груза`}
-                  value={obj["Вид груза"] == item}
+                  name="type"
+                  value={obj["type"] == item}
                   onChange={() => {
-                    callback(3, "Вид груза", item);
+                    callback(3, "type", item);
+                  }}
+                  text={item}
+                />
+              </div>
+            );
+          })}
+          <div className="standartParams row">
+            {obj["type"] === "Насыпные" && (
+              <>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "150px",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    name="volumeInMetr"
+                    placeholder="Объем в м&sup3;"
+                    value={obj["volumeInMetr"] || ""}
+                    onChange={(e) => {
+                      callback(3, "volumeInMetr", e.target.value);
+                    }}
+                  />
+                </div>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "165px",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    name="weight"
+                    placeholder="Вес в тоннах"
+                    value={obj["weight"] || ""}
+                    onChange={(e) => {
+                      callback(3, "weight", e.target.value);
+                    }}
+                  />
+                </div>
+              </>
+            )}
+            {obj["type"] === "Наливные" && (
+              <>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "150px",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    name="volumeInLiter"
+                    placeholder="Объем в л"
+                    value={obj["volumeInLiter"] || ""}
+                    onChange={(e) => {
+                      callback(3, "volumeInLiter", e.target.value);
+                    }}
+                  />
+                </div>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "165px",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    name="weight"
+                    placeholder="Вес в тоннах"
+                    value={obj["weight"] || ""}
+                    onChange={(e) => {
+                      callback(3, "weight", e.target.value);
+                    }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    id: 4,
+    name: "Курьерские грузы",
+    img: hand,
+    fieldsLabel: {
+      type: "Тип",
+    },
+    fields: (callback, obj, car = false) => {
+      let arrayCheck = ["Обычные", "Документы"];
+      return (
+        <>
+          {arrayCheck.map((item, index) => {
+            return (
+              <div
+                style={{
+                  display: "inline-block",
+                }}
+                key={index}
+              >
+                <CheckBox
+                  id={`type${index}`}
+                  name="type"
+                  value={obj["type"] == item}
+                  onChange={() => {
+                    callback(4, "type", item);
                   }}
                   text={item}
                 />
@@ -53,12 +189,6 @@ export default [
         </>
       );
     },
-  },
-  {
-    id: 4,
-    name: "Курьерские грузы",
-    img: hand,
-    isStandart: true,
   },
   {
     id: 5,
@@ -71,7 +201,11 @@ export default [
     id: 7,
     name: "Автомобили",
     isPro: true,
-    fields: (callback, obj) => {
+    fieldsLabel: {
+      carName: "Марка, Модель машины",
+      count: "Количество",
+    },
+    fields: (callback, obj, car = false) => {
       return (
         <>
           <div
@@ -82,27 +216,11 @@ export default [
           >
             <Input
               type="text"
-              name="Марка"
-              placeholder="Марка"
-              value={obj["Марка"] || ""}
+              name="carName"
+              placeholder="Марка, Модель машины"
+              value={obj["carName"] || ""}
               onChange={(e) => {
-                callback(7, "Марка", e.target.value);
-              }}
-            />
-          </div>
-          <div
-            className="d-inline-block"
-            style={{
-              maxWidth: "320px",
-            }}
-          >
-            <Input
-              type="text"
-              name="Модель"
-              placeholder="Модель"
-              value={obj["Модель"] || ""}
-              onChange={(e) => {
-                callback(7, "Модель", e.target.value);
+                callback(7, "carName", e.target.value);
               }}
             />
           </div>
@@ -116,9 +234,9 @@ export default [
               type="number"
               name="Кол-во"
               placeholder="Кол-во"
-              value={obj["Кол-во"] || ""}
+              value={obj["count"] || ""}
               onChange={(e) => {
-                callback(7, "Кол-во", e.target.value);
+                callback(7, "count", e.target.value);
               }}
             />
           </div>
@@ -130,25 +248,11 @@ export default [
     id: 8,
     name: "Мототехника",
     isPro: true,
-    isStandart: true,
-  },
-  {
-    id: 9,
-    name: "Транспорт и запчасти",
-    isPro: true,
-    isStandart: true,
-  },
-  {
-    id: 10,
-    name: "Водный транспорт",
-    isPro: true,
-    isStandart: true,
-  },
-  {
-    id: 11,
-    name: "Перевозка животных",
-    isPro: true,
-    fields: (callback, obj) => {
+    fieldsLabel: {
+      weigth: "Вес",
+      count: "Количество",
+    },
+    fields: (callback, obj, car = false) => {
       return (
         <>
           <div
@@ -159,11 +263,11 @@ export default [
           >
             <Input
               type="text"
-              name="Название животного"
-              placeholder="Название животного"
-              value={obj["Название животного"] || ""}
+              name="weigth"
+              placeholder="Вес"
+              value={obj["weigth"] || ""}
               onChange={(e) => {
-                callback(11, "Название животного", e.target.value);
+                callback(8, "weigth", e.target.value);
               }}
             />
           </div>
@@ -177,9 +281,9 @@ export default [
               type="number"
               name="Кол-во"
               placeholder="Кол-во"
-              value={obj["Кол-во"] || ""}
+              value={obj["count"] || ""}
               onChange={(e) => {
-                callback(11, "Кол-во", e.target.value);
+                callback(8, "count", e.target.value);
               }}
             />
           </div>
@@ -188,10 +292,20 @@ export default [
     },
   },
   {
-    id: 12,
-    name: "Сыпучие грузы",
+    id: 10,
+    name: "Водный транспорт",
     isPro: true,
-    fields: (callback, obj) => {
+    isStandart: true,
+  },
+  {
+    id: 11,
+    name: "Перевозка животных",
+    isPro: true,
+    fieldsLabel: {
+      animalName: "Название животного",
+      count: "Количество",
+    },
+    fields: (callback, obj, car = false) => {
       return (
         <>
           <div
@@ -202,11 +316,11 @@ export default [
           >
             <Input
               type="text"
-              name="Название Груза"
-              placeholder="Название Груз"
-              value={obj["Название Груза"] || ""}
+              name="animalName"
+              placeholder="Название животного"
+              value={obj["animalName"] || ""}
               onChange={(e) => {
-                callback(12, "Название Груза", e.target.value);
+                callback(11, "animalName", e.target.value);
               }}
             />
           </div>
@@ -218,49 +332,12 @@ export default [
           >
             <Input
               type="number"
-              name="Объем"
-              placeholder="Объем"
-              value={obj["Объем"]}
+              name="count"
+              placeholder="Кол-во"
+              value={obj["count"] || ""}
               onChange={(e) => {
-                callback(12, "Объем", e.target.value);
+                callback(11, "count", e.target.value);
               }}
-            />
-          </div>
-          <div
-            className="d-inline-block"
-            style={{
-              maxWidth: "140px",
-            }}
-          >
-            <Input
-              type="number"
-              name="Вес"
-              placeholder="Вес"
-              value={obj["Вес"]}
-              onChange={(e) => {
-                callback(12, "Вес", e.target.value);
-              }}
-            />
-          </div>
-          <div
-            className="d-inline-block w-100"
-            style={{
-              maxWidth: "180px",
-            }}
-          >
-            <Select
-              type="text"
-              name="Вид упаковки"
-              placeholder="Вид упаковки"
-              options={[
-                { value: "Пакеты", label: "Пакеты" },
-                { value: "Коробки", label: "Коробки" },
-                { value: "Пленка", label: "Пленка" },
-              ]}
-              onChange={(val) => {
-                callback(12, "Вид упаковки", val.value);
-              }}
-              value={{ value: obj["Вид упаковки"], label: obj["Вид упаковки"] }}
             />
           </div>
         </>
@@ -271,129 +348,30 @@ export default [
     id: 13,
     name: "Продукты питания",
     isPro: true,
-    isStandart: true,
-  },
-  {
-    id: 14,
-    name: "Наливные грузы",
-    isPro: true,
-    fields: (callback, obj) => {
-      return (
-        <>
-          <div
-            className="d-inline-block"
-            style={{
-              maxWidth: "320px",
-            }}
-          >
-            <Input
-              type="text"
-              name="Название Груза"
-              placeholder="Название Груза"
-              value={obj["Название Груза"] || ""}
-              onChange={(e) => {
-                callback(14, "Название Груза", e.target.value);
-              }}
-            />
-          </div>
-          <div
-            className="d-inline-block"
-            style={{
-              maxWidth: "140px",
-            }}
-          >
-            <Input
-              type="number"
-              name="Объем"
-              placeholder="Объем"
-              value={obj["Объем"]}
-              onChange={(e) => {
-                callback(14, "Объем", e.target.value);
-              }}
-            />
-          </div>
-          <div
-            className="d-inline-block"
-            style={{
-              maxWidth: "140px",
-            }}
-          >
-            <Input
-              type="number"
-              name="looseWeight"
-              placeholder="Вес"
-              value={obj["Вес"]}
-              onChange={(e) => {
-                callback(14, "Вес", e.target.value);
-              }}
-            />
-          </div>
-          <div
-            className="d-inline-block w-100"
-            style={{
-              maxWidth: "180px",
-            }}
-          >
-            <Select
-              type="text"
-              name="typePackaging"
-              placeholder="Вид упаковки"
-              options={[
-                { value: "Пакеты", label: "Пакеты" },
-                { value: "Коробки", label: "Коробки" },
-                { value: "Пленка", label: "Пленка" },
-              ]}
-              onChange={(val) => {
-                callback(14, "Вид упаковки", val.value);
-              }}
-              value={{ value: obj["Вид упаковки"], label: obj["Вид упаковки"] }}
-            />
-          </div>
-        </>
-      );
+    fieldsLabel: {
+      type: "Тип",
+      volumeInLiter: "Объем в литрах",
+      volumeInMetr: "Объем в м&sup3;",
+      weight: "Вес в тоннах",
     },
-  },
-  {
-    id: 15,
-    name: "Вывоз мусора",
-    isPro: true,
-    isStandart: true,
-  },
-  {
-    id: 16,
-    name: "Манипулятор",
-    isPro: true,
-    isStandart: true,
-    fields: (callback, obj) => {
-      return (
-        <>
-          <div
-            className="d-inline-block"
-            style={{
-              maxWidth: "320px",
-            }}
-          >
-            <Input
-              type="text"
-              name="Название Груза"
-              placeholder="Название Груза"
-              value={obj["Название Груза"] || ""}
-              onChange={(e) => {
-                callback(16, "Название Груза", e.target.value);
-              }}
-            />
-          </div>
-        </>
-      );
-    },
-  },
-  {
-    id: 17,
-    name: "Спец грузы и опасные грузы",
-    isPro: true,
-    isStandart: true,
-    fields: (callback, obj) => {
-      let arrayCheck = ["Сыпучие", "Наливные", "Обычные ", "Бетон"];
+    fields: (callback, obj, car = false) => {
+      let arrayCheck = ["Насыпные", "Наливные", "Обычные"];
+      if (
+        car &&
+        car.find(
+          (item) =>
+            item === 1 ||
+            item === 9 ||
+            item === 11 ||
+            item === 12 ||
+            item === 2 ||
+            item === 3
+        )
+      )
+        arrayCheck = [arrayCheck[2]];
+      if (car && car.find((item) => item === 10 || item === 7))
+        arrayCheck = [arrayCheck[0]];
+      if (car && car.find((item) => item === 6)) arrayCheck = [arrayCheck[1]];
       return (
         <>
           {arrayCheck.map((item, index) => {
@@ -405,63 +383,100 @@ export default [
                 key={index}
               >
                 <CheckBox
-                  id={`Type${index}`}
-                  name={`Тип груза`}
-                  value={obj["Тип груза"] == item}
+                  id={`eatType${index}`}
+                  name="type"
+                  value={obj["type"] == item}
                   onChange={() => {
-                    callback(17, "Тип груза", item);
+                    callback(13, "type", item);
                   }}
                   text={item}
                 />
               </div>
             );
           })}
+          <div className="standartParams row">
+            {obj["type"] === "Насыпные" && (
+              <>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "150px",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    name="volumeInMetr"
+                    placeholder="Объем в м&sup3;"
+                    value={obj["volumeInMetr"] || ""}
+                    onChange={(e) => {
+                      callback(13, "volumeInMetr", e.target.value);
+                    }}
+                  />
+                </div>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "165px",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    name="weight"
+                    placeholder="Вес в тоннах"
+                    value={obj["weight"] || ""}
+                    onChange={(e) => {
+                      callback(13, "weight", e.target.value);
+                    }}
+                  />
+                </div>
+              </>
+            )}
+            {obj["type"] === "Наливные" && (
+              <>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "150px",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    name="volumeInLiter"
+                    placeholder="Объем в л"
+                    value={obj["volumeInLiter"] || ""}
+                    onChange={(e) => {
+                      callback(13, "volumeInLiter", e.target.value);
+                    }}
+                  />
+                </div>
+                <div
+                  className="col"
+                  style={{
+                    maxWidth: "165px",
+                  }}
+                >
+                  <Input
+                    type="number"
+                    name="weight"
+                    placeholder="Вес в тоннах"
+                    value={obj["weight"] || ""}
+                    onChange={(e) => {
+                      callback(13, "weight", e.target.value);
+                    }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
         </>
       );
     },
   },
   {
-    id: 18,
-    name: "Рефрижератор",
+    id: 15,
+    name: "Вывоз мусора",
     isPro: true,
     isStandart: true,
-    fields: (callback, obj) => {
-      return (
-        <>
-          <div
-            className="d-inline-block"
-            style={{
-              maxWidth: "320px",
-            }}
-          >
-            <Input
-              type="text"
-              name="Название Груза"
-              placeholder="Название Груза"
-              value={obj["Название Груза"] || ""}
-              onChange={(e) => {
-                callback(18, "Название Груза", e.target.value);
-              }}
-            />
-          </div>
-          <div
-            style={{
-              display: "inline-block",
-            }}
-          >
-            <CheckBox
-              id="isEat"
-              name={`Пищевой груз`}
-              value={obj["Пищевой груз"] == "Да" ? true : false}
-              onChange={(e) => {
-                callback(18, "Пищевой груз", e.target.checked ? "Да" : "");
-              }}
-              text={obj["Пищевой груз"]}
-            />
-          </div>
-        </>
-      );
-    },
   },
   {
     id: 6,
