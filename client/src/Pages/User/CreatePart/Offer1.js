@@ -275,7 +275,7 @@ class OfferCreate1 extends React.Component {
                       this.state.car.photo ? this.state.car.photo.path : false
                     }
                     className="carPhoto"
-                    alt=""
+                    alt="carPhoto"
                   />
                 )}
                 {!this.state.car.photo && <div className="carPhoto" />}
