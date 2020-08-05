@@ -44,7 +44,6 @@ class OfferCreate extends React.Component {
           ...data,
         };
       else error = true;
-      // console.log(JSON.stringify(article));
     });
     if (!error) {
       if (number === 4) {

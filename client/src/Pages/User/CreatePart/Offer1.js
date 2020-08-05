@@ -415,6 +415,66 @@ class OfferCreate1 extends React.Component {
                   </div>
                 </div>
               )}
+              <div className="moreInfoCheckBox col-12">
+                <div>Свойство:</div>
+                <div
+                  style={{
+                    display: "inline-block",
+                  }}
+                >
+                  <CheckBox
+                    id="property1"
+                    name="property"
+                    value={currentInfo.property === "Манипулятор" || ""}
+                    onChange={() => {
+                      this.onChangeCarData(
+                        currentCarType.id,
+                        "property",
+                        "Манипулятор"
+                      );
+                    }}
+                    text={"Манипулятор"}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "inline-block",
+                  }}
+                >
+                  <CheckBox
+                    id="property2"
+                    name="property"
+                    value={currentInfo.property === "Рефрижератор" || ""}
+                    onChange={() => {
+                      this.onChangeCarData(
+                        currentCarType.id,
+                        "property",
+                        "Рефрижератор"
+                      );
+                    }}
+                    text={"Рефрижератор"}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "inline-block",
+                  }}
+                >
+                  <CheckBox
+                    id="property3"
+                    name="property"
+                    value={currentInfo.property === "Изотерм" || ""}
+                    onChange={() => {
+                      this.onChangeCarData(
+                        currentCarType.id,
+                        "property",
+                        "Изотерм"
+                      );
+                    }}
+                    text={"Изотерм"}
+                  />
+                </div>
+              </div>
             </div>
           )}
           <div className="row swicher-wrapper">

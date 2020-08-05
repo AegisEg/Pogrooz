@@ -185,6 +185,8 @@ class Article extends React.Component {
                                       name = "Тентовый";
                                     if (itemY[0] === "typeGazel")
                                       name = "Тип Газели";
+                                    if (itemY[0] === "property")
+                                      name = "Свойство";
                                     if (name) {
                                       return (
                                         <div key={index}>
@@ -330,18 +332,27 @@ class Article extends React.Component {
                   <span>
                     {this.props.article.cargoStandartData && (
                       <div className="property-cargo">
-                        {this.props.article.cargoStandartData.weight}
-                        кг/
-                        {this.props.article.cargoStandartData.length *
-                          this.props.article.cargoStandartData.width *
-                          this.props.article.cargoStandartData.height}
-                        <span>
-                          м<sup>3</sup>
-                        </span>
-                        <div>
-                          {this.props.article.cargoStandartData.count}
-                          шт
-                        </div>
+                        {this.props.article.cargoStandartData.weight && (
+                          <>{this.props.article.cargoStandartData.weight}кг/</>
+                        )}
+                        {this.props.article.cargoStandartData.length &&
+                          this.props.article.cargoStandartData.width &&
+                          this.props.article.cargoStandartData.height && (
+                            <>
+                              {this.props.article.cargoStandartData.length *
+                                this.props.article.cargoStandartData.width *
+                                this.props.article.cargoStandartData.height}
+                              <span>
+                                м<sup>3</sup>
+                              </span>
+                            </>
+                          )}
+                        {this.props.article.cargoStandartData.count && (
+                          <div>
+                            {this.props.article.cargoStandartData.count}
+                            шт
+                          </div>
+                        )}
                       </div>
                     )}
                     {this.props.article.cargoTypes.map((item, index) => {
