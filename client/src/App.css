@@ -3480,6 +3480,7 @@ a.href span {
 }
 .swicher-wrapper .checkboxParam {
   margin-bottom: 8px;
+  display: flex;
 }
 .CheckBoxSwitcher {
   background: #eeeeee;
@@ -5554,6 +5555,7 @@ table {
 }
 .addPhotoCarBlock {
   justify-content: center;
+  align-self: start;
 }
 .inputPhoto {
   display: inline-block;
