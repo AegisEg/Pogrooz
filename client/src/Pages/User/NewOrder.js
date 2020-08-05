@@ -29,7 +29,7 @@ class OrderCreate extends React.Component {
     }
   }
   state = {
-    currentTab: 3,
+    currentTab: 1,
     article: false,
   };
   getRef(number) {
