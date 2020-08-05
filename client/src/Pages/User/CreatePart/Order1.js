@@ -184,7 +184,7 @@ class OrderCreate1 extends React.Component {
             {[currentCargoType].map((item, index) => {
               return (
                 <div key={index} className="rowParams">
-                  {item.fields && item.isStandart && (
+                  {(item.fields || item.isStandart) && (
                     <h4
                       className="f-16 col-12 mb-1"
                       style={{
