@@ -19,9 +19,10 @@ class OrderCreate1 extends React.Component {
     cargoPhoto: [],
   };
   componentDidMount() {
-    let currentCargoType = this.props.cargoTypes.length
-      ? cargoList.find((item) => item.id === this.props.cargoTypes[0])
-      : false;
+    let currentCargoType =
+      this.props.cargoTypes && this.props.cargoTypes.length
+        ? cargoList.find((item) => item.id === this.props.cargoTypes[0])
+        : false;
     //Инициализация
     let newState = {};
     if (this.props.cargoTypes)

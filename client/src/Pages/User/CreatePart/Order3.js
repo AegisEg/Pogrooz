@@ -54,28 +54,30 @@ class OrderCreate3 extends React.Component {
   }
   updateTypes() {
     let carListPossible = [];
-    carListPossible = carTypesList.filter((item) => {
-      return item.cargoTypes.find(
-        (itemX) => itemX === this.props.cargoTypes[0]
-      );
-    });
-    //Получение позможных относителдьно машины грузов
-    let newCurentCarType = this.state.car.typesCar
-      ? this.state.car.typesCar.filter((item) => {
-          return carListPossible.find((itemX) => itemX.id === item);
-        })
-      : [];
-    let isPro = this.state.isPro;
-    if (
-      newCurentCarType.find((item) => item.isPro) ||
-      !carListPossible.find((item) => !item.isPro)
-    )
-      isPro = true;
-    this.setState({
-      carListPossible,
-      isPro,
-      car: { ...this.state.car, typesCar: newCurentCarType },
-    });
+    if (this.props.cargoTypes) {
+      carListPossible = carTypesList.filter((item) => {
+        return item.cargoTypes.find(
+          (itemX) => itemX === this.props.cargoTypes[0]
+        );
+      });
+      //Получение позможных относителдьно машины грузов
+      let newCurentCarType = this.state.car.typesCar
+        ? this.state.car.typesCar.filter((item) => {
+            return carListPossible.find((itemX) => itemX.id === item);
+          })
+        : [];
+      let isPro = this.state.isPro;
+      if (
+        newCurentCarType.find((item) => item.isPro) ||
+        !carListPossible.find((item) => !item.isPro)
+      )
+        isPro = true;
+      this.setState({
+        carListPossible,
+        isPro,
+        car: { ...this.state.car, typesCar: newCurentCarType },
+      });
+    }
   }
   getArticlesInfo() {
     let errorArr = {};
