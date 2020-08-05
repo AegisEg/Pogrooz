@@ -127,6 +127,7 @@ class OrderCreate3 extends React.Component {
           additionally: [],
           contractParam: [],
           paymentInfo: [],
+          info: [],
           ...this.props.car,
         },
         ...newState,
@@ -205,7 +206,22 @@ class OrderCreate3 extends React.Component {
       car: car,
     });
   };
+  onChangeCarData = (carId, prop, val) => {
+    let carDataX = this.state.car.info;
+    if (carDataX.find((item) => item.carId === carId)) {
+      carDataX = carDataX.map((item) => {
+        if (item.carId === carId) {
+          item[prop] = val;
+          return item;
+        } else return item;
+      });
+    } else {
+      carDataX.push({ carId: carId });
+      carDataX[carDataX.length - 1][prop] = val;
+    }
 
+    this.setState({ car: { ...this.state.car, info: carDataX } });
+  };
   render() {
     let currentCarTypes =
       this.state.car.typesCar && !!this.state.car.typesCar.length
@@ -213,6 +229,7 @@ class OrderCreate3 extends React.Component {
             return this.state.car.typesCar.find((itemX) => item.id === itemX);
           })
         : false;
+    let carInfo = this.state.car.info || [];
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
@@ -360,6 +377,222 @@ class OrderCreate3 extends React.Component {
               </div>
             </div>
           </div>
+          {currentCarTypes && currentCarTypes.length && (
+            <div className="carMoreInfo carInfo row w-100">
+              {currentCarTypes.map((item, index) => {
+                return (
+                  <>
+                    <div className="moreInfoCheckBox col-12">
+                      <div className="f-12">
+                        {
+                          currentCarTypes.find((itemX) => itemX.id === item.id)
+                            .name
+                        }
+                      </div>
+                      <div>Свойство:</div>
+                      <div
+                        style={{
+                          display: "inline-block",
+                        }}
+                      >
+                        <CheckBox
+                          id="property1"
+                          name="property"
+                          value={
+                            (carInfo.find((itemX) => itemX.carId === item.id) &&
+                              carInfo.find((itemX) => itemX.carId === item.id)
+                                .property === "Манипулятор") ||
+                            ""
+                          }
+                          onChange={() => {
+                            this.onChangeCarData(
+                              item.id,
+                              "property",
+                              "Манипулятор"
+                            );
+                          }}
+                          text={"Манипулятор"}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "inline-block",
+                        }}
+                      >
+                        <CheckBox
+                          id="property2"
+                          name="property"
+                          value={
+                            (carInfo.find((itemX) => itemX.carId === item.id) &&
+                              carInfo.find((itemX) => itemX.carId === item.id)
+                                .property === "Рефрижератор") ||
+                            ""
+                          }
+                          onChange={() => {
+                            this.onChangeCarData(
+                              item.id,
+                              "property",
+                              "Рефрижератор"
+                            );
+                          }}
+                          text={"Рефрижератор"}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "inline-block",
+                        }}
+                      >
+                        <CheckBox
+                          id="property3"
+                          name="property"
+                          value={
+                            (carInfo.find((itemX) => itemX.carId === item.id) &&
+                              carInfo.find((itemX) => itemX.carId === item.id)
+                                .property === "Изотерм") ||
+                            ""
+                          }
+                          onChange={() => {
+                            this.onChangeCarData(
+                              item.id,
+                              "property",
+                              "Изотерм"
+                            );
+                          }}
+                          text={"Изотерм"}
+                        />
+                      </div>
+                    </div>
+                    {item.id === 9 && (
+                      <div className="moreInfoCheckBox col-12">
+                        <div>Тип</div>
+                        <div
+                          style={{
+                            display: "inline-block",
+                          }}
+                        >
+                          <CheckBox
+                            id="typeGazel1"
+                            name="typeGazel"
+                            value={
+                              (carInfo.find((item) => item.carId === 9) &&
+                                carInfo.find((item) => item.carId === 9)
+                                  .typeGazel === "Цельнометаллическая") ||
+                              ""
+                            }
+                            onChange={() => {
+                              this.onChangeCarData(
+                                9,
+                                "typeGazel",
+                                "Цельнометаллическая"
+                              );
+                            }}
+                            text={"Цельнометаллическая"}
+                          />
+                        </div>
+                        <div
+                          style={{
+                            display: "inline-block",
+                          }}
+                        >
+                          <CheckBox
+                            id="typeGazel2"
+                            name="typeGazel"
+                            value={
+                              (carInfo.find((item) => item.carId === 9) &&
+                                carInfo.find((item) => item.carId === 9)
+                                  .typeGazel === "С тентом") ||
+                              ""
+                            }
+                            onChange={() => {
+                              this.onChangeCarData(9, "typeGazel", "С тентом");
+                            }}
+                            text={"С тентом"}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {item.id === 12 && (
+                      <div className="moreInfoCheckBox col-12">
+                        <div>Тентовый</div>
+                        <div
+                          style={{
+                            display: "inline-block",
+                          }}
+                        >
+                          <CheckBox
+                            id="awning1"
+                            name="awning"
+                            value={
+                              carInfo.find((item) => item.carId === 12) &&
+                              carInfo.find((item) => item.carId === 12)
+                                .awning === "Жесткий борт"
+                            }
+                            onChange={() => {
+                              this.onChangeCarData(
+                                12,
+                                "awning",
+                                "Жесткий борт"
+                              );
+                            }}
+                            text={"Жесткий борт"}
+                          />
+                        </div>
+                        <div
+                          style={{
+                            display: "inline-block",
+                          }}
+                        >
+                          <CheckBox
+                            id="awning2"
+                            name="awning"
+                            value={
+                              (carInfo.find((item) => item.carId === 12) &&
+                                carInfo.find((item) => item.carId === 12)
+                                  .awning === "Съемная верхняя балка") ||
+                              ""
+                            }
+                            onChange={() => {
+                              this.onChangeCarData(
+                                12,
+                                "awning",
+                                "Съемная верхняя балка"
+                              );
+                            }}
+                            text={"Съемная верхняя балка"}
+                          />
+                        </div>
+                        <div
+                          style={{
+                            display: "inline-block",
+                          }}
+                        >
+                          <CheckBox
+                            id="awning3"
+                            name="awning"
+                            value={
+                              (carInfo.find((item) => item.carId === 12) &&
+                                carInfo.find((item) => item.carId === 12)
+                                  .awning === "Съемная боковая стойка") ||
+                              ""
+                            }
+                            onChange={() => {
+                              this.onChangeCarData(
+                                12,
+                                "awning",
+                                "Съемная боковая стойка"
+                              );
+                            }}
+                            text={"Съемная боковая стойка"}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </>
+                );
+              })}
+            </div>
+          )}
           <div className="row swicher-wrapper">
             <div className="col-sm-6 col-md-4">
               <div className="CheckBoxSwitcher-wrapper">

@@ -22,7 +22,21 @@ class Create4 extends React.Component {
       "article",
       JSON.stringify({ ...this.props.article, status: status })
     );
-    if (this.props.article.car.photo.file)
+
+    if (
+      this.props.article.type === "order" &&
+      this.props.article.cargoPhoto &&
+      !!this.props.article.cargoPhoto.length
+    ) {
+      let files = [];
+      this.props.article.cargoPhoto.map((item, index) => {
+        formData.append("cargoPhoto" + index, item.file);
+      });
+    }
+    if (
+      this.props.article.type === "offer" &&
+      this.props.article.car.photo.file
+    )
       formData.append("carPhoto", this.props.article.car.photo.file);
     if (apiToken) {
       fetch(`${configApi.urlApi}/api/article/createArticle`, {
@@ -34,7 +48,7 @@ class Create4 extends React.Component {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (!data.error) this.props.history.push("/my-offers-open");
+          if (!data.error) this.props.history.push("/my-orders-open");
         });
     }
   }

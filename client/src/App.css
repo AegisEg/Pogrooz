@@ -5617,3 +5617,6 @@ span.errRequired {
 .moreInfoCheckBox > div {
   padding: 0 15px;
 }
+.react-tel-input .flag-dropdown {
+  display: none;
+}

@@ -48,7 +48,7 @@ class OrderCreate extends React.Component {
   nexTab(number) {
     let error = false;
     let data;
-    let article = { type: "offer" };
+    let article = { type: "order" };
     Array.from(Array(number - 1), (_, i) => i + 1).map((item) => {
       if ((data = this.getRef(item).getArticlesInfo()))
         article = {
@@ -56,7 +56,6 @@ class OrderCreate extends React.Component {
           ...data,
         };
       else error = true;
-      console.log(JSON.stringify(article));
     });
     if (!error) {
       if (number === 4) {
