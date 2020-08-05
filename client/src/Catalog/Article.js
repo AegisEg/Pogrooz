@@ -190,7 +190,7 @@ class Article extends React.Component {
                                     if (name) {
                                       return (
                                         <div key={index}>
-                                          {name} : {itemY[1]}
+                                          {name}: {itemY[1]}
                                         </div>
                                       );
                                     }
@@ -751,7 +751,10 @@ class Article extends React.Component {
               <InputRow
                 article={this.props.article}
                 onMobile={this.state.onMobile}
-                isManage={this.props.article.autor.id == this.props.user.id}
+                isManage={
+                  this.props.isManage &&
+                  this.props.article.autor.id == this.props.user.id
+                }
                 onlyOpen={this.props.onlyOpen}
                 user={this.props.user}
                 articleOpen={this.state.showMore}
