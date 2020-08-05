@@ -184,15 +184,17 @@ class OrderCreate1 extends React.Component {
             {[currentCargoType].map((item, index) => {
               return (
                 <div key={index} className="rowParams">
-                  <h4
-                    className="f-16 col-12 mb-1"
-                    style={{
-                      fontWeight: "normal",
-                    }}
-                  >
-                    <div className="typeName">{item.name}</div>Параметры одного
-                    места и количество мест
-                  </h4>
+                  {item.fields && item.isStandart && (
+                    <h4
+                      className="f-16 col-12 mb-1"
+                      style={{
+                        fontWeight: "normal",
+                      }}
+                    >
+                      <div className="typeName">{item.name}</div>Параметры
+                      одного места и количество мест
+                    </h4>
+                  )}
                   <div className="moreParams">
                     {item.fields &&
                       item.fields(
