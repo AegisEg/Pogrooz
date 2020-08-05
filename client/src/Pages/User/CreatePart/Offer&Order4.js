@@ -48,7 +48,12 @@ class Create4 extends React.Component {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (!data.error) this.props.history.push("/my-orders-open");
+          if (!data.error) {
+            if (this.props.article.type === "offer")
+              this.props.history.push("/my-offers-open");
+            if (this.props.article.type === "order")
+              this.props.history.push("/my-orders-open");
+          }
         });
     }
   }

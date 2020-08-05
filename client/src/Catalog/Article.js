@@ -660,7 +660,7 @@ class Article extends React.Component {
                                   contractParams.find(
                                     (itemX) => itemX.id === item.id
                                   ).label +
-                                  (items.length + 1 === index ? "." : ", ")
+                                  (items.length - 1 === index ? "." : ", ")
                                 );
                               }
                             )}
