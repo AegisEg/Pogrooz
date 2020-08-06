@@ -57,9 +57,8 @@ let contractParams = [
     label: "Договор с ИП",
     additionFields: [
       {
-        field: Input,
+        field: orgSelect,
         props: {
-          type: "text",
           placeholder: "Введите ИНН или Название",
           name: "org",
         },

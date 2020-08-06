@@ -161,7 +161,12 @@ export default [
     img: hand,
     fieldsLabel: {
       type: "Тип",
+      weight: "Вес в кг",
+      length: "Длинна",
+      weight: "Ширина",
+      height: "Высота",
     },
+    //IS стандарт если обычные, в условии в заказе прописано
     fields: (callback, obj, car = false) => {
       let arrayCheck = ["Обычные", "Документы"];
       return (
@@ -186,6 +191,76 @@ export default [
               </div>
             );
           })}
+          {obj["type"] === arrayCheck[1] && (
+            <>
+              <div
+                className="col"
+                style={{
+                  maxWidth: "150px",
+                }}
+              >
+                <Input
+                  type="number"
+                  name="weight"
+                  placeholder="Вес в кг"
+                  value={obj["weight"] || ""}
+                  onChange={(e) => {
+                    callback(4, "weight", e.target.value);
+                  }}
+                />
+              </div>
+              <div
+                className="row colspan-input px-3"
+                style={{
+                  marginLeft: "0",
+                  alignItems: "center",
+                }}
+              >
+                <Input
+                  type="number"
+                  placeholder="Длина"
+                  className="text-center"
+                  style={{ margin: "0 0 0 0" }}
+                  value={obj["length"] || ""}
+                  onChange={(e) => {
+                    callback(4, "length", e.target.value);
+                  }}
+                />
+                <Input
+                  type="number"
+                  placeholder="Ширина"
+                  className="text-center"
+                  value={obj["width"] || ""}
+                  onChange={(e) => {
+                    callback(4, "width", e.target.value);
+                  }}
+                  style={{ margin: "0 0 0 0" }}
+                />
+                <Input
+                  type="number"
+                  className="text-center"
+                  value={obj["height"] || ""}
+                  onChange={(e) => {
+                    callback(4, "height", e.target.value);
+                  }}
+                  placeholder="Высота"
+                />
+                <span
+                  className="filter-input-title"
+                  style={{
+                    minWidth: "90px",
+                  }}
+                >
+                  &nbsp;&nbsp;=&nbsp;
+                  <div className="valumeCalculate">
+                    {obj["length"] * obj["width"] * obj["height"] || ""}
+                    &nbsp;
+                  </div>
+                  м<sup>3</sup>
+                </span>
+              </div>
+            </>
+          )}
         </>
       );
     },
@@ -482,6 +557,12 @@ export default [
     id: 6,
     name: "Другое ",
     img: circles,
+    isPro: true,
     isStandart: true,
+  },
+  {
+    id: 16,
+    name: "Эвакуатор",
+    img: circles,
   },
 ];

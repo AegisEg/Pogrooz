@@ -22,8 +22,9 @@ import { Link } from "react-router-dom";
 import CargoTypeList from "../config/baseInfo/cargoTypesList";
 import {
   extraParams,
-  contractParams,
+  contractInfos,
   paymentParams,
+  contractParams,
 } from "../config/baseInfo/carParams";
 import { Map, Placemark } from "react-yandex-maps";
 import carTypesList from "../config/baseInfo/carTypesList.js";
@@ -185,8 +186,6 @@ class Article extends React.Component {
                                       name = "Тентовый";
                                     if (itemY[0] === "typeGazel")
                                       name = "Тип Газели";
-                                    if (itemY[0] === "property")
-                                      name = "Свойство";
                                     if (name) {
                                       return (
                                         <div key={index}>
@@ -196,6 +195,11 @@ class Article extends React.Component {
                                     }
                                   }
                                 })}
+                              {this.props.article.car.property && (
+                                <div key={index}>
+                                  Свойство: {this.props.article.car.property}
+                                </div>
+                              )}
                             </div>
                           );
                         }
@@ -364,32 +368,6 @@ class Article extends React.Component {
                                 .name
                             }
                           </b>
-
-                          {this.props.article.cargoData.find(
-                            (itemX) => itemX.typeID == item
-                          ) && (
-                            <div className="property-cargo">
-                              {Object.entries(
-                                this.props.article.cargoData.find(
-                                  (itemX) => itemX.typeID == item
-                                )
-                              ).map((itemY, index) => {
-                                if (itemY[0] !== "typeID")
-                                  return (
-                                    <div key={index}>
-                                      <span
-                                        dangerouslySetInnerHTML={{
-                                          __html: CargoTypeList.find(
-                                            (itemX) => itemX.id === item
-                                          ).fieldsLabel[itemY[0]],
-                                        }}
-                                      />
-                                      : {itemY[1]}
-                                    </div>
-                                  );
-                              })}
-                            </div>
-                          )}
                         </span>
                       );
                     })}
@@ -650,16 +628,19 @@ class Article extends React.Component {
                           Пасспорт загружен
                         </span>
                       )}
-                      {this.props.article.car.contractParam &&
-                        !!this.props.article.car.contractParam.length && (
+                      {this.props.article.car.contractInfo &&
+                        !!this.props.article.car.contractInfo.length && (
                           <span className="property-user">
                             <img src={dogovor} alt="dogovor" />
-                            {this.props.article.car.contractParam.map(
+                            {this.props.article.car.contractInfo.map(
                               (item, index, items) => {
+                                let string = contractParams.find(
+                                  (itemX) => itemX.id === item.id
+                                ).label;
+                                if (item.id === 3 || item.id === 2)
+                                  string += "(" + item.org.value + ")";
                                 return (
-                                  contractParams.find(
-                                    (itemX) => itemX.id === item.id
-                                  ).label +
+                                  string +
                                   (items.length - 1 === index ? "." : ", ")
                                 );
                               }
@@ -689,6 +670,44 @@ class Article extends React.Component {
                 <div className="col-12 col-sm content">
                   <div>
                     <b>Комментарий:</b> {this.props.article.comment}
+                    {this.props.article.cargoTypes.map((item, index) => {
+                      return (
+                        this.props.article.cargoData.find(
+                          (itemX) => itemX.typeID == item
+                        ) && (
+                          <span key={index} className="d-block">
+                            <b>
+                              {
+                                CargoTypeList.find((itemX) => itemX.id == item)
+                                  .name
+                              }
+                            </b>
+
+                            <div className="property-cargo">
+                              {Object.entries(
+                                this.props.article.cargoData.find(
+                                  (itemX) => itemX.typeID == item
+                                )
+                              ).map((itemY, index) => {
+                                if (itemY[0] !== "typeID")
+                                  return (
+                                    <div key={index}>
+                                      <span
+                                        dangerouslySetInnerHTML={{
+                                          __html: CargoTypeList.find(
+                                            (itemX) => itemX.id === item
+                                          ).fieldsLabel[itemY[0]],
+                                        }}
+                                      />
+                                      : {itemY[1]}
+                                    </div>
+                                  );
+                              })}
+                            </div>
+                          </span>
+                        )
+                      );
+                    })}
                     {this.props.article.type === "order" && (
                       <div className="imgs-content">
                         {this.props.article.cargoPhoto.map((item, index) => {

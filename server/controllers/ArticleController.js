@@ -84,6 +84,7 @@ module.exports = {
           newArticle.car = {
             typesCar: article.car.typesCar,
             name: article.car.name,
+            property: article.car.property,
             additionally: article.car.additionally,
             info: article.car.info,
             contractInfo: article.car.contractParam,

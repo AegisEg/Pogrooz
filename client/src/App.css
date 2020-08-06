@@ -1347,6 +1347,7 @@ a.mail {
 }
 .MuiPickersClockPointer-thumb {
   border-color: #ffdc1c !important;
+  background-color: #fff !important;
 }
 .MuiPickersToolbar-toolbar,
 .MuiPickersClockPointer-pointer,
@@ -3477,6 +3478,12 @@ a.href span {
 }
 .swicher-wrapper .checkboxGroup {
   margin-top: 20px;
+}
+.swicher-wrapper .checkboxGroup.contract .checkboxParam{
+align-items: center;
+}
+.swicher-wrapper .checkboxGroup.contract .checkboxParam .react-dadata{
+  margin-left: 10px;
 }
 .swicher-wrapper .checkboxParam {
   margin-bottom: 8px;

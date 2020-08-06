@@ -55,10 +55,10 @@ class ArticlePage extends React.Component {
           <div className="article-page">
             <div className="container-fluid">
               <h2 className="title">
-                {this.state.article.type ? "Заказ" : "Предложение"} №{" "}
+                {this.state.article.type=="order" ? "Заказ" : "Предложение"} №{" "}
                 {this.state.article.articleId}
               </h2>
-              <Link
+              <a
                 className="href left-angle angle-go mb-2 d-block"
                 onClick={() => {
                   if (this.props.lastLocation) {
@@ -69,7 +69,7 @@ class ArticlePage extends React.Component {
                 }}
               >
                 Назад
-              </Link>
+              </a>
             </div>
             <div className="articles-block full">
               <ArticleHeader></ArticleHeader>
