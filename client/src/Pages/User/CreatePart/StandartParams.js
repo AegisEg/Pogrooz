@@ -162,7 +162,7 @@ class StandartParams extends React.Component {
                   }}
                 >
                   {this.props.cargoStandartData["weight"] *
-                    this.props.cargoStandartData["count"] || ""}
+                    (this.props.cargoStandartData["count"] || 1) || ""}
                 </div>
                 кг.
               </span>
@@ -243,7 +243,7 @@ class StandartParams extends React.Component {
                   {this.props.cargoStandartData["length"] *
                     this.props.cargoStandartData["width"] *
                     this.props.cargoStandartData["height"] *
-                    this.props.cargoStandartData["count"] || ""}
+                    (this.props.cargoStandartData["count"] || 1) || ""}
                   &nbsp;
                 </div>
                 м<sup>3</sup>
