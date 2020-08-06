@@ -637,8 +637,9 @@ class Article extends React.Component {
                                 let string = contractParams.find(
                                   (itemX) => itemX.id === item.id
                                 ).label;
-                                if (item.id === 3 || item.id === 2)
-                                  string += "(" + item.org.value + ")";
+                                if (this.props.article.type === "offer")
+                                  if (item.id === 3 || item.id === 2)
+                                    string += "(" + item.org.value + ")";
                                 return (
                                   string +
                                   (items.length - 1 === index ? "." : ", ")
@@ -656,8 +657,9 @@ class Article extends React.Component {
                                 let string = contractParams.find(
                                   (itemX) => itemX.id === item.id
                                 ).label;
-                                if (item.id === 3 || item.id === 2)
-                                  string += "(" + item.org.value + ")";
+                                if (this.props.article.type === "offer")
+                                  if (item.id === 3 || item.id === 2)
+                                    string += "(" + item.org.value + ")";
                                 return (
                                   string +
                                   (items.length - 1 === index ? "." : ", ")
