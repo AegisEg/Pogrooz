@@ -224,8 +224,10 @@ class AppRouter extends React.Component {
             </>
           ) : (
             <>
-              <div className="page-common">{children}</div>
-              <Footer />
+              <div className="page-common">
+                {children}
+                <Footer />
+              </div>
             </>
           )
         }

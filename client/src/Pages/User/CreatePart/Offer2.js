@@ -25,7 +25,7 @@ class OfferCreate2 extends React.Component {
       !this.state.addressFrom ||
       Number(this.state.addressFrom.data.fias_level) !== 8
     ) {
-      toast.error("Введите адрес отправления", {
+      toast.error("Введите адрес отправления до дома", {
         position: toast.POSITION.TOP_CENTER,
       });
       isError = true;
@@ -34,7 +34,7 @@ class OfferCreate2 extends React.Component {
       !this.state.addressTo ||
       Number(this.state.addressTo.data.fias_level) !== 8
     ) {
-      toast.error("Введите адрес доставки", {
+      toast.error("Введите адрес доставки до дома", {
         position: toast.POSITION.TOP_CENTER,
       });
       isError = true;

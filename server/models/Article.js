@@ -22,6 +22,7 @@ const ArticleSchema = new Schema({
   car: {
     typesCar: [{ type: Number }],
     name: { type: String },
+    property: { type: String },
     photo: { type: Object },
     info: { type: Object },
     additionally: [{ type: Object }],

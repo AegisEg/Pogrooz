@@ -130,6 +130,7 @@ class OrderCreate3 extends React.Component {
           contractParam: [],
           paymentInfo: [],
           info: [],
+          property: "",
           ...this.props.car,
         },
         ...newState,
@@ -150,6 +151,9 @@ class OrderCreate3 extends React.Component {
     switch (prop) {
       case "carType":
         car = { ...car, typesCar: [val] };
+        break;
+      case "carProperty":
+        car = { ...car, property: val };
         break;
       case "carName":
         car = { ...car, name: val };
@@ -232,6 +236,7 @@ class OrderCreate3 extends React.Component {
           })
         : false;
     let carInfo = this.state.car.info || [];
+    console.log(this.state.car);
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
@@ -381,93 +386,77 @@ class OrderCreate3 extends React.Component {
           </div>
           {currentCarTypes && currentCarTypes.length && (
             <div className="carMoreInfo carInfo row w-100">
+              <div className="moreInfoCheckBox col-12">
+                <div className="f-14">Свойство:</div>
+                <div
+                  style={{
+                    display: "inline-block",
+                  }}
+                >
+                  <CheckBox
+                    id="property1"
+                    name="property"
+                    value={
+                      (this.state.car &&
+                        this.state.car.property === "Манипулятор") ||
+                      ""
+                    }
+                    onChange={() => {
+                      this.onChange("Манипулятор", "carProperty");
+                    }}
+                    text={"Манипулятор"}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "inline-block",
+                  }}
+                >
+                  <CheckBox
+                    id="property2"
+                    name="property"
+                    value={
+                      (this.state.car &&
+                        this.state.car.property === "Рефрижератор") ||
+                      ""
+                    }
+                    onChange={() => {
+                      this.onChange("Рефрижератор", "carProperty");
+                    }}
+                    text={"Рефрижератор"}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "inline-block",
+                  }}
+                >
+                  <CheckBox
+                    id="property3"
+                    name="property"
+                    value={
+                      (this.state.car &&
+                        this.state.car.property === "Изотерм") ||
+                      ""
+                    }
+                    onChange={() => {
+                      this.onChange("Изотерм", "carProperty");
+                    }}
+                    text={"Изотерм"}
+                  />
+                </div>
+              </div>
               {currentCarTypes.map((item, index) => {
                 return (
-                  <>
-                    <div className="moreInfoCheckBox col-12">
-                      <div className="f-12">
-                        {
-                          currentCarTypes.find((itemX) => itemX.id === item.id)
-                            .name
-                        }
-                      </div>
-                      <div>Свойство:</div>
-                      <div
-                        style={{
-                          display: "inline-block",
-                        }}
-                      >
-                        <CheckBox
-                          id="property1"
-                          name="property"
-                          value={
-                            (carInfo.find((itemX) => itemX.carId === item.id) &&
-                              carInfo.find((itemX) => itemX.carId === item.id)
-                                .property === "Манипулятор") ||
-                            ""
-                          }
-                          onChange={() => {
-                            this.onChangeCarData(
-                              item.id,
-                              "property",
-                              "Манипулятор"
-                            );
-                          }}
-                          text={"Манипулятор"}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          display: "inline-block",
-                        }}
-                      >
-                        <CheckBox
-                          id="property2"
-                          name="property"
-                          value={
-                            (carInfo.find((itemX) => itemX.carId === item.id) &&
-                              carInfo.find((itemX) => itemX.carId === item.id)
-                                .property === "Рефрижератор") ||
-                            ""
-                          }
-                          onChange={() => {
-                            this.onChangeCarData(
-                              item.id,
-                              "property",
-                              "Рефрижератор"
-                            );
-                          }}
-                          text={"Рефрижератор"}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          display: "inline-block",
-                        }}
-                      >
-                        <CheckBox
-                          id="property3"
-                          name="property"
-                          value={
-                            (carInfo.find((itemX) => itemX.carId === item.id) &&
-                              carInfo.find((itemX) => itemX.carId === item.id)
-                                .property === "Изотерм") ||
-                            ""
-                          }
-                          onChange={() => {
-                            this.onChangeCarData(
-                              item.id,
-                              "property",
-                              "Изотерм"
-                            );
-                          }}
-                          text={"Изотерм"}
-                        />
-                      </div>
-                    </div>
+                  <div
+                    key={index}
+                    style={{
+                      display: "contents",
+                    }}
+                  >
                     {item.id === 9 && (
                       <div className="moreInfoCheckBox col-12">
-                        <div>Тип</div>
+                        <div className="f-14">Тип</div>
                         <div
                           style={{
                             display: "inline-block",
@@ -516,7 +505,7 @@ class OrderCreate3 extends React.Component {
                     )}
                     {item.id === 12 && (
                       <div className="moreInfoCheckBox col-12">
-                        <div>Тентовый</div>
+                        <div className="f-14">Тентовый</div>
                         <div
                           style={{
                             display: "inline-block",
@@ -590,7 +579,7 @@ class OrderCreate3 extends React.Component {
                         </div>
                       </div>
                     )}
-                  </>
+                  </div>
                 );
               })}
             </div>
@@ -704,31 +693,6 @@ class OrderCreate3 extends React.Component {
                             }}
                             text={item.name}
                           />
-                          {item.additionFields &&
-                            this.state.car.contractParam.find(
-                              (itemX) => itemX.id === item.id
-                            ) &&
-                            item.additionFields.map((itemField, index) => {
-                              return (
-                                <itemField.field
-                                  key={index}
-                                  {...itemField.props}
-                                  value={this.getIfExit(
-                                    this.state.car.contractParam,
-                                    item.id,
-                                    itemField.name
-                                  )}
-                                  onChange={(e) => {
-                                    this.onChangeParamsFiels(
-                                      "contractParam",
-                                      item.id,
-                                      itemField.props.name,
-                                      e.target.value
-                                    );
-                                  }}
-                                ></itemField.field>
-                              );
-                            })}
                         </div>
                       );
                     })}

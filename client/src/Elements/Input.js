@@ -69,6 +69,8 @@ class Input extends React.Component {
               onFocus={() => {
                 this.setState({ isFocus: true });
               }}
+              cancelLabel="Закрыть"
+              okLabel="Ок"
               ampm={false}
               onBlur={() => {
                 this.setState({ isFocus: false });
@@ -110,6 +112,8 @@ class Input extends React.Component {
               InputProps={{
                 className: "input-date",
               }}
+              cancelLabel="Закрыть"
+              okLabel="Ок"
               format="dd.MM.yyyy"
               className={this.props.className}
               disablePast

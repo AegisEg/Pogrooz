@@ -45,6 +45,16 @@ class OfferCreate1 extends React.Component {
       });
       isError = true;
     }
+    if (
+      this.state.car.contractParam.find((item) => {
+        return (item.id === 2 || item.id === 3) && !item.org;
+      })
+    ) {
+      toast.error("Выберете организацию", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      isError = true;
+    }
     if (isError) {
       return false;
     } else
@@ -73,6 +83,7 @@ class OfferCreate1 extends React.Component {
       additionally: [],
       contractParam: [],
       info: [],
+      property: "",
       paymentInfo: [],
       ...car,
     };
@@ -98,6 +109,9 @@ class OfferCreate1 extends React.Component {
     switch (prop) {
       case "carType":
         car = { ...car, typesCar: [val], info: [] };
+        break;
+      case "carProperty":
+        car = { ...car, property: val };
         break;
       case "carName":
         car = { ...car, name: val };
@@ -233,7 +247,7 @@ class OfferCreate1 extends React.Component {
                 />
               </div>
               {currentCarType && (
-                <div className="carMoreInfo carInfo row">
+                <div className="carMoreInfo carInfo row w-100">
                   {currentCarType.id !== 1 && (
                     <div className="carType">
                       <div className="f-14 mb-2">Грузоподъемность в тоннах</div>
@@ -367,8 +381,8 @@ class OfferCreate1 extends React.Component {
                       </div>
                     </div>
                   )}
-                  <div className="moreInfoCheckBox col-12">
-                    <div className="f-14 mb-2">Свойство:</div>
+                  <div className="moreInfoCheckBox">
+                    <div className="f-14">Свойство:</div>
                     <div
                       style={{
                         display: "inline-block",
@@ -377,13 +391,13 @@ class OfferCreate1 extends React.Component {
                       <CheckBox
                         id="property1"
                         name="property"
-                        value={currentInfo.property === "Манипулятор" || ""}
+                        value={
+                          (this.state.car &&
+                            this.state.car.property === "Манипулятор") ||
+                          ""
+                        }
                         onChange={() => {
-                          this.onChangeCarData(
-                            currentCarType.id,
-                            "property",
-                            "Манипулятор"
-                          );
+                          this.onChange("Манипулятор", "carProperty");
                         }}
                         text={"Манипулятор"}
                       />
@@ -396,13 +410,13 @@ class OfferCreate1 extends React.Component {
                       <CheckBox
                         id="property2"
                         name="property"
-                        value={currentInfo.property === "Рефрижератор" || ""}
+                        value={
+                          (this.state.car &&
+                            this.state.car.property === "Рефрижератор") ||
+                          ""
+                        }
                         onChange={() => {
-                          this.onChangeCarData(
-                            currentCarType.id,
-                            "property",
-                            "Рефрижератор"
-                          );
+                          this.onChange("Рефрижератор", "carProperty");
                         }}
                         text={"Рефрижератор"}
                       />
@@ -415,13 +429,13 @@ class OfferCreate1 extends React.Component {
                       <CheckBox
                         id="property3"
                         name="property"
-                        value={currentInfo.property === "Изотерм" || ""}
+                        value={
+                          (this.state.car &&
+                            this.state.car.property === "Изотерм") ||
+                          ""
+                        }
                         onChange={() => {
-                          this.onChangeCarData(
-                            currentCarType.id,
-                            "property",
-                            "Изотерм"
-                          );
+                          this.onChange("Изотерм", "carProperty");
                         }}
                         text={"Изотерм"}
                       />
@@ -570,7 +584,7 @@ class OfferCreate1 extends React.Component {
                 }}
               >
                 {this.state.isContract && (
-                  <div className="checkboxGroup">
+                  <div className="checkboxGroup contract">
                     {contractParams.map((item, index) => {
                       return (
                         <div key={index} className="checkboxParam">

@@ -204,7 +204,21 @@ class OrderCreate1 extends React.Component {
                         ) || []
                       )}
                   </div>
-                  {item.isStandart && (
+                  {(item.isStandart ||
+                    (this.state.cargoData.find((itemX) => itemX.typeID === 4) &&
+                      this.state.cargoData.find((itemX) => itemX.typeID === 4)[
+                        "type"
+                      ] === "Обычные") ||
+                    (this.state.cargoData.find(
+                      (itemX) => itemX.typeID === 13
+                    ) &&
+                      this.state.cargoData.find((itemX) => itemX.typeID === 13)[
+                        "type"
+                      ] === "Обычные") ||
+                    (this.state.cargoData.find((itemX) => itemX.typeID === 3) &&
+                      this.state.cargoData.find((itemX) => itemX.typeID === 3)[
+                        "type"
+                      ] === "Обычные")) && (
                     <StandartParams
                       cargoStandartData={this.state.cargoStandartData}
                       onChangeCargoStandartData={this.onChangeCargoStandartData}
