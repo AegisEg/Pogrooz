@@ -647,6 +647,25 @@ class Article extends React.Component {
                             )}
                           </span>
                         )}
+                      {this.props.article.car.contractParam &&
+                        !!this.props.article.car.contractParam.length && (
+                          <span className="property-user">
+                            <img src={dogovor} alt="dogovor" />
+                            {this.props.article.car.contractParam.map(
+                              (item, index, items) => {
+                                let string = contractParams.find(
+                                  (itemX) => itemX.id === item.id
+                                ).label;
+                                if (item.id === 3 || item.id === 2)
+                                  string += "(" + item.org.value + ")";
+                                return (
+                                  string +
+                                  (items.length - 1 === index ? "." : ", ")
+                                );
+                              }
+                            )}
+                          </span>
+                        )}
                       {this.props.article.car.paymentInfo &&
                         !!this.props.article.car.paymentInfo.length && (
                           <span className="property-user">
