@@ -148,7 +148,7 @@ class OrderCreate2 extends React.Component {
                           addressFrom: false,
                         },
                       });
-
+                   
                     this.onChangeAddress("From", val, () => {
                       if (val.data.geo_lat && val.data.geo_lon) {
                         this.mapFrom.panTo(
@@ -207,6 +207,7 @@ class OrderCreate2 extends React.Component {
                           addressTo: false,
                         },
                       });
+                   
                     this.onChangeAddress("To", val, () => {
                       if (val.data.geo_lat && val.data.geo_lon) {
                         this.mapTo.panTo(

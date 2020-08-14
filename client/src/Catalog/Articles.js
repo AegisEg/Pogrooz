@@ -19,14 +19,7 @@ class Articles extends React.Component {
   componentDidMount() {
     this.getAricles(0);
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      JSON.stringify(this.props.filter) !== JSON.stringify(prevProps.filter) ||
-      this.state.currentPage !== prevState.currentPage
-    )
-      this.getAricles(this.state.currentPage);
-  }
-  getAricles(page) {
+  getAricles(page = 0) {
     this.setState({ isFething: true }, () => {
       fetch(`${configApi.urlApi}/api/article/getArticles`, {
         method: "post",
@@ -67,6 +60,7 @@ class Articles extends React.Component {
     }
   }
   render() {
+    console.log(this.props.filter);
     return (
       <div className="articles-block">
         <ArticleHeader></ArticleHeader>

@@ -14,13 +14,11 @@ import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../../Elements/Button";
-import Filter from "../../Elements/Filter";
 
 // Main elements
 import Questions from "../../MainElements/Questions";
 import Cities from "../../MainElements/Cities";
-import Articles from "../../Catalog/Articles";
-
+import ArticlesFilter from "../../Partials/ArticlesFilter";
 class Main extends React.Component {
   state = {
     searchType: "offer",
@@ -121,9 +119,7 @@ class Main extends React.Component {
             </div>
           </div>
         </div>
-
-        <Filter className="background-gray-768 filter-main" />
-        <Articles filter={{ status: 2 }} />
+        <ArticlesFilter />
         <div className="text-center">
           <Link to="/search" className="href">
             <Button

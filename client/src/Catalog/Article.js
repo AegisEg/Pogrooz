@@ -22,7 +22,6 @@ import { Link } from "react-router-dom";
 import CargoTypeList from "../config/baseInfo/cargoTypesList";
 import {
   extraParams,
-  contractInfos,
   paymentParams,
   contractParams,
 } from "../config/baseInfo/carParams";

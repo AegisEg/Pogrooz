@@ -33,7 +33,15 @@ const ArticleSchema = new Schema({
   comment: { type: String },
   budget: { type: Number },
   from: { type: Object },
+  fromLocation: {
+    type: { type: String, default: "Point" },
+    coordinates: [Number],
+  },
   to: { type: Object },
+  toLocation: {
+    type: { type: String, default: "Point" },
+    coordinates: [Number],
+  },
   startDate: {
     date: Date,
     timeFrom: Date,
@@ -43,7 +51,7 @@ const ArticleSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   buff: Buffer,
 });
-
+ArticleSchema.index({ fromLocation: "2dsphere" });
 ArticleSchema.plugin(autoIncrement.plugin, {
   model: "Article",
   field: "articleId",

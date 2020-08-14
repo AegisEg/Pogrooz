@@ -2,7 +2,6 @@
 import React from "react";
 // Elements
 import Button from "../../../Elements/Button";
-import Input from "../../../Elements/Input";
 import Select from "../../../Elements/Select";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";

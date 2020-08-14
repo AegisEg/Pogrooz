@@ -55,6 +55,7 @@ class OrderCreate extends React.Component {
         };
       else error = true;
     });
+    console.log(JSON.stringify(article));
     if (!error) {
       if (number === 4) {
         this.setState(

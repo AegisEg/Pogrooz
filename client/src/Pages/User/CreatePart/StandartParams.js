@@ -52,7 +52,7 @@ class StandartParams extends React.Component {
                 onChange={(e) => {
                   this.props.onChangeCargoStandartData(
                     "weight",
-                    e.target.value
+                    Number(e.target.value)
                   );
                 }}
               />
@@ -73,7 +73,7 @@ class StandartParams extends React.Component {
                 onChange={(e) => {
                   this.props.onChangeCargoStandartData(
                     "length",
-                    e.target.value
+                    Number(e.target.value)
                   );
                 }}
               />
@@ -83,7 +83,10 @@ class StandartParams extends React.Component {
                 className="text-center"
                 value={this.props.cargoStandartData["width"] || ""}
                 onChange={(e) => {
-                  this.props.onChangeCargoStandartData("width", e.target.value);
+                  this.props.onChangeCargoStandartData(
+                    "width",
+                    Number(e.target.value)
+                  );
                 }}
                 style={{ margin: "0 0 0 0" }}
               />
@@ -94,7 +97,7 @@ class StandartParams extends React.Component {
                 onChange={(e) => {
                   this.props.onChangeCargoStandartData(
                     "height",
-                    e.target.value
+                    Number(e.target.value)
                   );
                 }}
                 placeholder="Высота"
@@ -138,7 +141,10 @@ class StandartParams extends React.Component {
                 placeholder="0"
                 value={this.props.cargoStandartData["count"] || ""}
                 onChange={(e) => {
-                  this.props.onChangeCargoStandartData("count", e.target.value);
+                  this.props.onChangeCargoStandartData(
+                    "count",
+                    Number(e.target.value)
+                  );
                 }}
               />
             </div>
