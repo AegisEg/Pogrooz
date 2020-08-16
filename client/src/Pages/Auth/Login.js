@@ -84,9 +84,12 @@ class Login extends React.Component {
             <div className="col-12">
               <Input
                 type="password"
-                error={this.state.errors.find(
-                  (value) => value.param === "password"
-                )}
+                error={
+                  this.state.errors.find(
+                    (value) => value.param === "password"
+                  ) ||
+                  this.state.errors.find((value) => value.param === "all")
+                }
                 value={this.state.password}
                 style={{ paddingRight: 50 }}
                 onChange={(e) => {

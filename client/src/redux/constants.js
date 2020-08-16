@@ -1,6 +1,7 @@
 // User
 export const USER_LOGIN = "USER_LOGIN";
 export const USER_LOGOUT = "USER_LOGOUT";
+export const USER_EDIT = "USER_EDIT";
 // Dialogs
 export const DIALOGS_GET = "DIALOGS_GET";
 export const DIALOGS_ADD = "DIALOGS_ADD";

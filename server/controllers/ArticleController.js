@@ -6,9 +6,8 @@
 
 const Article = require("../models/Article");
 const carTemplate = require("../models/Car/carTemplate");
-const TripPoint = require("../models/TripPoint");
 const { Error } = require("mongoose");
-
+let { randomString } = require("../controllers/FileController");
 module.exports = {
   createArticle: async (req, res, next) => {
     const { user } = res.locals;
@@ -180,238 +179,264 @@ module.exports = {
     let match = {};
     let addFields = false;
     let sort = false;
-    let timeFrom = false;
-    let timeTo = false;
-    if (filter.allStatus) {
-      filter.status = { $in: filter.allStatus };
-      delete filter.allStatus;
-    }
-
-    if (filter.status) match.status = filter.status;
-    if (filter.from) {
-      match = {
-        ...match,
-        "from.data.city_fias_id": filter.from.data.city_fias_id,
-      };
-      if (
-        filter.from.data.geo_lat &&
-        filter.from.data.geo_lon &&
-        filter.from.data.fias_level === "8"
-      )
-        geoNear = {
-          $geoNear: {
-            near: {
-              type: "Point",
-              coordinates: [
-                Number(filter.from.data.geo_lat),
-                Number(filter.from.data.geo_lon),
-              ],
+    // let timeFrom = false;
+    // let timeTo = false;
+    try {
+      if (filter.allStatus) {
+        filter.status = { $in: filter.allStatus };
+        delete filter.allStatus;
+      }
+      if (filter.type) match.type = filter.type;
+      if (filter.status) match.status = filter.status;
+      if (filter.from) {
+        match = {
+          ...match,
+          "from.data.city_fias_id": filter.from.data.city_fias_id,
+        };
+        if (
+          filter.from.data.geo_lat &&
+          filter.from.data.geo_lon &&
+          filter.from.data.fias_level === "8"
+        )
+          geoNear = {
+            $geoNear: {
+              near: {
+                type: "Point",
+                coordinates: [
+                  Number(filter.from.data.geo_lat),
+                  Number(filter.from.data.geo_lon),
+                ],
+              },
+              key: "fromLocation",
+              distanceField: "fromDistance",
+              spherical: true,
             },
-            key: "fromLocation",
-            distanceField: "fromDistance",
-            spherical: true,
-          },
-        };
-    }
-    if (filter.to) {
-      match = {
-        ...match,
-        "to.data.city_fias_id": filter.to.data.city_fias_id,
-      };
-    }
-    //Груз
-    if (filter.cargoType) match.cargoTypes = filter.cargoType;
-    //Машина
-    if (filter.carType) match = { ...match, "car.typesCar": filter.carType };
-    //Не проверял
-    if (filter.additionally && filter.additionally.length)
-      match = {
-        ...match,
-        "car.additionally.id": { $all: filter.additionally },
-      };
-    if (filter.contractInfo && filter.contractInfo.length)
-      match = {
-        ...match,
-        "car.contractInfo.id": { $all: filter.contractInfo },
-      };
-    if (filter.paymentInfo && filter.paymentInfo.length)
-      match = {
-        ...match,
-        "car.paymentInfo.id": { $all: filter.paymentInfo },
-      };
-    //Не проверял
-    if (filter.budget) {
-      match = {
-        ...match,
-        budget: { $gte: Number(filter.budget) },
-      };
-    }
-    if (filter.cargoData && filter.cargoData.length) {
-      let property = {};
-      Object.entries(filter.cargoData[0]).map((itemY, index) => {
-        if (itemY[0] === "type" || itemY[0] === "typeID")
-          property[itemY[0]] = itemY[1];
-        else property[itemY[0]] = { $gte: itemY[1] };
-      });
-      match = { ...match, cargoData: { $elemMatch: property } };
-    }
-    if (filter.cargoStandartData) {
-      if (!!filter.cargoStandartData.unit) {
+          };
+      }
+      if (filter.to) {
         match = {
           ...match,
-          "cargoStandartData.unit": filter.cargoStandartData.unit,
+          "to.data.city_fias_id": filter.to.data.city_fias_id,
         };
       }
-      if (!!filter.cargoStandartData.height) {
+      //Груз
+      if (filter.cargoType) match.cargoTypes = filter.cargoType;
+      //Машина
+      if (filter.carType) match = { ...match, "car.typesCar": filter.carType };
+      //Дополнительно
+      if (filter.additionally && filter.additionally.length)
         match = {
           ...match,
-          "cargoStandartData.height": {
-            $gte: Number(filter.cargoStandartData.height),
-          },
+          "car.additionally.id": { $all: filter.additionally },
         };
-      }
-      if (!!filter.cargoStandartData.weight) {
+      if (filter.contractInfo && filter.contractInfo.length)
         match = {
           ...match,
-          "cargoStandartData.weight": {
-            $gte: Number(filter.cargoStandartData.weight),
-          },
+          "car.contractInfo.id": { $all: filter.contractInfo },
         };
-      }
-      if (!!filter.cargoStandartData.width) {
+      if (filter.paymentInfo && filter.paymentInfo.length)
         match = {
           ...match,
-          "cargoStandartData.width": {
-            $gte: Number(filter.cargoStandartData.width),
-          },
+          "car.paymentInfo.id": { $all: filter.paymentInfo },
         };
-      }
-      if (!!filter.cargoStandartData.length) {
+      //Дополнительно
+      if (filter.budget) {
+        filter.budget = Number(filter.budget);
         match = {
           ...match,
-          "cargoStandartData.length": {
-            $gte: Number(filter.cargoStandartData.length),
+          budget: {
+            $gte: filter.budget * 0.8,
+            $lte: filter.budget * 1.2,
           },
         };
-      }
-      if (!!filter.cargoStandartData.count) {
-        match = {
-          ...match,
-          "cargoStandartData.count": {
-            $gte: Number(filter.cargoStandartData.count),
-          },
-        };
-      }
-    }
-    //Дата
-    if (filter.startDate) {
-      if (filter.startDate.date) {
-        filter.startDate.date = new Date(filter.startDate.date);
-        filter.startDate.date.setHours(0, 0, 0, 0);
         if (!sort) sort = {};
-        sort.sortDate = 1;
+        sort.sortBudget = 1;
         if (!addFields) addFields = {};
-        addFields.sortDate = {
+        addFields.sortBudget = {
           $cond: {
-            if: { $eq: ["$startDate.date", filter.startDate.date] },
+            if: { $eq: ["$budget", filter.budget] },
             then: 1,
             else: {
               $cond: {
-                if: { $gt: ["$startDate.date", filter.startDate.date] },
+                if: { $gt: ["$budget", filter.budget] },
                 then: 3,
                 else: 2,
               },
             },
           },
         };
-        match = {
-          ...match,
-          "startDate.date": {
-            $gte: filter.startDate.date.addDays(-2),
-            $lt: filter.startDate.date.addDays(2),
+      }
+      if (filter.cargoData && filter.cargoData.length) {
+        let property = {};
+        Object.entries(filter.cargoData[0]).map((itemY, index) => {
+          if (itemY[0] === "type" || itemY[0] === "typeID")
+            property[itemY[0]] = itemY[1];
+          else property[itemY[0]] = { $gte: itemY[1] };
+        });
+        match = { ...match, cargoData: { $elemMatch: property } };
+      }
+      if (filter.cargoStandartData) {
+        if (!!filter.cargoStandartData.unit) {
+          match = {
+            ...match,
+            "cargoStandartData.unit": filter.cargoStandartData.unit,
+          };
+        }
+        if (!!filter.cargoStandartData.height) {
+          match = {
+            ...match,
+            "cargoStandartData.height": {
+              $gte: Number(filter.cargoStandartData.height),
+            },
+          };
+        }
+        if (!!filter.cargoStandartData.weight) {
+          match = {
+            ...match,
+            "cargoStandartData.weight": {
+              $gte: Number(filter.cargoStandartData.weight),
+            },
+          };
+        }
+        if (!!filter.cargoStandartData.width) {
+          match = {
+            ...match,
+            "cargoStandartData.width": {
+              $gte: Number(filter.cargoStandartData.width),
+            },
+          };
+        }
+        if (!!filter.cargoStandartData.length) {
+          match = {
+            ...match,
+            "cargoStandartData.length": {
+              $gte: Number(filter.cargoStandartData.length),
+            },
+          };
+        }
+        if (!!filter.cargoStandartData.count) {
+          match = {
+            ...match,
+            "cargoStandartData.count": {
+              $gte: Number(filter.cargoStandartData.count),
+            },
+          };
+        }
+      }
+      //Дата
+      if (filter.startDate) {
+        if (filter.startDate.date) {
+          filter.startDate.date = new Date(filter.startDate.date);
+          filter.startDate.date.setHours(0, 0, 0, 0);
+          if (!sort) sort = {};
+          sort.sortDate = 1;
+          if (!addFields) addFields = {};
+          addFields.sortDate = {
+            $cond: {
+              if: { $eq: ["$startDate.date", filter.startDate.date] },
+              then: 1,
+              else: {
+                $cond: {
+                  if: { $gt: ["$startDate.date", filter.startDate.date] },
+                  then: 3,
+                  else: 2,
+                },
+              },
+            },
+          };
+          match = {
+            ...match,
+            "startDate.date": {
+              $gte: filter.startDate.date.addDays(-2),
+              $lt: filter.startDate.date.addDays(2),
+            },
+          };
+        }
+        if (filter.startDate.timeFrom) {
+          filter.startDate.timeFrom = new Date(filter.startDate.timeFrom);
+          let time = new Date(
+            filter.startDate.date.getFullYear(),
+            filter.startDate.date.getMonth(),
+            filter.startDate.date.getDate(),
+            filter.startDate.timeFrom.getHours(),
+            filter.startDate.timeFrom.getMinutes(),
+            filter.startDate.timeFrom.getSeconds()
+          );
+          match = {
+            ...match,
+            "startDate.timeFrom": { $gte: time },
+          };
+        }
+        if (filter.startDate.timeFrom) {
+          filter.startDate.timeTo = new Date(filter.startDate.timeTo);
+          let time = new Date(
+            filter.startDate.date.getFullYear(),
+            filter.startDate.date.getMonth(),
+            filter.startDate.date.getDate(),
+            filter.startDate.timeTo.getHours(),
+            filter.startDate.timeTo.getMinutes(),
+            filter.startDate.timeTo.getSeconds()
+          );
+          match = {
+            ...match,
+            "startDate.timeTo": { $gte: time },
+          };
+        }
+      }
+      if (!sort)
+        sort = {
+          createdAt: 1,
+        };
+      //Дата
+      //Filter AND SORT
+      let aggregate = [{ $match: match }];
+      aggregate = [
+        ...aggregate,
+        {
+          $lookup: {
+            from: "users",
+            localField: "autor",
+            foreignField: "_id",
+            as: "autor",
           },
+        },
+        { $unwind: "$autor" },
+      ];
+      if (addFields) aggregate.push({ $addFields: addFields });
+      aggregate = [
+        ...aggregate,
+        {
+          $sort: sort,
+        },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: 1 },
+            results: { $push: "$$ROOT" },
+          },
+        },
+        {
+          $project: {
+            total: 1,
+            results: { $slice: ["$results", page * count, count] },
+          },
+        },
+      ];
+      if (geoNear) aggregate.unshift(geoNear);
+      let articles = await Article.aggregate(aggregate);
+      if (!!articles.length) articles = articles[0];
+      else
+        articles = {
+          results: [],
+          total: 0,
         };
-      }
-      if (filter.startDate.timeFrom) {
-        filter.startDate.timeFrom = new Date(filter.startDate.timeFrom);
-        let time = new Date(
-          filter.startDate.date.getFullYear(),
-          filter.startDate.date.getMonth(),
-          filter.startDate.date.getDate(),
-          filter.startDate.timeFrom.getHours(),
-          filter.startDate.timeFrom.getMinutes(),
-          filter.startDate.timeFrom.getSeconds()
-        );
-        match = {
-          ...match,
-          "startDate.timeFrom": { $gte: time },
-        };
-      }
-      if (filter.startDate.timeFrom) {
-        filter.startDate.timeTo = new Date(filter.startDate.timeTo);
-        let time = new Date(
-          filter.startDate.date.getFullYear(),
-          filter.startDate.date.getMonth(),
-          filter.startDate.date.getDate(),
-          filter.startDate.timeTo.getHours(),
-          filter.startDate.timeTo.getMinutes(),
-          filter.startDate.timeTo.getSeconds()
-        );
-        match = {
-          ...match,
-          "startDate.timeTo": { $gte: time },
-        };
-      }
+      return res.json({
+        articles: articles.results,
+        pageAll: Math.floor(articles.total / count),
+      });
+    } catch (e) {
+      return next(new Error(e));
     }
-
-    console.log(match);
-    if (!sort)
-      sort = {
-        createdAt: 1,
-      };
-    //Дата
-    //Filter AND SORT
-    let aggregate = [{ $match: match }];
-    aggregate = [
-      ...aggregate,
-      {
-        $lookup: {
-          from: "users",
-          localField: "autor",
-          foreignField: "_id",
-          as: "autor",
-        },
-      },
-      { $unwind: "$autor" },
-    ];
-    if (addFields) aggregate.push({ $addFields: addFields });
-    aggregate = [
-      ...aggregate,
-      {
-        $sort: sort,
-      },
-      {
-        $group: { _id: null, total: { $sum: 1 }, results: { $push: "$$ROOT" } },
-      },
-      {
-        $project: {
-          total: 1,
-          results: { $slice: ["$results", page * count, count] },
-        },
-      },
-    ];
-    if (geoNear) aggregate.unshift(geoNear);
-    let articles = await Article.aggregate(aggregate);
-    if (!!articles.length) articles = articles[0];
-    else
-      articles = {
-        results: [],
-        total: 0,
-      };
-    return res.json({
-      articles: articles.results,
-      pageAll: Math.floor(articles.total / count),
-    });
   },
   getArticle: async (req, res, next) => {
     const { id, type } = req.body;
@@ -422,16 +447,7 @@ module.exports = {
     return res.json({ article });
   },
 };
-function randomString(length) {
-  var result = "";
-  var characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+
 Date.prototype.addDays = function(days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);

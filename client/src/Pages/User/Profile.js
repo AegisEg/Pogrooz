@@ -7,29 +7,129 @@ import Input from "../../Elements/Input";
 import { Link } from "react-router-dom";
 import Fancybox from "../../Elements/Fancybox.js";
 import { CSSTransitionGroup } from "react-transition-group";
-// Redux
-import { connect } from "react-redux";
 import CheckBox from "../../Elements/CheckBox";
 import Select from "../../Elements/Select";
+import { toast } from "react-toastify";
+import AdressSelect from "../../Elements/AdressSelect";
+// Redux
+import { connect } from "react-redux";
+import * as userActions from "../../redux/actions/user";
+import { bindActionCreators } from "redux";
 //IMGS
 import passport from "../../img/passport.png";
 import upload from "../../img/upload.svg";
-
+import { contractParams } from "../../config/baseInfo/carParams";
+import countryList from "../../config/countryList";
 class Profile extends React.Component {
   state = {
-    firstName: this.props.user.name.first,
-    middleName: this.props.user.name.middle,
-    lastName: this.props.user.name.last,
-    email: this.props.user.email,
-    phone: this.props.user.phone,
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    contract: {},
+    address: "",
+    country: "",
+    avatar: false,
+    passportPhoto: false,
     lastPassword: "",
     newPassword: "",
     confirmPassword: "",
-    isOOO: this.props.user.isOOO,
-    isIP: this.props.user.isIP,
     dataFancybox: false,
   };
-
+  componentDidMount() {
+    let state = {
+      firstName: this.props.user.name.first,
+      middleName: this.props.user.name.middle,
+      lastName: this.props.user.name.last,
+      email: this.props.user.email,
+      contract: this.props.user.contract || {},
+      phone: this.props.user.phone,
+      address: this.props.user.address,
+      country: this.props.user.country,
+    };
+    if (this.props.user.avatar) state.avatar = this.props.user.avatar;
+    this.setState(state);
+  }
+  saveUser = () => {
+    let userChanges = {
+      name: {
+        first: this.state.firstName,
+        middle: this.state.middleName,
+        last: this.state.lastName,
+      },
+      avatar: this.state.avatar,
+      contract: this.state.contract,
+      address: this.state.address,
+      country: this.state.country,
+      email: this.state.email,
+    };
+    this.props.userActions
+      .userEdit(userChanges, this.props.user.apiToken)
+      .then((responce) => {
+        if (responce.error)
+          responce.errors.map((item) => {
+            if (item.param === "file")
+              toast.error("Файл больше 10 мб!", {
+                position: toast.POSITION.TOP_CENTER,
+              });
+            if (item.param === "email")
+              toast.error("Пользователь с таким email уже существует", {
+                position: toast.POSITION.TOP_CENTER,
+              });
+          });
+        else
+          toast.success("Данные успешно сохранены", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+      });
+  };
+  passChange = () => {
+    if (
+      !!this.state.lastPassword.length &&
+      !!this.state.newPassword.length &&
+      !!this.state.confirmPassword.length
+    ) {
+      if (this.state.newPassword.length >= 8) {
+        if (this.state.newPassword === this.state.confirmPassword) {
+          let passwords = {
+            lastPassword: this.state.lastPassword,
+            newPassword: this.state.newPassword,
+            confirmPassword: this.state.confirmPassword,
+          };
+          this.props.userActions
+            .passChange(passwords, this.props.user.apiToken)
+            .then((responce) => {
+              if (responce.error)
+                responce.errors.map((item) => {
+                  if (item.param === "password")
+                    toast.error("Введен неверный текущий пароль", {
+                      position: toast.POSITION.TOP_CENTER,
+                    });
+                  if (item.param === "confirmPassword")
+                    toast.error("Подтверждение пароля не совпадает", {
+                      position: toast.POSITION.TOP_CENTER,
+                    });
+                });
+              else
+                toast.success("Пароль изменён", {
+                  position: toast.POSITION.TOP_CENTER,
+                });
+            });
+        } else {
+          toast.error("Подтверждение пароля не совпадает", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      } else
+        toast.error("Пароль должен сожержать не менее 8 символов", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+    } else
+      toast.error("Введите данные для изменения пароля", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+  };
   render() {
     return (
       <div className="profile-page container-fluid">
@@ -107,7 +207,7 @@ class Profile extends React.Component {
               style={{ marginBottom: 12, maxWidth: "265px" }}
               value={this.state.email}
               onChange={(e) => {
-                this.setState({ firstName: e.target.value });
+                this.setState({ email: e.target.value });
               }}
             />
           </div>
@@ -118,12 +218,38 @@ class Profile extends React.Component {
               paddingHorizontal="30px"
               paddingVertical="7px"
               className="mr-2 f-17"
+              onClick={() => {
+                document.getElementById("photoAvatar").click();
+              }}
             >
               Загрузить
             </Button>
+            <input
+              id="photoAvatar"
+              onChange={(e) => {
+                let file = e.target.files[0];
+                if (file) {
+                  if (file.size > 10485760)
+                    toast.error("Файл больше 10 мб!", {
+                      position: toast.POSITION.TOP_CENTER,
+                    });
+                  else
+                    this.setState({
+                      avatar: { file: file, path: URL.createObjectURL(file) },
+                    });
+                }
+              }}
+              type="file"
+              accept="image/jpeg,image/png"
+              hidden
+            />
             <img
               className="avatar-img"
-              src={ConfigSettings.defaultAvatar}
+              src={
+                this.state.avatar
+                  ? this.state.avatar.path
+                  : ConfigSettings.defaultAvatar
+              }
               alt=""
             />
             <span
@@ -142,29 +268,34 @@ class Profile extends React.Component {
         <hr />
         <div className="row">
           <div className="col-12 col-md-6 col-lg-4 col-xl-6 adress-input">
-            <h4 className="subtitle pt-0 ">Адрес *</h4>
+            <h4 className="subtitle pt-0 ">Расположение *</h4>
             <div className="row mx-0 align-items-center">
-              <span className>Страна:</span>
+              <span>Страна:</span>
               <div className="col" style={{ maxWidth: "320px" }}>
-                <Select type="text" placeholder="Россия" getRef={() => {}} />
-              </div>
-            </div>
-            <div className="row mx-0 align-items-center">
-              <span className>Область:</span>
-              <div className="col" style={{ maxWidth: "320px" }}>
-                <Select type="text" placeholder="Выбрать" getRef={() => {}} />
-              </div>
-            </div>
-            <div className="row mx-0 align-items-center">
-              <span className>Область:</span>
-              <div className="col" style={{ maxWidth: "320px" }}>
-                <Input
+                <Select
                   type="text"
-                  placeholder="Введите город"
-                  value={this.state.country}
-                  onChange={(e) => {
-                    this.setState({ firstName: e.target.value });
+                  options={countryList}
+                  value={countryList.find(
+                    (item) => item.value === this.state.country
+                  )}
+                  onChange={(val) => {
+                    this.setState({ country: val.value });
                   }}
+                  placeholder="Страна"
+                />
+              </div>
+            </div>
+            <div className="row mx-0 align-items-center">
+              <span>Адрес:</span>
+              <div className="col" style={{ maxWidth: "320px" }}>
+                <AdressSelect
+                  placeholder="Адрес"
+                  filterFromBound="country"
+                  filterToBound="city"
+                  onChange={(val) => {
+                    this.setState({ address: val.value });
+                  }}
+                  value={this.state.address}
                 />
               </div>
             </div>
@@ -205,100 +336,51 @@ class Profile extends React.Component {
                 }}
               />
             </div>
-            <Button type="empty bg-gray ">Сохранить пароль</Button>
+            <Button type="empty bg-gray " onClick={this.passChange}>
+              Сохранить пароль
+            </Button>
           </div>
 
           <div className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 ">
             <h4 className="subtitle pt-0">Заключение договора</h4>
             <div className="f-12 pb-2">Основная форма для аккаунта</div>
-            <div
-              style={{ marginTop: "4px", marginBottom: 8, lineHeight: "16px" }}
-            >
-              <CheckBox
-                id="individual"
-                value={this.state.typeContract === "individual"}
-                text="Физ лицо"
-                onChange={() => {
-                  if (this.state.typeContract !== "individual") {
-                    this.setState({
-                      typeContract: "individual",
-                      typeContractDetail: "",
-                    });
-                  }
-                }}
-              ></CheckBox>
-            </div>
-            <div style={{ marginBottom: 8, lineHeight: "16px" }}>
-              <CheckBox
-                id="OOO"
-                value={this.state.typeContract === "OOO"}
-                onChange={() => {
-                  if (this.state.typeContract !== "OOO") {
-                    this.setState({
-                      typeContract: "OOO",
-                      typeContractDetail: "",
-                    });
-                  }
-                }}
-                text="ООО"
-              ></CheckBox>
-              {this.state.typeContract === "OOO" && (
-                <Input
-                  type="text"
-                  placeholder="Введите ОГРН"
-                  className="d-block"
-                  style={{ marginTop: "8px", maxWidth: "320px" }}
-                  value={this.state.typeContractDetail}
-                  onChange={(e) => {
-                    this.setState({ typeContractDetail: e.target.value });
-                  }}
-                />
-              )}
-            </div>
-            <div style={{ marginBottom: 8, lineHeight: "16px" }}>
-              <CheckBox
-                id="ip"
-                value={this.state.typeContract === "IP"}
-                text="ИП"
-                onChange={() => {
-                  if (this.state.typeContract !== "IP") {
-                    this.setState({
-                      typeContract: "IP",
-                      typeContractDetail: "",
-                    });
-                  }
-                }}
-              ></CheckBox>
-              {this.state.typeContract === "IP" && (
-                <Input
-                  type="text"
-                  placeholder="Введите ИНН"
-                  className="d-block"
-                  style={{ marginTop: "8px", maxWidth: "320px" }}
-                  value={this.state.typeContractDetail}
-                  onChange={(e) => {
-                    this.setState({ typeContractDetail: e.target.value });
-                  }}
-                />
-              )}
-            </div>
-            <div style={{ lineHeight: "16px" }}>
-              <CheckBox
-                value={this.state.typeContract === "self-employed"}
-                id="self-employed"
-                onChange={() => {
-                  if (this.state.typeContract !== "self-employed") {
-                    this.setState({
-                      typeContract: "self-employed",
-                      typeContractDetail: "",
-                    });
-                  }
-                }}
-                text="Самозанятый"
-              ></CheckBox>
-            </div>
+            {contractParams.map((item, index) => {
+              return (
+                <div key={index} className="checkboxParam">
+                  <CheckBox
+                    id={`contractParams${item.id}`}
+                    name={`contractParams`}
+                    value={this.state.contract.id === item.id}
+                    onChange={() => {
+                      this.setState({ contract: { id: item.id } });
+                    }}
+                    text={item.name}
+                  />
+
+                  {item.additionFields &&
+                    this.state.contract.id === item.id &&
+                    item.additionFields.map((itemField, index) => {
+                      return (
+                        <itemField.field
+                          key={index}
+                          {...itemField.props}
+                          value={
+                            (this.state.contract.data &&
+                              this.state.contract.data.value) ||
+                            ""
+                          }
+                          onChange={(val) => {
+                            this.setState({
+                              contract: { ...this.state.contract, data: val },
+                            });
+                          }}
+                        ></itemField.field>
+                      );
+                    })}
+                </div>
+              );
+            })}
           </div>
-         
         </div>
         <hr />
         {/* //this.props.user.type === "carrier" */}
@@ -316,20 +398,47 @@ class Profile extends React.Component {
                 >
                   Фото с паспортом в руках
                 </span>
+                <input
+                  id="passportPhoto"
+                  onChange={(e) => {
+                    let file = e.target.files[0];
+                    if (file)
+                      this.setState({
+                        passportPhoto: {
+                          path: URL.createObjectURL(file),
+                          file: file,
+                        },
+                      });
+                  }}
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  hidden
+                />
                 <div>
-                  <Input
-                    type="text"
-                    placeholder="Выбрать"
+                  <div
+                    className={`inputPhoto ${
+                      !this.state.passportPhoto ? "unload" : ""
+                    } mr-3`}
                     style={{
-                      maxWidth: "156px",
-                      marginBottom: "12px",
+                      height: "70px",
+                      width: "100px",
+                      verticalAlign: "middle",
                     }}
-                    className="mr-2"
-                    value={this.state.country}
-                    onChange={(e) => {
-                      this.setState({ firstName: e.target.value });
-                    }}
-                  />
+                  >
+                    <div className="placeholder" onClick={() => {}}></div>
+                    {this.state.passportPhoto && (
+                      <img
+                        src={
+                          this.state.passportPhoto
+                            ? this.state.passportPhoto.path
+                            : false
+                        }
+                        className="avatarPhoto"
+                        alt="avatarPhoto"
+                      />
+                    )}
+                    {!this.state.passportPhoto && <div className="carPhoto" />}
+                  </div>
                   <Button
                     type="fill"
                     className="mr-2 f-17"
@@ -406,6 +515,7 @@ class Profile extends React.Component {
             paddingVertical={"7px"}
             className="ml-auto f-14"
             paddingHorizontal={"26px"}
+            onClick={this.saveUser}
           >
             Сохранить все
           </Button>
@@ -437,5 +547,9 @@ const mapStateToProps = (state) => {
     user: state.user,
   };
 };
-
-export default connect(mapStateToProps)(Profile);
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(userActions, dispatch),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

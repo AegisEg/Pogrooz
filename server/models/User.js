@@ -11,7 +11,12 @@ const UserSchema = new Schema({
   phone: { type: String, select: true },
   avatar: { type: Object, select: true },
   type: { type: String, enum: ["cargo", "carrier", "admin"], select: true },
-  country: { type: String, default: "", select: true },
+  country: { type: Number, select: true },
+  address: { type: String, default: "", select: true },
+  contract: {
+    id: { type: Number, select: true },
+    data: { type: Object, select: true },
+  },
   password: { type: String, select: false },
   resetPasswordToken: { type: String, select: false },
   resetPasswordExpires: { type: String, select: false },

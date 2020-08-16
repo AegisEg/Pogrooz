@@ -11,12 +11,25 @@ import ImgActiveStar from "../../img/active-star.png";
 import redWarning from "../../img/redWarning.svg";
 import Button from "../../Elements/Button";
 import { Link } from "react-router-dom";
-
+import api from "../../config/api";
 class User extends React.Component {
   statusArticle = [5, 6, 7];
   state = {
     currentStatus: "all",
   };
+  componentDidMount() {
+    fetch(`${api.urlApi}/api/user/get`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.props.user.apiToken}`,
+      },
+      body: JSON.stringify({
+        userId: this.props.match.id,
+      }),
+    }).then((response) => response.json());
+  }
   renderTabs() {
     return (
       <div className="tab_groups mt-3">
@@ -81,7 +94,7 @@ class User extends React.Component {
   render() {
     //Ставлю статус(0,1 - открытый, 2,3 - в работе, 3,4 - закрытый) и Тип(Заказ
     //или Предложение) для отображения
-    
+
     return (
       <div className="standart-page user-page">
         <div className="container-fluid">
