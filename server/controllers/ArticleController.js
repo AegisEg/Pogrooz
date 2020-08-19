@@ -20,7 +20,7 @@ module.exports = {
       if (true) {
         let newArticle = new Article();
         newArticle.type = article.type;
-        newArticle.autor = user;
+        newArticle.author = user;
         if (!article.cargoTypes.length)
           return res.json({ error: true, errorType: "cargoTypes" });
         newArticle.cargoTypes = article.cargoTypes;
@@ -90,35 +90,6 @@ module.exports = {
             contractInfo: article.car.contractParam,
             paymentInfo: article.car.paymentInfo,
           };
-          if (article.type === "offer") {
-            if (req.files["carPhoto"]) {
-              if (req.files["carPhoto"].size / 1000 <= 10000) {
-                let fileName = randomString(24);
-                let filePath =
-                  "./uploads/" +
-                  user._id +
-                  "/" +
-                  fileName +
-                  "." +
-                  req.files["carPhoto"].name.split(".").pop();
-                req.files["carPhoto"].mv(filePath, function(err) {
-                  if (err) return res.status(500).send(err);
-                });
-                newArticle.car.photo = {
-                  path:
-                    process.env.API_URL +
-                    "/media/" +
-                    user._id +
-                    "/" +
-                    fileName +
-                    "." +
-                    req.files["carPhoto"].name.split(".").pop(),
-                  name: req.files["carPhoto"].name,
-                  size: req.files["carPhoto"].size,
-                };
-              }
-            }
-          }
         }
 
         newArticle.comment = article.comment;
@@ -165,8 +136,193 @@ module.exports = {
             );
           }
         }
+        if (article.type === "offer") {
+          if (req.files["carPhoto"]) {
+            if (req.files["carPhoto"].size / 1000 <= 10000) {
+              let fileName = randomString(24);
+              let filePath =
+                "./uploads/" +
+                user._id +
+                "/" +
+                fileName +
+                "." +
+                req.files["carPhoto"].name.split(".").pop();
+              req.files["carPhoto"].mv(filePath, function(err) {
+                if (err) return res.status(500).send(err);
+              });
+              newArticle.car.photo = {
+                path:
+                  process.env.API_URL +
+                  "/media/" +
+                  user._id +
+                  "/" +
+                  fileName +
+                  "." +
+                  req.files["carPhoto"].name.split(".").pop(),
+                name: req.files["carPhoto"].name,
+                size: req.files["carPhoto"].size,
+              };
+            }
+          }
+        }
         await newArticle.save();
       } else return res.json({ error: true, errorType: "typeUser" });
+      return res.json({ error: false });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  updateArticle: async (req, res, next) => {
+    const { user } = res.locals;
+    let { article, editingId } = req.body;
+    article = JSON.parse(article);
+    let editArticle;
+    try {
+      editArticle = await Article.findOne({
+        _id: editingId,
+        author: user._id,
+      });
+      if (editArticle) {
+        if (!article.cargoTypes.length)
+          return res.json({ error: true, errorType: "cargoTypes" });
+        editArticle.cargoTypes = article.cargoTypes;
+        editArticle.cargoData = article.cargoData;
+        editArticle.cargoStandartData = article.cargoStandartData;
+        editArticle.cargoPhoto = article.cargoPhoto;
+        console.log(article.cargoPhoto);
+        if (article.type === "order") {
+          let photos = [];
+          for (let i = 0; i < 9; i++) {
+            if (
+              req.files &&
+              (req.files["cargoPhoto" + i] &&
+                req.files["cargoPhoto" + i].size / 1000 <= 10000)
+            ) {
+              let fileName = randomString(24);
+              let filePath =
+                "./uploads/" +
+                user._id +
+                "/" +
+                fileName +
+                "." +
+                req.files["cargoPhoto" + i].name.split(".").pop();
+              req.files["cargoPhoto" + i].mv(filePath, function(err) {
+                if (err) return res.status(500).send(err);
+              });
+              photos.push({
+                path:
+                  process.env.API_URL +
+                  "/media/" +
+                  user._id +
+                  "/" +
+                  fileName +
+                  "." +
+                  req.files["cargoPhoto" + i].name.split(".").pop(),
+                name: req.files["cargoPhoto" + i].name,
+                size: req.files["cargoPhoto" + i].size,
+              });
+            }
+          }
+          editArticle.cargoPhoto = [...editArticle.cargoPhoto, ...photos];
+        }
+        if (
+          !article.car &&
+          !article.car.typesCar &&
+          !article.car.name &&
+          !article.car.photo &&
+          !article.carTemplate
+        )
+          return res.json({ error: true, errorType: "carInfo" });
+        if (editArticle.carTemplate)
+          editArticle.carTemplate = article.carTemplate.id;
+        else {
+          editArticle.car = {
+            ...editArticle.car,
+            typesCar: article.car.typesCar,
+            name: article.car.name,
+            property: article.car.property,
+            additionally: article.car.additionally,
+            info: article.car.info,
+            contractInfo: article.car.contractInfo,
+            paymentInfo: article.car.paymentInfo,
+          };
+          if (article.type === "offer") {
+            if (req.files && req.files["carPhoto"]) {
+              if (req.files["carPhoto"].size / 1000 <= 10000) {
+                let fileName = randomString(24);
+                let filePath =
+                  "./uploads/" +
+                  user._id +
+                  "/" +
+                  fileName +
+                  "." +
+                  req.files["carPhoto"].name.split(".").pop();
+                req.files["carPhoto"].mv(filePath, function(err) {
+                  if (err) return res.status(500).send(err);
+                });
+                editArticle.car.photo = {
+                  path:
+                    process.env.API_URL +
+                    "/media/" +
+                    user._id +
+                    "/" +
+                    fileName +
+                    "." +
+                    req.files["carPhoto"].name.split(".").pop(),
+                  name: req.files["carPhoto"].name,
+                  size: req.files["carPhoto"].size,
+                };
+              }
+            }
+          }
+        }
+
+        editArticle.comment = article.comment;
+        editArticle.budget = article.budget;
+        // let tripPointFrom = false;
+        if (!article.from) return res.json({ error: true, errorType: "from" });
+        editArticle.from = article.from;
+        if (article.from.data.geo_lat && article.from.data.geo_lon)
+          editArticle.fromLocation = {
+            type: "Point",
+            coordinates: [article.from.data.geo_lat, article.from.data.geo_lon],
+          };
+        if (!article.to) return res.json({ error: true, errorType: "to" });
+        editArticle.to = article.to;
+        if (article.to.data.geo_lat && article.to.data.geo_lon)
+          editArticle.toLocation = {
+            type: "Point",
+            coordinates: [article.to.data.geo_lat, article.to.data.geo_lon],
+          };
+        if (article.startDate.date) {
+          article.startDate.date = new Date(article.startDate.date);
+          article.startDate.date.setHours(0, 0, 0, 0);
+          editArticle.startDate.date = article.startDate.date;
+          if (article.startDate.timeFrom) {
+            article.startDate.timeFrom = new Date(article.startDate.timeFrom);
+            editArticle.startDate.timeFrom = new Date(
+              article.startDate.date.getFullYear(),
+              article.startDate.date.getMonth(),
+              article.startDate.date.getDate(),
+              article.startDate.timeFrom.getHours(),
+              article.startDate.timeFrom.getMinutes(),
+              article.startDate.timeFrom.getSeconds()
+            );
+          }
+          if (article.startDate.timeTo) {
+            article.startDate.timeTo = new Date(article.startDate.timeTo);
+            editArticle.startDate.timeTo = new Date(
+              article.startDate.date.getFullYear(),
+              article.startDate.date.getMonth(),
+              article.startDate.date.getDate(),
+              article.startDate.timeTo.getHours(),
+              article.startDate.timeTo.getMinutes(),
+              article.startDate.timeTo.getSeconds()
+            );
+          }
+        }
+        await editArticle.save();
+      } else return res.json({ error: true, errorType: "NotFoundArticles" });
       return res.json({ error: false });
     } catch (e) {
       return next(new Error(e));
@@ -395,12 +551,12 @@ module.exports = {
         {
           $lookup: {
             from: "users",
-            localField: "autor",
+            localField: "author",
             foreignField: "_id",
-            as: "autor",
+            as: "author",
           },
         },
-        { $unwind: "$autor" },
+        { $unwind: "$author" },
       ];
       if (addFields) aggregate.push({ $addFields: addFields });
       aggregate = [
@@ -440,11 +596,19 @@ module.exports = {
   },
   getArticle: async (req, res, next) => {
     const { id, type } = req.body;
-    let article = await Article.findOne({
-      articleId: id,
-      type: type,
-    }).populate("autor");
-    return res.json({ article });
+    try {
+      if (/\D/.test(id))
+        return res.json({ error: true, errorType: "notFound" });
+
+      let article = await Article.findOne({
+        articleId: id,
+        type: type,
+      }).populate("author");
+      if (article) return res.json({ article });
+      else return res.json({ error: true, errorType: "notFound" });
+    } catch (e) {
+      return next(new Error(e));
+    }
   },
 };
 

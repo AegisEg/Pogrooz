@@ -4,17 +4,12 @@ import React from "react";
 // Router
 import { Link } from "react-router-dom";
 import Button from "../../Elements/Button";
-import Filter from "../../Elements/Filter";
-import Articles from "../../Catalog/Articles";
+import ArticlesFilter from "../../Partials/ArticlesFilter";
 class SearchPage extends React.Component {
-  state = {
-    searchType: "offer",
-  };
   render() {
     return (
       <div className="search-page">
-        <Filter className="background-gray filter-main" />
-        <Articles />
+        <ArticlesFilter />
         <div className="text-center">
           <Link to="/" className="href">
             <Button

@@ -20,7 +20,7 @@ import {
 } from "../config/baseInfo/carParams";
 class Filter extends React.Component {
   state = {
-    show: !false,
+    show: false,
     searchType: this.props.type,
     showPop1: false,
     showPop2: false,
@@ -48,7 +48,6 @@ class Filter extends React.Component {
   onChangeCargoStandartData = (prop, val) => {
     let cargoStandartDataX = this.props.options.cargoStandartData;
     cargoStandartDataX[prop] = val;
-    console.log(cargoStandartDataX);
     this.props.onChange({ cargoStandartData: cargoStandartDataX });
   };
   componentDidMount() {
@@ -78,32 +77,38 @@ class Filter extends React.Component {
       : false;
     return (
       <>
-        <div
-          className={`row search-tabs background-gray-768 tabs justify-content-center ${
-            this.state.show ? "background-gray" : ""
-          }`}
-        >
-          <div
-            className={`tab mx-3 text-uppercase ${
-              options.type === "offer" ? "active" : ""
-            }`}
-            onClick={() => {
-              this.props.onChange({ type: "offer" });
-            }}
-          >
-            Услуги <span className="d-380 d-sm-inline-block">перевозчиков</span>
-          </div>
-          <div
-            className={`tab mx-3 text-uppercase ${
-              options.type === "order" ? "active" : ""
-            }`}
-            onClick={() => {
-              this.props.onChange({ type: "order" });
-            }}
-          >
-            Заказы <span className="d-380 d-sm-inline-block">на перевозку</span>
-          </div>
-        </div>
+        {!this.props.notType && (
+          <>
+            <div
+              className={`row search-tabs background-gray-768 tabs justify-content-center ${
+                this.state.show ? "background-gray" : ""
+              }`}
+            >
+              <div
+                className={`tab mx-3 text-uppercase ${
+                  options.type === "offer" ? "active" : ""
+                }`}
+                onClick={() => {
+                  this.props.onChange({ type: "offer" });
+                }}
+              >
+                Услуги{" "}
+                <span className="d-380 d-sm-inline-block">перевозчиков</span>
+              </div>
+              <div
+                className={`tab mx-3 text-uppercase ${
+                  options.type === "order" ? "active" : ""
+                }`}
+                onClick={() => {
+                  this.props.onChange({ type: "order" });
+                }}
+              >
+                Заказы{" "}
+                <span className="d-380 d-sm-inline-block">на перевозку</span>
+              </div>
+            </div>
+          </>
+        )}
         <div
           className={`filter  ${
             this.state.show ? "background-gray" : ""

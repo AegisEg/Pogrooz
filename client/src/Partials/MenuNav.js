@@ -47,14 +47,14 @@ class MenuNav extends React.Component {
         href: "/download-app",
       },
     ],
-    menuWidth: 0,
+    menuWidth: 200,
   };
   onResizeItem = this.onResizeItem.bind(this);
   onResize = this.onResize.bind(this);
 
   onResize(menuWidth) {
-    this.setState({ menuWidth });
-  } 
+    if (menuWidth !== 0) this.setState({ menuWidth });
+  }
   onResizeItem(itemWidth, id) {
     let menu = this.state.menu;
     for (let i = 0; i < menu.length; i++) {
@@ -77,7 +77,6 @@ class MenuNav extends React.Component {
         menu[i].type = "submenu";
       } else menu[i].type = "menu";
     }
-
     return (
       <div className="header-navigation d-premd-none col">
         <nav>
@@ -91,7 +90,7 @@ class MenuNav extends React.Component {
                     </NavLink>
                     <ReactResizeDetector
                       handleWidth
-                      handleHeight
+                      handleHeight={false}
                       onResize={(width) => {
                         this.onResizeItem(width, item.id);
                       }}
@@ -100,34 +99,33 @@ class MenuNav extends React.Component {
                 )
               );
             })}
-
-            {menu.find((item) => item.type === "submenu") && (
-              <li>
-                <span className="more-menu">
-                  Еще <img src={moreico} className="d-inline" alt="Pogrooz" />
-                  <div className="submenu">
-                    <ul>
-                      {menu.map((item) => {
-                        return (
-                          item.type === "submenu" && (
-                            <li key={item.id}>
-                              <NavLink to={item.href} activeClassName="active">
-                                {item.name}
-                              </NavLink>
-                            </li>
-                          )
-                        );
-                      })}
-                    </ul>
-                  </div>
-                </span>
-              </li>
-            )}
           </ul>
+          {menu.find((item) => item.type === "submenu") && (
+            <div className="moreMenu">
+              <span className="more-menu">
+                Еще <img src={moreico} className="d-inline" alt="Pogrooz" />
+                <div className="submenu">
+                  <ul>
+                    {menu.map((item) => {
+                      return (
+                        item.type === "submenu" && (
+                          <li key={item.id}>
+                            <NavLink to={item.href} activeClassName="active">
+                              {item.name}
+                            </NavLink>
+                          </li>
+                        )
+                      );
+                    })}
+                  </ul>
+                </div>
+              </span>
+            </div>
+          )}
         </nav>
         <ReactResizeDetector
           handleWidth
-          handleHeight
+          handleHeight={false}
           onResize={(width) => {
             this.onResize(width);
           }}

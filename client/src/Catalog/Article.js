@@ -39,7 +39,7 @@ class Article extends React.Component {
     isHoverHref: false,
   };
   renderStatus = () => {
-    if (this.props.article.autor.id == this.props.user.id)
+    if (this.props.article.author.id == this.props.user.id)
       return (
         <div className="status-area">
           {this.props.article.status === 1 && (
@@ -613,14 +613,14 @@ class Article extends React.Component {
                   </div>
                   <div className="col text-left ">
                     <div className="fio">
-                      <Link to="/user/1">
-                        {this.props.article.autor.name.last}{" "}
-                        {this.props.article.autor.name.first}{" "}
-                        {this.props.article.autor.name.middle}
+                      <Link to={`/user/${this.props.article.author._id}`}>
+                        {this.props.article.author.name.last}{" "}
+                        {this.props.article.author.name.first}{" "}
+                        {this.props.article.author.name.middle}
                       </Link>
                     </div>
                     <div className="mt-2">
-                      {/* this.props.article.autor.passport  */}
+                      {/* this.props.article.author.passport  */}
                       {true && (
                         <span className="property-user d-block">
                           <img src={passport} alt="passport" />
@@ -790,10 +790,14 @@ class Article extends React.Component {
               <InputRow
                 article={this.props.article}
                 onMobile={this.state.onMobile}
-                isManage={
-                  this.props.isManage &&
-                  this.props.article.autor.id == this.props.user.id
+                notIsManage={
+                  !(
+                    this.props.notIsManage &&
+                    this.props.article.author.id == this.props.user.id
+                  )
                 }
+                onChangeArticle={this.props.onChangeArticle}
+                articles={this.props.articles}
                 onlyOpen={this.props.onlyOpen}
                 user={this.props.user}
                 articleOpen={this.state.showMore}

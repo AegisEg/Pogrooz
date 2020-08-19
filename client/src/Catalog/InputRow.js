@@ -46,6 +46,42 @@ class InputRow extends React.Component {
       status: [1, 2],
       isButton: true,
       ButtonType: "empty",
+      mobileAction: () => {
+        this.props.onChangeArticle(
+          this.props.articles.filter(
+            (item) => item._id !== this.props.article._id
+          )
+        );
+        // fetch(`${configApi.urlApi}/api/article/setStatus`, {
+        //   method: "post",
+        //   headers: {
+        //     Accept: "application/json",
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     id: this.props.articles._id,
+        //     status: 7,
+        //   }),
+        // })
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     if (data.articles) {
+        //       this.setState({
+        //         pageCount: data.pageAll,
+        //         currentPage: page,
+        //         articles: data.articles,
+        //         isFething: false,
+        //       });
+        //     }
+        //   });
+      },
+      action: () => {
+        this.props.onChangeArticle(
+          this.props.articles.filter(
+            (item) => item._id !== this.props.article._id
+          )
+        );
+      },
     },
     {
       /* Если статус опубликовано */
@@ -201,7 +237,9 @@ class InputRow extends React.Component {
       content: (
         <>
           {!this.props.onlyOpen && (
-            <Link to={`/order/${this.props.article.id}`}>
+            <Link
+              to={`/${this.props.article.type}/${this.props.article.articleId}`}
+            >
               <Button type="empty" className="input-action">
                 Смотреть
               </Button>
@@ -231,6 +269,16 @@ class InputRow extends React.Component {
       id: 15,
       label: "Редактировать",
       img: Edit,
+      action: () => {
+        this.props.history.push(
+          `/edit-${this.props.article.type}/${this.props.article.articleId}`
+        );
+      },
+      mobileAction: () => {
+        this.props.history.push(
+          `/edit-${this.props.article.type}/${this.props.article.articleId}`
+        );
+      },
       status: [1, 2],
       isButton: true,
       ButtonType: "fill",
@@ -253,7 +301,7 @@ class InputRow extends React.Component {
     document.removeEventListener("click", this.hideActionList);
   }
   render() {
-    if (this.props.isManage)
+    if (!this.props.notnotIsManage)
       return (
         <>
           {this.props.onMobile && (
@@ -320,6 +368,7 @@ class InputRow extends React.Component {
                       className={`input-action ${
                         item.className ? item.className : ""
                       }`}
+                      onClick={item.action}
                     >
                       {item.label}
                     </Button>
@@ -384,7 +433,9 @@ class InputRow extends React.Component {
               </span>
               {this.state.isOpenActionList && (
                 <div className="pop-block">
-                  <Link to={`/order/${this.props.article.id}`}>
+                  <Link
+                    to={`/${this.props.article.type}/${this.props.article.articleId}`}
+                  >
                     <div className="profile-menu-item">Смотреть</div>
                   </Link>
                   <div
@@ -405,7 +456,9 @@ class InputRow extends React.Component {
           )}
           {!this.props.onMobile && (
             <>
-              <Link to={`/order/${this.props.article.id}`}>
+              <Link
+                to={`/${this.props.article.type}/${this.props.article.articleId}`}
+              >
                 <Button type="empty" className="input-action">
                   Смотреть
                 </Button>

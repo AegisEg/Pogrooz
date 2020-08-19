@@ -57,6 +57,61 @@ class Create4 extends React.Component {
         });
     }
   }
+  save() {
+    let apiToken = this.props.cookies.get("apiToken");
+    let formData = new FormData();
+    let article = this.props.article;
+    if (this.props.editingId) {
+      if (
+        this.props.article.type === "order" &&
+        this.props.article.cargoPhoto &&
+        !!this.props.article.cargoPhoto.length
+      ) {
+        let count = 0;
+        this.props.article.cargoPhoto.map((item, index) => {
+          if (item.file) {
+            formData.append("cargoPhoto" + index, item.file);
+            count += 1;
+          }
+        });
+      }
+      formData.append(
+        "article",
+        JSON.stringify({
+          ...article,
+          cargoPhoto: this.props.article.cargoPhoto.filter((item, index) => {
+            return !item.file;
+          }),
+        })
+      );
+
+      formData.append("editingId", this.props.editingId);
+      if (
+        this.props.article.type === "offer" &&
+        this.props.article.car.photo.file
+      )
+        formData.append("carPhoto", this.props.article.car.photo.file);
+
+      if (apiToken) {
+        fetch(`${configApi.urlApi}/api/article/updateArticle`, {
+          method: "post",
+          headers: {
+            Authorization: `Bearer ${apiToken}`,
+          },
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (!data.error) {
+              if (this.props.article.type === "offer")
+                this.props.history.push("/my-offers-open");
+              if (this.props.article.type === "order")
+                this.props.history.push("/my-orders-open");
+            }
+          });
+      }
+    }
+  }
   render() {
     return (
       <div className={`step-create ${this.props.className}`}>
@@ -64,7 +119,7 @@ class Create4 extends React.Component {
           <ArticleHeader></ArticleHeader>
           {this.props.article && (
             <Article
-              isManage={false}
+              notIsManage={true}
               onlyOpen={true}
               singlePage={true}
               article={this.props.article}
@@ -81,26 +136,44 @@ class Create4 extends React.Component {
             >
               Назад
             </Button>
-            <Button
-              type="empty"
-              className=" input-action"
-              paddingHorizontal="40px"
-              onClick={() => {
-                this.createAricle(1);
-              }}
-            >
-              В черновик
-            </Button>
-            <Button
-              type="fill"
-              className=" input-action"
-              paddingHorizontal="40px"
-              onClick={() => {
-                this.createAricle(2);
-              }}
-            >
-              Опубликовать
-            </Button>
+            {this.props.isEditing && (
+              <>
+                <Button
+                  type="fill"
+                  className=" input-action"
+                  paddingHorizontal="40px"
+                  onClick={() => {
+                    this.save();
+                  }}
+                >
+                  Сохранить
+                </Button>
+              </>
+            )}
+            {!this.props.isEditing && (
+              <>
+                <Button
+                  type="empty"
+                  className=" input-action"
+                  paddingHorizontal="40px"
+                  onClick={() => {
+                    this.createAricle(1);
+                  }}
+                >
+                  В черновик
+                </Button>
+                <Button
+                  type="fill"
+                  className=" input-action"
+                  paddingHorizontal="40px"
+                  onClick={() => {
+                    this.createAricle(2);
+                  }}
+                >
+                  Опубликовать
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -51,7 +51,7 @@ class MyArticles extends React.Component {
     //Ставлю статус(0,1 - открытый, 2,3 - в работе, 3,4 - закрытый) и Тип(Заказ
     //или Предложение) для отображения
     let filter = {
-      autor: this.props.user,
+      author: this.props.user,
       type: this.props.typeArticle,
       allStatus: this.props.statusArticle,
       status: this.state.currentStatus,

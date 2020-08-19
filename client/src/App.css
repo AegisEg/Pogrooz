@@ -482,6 +482,7 @@ input[type="checkbox"] ~ label {
 }
 .articles-block {
   width: 100%;
+  position: relative;
 }
 .selectTypeCargo {
   margin: 0 15px;
@@ -750,6 +751,7 @@ input:-ms-input-placeholder {
 .header-logo-img {
   margin: 0 auto;
   display: block;
+  /* width: 158px; */
 }
 .header-navigation {
   height: 100%;
@@ -758,8 +760,15 @@ input:-ms-input-placeholder {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
+.header-navigation nav ul {
+  overflow: hidden;
+}
 .header-navigation nav {
+  display: flex;
   height: 100%;
+}
+.header-navigation .moreMenu {
+  display: inline-block;
 }
 .header-navigation ul {
   margin: 0;
@@ -1919,7 +1928,43 @@ a.mail {
   max-height: 0;
   transition: all 0.5s;
 }
-
+.LoadGif {
+  z-index: 1;
+}
+/*Animation Height Item*/
+.loading-animation-item-enter {
+  opacity: 0;
+}
+.loading-animation-item-enter.loading-animation-item-enter-active {
+  opacity: 1;
+  position: absolute;
+  transition: all 300ms;
+}
+.loading-animation-item-leave {
+  position: absolute;
+  opacity: 1;
+  max-height: 300px;
+}
+.loading-animation-item-leave.loading-animation-item-leave-active {
+  opacity: 0;
+  max-height: 0;
+  transition: all 300ms;
+}
+/*Animation Height Item*/
+.loading-height-animation-item-enter {
+  opacity: 0;
+}
+.loading-height-animation-item-enter.loading-height-animation-item-enter-active {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+.loading-height-animation-item-leave {
+  opacity: 1;
+}
+.loading-height-animation-item-leave.loading-height-animation-item-leave-active {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
 @media (min-width: 1024px) {
   .search-tabs {
     font-size: 24px;
@@ -2785,6 +2830,7 @@ a.href span {
 
 /* Lk start */
 .lk-page {
+  position: relative;
   border-top: 1px solid #dddddd;
   min-height: 55.5vh;
 }
@@ -2818,7 +2864,10 @@ a.href span {
   margin-left: -8px;
   margin-right: -8px;
 }
-.article-block {
+.tab_groups .counter {
+  margin-left: 3px;
+}
+.tab_group .article-block {
   position: relative;
 }
 .readble_col {
@@ -3540,6 +3589,7 @@ a.href span {
 }
 /* CREATE ORDER/OFFER PAGE*/
 .create-page {
+  position: relative;
   padding-left: 28px;
   padding-right: 28px;
   margin-left: -28px;
@@ -3820,6 +3870,7 @@ a.href span {
 }
 .user-page {
   padding-top: 25px;
+  min-height: calc(100vh - 430px);
 }
 .user-page .avatar-img {
   width: 120px;
@@ -4320,7 +4371,24 @@ table {
   position: relative;
   width: max-content;
 }
+.step-create .cargoPhotos div {
+  position: relative;
+  display: inline-block;
+  width: 119px;
+  height: 95px;
+  margin: 5px;
+}
+.cargoPhotos img:not(.attachDelete) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.step-create .cargoPhotos .attachDelete,
 .attach-item .attachDelete {
+  position: absolute;
+  width: 15px;
+  top: 0;
+  right: 0;
   cursor: pointer;
 }
 .attath-area {
@@ -4338,12 +4406,7 @@ table {
   width: 32px;
   height: 32px;
 }
-.attath-area .attachDelete {
-  position: absolute;
-  width: 15px;
-  top: 0;
-  right: 0;
-}
+
 @media (max-width: 551px) {
   .attach-item img.image-message {
     width: 50px;
@@ -5615,12 +5678,7 @@ span.errRequired {
   margin-left: -5px;
   margin-right: -5px;
 }
-.cargoPhotos img {
-  width: 119px;
-  height: 95px;
-  object-fit: cover;
-  margin: 5px;
-}
+
 #root {
   display: flex;
   flex-wrap: wrap-reverse;

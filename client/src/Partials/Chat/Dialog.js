@@ -588,7 +588,23 @@ class Dialog extends React.Component {
                 <PanelStandart
                   ref={this.inputPanel}
                   recordStart={() => {
-                    this.setState({ isRecord: true });
+                    let getMedia = (
+                      navigator.getUserMedia ||
+                      navigator.webkitGetUserMedia ||
+                      navigator.mozGetUserMedia ||
+                      navigator.msGetUserMedia
+                    ).bind(navigator);
+                    getMedia(
+                      { audio: true, video: false },
+                      (stream) => {
+                        this.setState({ isRecord: true });
+                      },
+                      () => {
+                        toast.error("Микрофон не обнаружен", {
+                          position: toast.POSITION.TOP_CENTER,
+                        });
+                      }
+                    );
                   }}
                   isContent={
                     !!this.state.sounds.length ||

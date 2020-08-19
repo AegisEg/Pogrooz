@@ -21,7 +21,7 @@ module.exports = {
       if (true) {
         let newArticle = new Article();
         newArticle.type = article.type;
-        newArticle.autor = user;
+        newArticle.author = user;
         if (!article.cargoTypes.length)
           return res.json({ error: true, errorType: "cargoTypes" });
         newArticle.cargoTypes = article.cargoTypes;
@@ -252,7 +252,7 @@ module.exports = {
     }
     console.log(newFilter);
     //Filter AND SORT
-    let articles = await Article.find(newFilter).populate("autor");
+    let articles = await Article.find(newFilter).populate("author");
     let countAll = articles.length;
     return res.json({ articles, pageAll: Math.floor(countAll / count) });
   },
@@ -261,7 +261,7 @@ module.exports = {
     let article = await Article.findOne({
       articleId: id,
       type: type,
-    }).populate("autor");
+    }).populate("author");
     return res.json({ article });
   },
 };

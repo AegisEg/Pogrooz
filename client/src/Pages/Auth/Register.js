@@ -56,7 +56,6 @@ class Register extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     let selectCountry = countryList.filter((item) => item.value !== 1);
     return (
       <div className="register-page">

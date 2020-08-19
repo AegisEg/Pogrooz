@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 //Configs
 import cargoList from "../../../config/baseInfo/cargoTypesList";
 import StandartParams from "./StandartParams";
+import attachDelete from "../../../img/attachDelete.svg";
 class OrderCreate1 extends React.Component {
   state = {
     isPro: false,
@@ -42,6 +43,11 @@ class OrderCreate1 extends React.Component {
       newState = {
         ...newState,
         comment: this.props.comment,
+      };
+    if (this.props.cargoPhoto)
+      newState = {
+        ...newState,
+        cargoPhoto: this.props.cargoPhoto,
       };
     if (this.props.cargoStandartData)
       newState = {
@@ -88,6 +94,7 @@ class OrderCreate1 extends React.Component {
       cargoDataX[cargoDataX.length - 1][prop] = val;
     }
     this.setState({ cargoData: cargoDataX });
+    this.props.onChange({ cargoData: cargoDataX });
   };
   //Стандартные данные который участвуют в поиске
   onChangeCargoStandartData = (prop, val) => {
@@ -99,13 +106,14 @@ class OrderCreate1 extends React.Component {
     this.setState({
       cargoTypes: [id],
       cargoData: [],
+      cargoStandartData: {},
     });
+    this.props.onChange({ cargoTypes: [id], cargoData: [] });
   };
   render() {
     let currentCargoType = !!this.state.cargoTypes.length
       ? cargoList.find((item) => item.id === this.state.cargoTypes[0])
       : false;
-    // console.log(this.state);
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
@@ -263,7 +271,6 @@ class OrderCreate1 extends React.Component {
                       files.push({
                         file: e.target.files[i],
                         path: URL.createObjectURL(e.target.files[i]),
-                        isNew: true,
                       });
                     else {
                       toast.error("Максимум 9 фото!", {
@@ -285,7 +292,25 @@ class OrderCreate1 extends React.Component {
               <div className="cargoPhotos">
                 {!!this.state.cargoPhoto.length &&
                   this.state.cargoPhoto.map((item, index) => {
-                    return <img key={index} src={item.path} alt="" />;
+                    return (
+                      <div key={index}>
+                        <img
+                          className="attachDelete"
+                          onClick={() => {
+                            this.setState({
+                              cargoPhoto: this.state.cargoPhoto.filter(
+                                (item, indexR) => {
+                                  return indexR != index;
+                                }
+                              ),
+                            });
+                          }}
+                          src={attachDelete}
+                          alt="attachDelete"
+                        />
+                        <img src={item.path} alt="" />
+                      </div>
+                    );
                   })}
               </div>
             </div>
