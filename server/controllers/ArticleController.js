@@ -610,6 +610,41 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  getMyArticles: async (req, res, next) => {
+    const { user } = res.locals;
+    const { userId } = req.body;
+    if (user._id)
+      try {
+        let articles = Article.aggregate([
+          {
+            $match: {
+              author: userId,
+            },
+          },
+          {
+            $group: { _id: { status: "$status" } },
+          },
+        ]);
+      } catch (e) {
+        return next(new Error(e));
+      }
+  },
+  setRequest: async (req, res, next) => {
+    const { user } = res.locals;
+    let { articleID, request } = req.body;
+    if (user._id)
+      try {
+        let articles = await Article.findById(articleId);
+        request.user = user;
+        if (!articles.requests.find((item) => item.user._id === user._id)) {
+          articles.requests.push(request);
+          await articles.save();
+          return res.json({ articles });
+        } else return res.status(401).json({ error: true });
+      } catch (e) {
+        return next(new Error(e));
+      }
+  },
 };
 
 Date.prototype.addDays = function(days) {

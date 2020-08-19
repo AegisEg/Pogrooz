@@ -22,3 +22,8 @@ export const DIALOGS_DELETE_MESSAGE = "DIALOGS_DELETE_MESSAGE";
 // Users
 export const USERS_GET = "USERS_GET";
 export const USERS_ADD = "USERS_ADD";
+
+//Articles
+
+export const ARTICLESLOAD = "USERS_ADD";
+export const ARTICLESDELETE = "USERS_ADD";

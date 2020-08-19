@@ -114,11 +114,13 @@ class ArticlePage extends React.Component {
                   />
                   <div className="articles-header">
                     <div className="container-fluid">
-                      <span className="f-16">Заявок по заказу - 9</span>
+                      <span className="f-16">
+                        Заявок по заказу - {this.state.article.requests.length}
+                      </span>
                     </div>
                   </div>
                   {this.state.article.requests &&
-                    this.state.article.requests.length && (
+                    !!this.state.article.requests.length && (
                       <>
                         <div className="requests-article-block">
                           <div className="container-fluid">

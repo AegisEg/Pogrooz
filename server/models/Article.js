@@ -47,6 +47,18 @@ const ArticleSchema = new Schema({
     timeFrom: Date,
     timeTo: Date,
   },
+  requests: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      startDate: {
+        date: Date,
+        timeFrom: Date,
+        timeTo: Date,
+      },
+      budget: { type: Number },
+      comment: { type: String },
+    },
+  ],
   updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
   buff: Buffer,
