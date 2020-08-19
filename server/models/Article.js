@@ -11,8 +11,7 @@ const autoIncrement = require("mongoose-auto-increment");
 autoIncrement.initialize(mongoose);
 
 const ArticleSchema = new Schema({
-  numberID: { type: Number, default: 0 },
-  autor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   type: { type: String, enum: ["offer", "order"], select: true },
   cargoTypes: [{ type: Number }],
   cargoData: [{ type: Object }],
@@ -29,11 +28,20 @@ const ArticleSchema = new Schema({
     contractInfo: [{ type: Object }],
     paymentInfo: [{ type: Object }],
   },
+  executors: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   carTemplate: { type: mongoose.Schema.Types.ObjectId, ref: "CarTemplate" },
   comment: { type: String },
   budget: { type: Number },
   from: { type: Object },
+  fromLocation: {
+    type: { type: String, default: "Point" },
+    coordinates: [Number],
+  },
   to: { type: Object },
+  toLocation: {
+    type: { type: String, default: "Point" },
+    coordinates: [Number],
+  },
   startDate: {
     date: Date,
     timeFrom: Date,
@@ -43,7 +51,7 @@ const ArticleSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   buff: Buffer,
 });
-
+ArticleSchema.index({ fromLocation: "2dsphere" });
 ArticleSchema.plugin(autoIncrement.plugin, {
   model: "Article",
   field: "articleId",

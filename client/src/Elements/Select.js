@@ -16,6 +16,10 @@ const colourStyles = {
   placeholder: (base) => ({
     color: "#909090",
   }),
+  multiValueLabel: (base) => ({
+    ...base,
+    textOverflow: "ellipsis",
+  }),
   indicatorsContainer: (base, state) => ({
     ...base,
     transform: state.selectProps.menuIsOpen ? "scale(1,-1)" : "",
@@ -48,7 +52,7 @@ const colourStyles = {
     height: state.isMulti ? "auto" : 42,
     minHeight: state.isMulti ? 42 : "",
     padding: "5px 15px",
-    paddingRight: "30px",
+    paddingRight: state.isMulti ? "52px" : "30px",
   }),
   container: (base, state) => ({
     ...base,

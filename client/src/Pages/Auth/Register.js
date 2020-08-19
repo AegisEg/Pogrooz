@@ -9,12 +9,7 @@ import Button from "../../Elements/Button";
 import Select from "../../Elements/Select";
 // Router
 import { Link } from "react-router-dom";
-
-const options = [
-  { value: 4, label: "Америка" },
-  { value: 2, label: "Китай" },
-  { value: 3, label: "Австралия" },
-];
+import countryList from "../../config/countryList";
 
 class Register extends React.Component {
   state = {
@@ -61,6 +56,7 @@ class Register extends React.Component {
   }
 
   render() {
+    let selectCountry = countryList.filter((item) => item.value !== 1);
     return (
       <div className="register-page">
         <h1 className="register-title">Регистрация</h1>
@@ -96,7 +92,6 @@ class Register extends React.Component {
                 } ml-3`}
                 onClick={(val) => {
                   this.setState({ country: 1 });
-                  this.select.select.commonProps.setValue(null);
                 }}
               >
                 Россия
@@ -104,13 +99,17 @@ class Register extends React.Component {
             </div>
             <div className="col-12 col-sm-6">
               <Select
-                options={options}
+                options={selectCountry}
                 placeholder="Другая"
                 className="f-17-only"
                 onChange={(val) => {
-                  if (val) this.setState({ country: val.value });
+                  this.setState({ country: val.value });
                 }}
-                getRef={(ref) => (this.select = ref)}
+                value={
+                  selectCountry.find(
+                    (item) => item.value === this.state.country
+                  ) || null
+                }
               />
             </div>
           </div>

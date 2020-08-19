@@ -39,6 +39,7 @@ class AppRouter extends React.Component {
       setTitle(this.props.history.location.pathname, routes);
     });
     setTitle(this.props.history.location.pathname, routes);
+
     const { cookies } = this.props;
     let apiToken = cookies.get("apiToken");
 

@@ -98,7 +98,7 @@ module.exports = {
     // Unauthorized (HTTP 401)
     const err = {};
     err.param = `all`;
-    err.msg = `Username and password don't match.`;
+    err.msg = `Неверный логин или пароль`;
     return res.status(401).json({ error: true, errors: [err] });
   },
   forgot: async (req, res, next) => {
@@ -187,12 +187,10 @@ module.exports = {
         return res.status(409).json({ error: true, errors: [err] });
       }
     } catch (e) {
-      console.log(e);
       return next(new Error(e));
     }
   },
 };
-
 // Generates a signed JWT that encodes a user ID
 // This function requires:
 //  - userId: user to include in the token

@@ -118,7 +118,7 @@ class OrderCreate3 extends React.Component {
       newState = {
         ...newState,
         isExtra: !!this.props.car.additionally.length,
-        isContract: !!this.props.car.contractParam.length,
+        isContract: !!this.props.car.contractInfo.length,
         isPayment: !!this.props.car.paymentInfo.length,
         isPro,
       };
@@ -127,7 +127,7 @@ class OrderCreate3 extends React.Component {
       {
         car: {
           additionally: [],
-          contractParam: [],
+          contractInfo: [],
           paymentInfo: [],
           info: [],
           property: "",
@@ -229,6 +229,7 @@ class OrderCreate3 extends React.Component {
     this.setState({ car: { ...this.state.car, info: carDataX } });
   };
   render() {
+    console.log(this.state);
     let currentCarTypes =
       this.state.car.typesCar && !!this.state.car.typesCar.length
         ? carTypesList.filter((item) => {
@@ -236,7 +237,7 @@ class OrderCreate3 extends React.Component {
           })
         : false;
     let carInfo = this.state.car.info || [];
-    console.log(this.state.car);
+
     return (
       <div className={`step-create ${this.props.className}`}>
         <div className="container-fluid">
@@ -685,11 +686,11 @@ class OrderCreate3 extends React.Component {
                           <CheckBox
                             id={`contractParams${item.id}`}
                             name={`contractParams`}
-                            value={this.state.car.contractParam.find(
+                            value={this.state.car.contractInfo.find(
                               (itemX) => itemX.id === item.id
                             )}
                             onChange={() => {
-                              this.onChangeParams("contractParam", item.id);
+                              this.onChangeParams("contractInfo", item.id);
                             }}
                             text={item.name}
                           />

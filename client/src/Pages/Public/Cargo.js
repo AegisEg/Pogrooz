@@ -19,13 +19,40 @@ import Filter from "../../Elements/Filter";
 import questions from "../../config/questions";
 
 class Cargo extends React.Component {
+  state = {
+    status: 2,
+    type: "offer",
+    carType: false,
+    additionally: [],
+    contractInfo: [],
+    paymentInfo: [],
+    from: false,
+    to: false,
+    cargoType: false,
+    cargoStandartData: {},
+    cargoData: [],
+    startDate: {
+      date: false,
+      timeFrom: false,
+      timeTo: false,
+    },
+    budget: false,
+    rating: false,
+  };
   render() {
     return (
       <div className="cargo-page standart-page">
         <div className="container-fluid">
           <h1>Владельцам груза</h1>
         </div>
-        <Filter />
+        <Filter
+          notType={true}
+          options={this.state}
+          onChange={(state) => {
+            this.setState({ ...state });
+          }}
+          onSearch={() => {}}
+        />
         <div className="cargo-pros">
           <div className="container-fluid row">
             <div className="col-6 col-md-2 col-lg-2">

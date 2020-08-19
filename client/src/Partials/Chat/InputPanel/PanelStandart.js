@@ -133,6 +133,8 @@ class PanelStandart extends React.Component {
               <img
                 src={send}
                 onClick={() => {
+                  let inputMessage = document.getElementById("input-message");
+                  inputMessage.style.maxHeight = "48px";
                   this.props.sendMessage(this.state.text);
                 }}
                 alt="microphone"

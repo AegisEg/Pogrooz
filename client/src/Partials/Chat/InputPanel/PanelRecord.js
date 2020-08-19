@@ -44,24 +44,26 @@ class PanelRecord extends React.Component {
       getMedia(
         { audio: true, video: false },
         (stream) => {
-          localStream = stream;
-          this.renderAudioVolume(localStream);
-          var mediaRecorder = new MediaRecorder(stream);
-          m = mediaRecorder;
-          m.addEventListener("start", this.startTimer.bind(this));
-          m.addEventListener("pause", this.stopTimer.bind(this));
-          m.addEventListener("stop", this.stopTimer.bind(this));
-          m.start();
+          if (stream) {
+            localStream = stream;
+            this.renderAudioVolume(localStream);
+            let mediaRecorder = new MediaRecorder(stream);
+            m = mediaRecorder;
+            m.addEventListener("start", this.startTimer.bind(this));
+            m.addEventListener("pause", this.stopTimer.bind(this));
+            m.addEventListener("stop", this.stopTimer.bind(this));
+            m.start();
+          }
         },
-        function (err) {
-          console.log(err);
+        (err) => {
+          this.props.stopRec();
         }
       );
     });
   }
   recordStop() {
     return new Promise(async (resolve, reject) => {
-      if (!this.state.isRecordPause) {
+      if (!this.state.isRecordPause && localStream) {
         let onRecordingReady = (e) => {
           this.props
             .addVoiceSound(e.data, this.state.countdown, this.state.RecordLine)
@@ -137,11 +139,11 @@ class PanelRecord extends React.Component {
           src={ResetRecord}
           className="resetRecord"
           onClick={async () => {
-            if (!this.state.isRecordPause)
-              this.recordStop().then(async () => {
-                await this.props.stopRec();
-                await this.props.addVoiceSound(false);
-              });
+            // if (!this.state.isRecordPause)
+            this.recordStop().then(async () => {
+              await this.props.stopRec();
+              await this.props.addVoiceSound(false);
+            });
           }}
           alt="ResetRecord"
         />

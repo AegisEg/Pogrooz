@@ -46,7 +46,7 @@ class OfferCreate1 extends React.Component {
       isError = true;
     }
     if (
-      this.state.car.contractParam.find((item) => {
+      this.state.car.contractInfo.find((item) => {
         return (item.id === 2 || item.id === 3) && !item.org;
       })
     ) {
@@ -81,7 +81,7 @@ class OfferCreate1 extends React.Component {
     let car = this.props.car;
     car = {
       additionally: [],
-      contractParam: [],
+      contractInfo: [],
       info: [],
       property: "",
       paymentInfo: [],
@@ -90,7 +90,7 @@ class OfferCreate1 extends React.Component {
     newState = {
       ...newState,
       isExtra: !!car.additionally.length,
-      isContract: !!car.contractParam && car.contractParam.length,
+      isContract: !!car.contractInfo && car.contractInfo.length,
       isPayment: !!car.paymentInfo.length,
     };
     this.setState({
@@ -109,6 +109,7 @@ class OfferCreate1 extends React.Component {
     switch (prop) {
       case "carType":
         car = { ...car, typesCar: [val], info: [] };
+        this.props.onChange({ typesCar: [val] });
         break;
       case "carProperty":
         car = { ...car, property: val };
@@ -591,16 +592,16 @@ class OfferCreate1 extends React.Component {
                           <CheckBox
                             id={`contractParams${item.id}`}
                             name={`contractParams`}
-                            value={this.state.car.contractParam.find(
+                            value={this.state.car.contractInfo.find(
                               (itemX) => itemX.id === item.id
                             )}
                             onChange={() => {
-                              this.onChangeParams("contractParam", item.id);
+                              this.onChangeParams("contractInfo", item.id);
                             }}
                             text={item.name}
                           />
                           {item.additionFields &&
-                            this.state.car.contractParam.find(
+                            this.state.car.contractInfo.find(
                               (itemX) => itemX.id === item.id
                             ) &&
                             item.additionFields.map((itemField, index) => {
@@ -610,14 +611,14 @@ class OfferCreate1 extends React.Component {
                                   {...itemField.props}
                                   value={
                                     this.getIfExit(
-                                      this.state.car.contractParam,
+                                      this.state.car.contractInfo,
                                       item.id,
                                       itemField.props.name
                                     ).value
                                   }
                                   onChange={(val) => {
                                     this.onChangeParamsFiels(
-                                      "contractParam",
+                                      "contractInfo",
                                       item.id,
                                       itemField.props.name,
                                       val

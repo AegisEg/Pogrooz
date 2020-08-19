@@ -92,7 +92,7 @@ export default [
                     placeholder="Объем в м&sup3;"
                     value={obj["volumeInMetr"] || ""}
                     onChange={(e) => {
-                      callback(3, "volumeInMetr", e.target.value);
+                      callback(3, "volumeInMetr", Number(e.target.value));
                     }}
                   />
                 </div>
@@ -108,7 +108,7 @@ export default [
                     placeholder="Вес в тоннах"
                     value={obj["weight"] || ""}
                     onChange={(e) => {
-                      callback(3, "weight", e.target.value);
+                      callback(3, "weight", Number(e.target.value));
                     }}
                   />
                 </div>
@@ -128,7 +128,7 @@ export default [
                     placeholder="Объем в л"
                     value={obj["volumeInLiter"] || ""}
                     onChange={(e) => {
-                      callback(3, "volumeInLiter", e.target.value);
+                      callback(3, "volumeInLiter", Number(e.target.value));
                     }}
                   />
                 </div>
@@ -144,7 +144,7 @@ export default [
                     placeholder="Вес в тоннах"
                     value={obj["weight"] || ""}
                     onChange={(e) => {
-                      callback(3, "weight", e.target.value);
+                      callback(3, "weight", Number(e.target.value));
                     }}
                   />
                 </div>
@@ -163,7 +163,7 @@ export default [
       type: "Тип",
       weight: "Вес в кг",
       length: "Длинна",
-      weight: "Ширина",
+      width: "Ширина",
       height: "Высота",
     },
     //IS стандарт если обычные, в условии в заказе прописано
@@ -205,7 +205,7 @@ export default [
                   placeholder="Вес в кг"
                   value={obj["weight"] || ""}
                   onChange={(e) => {
-                    callback(4, "weight", e.target.value);
+                    callback(4, "weight", Number(e.target.value));
                   }}
                 />
               </div>
@@ -223,7 +223,7 @@ export default [
                   style={{ margin: "0 0 0 0" }}
                   value={obj["length"] || ""}
                   onChange={(e) => {
-                    callback(4, "length", e.target.value);
+                    callback(4, "length", Number(e.target.value));
                   }}
                 />
                 <Input
@@ -232,7 +232,7 @@ export default [
                   className="text-center"
                   value={obj["width"] || ""}
                   onChange={(e) => {
-                    callback(4, "width", e.target.value);
+                    callback(4, "width", Number(e.target.value));
                   }}
                   style={{ margin: "0 0 0 0" }}
                 />
@@ -241,7 +241,7 @@ export default [
                   className="text-center"
                   value={obj["height"] || ""}
                   onChange={(e) => {
-                    callback(4, "height", e.target.value);
+                    callback(4, "height", Number(e.target.value));
                   }}
                   placeholder="Высота"
                 />
@@ -380,25 +380,27 @@ export default [
       animalName: "Название животного",
       count: "Количество",
     },
-    fields: (callback, obj, car = false) => {
+    fields: (callback, obj, car = false, isFilter = false) => {
       return (
         <>
-          <div
-            className="d-inline-block"
-            style={{
-              maxWidth: "320px",
-            }}
-          >
-            <Input
-              type="text"
-              name="animalName"
-              placeholder="Название животного"
-              value={obj["animalName"] || ""}
-              onChange={(e) => {
-                callback(11, "animalName", e.target.value);
+          {!isFilter && (
+            <div
+              className="d-inline-block"
+              style={{
+                maxWidth: "320px",
               }}
-            />
-          </div>
+            >
+              <Input
+                type="text"
+                name="animalName"
+                placeholder="Название животного"
+                value={obj["animalName"] || ""}
+                onChange={(e) => {
+                  callback(11, "animalName", e.target.value);
+                }}
+              />
+            </div>
+          )}
           <div
             className="d-inline-block"
             style={{
@@ -411,7 +413,7 @@ export default [
               placeholder="Кол-во"
               value={obj["count"] || ""}
               onChange={(e) => {
-                callback(11, "count", e.target.value);
+                callback(11, "count", Number(e.target.value));
               }}
             />
           </div>
@@ -484,7 +486,7 @@ export default [
                     placeholder="Объем в м&sup3;"
                     value={obj["volumeInMetr"] || ""}
                     onChange={(e) => {
-                      callback(13, "volumeInMetr", e.target.value);
+                      callback(13, "volumeInMetr", Number(e.target.value));
                     }}
                   />
                 </div>
@@ -500,7 +502,7 @@ export default [
                     placeholder="Вес в тоннах"
                     value={obj["weight"] || ""}
                     onChange={(e) => {
-                      callback(13, "weight", e.target.value);
+                      callback(13, "weight", Number(e.target.value));
                     }}
                   />
                 </div>
@@ -520,7 +522,7 @@ export default [
                     placeholder="Объем в л"
                     value={obj["volumeInLiter"] || ""}
                     onChange={(e) => {
-                      callback(13, "volumeInLiter", e.target.value);
+                      callback(13, "volumeInLiter", Number(e.target.value));
                     }}
                   />
                 </div>
@@ -536,7 +538,7 @@ export default [
                     placeholder="Вес в тоннах"
                     value={obj["weight"] || ""}
                     onChange={(e) => {
-                      callback(13, "weight", e.target.value);
+                      callback(13, "weight", Number(e.target.value));
                     }}
                   />
                 </div>

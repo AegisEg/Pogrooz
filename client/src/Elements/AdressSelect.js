@@ -23,10 +23,13 @@ class AdressSelect extends React.Component {
             },
             className: "input-text w-100 address-input",
           }}
+          count={10}
           className={`${this.props.className}`}
           placeholder={this.props.placeholder}
           defaultQuery={this.props.value}
           onChange={this.props.onChange}
+          filterFromBound={this.props.filterFromBound}
+          filterToBound={this.props.filterToBound}
         />
       </>
     );

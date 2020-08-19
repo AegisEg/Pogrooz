@@ -20,13 +20,40 @@ import payIco from "../../img/pay-ico.svg";
 import questions from "../../config/questions";
 
 class Carrier extends React.Component {
+  state = {
+    status: 2,
+    type: "offer",
+    carType: false,
+    additionally: [],
+    contractInfo: [],
+    paymentInfo: [],
+    from: false,
+    to: false,
+    cargoType: false,
+    cargoStandartData: {},
+    cargoData: [],
+    startDate: {
+      date: false,
+      timeFrom: false,
+      timeTo: false,
+    },
+    budget: false,
+    rating: false,
+  };
   render() {
     return (
       <div className="carrier-page standart-page">
         <div className="container-fluid">
           <h1>Перевозчикам</h1>
         </div>
-        <Filter />
+        <Filter
+          notType={true}
+          options={this.state}
+          onChange={(state) => {
+            this.setState({ ...state });
+          }}
+          onSearch={() => {}}
+        />
         <div className="carrier-pros ">
           <div className="container-fluid row">
             <div className="col-6 col-md-2 col-lg-2">
