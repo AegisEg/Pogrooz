@@ -69,9 +69,9 @@ class Articles extends React.Component {
         <ArticleHeader></ArticleHeader>
         <Loading isLoading={this.state.isFething}></Loading>
         <CSSTransitionGroup
-          transitionName="loading-height-animation-item"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
+          transitionName="height-animation-item"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}
           style={{
             display: "contents",
           }}
@@ -86,17 +86,17 @@ class Articles extends React.Component {
               />
             );
           })}
-          {!this.state.articles.length && (
-            <div className="text-center py-3">Записей не найдено</div>
-          )}
-          {!!this.state.articles.length && (
-            <Pagination
-              currentPage={this.state.currentPage}
-              pageCount={this.state.pageCount}
-              onPageChange={this.setPage.bind(this)}
-            />
-          )}
         </CSSTransitionGroup>
+        {!this.state.articles.length && (
+          <div className="text-center py-3">Записей не найдено</div>
+        )}
+        {!!this.state.articles.length && (
+          <Pagination
+            currentPage={this.state.currentPage}
+            pageCount={this.state.pageCount}
+            onPageChange={this.setPage.bind(this)}
+          />
+        )}
       </div>
     );
   }

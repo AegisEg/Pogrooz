@@ -1926,7 +1926,7 @@ a.mail {
 .height-animation-item-leave.height-animation-item-leave-active {
   opacity: 0;
   max-height: 0;
-  transition: all 0.5s;
+  transition: all 0 5s;
 }
 .LoadGif {
   z-index: 1;
