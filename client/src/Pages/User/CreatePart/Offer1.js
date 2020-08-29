@@ -230,40 +230,42 @@ class OfferCreate1 extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="mt-3 col-12 col-md-8 mx-0 px-0 row carInfo">
-              <div>
-                <a
-                  className="href hover"
-                  onClick={() => {
-                    this.setState({ openTemplate: !this.state.openTemplate });
-                  }}
-                >
-                  {this.state.openTemplate
-                    ? "Закрыть выбор шаблонов"
-                    : "Выбрать из шаблона Авто"}
-                </a>
-                {this.state.openTemplate && (
-                  <Select
-                    placeholder="Шаблоны машины"
-                    options={this.props.carTemplates.map((item) => {
-                      return {
-                        value: item,
-                        label: item.car.name,
-                      };
-                    })}
-                    value={
-                      this.state.currentTemplate
-                        ? {
-                            value: this.state.currentTemplate,
-                            label: this.state.currentTemplate.car.name,
-                          }
-                        : null
-                    }
-                    onChange={(val) => {
-                      this.selectTemplate(val.value);
+              {!!this.props.carTemplates.length && (
+                <div>
+                  <a
+                    className="href hover"
+                    onClick={() => {
+                      this.setState({ openTemplate: !this.state.openTemplate });
                     }}
-                  />
-                )}
-              </div>
+                  >
+                    {this.state.openTemplate
+                      ? "Закрыть выбор шаблонов"
+                      : "Выбрать из шаблона Авто"}
+                  </a>
+                  {this.state.openTemplate && (
+                    <Select
+                      placeholder="Шаблоны машины"
+                      options={this.props.carTemplates.map((item) => {
+                        return {
+                          value: item,
+                          label: item.car.name,
+                        };
+                      })}
+                      value={
+                        this.state.currentTemplate
+                          ? {
+                              value: this.state.currentTemplate,
+                              label: this.state.currentTemplate.car.name,
+                            }
+                          : null
+                      }
+                      onChange={(val) => {
+                        this.selectTemplate(val.value);
+                      }}
+                    />
+                  )}
+                </div>
+              )}
               <h4
                 className="f-16 col-12 mb-1"
                 style={{
