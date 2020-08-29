@@ -3,14 +3,14 @@ import React, { useRef } from "react";
 import { AddressSuggestions } from "react-dadata";
 import "react-dadata/dist/react-dadata.css";
 import configApi from "../config/api";
-
+import { ReactComponent as CloseSVG } from "../img/close.svg";
 class AdressSelect extends React.Component {
   componentDidUpdate() {
     this.ref.setInputValue(this.props.value);
   }
   render() {
     return (
-      <>
+      <div className="adress-select">
         <AddressSuggestions
           ref={(ref) => (this.ref = ref)}
           token={configApi.daDataToken}
@@ -31,7 +31,12 @@ class AdressSelect extends React.Component {
           filterFromBound={this.props.filterFromBound}
           filterToBound={this.props.filterToBound}
         />
-      </>
+        <CloseSVG
+          onClick={() => {
+            this.props.onChange(false);
+          }}
+        />
+      </div>
     );
   }
 }

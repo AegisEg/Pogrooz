@@ -9,6 +9,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { toast } from "react-toastify";
 //DATE
 import EyeOpen from "../img/sid-view.svg";
 import EyeClose from "../img/eye-close.png";
@@ -66,9 +67,17 @@ class Input extends React.Component {
         >
           <MuiPickersUtilsProvider locale={ruLocale} utils={DateFnsUtils}>
             <TimePicker
+              onClickCapture={() => {
+                if (!this.props.date) toast.warning("Сначала введите дату ");
+              }}
               onFocus={() => {
                 this.setState({ isFocus: true });
               }}
+              clearable={true}
+              clearLabel="Отчистить"
+              disabled={
+                !!this.props.disabled || (!this.props.date ? true : false)
+              }
               cancelLabel="Закрыть"
               okLabel="Ок"
               ampm={false}
@@ -82,7 +91,19 @@ class Input extends React.Component {
               value={this.props.value}
               placeholder={this.props.placeholder}
               minDate={this.props.minDate}
-              onChange={this.props.onChange ? this.props.onChange : () => {}}
+              onChange={(val) => {
+                let date = new Date(this.props.date);
+                if (val)
+                  val = new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate(),
+                    val.getHours(),
+                    val.getMinutes(),
+                    0
+                  );
+                if (this.props.onChange) this.props.onChange(val);
+              }}
             />
           </MuiPickersUtilsProvider>
           {this.props.error && (
@@ -112,6 +133,8 @@ class Input extends React.Component {
               InputProps={{
                 className: "input-date",
               }}
+              clearable={true}
+              clearLabel="Отчистить"
               cancelLabel="Закрыть"
               okLabel="Ок"
               format="dd.MM.yyyy"

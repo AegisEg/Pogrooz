@@ -1,8 +1,8 @@
-import { USER_LOGIN, USER_LOGOUT } from "../constants";
+import { USER_LOGIN, USER_LOGOUT, ARTICLES_MY_SET_COUNT } from "../constants";
 import store from "../store";
 import api from "../../config/api";
 
-export const loginUser = (user, apiToken) => (dispatch) => {
+export const loginUser = (user, apiToken, myCountsArticles) => (dispatch) => {
   user.apiToken = apiToken;
   dispatch({
     type: USER_LOGIN,

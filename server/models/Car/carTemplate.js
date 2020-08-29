@@ -5,18 +5,16 @@
 "use strict";
 
 const mongoose = require("../../database");
+const CarSchema = require("./CarSchema");
 const Schema = mongoose.Schema;
-//Типы машин
-const CarTypeSchema = new Schema({
-  type: { type: mongoose.Schema.Types.ObjectId, ref: "CarType" },
-  name: { type: String },
-  additionally: { type: Object },
-  contractInfo: { type: Object },
-  paymentInfo: { type: Object },
 
+const CarTemplateSchema = new Schema({
+  car: CarSchema,
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  updatedAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
   buff: Buffer,
 });
+const CarTemplate = mongoose.model("CarTemplate", CarTemplateSchema);
 
-const CarType = mongoose.model("CarType", CarTypeSchema);
-
-module.exports = CarType;
+module.exports = CarTemplate;

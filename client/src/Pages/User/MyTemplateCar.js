@@ -3,13 +3,44 @@ import React from "react";
 
 // Elements
 import Button from "../../Elements/Button";
-import settings from "../../config/settings";
 import { connect } from "react-redux";
+import Loading from "../../Elements/Loading";
+import { CSSTransitionGroup } from "react-transition-group";
 import { Link } from "react-router-dom";
-import payIco from "../../img/pay-ico.svg";
-import dogovor from "../../img/dogovor.png";
+import api from "../../config/api";
+import CarTemplate from "../../ArticlesElements/CarTemplate";
 
 class OfferCreate extends React.Component {
+  state = {
+    carTemplates: [],
+    isFetching: true,
+  };
+  componentDidMount() {
+    this.getCarTemplates();
+  }
+  getCarTemplates = () => {
+    this.setState({ isFetching: true }, () => {
+      fetch(`${api.urlApi}/api/car/getCarTemplates`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.apiToken}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.error) {
+            if (data.carTemplates) {
+              this.setState({
+                carTemplates: data.carTemplates,
+                isFetching: false,
+              });
+            }
+          }
+        });
+    });
+  };
   render() {
     return (
       <>
@@ -26,206 +57,43 @@ class OfferCreate extends React.Component {
             >
               Мои шаблоны авто
             </h2>
+
             <div>
-              <Button
-                paddingVertical="11px"
-                className="f-14 position-relative "
-                paddingVertical="10px"
-                type="fill"
-              >
-                Добавить шаблон авто
-                <Link
-                  to="/create-template-auto"
-                  className="sharected-link"
-                ></Link>
-              </Button>
-              <div className="auto-template mt-4">
-                <div className="head-template align-items-center row">
-                  <div
-                    className="px-3 title-auto mt-2 mt-md-0"
-                    style={{
-                      maxWidth: "280px",
-                    }}
-                  >
-                    Мерседес Вито для перевозки{" "}
-                  </div>
-                  <div className="px-3 mt-2 mt-md-0">
-                    <Button
-                      type="fill"
-                      paddingVertical="6px"
-                      className="f-12 position-relative"
-                    >
-                      Редактировать
-                      <Link
-                        to="/edit-template-auto/1"
-                        className="sharected-link"
-                      ></Link>
-                    </Button>
-                  </div>
-                  <div className="px-3 mt-2 mt-md-0">
-                    <Button
-                      type="fill"
-                      paddingVertical="6px"
-                      className="bg-gray f-12 "
-                    >
-                      Удалить
-                    </Button>
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div
-                    className="col-xl"
-                    style={{
-                      maxWidth: "149px",
-                    }}
-                  >
-                    <img className="w-100" src={settings.defaultCar} alt="" />
-                  </div>
-                  <div
-                    className="col-xl f-14"
-                    style={{
-                      maxWidth: "153px",
-                    }}
-                  >
-                    Еврофура Mercedes Vito 2020 год 86 куб. м тоннаж - 20-22 т
-                    Загрузка задняя
-                  </div>
-                  <div
-                    className="row ml-2 mt-2 mt-md-0"
-                    style={{
-                      maxWidth: "320px",
-                      minWidth: "171px",
-                      flexBasis: "0",
-                      flexGrow: "1",
-                    }}
-                  >
-                    <div className="flex-columns">
-                      <span className="position-relative left-angle">
-                        Услуги грузчика
-                      </span>
-                      <span className="position-relative left-angle">
-                        Услуги грузчика
-                      </span>
-                      <span className="position-relative left-angle">
-                        Услуги грузчика
-                      </span>
-                      <span className="position-relative left-angle">
-                        Услуги грузчика
-                      </span>
+              <Link to="/create-template-auto">
+                <Button
+                  paddingVertical="11px"
+                  className="f-14"
+                  paddingVertical="10px"
+                  type="fill"
+                >
+                  Добавить шаблон авто
+                </Button>
+              </Link>
+              <div className="carTemplates-block">
+                <Loading isLoading={this.state.isFetching}></Loading>
+                <CSSTransitionGroup
+                  transitionName="height-animation-item"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={1}
+                  style={{
+                    display: "contents",
+                  }}
+                >
+                  {this.state.carTemplates.map((item, index) => {
+                    return (
+                      <CarTemplate
+                        reload={this.getCarTemplates}
+                        user={this.props.user}
+                        template={item}
+                      />
+                    );
+                  })}
+                  {!this.state.carTemplates.length && (
+                    <div className="text-center">
+                      Шаблоны авто еще не созданы
                     </div>
-                    <div className="flex-columns">
-                      <span className="position-relative left-angle">
-                        Услуги грузчика
-                      </span>
-                      <span className="position-relative left-angle">
-                        Услуги грузчика
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    className="col-xl mt-2 mt-md-0"
-                    style={{
-                      marginRight: "-10px",
-                      marginLeft: "-10px",
-                    }}
-                  >
-                    <span className="px-2 property-user f-12">
-                      <img src={dogovor} alt="dogovor" />
-                      Договор с ИП, ООО
-                    </span>
-                    <span className="px-2 property-user f-12">
-                      <img src={payIco} alt="payIco" />
-                      Оплата наличными, на р/c
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="auto-template mt-4">
-                <div className="head-template align-items-center row">
-                  <div
-                    className="px-3 title-auto mt-2 mt-md-0"
-                    style={{
-                      maxWidth: "280px",
-                    }}
-                  >
-                    Мерседес Вито для перевозки{" "}
-                  </div>
-                  <div className="px-3 mt-2 mt-md-0">
-                    <Button
-                      type="fill"
-                      paddingVertical="6px"
-                      className="f-12 position-relative"
-                    >
-                      Редактировать
-                      <Link
-                        to="/edit-template-auto/2"
-                        className="sharected-link"
-                      ></Link>
-                    </Button>
-                  </div>
-                  <div className="px-3 mt-2 mt-md-0">
-                    <Button
-                      type="fill"
-                      paddingVertical="6px"
-                      className="bg-gray f-12 "
-                    >
-                      Удалить
-                    </Button>
-                  </div>
-                </div>
-                <div className="row mt-4">
-                  <div
-                    className="col-xl"
-                    style={{
-                      maxWidth: "149px",
-                    }}
-                  >
-                    <img className="w-100" src={settings.defaultCar} alt="" />
-                  </div>
-                  <div
-                    className="col-xl f-14"
-                    style={{
-                      maxWidth: "153px",
-                    }}
-                  >
-                    Еврофура Mercedes Vito 2020 год 86 куб. м тоннаж - 20-22 т
-                    Загрузка задняя
-                  </div>
-                  <div
-                    className="row ml-2 mt-2 mt-md-0"
-                    style={{
-                      maxWidth: "320px",
-                      minWidth: "171px",
-                      flexBasis: "0",
-                      flexGrow: "1",
-                    }}
-                  >
-                    <div className="flex-columns">
-                      <span className="position-relative left-angle">
-                        Услуги грузчика
-                      </span>
-                      <span className="position-relative left-angle">
-                        Услуги грузчика
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    className="col-xl mt-2 mt-md-0"
-                    style={{
-                      marginRight: "-10px",
-                      marginLeft: "-10px",
-                    }}
-                  >
-                    <span className="px-2 property-user f-12">
-                      <img src={dogovor} alt="dogovor" />
-                      Договор с ИП, ООО
-                    </span>
-                    <span className="px-2 property-user f-12">
-                      <img src={payIco} alt="payIco" />
-                      Оплата наличными, на р/c
-                    </span>
-                  </div>
-                </div>
+                  )}
+                </CSSTransitionGroup>
               </div>
             </div>
           </div>

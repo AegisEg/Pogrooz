@@ -3,12 +3,16 @@ import React from "react";
 import SelectX, { components } from "react-select";
 import SelectAsync from "react-select/async";
 //SVG
-import svgIcon from "../img/icon_angle.svg";
+import { ReactComponent as SvgIcon } from "../img/icon_angle.svg";
 
 const DropdownIndicator = (props) => {
   return (
     <components.DropdownIndicator {...props}>
-      <img src={svgIcon} className="mr-2" alt="svgIcon" />
+      <SvgIcon
+        style={{
+          marginRight: "10px",
+        }}
+      />
     </components.DropdownIndicator>
   );
 };
@@ -105,7 +109,7 @@ const colourStyles = {
 };
 class Select extends React.Component {
   render() {
-    if (this.props.async)
+    if (this.props.async) {
       return (
         <>
           <SelectAsync
@@ -115,19 +119,21 @@ class Select extends React.Component {
               DropdownIndicator,
             }}
             cacheOptions
-            defaultOptions
             loadOptions={this.props.loadOptions}
             className={`select ${this.props.className}`}
             onChange={this.props.onChange}
             isSearchable={this.props.isSearchable}
             placeholder={this.props.placeholder}
             value={this.props.value}
+            inputValue={this.props.value.label}
             ref={(ref) => {
               if (this.props.getRef) {
                 this.select = ref;
                 this.props.getRef(ref);
               }
             }}
+            onBlur={this.props.onBlur}
+            onInputChange={this.props.onInputChange}
             noOptionsMessage={
               this.props.noOptionsMessage
                 ? this.props.noOptionsMessage
@@ -140,7 +146,7 @@ class Select extends React.Component {
           />
         </>
       );
-    else
+    } else
       return (
         <>
           <SelectX
@@ -152,6 +158,7 @@ class Select extends React.Component {
             isMulti={this.props.isMulti}
             className={`select ${this.props.className}`}
             onChange={this.props.onChange}
+            isClearable={this.props.isClearable}
             placeholder={this.props.placeholder}
             ref={(ref) => {
               if (this.props.getRef) {

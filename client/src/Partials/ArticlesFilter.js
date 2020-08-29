@@ -1,6 +1,6 @@
 import React from "react";
 import Filter from "../Elements/Filter";
-import Articles from "../Catalog/Articles";
+import Articles from "../ArticlesElements/Articles";
 class ArticlesFilter extends React.Component {
   constructor(props) {
     super(props);

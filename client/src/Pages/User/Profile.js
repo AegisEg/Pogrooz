@@ -158,9 +158,9 @@ class Profile extends React.Component {
                 marginBottom: 12,
               }}
               placeholder="Фамилия *"
-              value={this.state.middleName}
+              value={this.state.lastName}
               onChange={(e) => {
-                this.setState({ middleName: e.target.value });
+                this.setState({ lastName: e.target.value });
               }}
             />
           </div>
@@ -171,9 +171,9 @@ class Profile extends React.Component {
                 marginBottom: 12,
               }}
               placeholder="Отчество *"
-              value={this.state.lastName}
+              value={this.state.middleName}
               onChange={(e) => {
-                this.setState({ lastName: e.target.value });
+                this.setState({ middleName: e.target.value });
               }}
             />
           </div>

@@ -1,12 +1,16 @@
 // App
 import React from "react";
+import { withCookies } from "react-cookie";
+import * as myArticlesActions from "../../../redux/actions/myarticles";
+import { bindActionCreators } from "redux";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import configApi from "../../../config/api";
+
 // Elements
 import Button from "../../../Elements/Button";
-import ArticleHeader from "../../../Catalog/ArticleHeader";
-import Article from "../../../Catalog/Article";
-import { withCookies } from "react-cookie";
-import { withRouter } from "react-router-dom";
-import configApi from "../../../config/api";
+import ArticleHeader from "../../../ArticlesElements/Partials/ArticleHeader";
+import Article from "../../../ArticlesElements/Article";
 class Create4 extends React.Component {
   state = {
     dataFancybox: {
@@ -15,102 +19,31 @@ class Create4 extends React.Component {
       article: {},
     },
   };
-  createAricle(status) {
+  createAricle = (status) => {
     let apiToken = this.props.cookies.get("apiToken");
-    let formData = new FormData();
-    formData.append(
-      "article",
-      JSON.stringify({ ...this.props.article, status: status })
-    );
-
-    if (
-      this.props.article.type === "order" &&
-      this.props.article.cargoPhoto &&
-      !!this.props.article.cargoPhoto.length
-    ) {
-      let files = [];
-      this.props.article.cargoPhoto.map((item, index) => {
-        formData.append("cargoPhoto" + index, item.file);
+    this.props.myArticlesActions
+      .createMyArticle(this.props.article, status, apiToken)
+      .then((data) => {
+        if (!data.error) {
+          if (this.props.article.type === "offer")
+            this.props.history.push("/my-offers-open");
+          if (this.props.article.type === "order")
+            this.props.history.push("/my-orders-open");
+        }
       });
-    }
-    if (
-      this.props.article.type === "offer" &&
-      this.props.article.car.photo.file
-    )
-      formData.append("carPhoto", this.props.article.car.photo.file);
-    if (apiToken) {
-      fetch(`${configApi.urlApi}/api/article/createArticle`, {
-        method: "post",
-        headers: {
-          Authorization: `Bearer ${apiToken}`,
-        },
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.error) {
-            if (this.props.article.type === "offer")
-              this.props.history.push("/my-offers-open");
-            if (this.props.article.type === "order")
-              this.props.history.push("/my-orders-open");
-          }
-        });
-    }
-  }
+  };
   save() {
     let apiToken = this.props.cookies.get("apiToken");
-    let formData = new FormData();
-    let article = this.props.article;
-    if (this.props.editingId) {
-      if (
-        this.props.article.type === "order" &&
-        this.props.article.cargoPhoto &&
-        !!this.props.article.cargoPhoto.length
-      ) {
-        let count = 0;
-        this.props.article.cargoPhoto.map((item, index) => {
-          if (item.file) {
-            formData.append("cargoPhoto" + index, item.file);
-            count += 1;
-          }
-        });
-      }
-      formData.append(
-        "article",
-        JSON.stringify({
-          ...article,
-          cargoPhoto: this.props.article.cargoPhoto.filter((item, index) => {
-            return !item.file;
-          }),
-        })
-      );
-
-      formData.append("editingId", this.props.editingId);
-      if (
-        this.props.article.type === "offer" &&
-        this.props.article.car.photo.file
-      )
-        formData.append("carPhoto", this.props.article.car.photo.file);
-
-      if (apiToken) {
-        fetch(`${configApi.urlApi}/api/article/updateArticle`, {
-          method: "post",
-          headers: {
-            Authorization: `Bearer ${apiToken}`,
-          },
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (!data.error) {
-              if (this.props.article.type === "offer")
-                this.props.history.push("/my-offers-open");
-              if (this.props.article.type === "order")
-                this.props.history.push("/my-orders-open");
-            }
-          });
-      }
-    }
+    this.props.myArticlesActions
+      .editMyArticle(this.props.article, this.props.editingId, apiToken)
+      .then((data) => {
+        if (!data.error) {
+          if (this.props.article.type === "offer")
+            this.props.history.push("/my-offers-open");
+          if (this.props.article.type === "order")
+            this.props.history.push("/my-orders-open");
+        }
+      });
   }
   render() {
     return (
@@ -119,7 +52,6 @@ class Create4 extends React.Component {
           <ArticleHeader></ArticleHeader>
           {this.props.article && (
             <Article
-              notIsManage={true}
               onlyOpen={true}
               singlePage={true}
               article={this.props.article}
@@ -180,4 +112,12 @@ class Create4 extends React.Component {
     );
   }
 }
-export default withRouter(withCookies(Create4));
+function mapDispatchToProps(dispatch) {
+  return {
+    myArticlesActions: bindActionCreators(myArticlesActions, dispatch),
+  };
+}
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(withCookies(Create4)));

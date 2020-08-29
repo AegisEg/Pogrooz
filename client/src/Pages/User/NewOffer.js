@@ -22,16 +22,18 @@ class OfferCreate extends React.Component {
     notFound: false,
     currentTab: 1,
     typesCar: [],
+    carTemplates: [],
     article: false,
     isEditing: false,
   };
   componentDidMount() {
     if (this.props.match.params.id)
-      fetch(`${api.urlApi}/api/article/getArticle`, {
+      fetch(`${api.urlApi}/api/article/getUserArticle`, {
         method: "post",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.apiToken}`,
         },
         body: JSON.stringify({
           id: this.props.match.params.id,
@@ -47,7 +49,6 @@ class OfferCreate extends React.Component {
               this.setState(
                 {
                   typesCar: data.article.car.typesCar,
-                  isFetching: false,
                   isEditing: true,
                 },
                 () => {
@@ -58,14 +59,33 @@ class OfferCreate extends React.Component {
                       " №" +
                       this.article.articleId
                   );
+                  this.getCarTemplate();
                 }
               );
             }
           } else this.setState({ notFound: true, isFetching: false });
         });
-    else
-      this.setState({
-        isFetching: false,
+    else this.getCarTemplate();
+  }
+  getCarTemplate() {
+    fetch(`${api.urlApi}/api/car/getCarTemplates`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.props.user.apiToken}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.error) {
+          if (data.carTemplates) {
+            this.setState({
+              carTemplates: data.carTemplates,
+              isFetching: false,
+            });
+          }
+        }
       });
   }
   getRef(number) {
@@ -144,6 +164,8 @@ class OfferCreate extends React.Component {
                     next={() => {
                       this.nexTab(2);
                     }}
+                    user={this.props.user}
+                    carTemplates={this.state.carTemplates}
                     onChange={(state) => {
                       this.setState(state);
                     }}

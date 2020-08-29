@@ -8,7 +8,7 @@ class Avatar extends React.Component {
         {this.props.avatar && (
           <img
             alt={this.props.name}
-            src={this.props.avatar.min}
+            src={this.props.avatar.path}
             style={this.props.avatarStyle}
             className="user-avatar-image"
           />

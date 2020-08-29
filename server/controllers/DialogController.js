@@ -8,19 +8,17 @@ const Dialog = require("../models/Dialog");
 const Message = require("../models/Message");
 const User = require("../models/User");
 let { randomString } = require("../controllers/FileController");
-const {
-  sendMessageDialog,
-  readMessageDialog,
-  editMessageDialog,
-  deleteMessageDialog,
-} = require("./SocketController");
+const { sendMessageDialog, readMessageDialog } = require("./SocketController");
 
 module.exports = {
   getAll: async (req, res, next) => {
     const { user } = res.locals;
 
     try {
-      const dialogs = await Dialog.find({ users: { $all: [user._id] } })
+      const dialogs = await Dialog.find({
+        orderId: null,
+        users: { $all: [user._id] },
+      })
         .populate([
           {
             path: "users",
@@ -38,6 +36,7 @@ module.exports = {
 
       const noReadDialogs = await Dialog.find({
         noRead: { $ne: 0 },
+        orderId: null,
         users: { $all: [user._id] },
         lastMessage: { $exists: true },
       }).populate([
@@ -91,7 +90,7 @@ module.exports = {
       let query =
         userId == user._id ? { $eq: [user._id] } : { $all: [user._id, userId] };
 
-      let dialog = await Dialog.findOne({ users: query })
+      let dialog = await Dialog.findOne({ orderId: null, users: query })
         .populate([
           {
             path: "users",
@@ -106,10 +105,18 @@ module.exports = {
         ])
         .sort({ createdAt: "DESC" });
       if (!dialog) {
+        if (userId == user._id) {
+          const err = {};
+          err.param = `all`;
+          err.msg = `Dialog not found`;
+          return res
+            .status(401)
+            .json({ dialog: { error: true }, errors: [err] });
+        }
         dialog = new Dialog();
         let userTo = await User.findById(userId);
 
-        dialog.users = userId == user._id ? [user] : [user, userTo];
+        dialog.users = [user, userTo];
 
         await dialog.save();
       }
@@ -153,6 +160,7 @@ module.exports = {
 
     try {
       const dialogs = await Dialog.find({
+        orderId: null,
         users: { $all: [user._id] },
         lastMessage: { $exists: true },
         _id: { $gt: lastDialogId, $lt: firstDialogId },
@@ -219,15 +227,18 @@ module.exports = {
       recentMessage,
       voiceSoundDuration,
       voiceSoundRecordLine,
+      dialog,
     } = req.body;
     try {
       let query =
         userId == user._id ? { $eq: [user._id] } : { $all: [user._id, userId] };
-      let dialog = await Dialog.findOne({ users: query }).populate(
-        "lastMessage"
-      );
+      dialog = await Dialog.findOne({
+        _id: dialog,
+        users: query,
+      }).populate("lastMessage");
+      console;
+      let isOrder = !!dialog.orderId;
       const dialogId = String(dialog._id);
-
       if (
         !/\S/.test(text) &&
         !recentMessage &&
@@ -359,6 +370,7 @@ module.exports = {
         otherId: userId,
         socketId,
         message,
+        isOrder,
       });
 
       return res.json(message);
@@ -413,20 +425,26 @@ module.exports = {
 
   readMessages: async (req, res, next) => {
     const { user } = res.locals;
-    const { otherId, socketId } = req.body;
+    const { otherId, socketId, dialogId } = req.body;
 
     try {
       let query = { $all: [user._id, otherId] };
-      let dialog = await Dialog.findOne({ users: query });
-      const dialogId = String(dialog._id);
+      let dialog = await Dialog.findOne({ _id: dialogId, users: query });
+
       let result = await Message.updateMany(
-        { dialogId, user: { $ne: user._id } },
+        { dialogId: dialog._id, user: { $ne: user._id } },
         { $set: { isRead: true } }
       );
       dialog.noRead = 0;
       await dialog.save();
       if (result.nModified) {
-        readMessageDialog({ otherId, dialogId, userId: user._id, socketId });
+        readMessageDialog({
+          otherId,
+          dialogId: dialog._id,
+          userId: user._id,
+          socketId,
+          isOrder: !!dialog.orderId,
+        });
       }
 
       return res.json();

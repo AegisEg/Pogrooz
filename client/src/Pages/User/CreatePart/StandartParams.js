@@ -301,7 +301,7 @@ class StandartParams extends React.Component {
                   }}
                 >
                   {this.props.cargoStandartData["weight"] *
-                    this.props.cargoStandartData["count"] || ""}
+                    (this.props.cargoStandartData["count"] || 1) || ""}
                 </div>
                 т.
               </span>

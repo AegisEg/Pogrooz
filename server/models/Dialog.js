@@ -14,7 +14,11 @@ const DialogSchema = new Schema({
   messages: { type: Array, default: [] },
   lastMessage: { type: mongoose.Schema.Types.ObjectId, ref: "Message" },
   noRead: { type: Number, default: 0 },
-  orderId: { type: Number, default: null },
+  orderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Article",
+    default: null,
+  },
   updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
   buff: Buffer,

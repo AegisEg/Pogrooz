@@ -265,7 +265,10 @@ class Header extends React.Component {
               {this.state.showProfileMenu && (
                 <div className="profile-menu">
                   {menu.map((item, index) => {
-                    if (item.mobile || item.onlyMobile)
+                    if (
+                      (!item.role || item.role === this.props.user.type) &&
+                      (item.mobile || item.onlyMobile)
+                    )
                       return (
                         <Link key={index} to={item.to}>
                           <div className="profile-menu-item">
@@ -274,7 +277,7 @@ class Header extends React.Component {
                           </div>
                         </Link>
                       );
-                    else return <></>;
+                    else return null;
                   })}
                   <div
                     className="profile-menu-additionally"

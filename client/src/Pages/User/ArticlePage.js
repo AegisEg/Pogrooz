@@ -2,68 +2,57 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
-import Article from "../../Catalog/Article";
-import ArticleHeader from "../../Catalog/ArticleHeader";
-import RequestForm from "../../Partials/RequestForm.js";
-import configApi from "../../config/api";
+import Article from "../../ArticlesElements/Article";
+import ArticleHeader from "../../ArticlesElements/Partials/ArticleHeader";
+import ArticleRequest from "../../ArticlesElements/Partials/ArticleRequest";
+import RequestForm from "../../ArticlesElements/Partials/RequestForm.js";
+import queryString from "query-string";
+import * as myArticlesActions from "../../redux/actions/myarticles";
+import { bindActionCreators } from "redux";
 // Router
 import { setForceTitle } from "../../functions/functions";
 import { connect } from "react-redux";
 // Elements
-import Button from "../../Elements/Button";
 import NoMatch from "../NoMatch.js";
 import { withLastLocation } from "react-router-last-location";
 import Loading from "../../Elements/Loading";
 import { CSSTransitionGroup } from "react-transition-group";
-//IMGS
-import ImgActiveStar from "../../img/active-star.png";
 class ArticlePage extends React.Component {
   state = {
-    article: false,
     isFetching: true,
     notFound: false,
+    editRequestId: false,
   };
   componentDidMount() {
-    this.getAricle();
-  }
-  getAricle() {
-    fetch(`${configApi.urlApi}/api/article/getArticle`, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: this.props.match.params.id,
-        type: this.props.type,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.error) {
-          if (data.article) {
-            this.setState(
-              {
-                article: data.article,
-                isFetching: false,
-              },
-              () => {
-                setForceTitle(
-                  (this.state.article.type === "offer"
-                    ? "Предложение"
-                    : "Заказ") +
-                    " №" +
-                    this.state.article.articleId
-                );
-              }
-            );
+    this.setState({ isFetching: true }, () => {
+      this.props.myArticlesActions
+        .currentLoad(this.props.match.params.id, this.props.type)
+        .then((data) => {
+          if (data.error) {
+            this.setState({
+              isFetching: false,
+              notFound: true,
+            });
           }
-        } else
-          this.setState({
-            isFetching: false,
-            notFound: true,
-          });
-      });
+          if (data.article) {
+            let url = this.props.location.search;
+            let params = queryString.parse(url);
+            if (Object.prototype.hasOwnProperty.call(params, "executors")) {
+              document.getElementById("request-header").scrollIntoView({
+                behavior: "smooth",
+              });
+            }
+            setForceTitle(
+              (data.article.type === "offer" ? "Предложение" : "Заказ") +
+                " №" +
+                data.article.articleId
+            );
+            this.setState({
+              isFetching: false,
+            });
+          }
+        });
+    });
   }
   render() {
     return (
@@ -82,13 +71,13 @@ class ArticlePage extends React.Component {
               <div className="article-page">
                 <div className="container-fluid">
                   <h2 className="title">
-                    {this.state.article.type == "order"
+                    {this.props.myarticles.currentArticle.type == "order"
                       ? "Заказ"
                       : "Предложение"}{" "}
-                    № {this.state.article.articleId}
+                    № {this.props.myarticles.currentArticle.articleId}
                   </h2>
                   <a
-                    className="href left-angle angle-go mb-2"
+                    className="href hover left-angle angle-go mb-2"
                     onClick={() => {
                       if (this.props.lastLocation) {
                         this.props.history.push(
@@ -105,104 +94,75 @@ class ArticlePage extends React.Component {
                 <div className="articles-block full">
                   <ArticleHeader></ArticleHeader>
                   <Article
-                    notIsManage={
-                      !(this.props.user._id == this.state.article.author._id)
-                    }
+                    IsManage={true}
                     onlyOpen={true}
                     singlePage={true}
-                    article={this.state.article}
+                    article={this.props.myarticles.currentArticle}
                   />
-                  <div className="articles-header">
+                  <div className="articles-header" id="request-header">
                     <div className="container-fluid">
                       <span className="f-16">
-                        Заявок по заказу - {this.state.article.requests.length}
+                        Заявок по заказу -{" "}
+                        {this.props.myarticles.currentArticle.requests.length}
                       </span>
                     </div>
                   </div>
-                  {this.state.article.requests &&
-                    !!this.state.article.requests.length && (
-                      <>
-                        <div className="requests-article-block">
-                          <div className="container-fluid">
-                            {this.state.article.requests.map((item, index) => {
+
+                  <div className="requests-article-block">
+                    <div className="container-fluid">
+                      {this.props.myarticles.currentArticle.requests &&
+                        !!this.props.myarticles.currentArticle.requests
+                          .length &&
+                        this.props.myarticles.currentArticle.requests.map(
+                          (item, index) => {
+                            if (this.state.editRequestId === item._id) {
                               return (
-                                <div key={index} className="request-article">
-                                  <div className="row">
-                                    <div
-                                      className="col f-14"
-                                      style={{
-                                        maxWidth: "115px",
-                                      }}
-                                    >
-                                      <span
-                                        style={{
-                                          color: "#6C6C6C",
-                                        }}
-                                      >
-                                        {item.created_at.date} <br />
-                                        {item.created_at.time}
-                                      </span>
-                                    </div>
-                                    <div
-                                      className="col f-14 d-flex align-items-start"
-                                      style={{
-                                        whiteSpace: "pre-line",
-                                        maxWidth: "180px",
-                                      }}
-                                    >
-                                      <img
-                                        src={item.user.avatar}
-                                        className="mr-4 user-avatar"
-                                        alt="avatar"
-                                      />
-                                      {item.user.fio}
-                                    </div>
-                                    <div
-                                      className="col f-14"
-                                      style={{
-                                        maxWidth: "105px",
-                                      }}
-                                    >
-                                      Рейтинг:
-                                      <br />
-                                      {item.user.rating}{" "}
-                                      <img src={ImgActiveStar} alt="" />
-                                    </div>
-                                    <div className="col-12 col-lg f-14 price-request">
-                                      {item.summ} Погрузка:{" "}
-                                      {item.date_pogrooz.date}{" "}
-                                      {item.date_pogrooz.time}
-                                    </div>
-                                    <div className="col-12 col-md f-14 ">
-                                      {item.comments}
-                                    </div>
-                                    <div className="text-right col-12">
-                                      <Button
-                                        type="empty"
-                                        paddingHorizontal="29px"
-                                        className="input-action mr-3"
-                                      >
-                                        Написать
-                                      </Button>
-                                      <Button
-                                        type="fill"
-                                        paddingHorizontal="36px"
-                                        className="input-action"
-                                      >
-                                        Выбрать
-                                      </Button>
-                                    </div>
-                                  </div>
-                                  {this.state.article.requests.length !==
-                                    index + 1 && <hr />}
-                                </div>
+                                <RequestForm
+                                  key={index}
+                                  request={item}
+                                  isEditing={true}
+                                  endEdit={() => {
+                                    this.setState({ editRequestId: false });
+                                  }}
+                                  user={this.props.user}
+                                  article={this.props.myarticles.currentArticle}
+                                />
                               );
-                            })}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  <RequestForm />
+                            } else
+                              return (
+                                <ArticleRequest
+                                  key={index}
+                                  user={this.props.user}
+                                  article={this.props.myarticles.currentArticle}
+                                  setChangeRequest={(editRequestId) => {
+                                    this.setState({
+                                      editRequestId: editRequestId,
+                                    });
+                                  }}
+                                  request={item}
+                                  isLast={
+                                    this.props.myarticles.currentArticle
+                                      .requests.length !==
+                                    index + 1
+                                  }
+                                />
+                              );
+                          }
+                        )}
+                      {this.props.myarticles.currentArticle.requests &&
+                        !this.props.myarticles.currentArticle.requests
+                          .length && (
+                          <div className="text-center mt-2">Заявок еще нет</div>
+                        )}
+                    </div>
+                  </div>
+
+                  {this.props.user && this.props.myarticles.currentArticle && (
+                    <RequestForm
+                      user={this.props.user}
+                      article={this.props.myarticles.currentArticle}
+                    />
+                  )}
                 </div>
               </div>
             </>
@@ -216,9 +176,15 @@ class ArticlePage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    myarticles: state.myarticles,
   };
 };
-
-export default connect(mapStateToProps)(
-  withCookies(withRouter(withLastLocation(ArticlePage)))
-);
+function mapDispatchToProps(dispatch) {
+  return {
+    myArticlesActions: bindActionCreators(myArticlesActions, dispatch),
+  };
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withCookies(withRouter(withLastLocation(ArticlePage))));

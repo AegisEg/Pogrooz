@@ -1,9 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
 import settings from "../config/settings.js";
-import ImgActiveStar from "../img/active-star.png";
 import { ReactComponent as CloseSVG } from "../img/close.svg";
-
+import ReviewItemShow from "./items/ReviewItemShow";
 class ReviewsShow extends React.Component {
   constructor(props) {
     super(props);
@@ -12,6 +11,7 @@ class ReviewsShow extends React.Component {
   }
   state = {
     isOpen: false,
+    openIndex: 0,
   };
   closeForm() {
     this.setState({ isOpen: false });
@@ -22,23 +22,20 @@ class ReviewsShow extends React.Component {
   render() {
     let content = (
       <>
-        <div className="padding pop-block-item-simple pb-0 noborder nohref">
-          Текст отзыва при наведении на пункт “Смотреть отзыв”Текст отзыва при
-          наведении на пункт “Смотреть отзыв”Текст отзыва при наведении на пункт
-          “Смотреть отзыв”Текст отзыва при наведении на пункт “Смотреть
-          отзыв”Текст отзыва при наведении на пункт “Смотреть отзыв”Текст отзыва
-          при наведении на пункт “Смотреть отзыв”
-        </div>
-        <div className="padding pop-block-item-simple text-left noborder">
-          Рейтинг:
-          <div className="d-flex">
-            <img src={ImgActiveStar} alt="ImgActiveStar" />
-            <img src={ImgActiveStar} alt="ImgActiveStar" />
-            <img src={ImgActiveStar} alt="ImgActiveStar" />
-            <img src={ImgActiveStar} alt="ImgActiveStar" />
-            <img src={ImgActiveStar} alt="ImgActiveStar" />
-          </div>
-        </div>
+        {this.props.reviews.map((item, index) => {
+          return (
+            <ReviewItemShow
+              key={index}
+              index={index}
+              open={(openIndex) => { 
+                this.setState({ openIndex });
+              }}
+              multiple={this.props.reviews.length > 1}
+              isOpen={this.state.openIndex === index}
+              review={item}
+            />
+          );
+        })}
       </>
     );
     if (this.props.onMobile) {
@@ -53,7 +50,7 @@ class ReviewsShow extends React.Component {
           <CloseSVG className="close-svg" onClick={this.closeForm}></CloseSVG>
         </Modal>
       );
-    } else return <div className="pop-block padding left">{content}</div>;
+    } else return <div id="review-show" className="pop-block padding left">{content}</div>;
   }
 }
 

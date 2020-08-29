@@ -2,11 +2,10 @@
 import React from "react";
 import { CSSTransitionGroup } from "react-transition-group";
 import { Picker } from "emoji-mart";
-import addDocuments from "../../../img/addDocuments.svg";
-import send from "../../../img/send.svg";
-import smiles from "../../../img/smiles.svg";
-import photo from "../../../img/photo.svg";
-import microphone from "../../../img/microphone.svg";
+import { ReactComponent as AddDocuments } from "../../../img/addDocuments.svg";
+import { ReactComponent as Send } from "../../../img/send.svg";
+import { ReactComponent as Smiles } from "../../../img/smiles.svg";
+import { ReactComponent as Microphone } from "../../../img/microphone.svg";
 import settings from "../../../config/settings";
 class PanelStandart extends React.Component {
   constructor() {
@@ -34,14 +33,13 @@ class PanelStandart extends React.Component {
   render() {
     return (
       <>
-        <img
+        <AddDocuments
           className="addMoreAttach"
           onClick={() => {
             document.getElementById("uploadFile").click();
           }}
-          src={addDocuments}
-          alt="addDocuments"
         />
+
         <input
           type="file"
           multiple
@@ -82,13 +80,7 @@ class PanelStandart extends React.Component {
             value={this.state.text}
           ></textarea>
           {!this.state.text && <span className="placeholder">Сообщение</span>}
-          {/* <img src={photo} className="photo d-md-block d-none" alt="photo" /> */}
-          <img
-            src={smiles}
-            onClick={this.showEmoji}
-            className="smiles"
-            alt="smiles"
-          />
+          <Smiles onClick={this.showEmoji} className="smiles" />
           <CSSTransitionGroup
             transitionName="emoji-animation-item"
             transitionEnterTimeout={100}
@@ -123,21 +115,15 @@ class PanelStandart extends React.Component {
             }}
           >
             {!this.state.text && !this.props.isContent && (
-              <img
-                src={microphone}
-                alt="microphone"
-                onClick={this.props.recordStart}
-              />
+              <Microphone onClick={this.props.recordStart} />
             )}
             {(this.state.text || this.props.isContent) && (
-              <img
-                src={send}
+              <Send
                 onClick={() => {
                   let inputMessage = document.getElementById("input-message");
                   inputMessage.style.maxHeight = "48px";
                   this.props.sendMessage(this.state.text);
                 }}
-                alt="microphone"
               />
             )}
           </CSSTransitionGroup>

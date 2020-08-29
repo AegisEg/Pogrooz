@@ -13,11 +13,15 @@ class Loading extends React.Component {
             display: "contents",
           }}
         >
-          {this.props.isLoading && (
-            <div className="LoadGif text-center w-100">
-              <img src={LoadGif} alt="LoadGif" />
-            </div>
-          )}
+          <div className="LoadGif text-center w-100">
+            <img
+              src={LoadGif}
+              style={{
+                display: this.props.isLoading ? "block" : "none",
+              }}
+              alt="LoadGif"
+            />
+          </div>
         </CSSTransitionGroup>
       </>
     );
