@@ -147,7 +147,9 @@ class Header extends React.Component {
           {this.props.user.isAuth && (
             <div className="header-fast-access">
               <div
-                className="fast-access-btn  notifications not-empty"
+                className={`fast-access-btn  notifications ${
+                  !!this.props.notifications.noRead && "not-empty"
+                }`}
                 onMouseEnter={() => {
                   this.showNotificationsPop();
                 }}
@@ -156,9 +158,11 @@ class Header extends React.Component {
                 }}
               >
                 <img src={notificationsFill} alt="Уведомления" />
-                <div className="action-counter">
-                  <span>3</span>
-                </div>
+                {!!this.props.notifications.noRead && (
+                  <div className="action-counter">
+                    <span>{this.props.notifications.noRead}</span>
+                  </div>
+                )}
                 {this.state.showNotificationsPop && (
                   <div className="pop-block">
                     <div className="pop-block-item">
@@ -171,12 +175,24 @@ class Header extends React.Component {
                   </div>
                 )}
               </div>
-              <div className="fast-access-btn messages not-empty">
+              <div
+                className={`fast-access-btn messages ${
+                  (!!this.props.dialogs.dialogsUser.noReadCount ||
+                    !!this.props.dialogs.dialogsOrder.noReadCount) &&
+                  "not-empty"
+                }`}
+              >
                 <Link to="/messages">
                   <Support />
-                  <div className="action-counter">
-                    <span>3</span>
-                  </div>
+                  {(!!this.props.dialogs.dialogsUser.noReadCount ||
+                    !!this.props.dialogs.dialogsOrder.noReadCount) && (
+                    <div className="action-counter">
+                      <span>
+                        {this.props.dialogs.dialogsUser.noReadCount +
+                          this.props.dialogs.dialogsOrder.noReadCount}
+                      </span>
+                    </div>
+                  )}
                 </Link>
               </div>
             </div>
@@ -186,7 +202,9 @@ class Header extends React.Component {
             <div className="header-additionals d-md-block d-none">
               <Link
                 to={`/${
-                  this.props.user.type === "cargo" ? "offer-create" : "order-create"
+                  this.props.user.type === "cargo"
+                    ? "offer-create"
+                    : "order-create"
                 }`}
                 className="register"
               >
@@ -341,6 +359,8 @@ class Header extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    dialogs: state.dialogs,
+    notifications: state.notifications,
   };
 };
 

@@ -3496,7 +3496,7 @@ a.href.hover:hover {
 .send-input-action {
   min-width: 148px;
 }
-
+.review-article,
 .request-article,
 .dialogs-block .dialog {
   position: relative;
@@ -3519,6 +3519,7 @@ a.href.hover:hover {
   white-space: pre-line;
   font-weight: bold;
 }
+.review-article > .row,
 .request-article > .row {
   justify-content: center;
 }
@@ -3933,6 +3934,7 @@ a.href.hover:hover {
 .dialogs-block {
   overflow: hidden;
 }
+.review-article hr,
 .requests-article-block .request-article hr,
 .dialogs-block .dialog hr {
   position: absolute;
@@ -5867,4 +5869,10 @@ span.errRequired {
 }
 .MuiFormHelperText-filled {
   display: none;
+}
+.review-article .user-avatar {
+  margin-right: 15px;
+}
+.load-content {
+  min-height: 60vh;
 }

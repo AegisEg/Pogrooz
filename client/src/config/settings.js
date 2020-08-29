@@ -1,4 +1,3 @@
-import defaultAvatar from "../img/default-avatar.png";
 import defaultPassport from "../img/defaultpassport.png";
 import defaultCar from "../img/default-car.png";
 import box from "../img/offer&order/box.svg";
@@ -8,7 +7,6 @@ import divan from "../img/offer&order/divan.svg";
 import hand from "../img/offer&order/hand.svg";
 import list from "../img/offer&order/list.svg";
 export default {
-  defaultAvatar: defaultAvatar,
   defaultPassport: defaultPassport,
   defaultCar: defaultCar,
   countArticleOnPage: 6,

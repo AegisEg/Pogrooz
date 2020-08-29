@@ -12,6 +12,8 @@ const ReviewSchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   rating: { type: Number, default: 0 },
   order: { type: mongoose.Schema.Types.ObjectId, ref: "Article" },
+  updatedAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
   buff: Buffer,
 });
 

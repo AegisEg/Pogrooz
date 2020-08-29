@@ -45,9 +45,13 @@ class Login extends React.Component {
           const { cookies } = this.props;
           cookies.set("apiToken", data.token, { path: "/" });
           SocketController.init(data.token);
-          this.props.userActions.loginUser(data.user, data.token);
-          this.props.myArticlesActions.setMyCount(data.myCountsArticles);
-          this.props.myArticlesActions.setTakingCount(data.takeCountsArticles);
+          this.props.userActions.loginUser(
+            data.user,
+            data.token,
+            data.myCountsArticles,
+            data.takeCountsArticles,
+            data.noReadNotifications
+          );
           if (data.user.type == "carrier")
             this.props.history.push("/my-orders-open");
           else this.props.history.push("/taken-offers");

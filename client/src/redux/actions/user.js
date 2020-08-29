@@ -1,12 +1,36 @@
-import { USER_LOGIN, USER_LOGOUT, ARTICLES_MY_SET_COUNT } from "../constants";
+import {
+  USER_LOGIN,
+  USER_LOGOUT,
+  ARTICLES_MY_SET_COUNT,
+  NOTIFICATIONS_SET_NO_READ,
+  ARTICLES_TAKING_SET_COUNT,
+} from "../constants";
 import store from "../store";
 import api from "../../config/api";
 
-export const loginUser = (user, apiToken, myCountsArticles) => (dispatch) => {
+export const loginUser = (
+  user,
+  apiToken,
+  myCountsArticles,
+  takeCountsArticles,
+  noReadNotifications
+) => (dispatch) => {
   user.apiToken = apiToken;
   dispatch({
     type: USER_LOGIN,
     payload: user,
+  });
+  dispatch({
+    type: NOTIFICATIONS_SET_NO_READ,
+    payload: noReadNotifications,
+  });
+  dispatch({
+    type: ARTICLES_MY_SET_COUNT,
+    payload: { myCountsArticles },
+  });
+  dispatch({
+    type: ARTICLES_TAKING_SET_COUNT,
+    payload: { takeCountsArticles },
   });
 };
 

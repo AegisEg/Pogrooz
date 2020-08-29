@@ -57,8 +57,7 @@ class ReviewItem extends React.Component {
       <div className="review-item padding">
         <LoadingFixed isLoading={this.state.isFetching} />
         <div className="f-14 mb-2 d-flex align-items-center">
-          {this.props.userReview.name.last}
-          {this.props.userReview.name.first}
+          {this.props.userReview.name.last} {this.props.userReview.name.first}{" "}
           {this.props.userReview.name.middle}
           {this.props.multiple && (
             <img

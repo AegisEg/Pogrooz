@@ -35,10 +35,14 @@ import {
   ARTICLES_TAKING_DELETE_EXECUTOR,
   ARTICLES_TAKING_SET_EXECUTOR,
   NOTIFICATIONS_ADD,
-  NOTIFICATIONS_READ,
   NOTIFICATIONS_SET_NO_READ,
-  NOTIFICATIONS_REMOVE,
+  NOTIFICATIONS_READ,
+  REVIEWS_ME_CREATE,
+  REVIEWS_MY_CREATE,
+  REVIEWS_ME_UPDATE,
+  REVIEWS_MY_UPDATE,
 } from "../redux/constants";
+import { playNewMessage, playBeep } from "./SoundController";
 let socket = null;
 
 export default {
@@ -49,6 +53,7 @@ export default {
     socket.on("connect", () => {
       socket.emit("auth", apiToken);
     });
+    //DIALOG
     socket.on("typingDialog", (userId, isOrder) => {
       let orderId;
       if (isOrder) {
@@ -153,6 +158,7 @@ export default {
             });
           });
       }
+      playNewMessage();
     });
     socket.on("readMessagesDialog", ({ dialogId, userId, isOrder }) => {
       if (isOrder)
@@ -176,6 +182,8 @@ export default {
           },
         });
     });
+    /*DIALOG*/
+    /*ARTICLES SOKETS*/
     socket.on("createMyArticle", ({ status, article }) => {
       let objStatus = store.getState().myarticles.my[status - 1];
       if (objStatus.isGetted && objStatus.page === 0) {
@@ -243,7 +251,7 @@ export default {
     socket.on(
       "createArticleReview",
       ({ articleID, articleStatus, newReview, isTaking }) => {
-        if (isTaking)
+        if (isTaking) {
           store.dispatch({
             type: ARTICLE_TAKING_REVIEW_CREATE,
             payload: {
@@ -254,7 +262,7 @@ export default {
               newReview,
             },
           });
-        else
+        } else
           store.dispatch({
             type: ARTICLE_MY_REVIEW_CREATE,
             payload: {
@@ -265,6 +273,22 @@ export default {
               newReview,
             },
           });
+        if (newReview.user._id === store.getState().user._id) {
+          store.dispatch({
+            type: REVIEWS_ME_CREATE,
+            payload: {
+              review: newReview,
+            },
+          });
+        }
+        if (newReview.author._id === store.getState().user._id) {
+          store.dispatch({
+            type: REVIEWS_MY_CREATE,
+            payload: {
+              review: newReview,
+            },
+          });
+        }
       }
     );
     socket.on(
@@ -360,8 +384,46 @@ export default {
               newReview,
             },
           });
+        if (newReview.user._id === store.getState().user._id)
+          store.dispatch({
+            type: REVIEWS_ME_UPDATE,
+            payload: {
+              review: newReview,
+            },
+          });
+
+        if (newReview.author._id === store.getState().user._id)
+          store.dispatch({
+            type: REVIEWS_MY_UPDATE,
+            payload: {
+              review: newReview,
+            },
+          });
       }
     );
+    /*ARTICLES SOKETS*/
+    /*NOTIFICATIONS SOKETS*/
+    socket.on("sendNotification", (notification) => {
+      if (store.getState().notifications.getted) {
+        store.dispatch({
+          type: NOTIFICATIONS_ADD,
+          payload: notification,
+        });
+      } else
+        store.dispatch({
+          type: NOTIFICATIONS_SET_NO_READ,
+          payload: store.getState().notifications.noRead + 1,
+        });
+
+      playBeep();
+    });
+
+    socket.on("readNotification", (id) => {
+      store.dispatch({
+        type: NOTIFICATIONS_READ,
+        payload: id,
+      });
+    });
   },
   getSocketId: () => {
     return socket.id;
