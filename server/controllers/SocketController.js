@@ -192,24 +192,45 @@ function createRequestSoket({ article, request, userId, socketId }) {
     article,
     request,
   });
-  io.sockets.connected[socketId].to(`user.${userId}`).emit("createRequest", {
-    article,
-    request,
-  });
+  io.sockets.connected[socketId]
+    .to(`user.${request.author._id}`)
+    .emit("createRequest", {
+      article,
+      request,
+    });
 }
 function updateRequestSoket({ article, request, userId, socketId }) {
-  io.sockets.connected[socketId].to(`user.${userId}`).emit("updateRequest", {
+  io.to(`user.${userId}`).emit("updateRequest", {
     article,
     request,
   });
+  io.sockets.connected[socketId]
+    .to(`user.${request.author._id}`)
+    .emit("updateRequest", {
+      article,
+      request,
+    });
 }
-function deleteRequestSoket({ article, requestId, userId, socketId }) {
-  io.sockets.connected[socketId].to(`user.${userId}`).emit("deleteRequest", {
+function deleteRequestSoket({ article, requestId, userId, otherId, socketId }) {
+  io.to(`user.${userId}`).emit("deleteRequest", {
+    article,
+    requestId,
+  });
+  io.sockets.connected[socketId].to(`user.${otherId}`).emit("deleteRequest", {
     article,
     requestId,
   });
 }
+// Notifications
+function sendNotification({ userId, notification }) {
+  io.to(`user.${userId}`).emit("sendNotification", notification);
+}
 
+function readNotification({ socketId, userId, id }) {
+  io.sockets.connected[socketId]
+    .to(`user.${userId}`)
+    .emit("readNotification", id);
+}
 module.exports = {
   initSocket,
   sendMessageDialog,
@@ -226,4 +247,6 @@ module.exports = {
   createRequestSoket,
   deleteRequestSoket,
   updateRequestSoket,
+  sendNotification,
+  readNotification,
 };

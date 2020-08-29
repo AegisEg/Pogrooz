@@ -601,7 +601,6 @@ const articles = (state = INITIAL_STATE, action) => {
       };
     }
     case ARTICLES_TAKING_SET_EXECUTOR: {
-      console.log(action.payload);
       return {
         ...state,
         currentArticle:

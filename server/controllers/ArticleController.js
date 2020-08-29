@@ -16,9 +16,11 @@ const {
   createRequestSoket,
   updateRequestSoket,
   deleteRequestSoket,
+  sendNotification,
 } = require("./SocketController");
 const Article = require("../models/Article");
 const Request = require("../models/Request");
+const Notification = require("../models/Notification");
 const User = require("../models/User");
 const Review = require("../models/Review");
 const { Error } = require("mongoose");
@@ -339,6 +341,50 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  getUserReviews: async (req, res, next) => {
+    const { user } = res.locals;
+    let { lastDialogId } = req.body;
+    const { type } = req.body;
+    try {
+      let reviews;
+      if (lastDialogId) {
+        if (type == "my")
+          reviews = await Review.find({
+            author: user,
+            _id: { $gt: lastDialogId },
+          })
+            .populate("author")
+            .populate("order")
+            .sort("createdAt")
+            .limit(20);
+        if (type == "me")
+          reviews = await Review.find({
+            user: user,
+            _id: { $gt: lastDialogId },
+          })
+            .populate("author")
+            .populate("order")
+            .sort("createdAt")
+            .limit(20);
+      } else {
+        if (type == "my")
+          reviews = await Review.find({ author: user })
+            .populate("author")
+            .populate("order")
+            .sort("createdAt")
+            .limit(20);
+        if (type == "me")
+          reviews = await Review.find({ user: user })
+            .populate("author")
+            .populate("order")
+            .sort("createdAt")
+            .limit(20);
+      }
+      return res.json({ error: false, reviews });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
   getUserArticle: async (req, res, next) => {
     const { id, type } = req.body;
     const { user } = res.locals;
@@ -397,13 +443,24 @@ module.exports = {
           status: status,
           type: user.type === "cargo" ? "order" : "offer",
         })
-          .populate("author")
-          .populate("executors")
-          .populate({
-            path: "reviews",
-            populate: [{ path: "user" }, { path: "author" }],
-          })
-
+          .populate([
+            {
+              path: "author",
+            },
+            {
+              path: "executors",
+            },
+            {
+              path: "reviews",
+              populate: [{ path: "user" }, { path: "author" }],
+            },
+            {
+              path: "requests",
+              populate: {
+                path: "author",
+              },
+            },
+          ])
           .sort({ createdAt: -1 })
           .limit(count)
           .skip(page * count);
@@ -417,9 +474,24 @@ module.exports = {
           type: user.type === "cargo" ? "offer" : "order",
           executors: user,
         })
-          .populate("author")
-          .populate("executors")
-          .populate("reviews")
+          .populate([
+            {
+              path: "author",
+            },
+            {
+              path: "executors",
+            },
+            {
+              path: "reviews",
+              populate: [{ path: "user" }, { path: "author" }],
+            },
+            {
+              path: "requests",
+              populate: {
+                path: "author",
+              },
+            },
+          ])
           .sort({ createdAt: -1 })
           .limit(count)
           .skip(page * count);
@@ -834,6 +906,16 @@ module.exports = {
               articleID: article._id,
               isTaking: true,
             });
+            createNotify(
+              item,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                articleStatus: article.status,
+              },
+              "ARTICLE_CHANGE_STATUS",
+              article.type
+            );
           });
           updateStatusMyArticle({
             userId: article.author,
@@ -879,6 +961,16 @@ module.exports = {
               articleID: article._id,
               isTaking: true,
             });
+            createNotify(
+              item,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                articleStatus: article.status,
+              },
+              "ARTICLE_CHANGE_STATUS",
+              article.type
+            );
           });
           updateStatusMyArticle({
             userId: article.author,
@@ -924,6 +1016,16 @@ module.exports = {
               articleID: article._id,
               isTaking: true,
             });
+            createNotify(
+              item,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                articleStatus: article.status,
+              },
+              "ARTICLE_CHANGE_STATUS",
+              article.type
+            );
           });
           updateStatusMyArticle({
             userId: article.author,
@@ -932,6 +1034,7 @@ module.exports = {
             status: 6,
             articleID: article._id,
           });
+
           return res.json({ error: false });
         }
       }
@@ -1020,6 +1123,7 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  //Укомплектовано
   equipArticle: async (req, res, next) => {
     const { user } = res.locals;
     const { socketId } = req.body;
@@ -1030,6 +1134,7 @@ module.exports = {
         if (article && article.type === "offer" && !!article.executors.length) {
           article.status = 3;
           await article.save();
+          //SOKETS
           article.executors.map((item) => {
             updateStatusMyArticle({
               userId: item,
@@ -1046,6 +1151,18 @@ module.exports = {
             lastStatus: 2,
             status: 3,
             articleID: article._id,
+          });
+          article.executors.map((item) => {
+            createNotify(
+              item,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                articleStatus: article.status,
+              },
+              "ARTICLE_CHANGE_STATUS",
+              article.type
+            );
           });
           return res.json({ error: false });
         }
@@ -1089,12 +1206,19 @@ module.exports = {
           await newRequest.save();
           article.requests.push(newRequest._id);
           await article.save();
+          //Сокет создания заявки
           createRequestSoket({
             article,
             request: newRequest,
             userId: article.author._id,
             socketId,
           });
+          createNotify(
+            article.author,
+            { articleType: article.type, articleId: article.articleId },
+            "ARTICLE_NEW_REQUEST",
+            article.type
+          );
           return res.json({ error: false, request: newRequest });
         } else
           return res.status(422).json({
@@ -1164,6 +1288,7 @@ module.exports = {
       console.log(requestId);
       if (article && article.status === 2) {
         let removingRequest = await Request.findById(requestId);
+        let author = removingRequest.author;
         let reqId;
         if (
           removingRequest &&
@@ -1178,6 +1303,7 @@ module.exports = {
             article,
             requestId: reqId,
             userId: article.author,
+            otherId: author,
             socketId,
           });
           return res.json({ error: false });
@@ -1226,11 +1352,30 @@ module.exports = {
         if (article.type === "offer" && executor.type === "cargo") {
           article.executors.push(executor);
           await article.save();
+          createNotify(
+            executor._id,
+            {
+              articleType: article.type,
+              articleId: article.articleId,
+            },
+            "ARTICLE_SET_EXECUTOR",
+            article.type
+          );
         }
         if (article.type === "order" && executor.type === "carrier") {
           article.executors.push(executor);
           article.status = 3;
           await article.save();
+          createNotify(
+            executor._id,
+            {
+              articleType: article.type,
+              articleId: article.articleId,
+              articleStatus: article.status,
+            },
+            "ARTICLE_CHANGE_STATUS",
+            article.type
+          );
           //SOKET
           createTakingArticle({
             userId: executor._id,
@@ -1319,6 +1464,7 @@ module.exports = {
           });
         }
         await article.save();
+        //УДаление Из  исполнителей SOKET
         deleteExecutorSoket({
           article,
           executor,
@@ -1326,6 +1472,15 @@ module.exports = {
           userId: article.author._id,
           socketId,
         });
+        createNotify(
+          executor,
+          {
+            articleType: article.type,
+            articleId: article.articleId,
+          },
+          "ARTICLE_DELETE_EXECUTOR",
+          article.type
+        );
         return res.json({ error: false, article, executor });
       }
       return res.status(422).json({
@@ -1353,8 +1508,17 @@ module.exports = {
         {
           path: "executors",
         },
+        {
+          path: "reviews",
+        },
       ]);
-      if ((article && article.status === 5) || article.status === 6) {
+      let canDoReview = !article.reviews.find((item) => {
+        return item.author === user._id && item.user === userId;
+      });
+      if (
+        canDoReview &&
+        ((article && article.status === 5) || article.status === 6)
+      ) {
         let isAuhor = compareId(article.author._id, userId);
         let isExecutor = !!article.executors.find((item) =>
           compareId(item._id, userId)
@@ -1365,12 +1529,14 @@ module.exports = {
         );
         if ((isExecutor && isDoAuhor) || (isAuhor && isDoExecutor)) {
           let newReview;
-          if (review._id)
+          let existReview = false;
+          if (review._id) {
             newReview = await Review.findById(review._id).populate([
               { path: "user" },
               { path: "author" },
             ]);
-          else newReview = new Review();
+            existReview = true;
+          } else newReview = new Review();
           let userTo = await User.findById(userId);
           if (!!newReview) {
             newReview.comment = review.comment;
@@ -1379,7 +1545,7 @@ module.exports = {
             newReview.author = user;
             newReview.rating = review.rating;
             await newReview.save();
-            if (review._id) {
+            if (existReview) {
               let reviewsNew = [];
               for (let index = 0; index < article.reviews.length; index++) {
                 if (compareId(article.reviews[index], newReview._id))
@@ -1403,9 +1569,18 @@ module.exports = {
                 otherId: newReview.user._id,
                 socketId,
               });
+              createNotify(
+                newReview.user._id,
+                {
+                  articleType: article.type,
+                  articleId: article.articleId,
+                },
+                "ARTICLE_SET_REVIEW",
+                article.type
+              );
             }
             await article.save();
-            return res.json({ error: false, newReview });
+            return res.json({ error: false, newReview, existReview });
           }
         }
       }
@@ -1431,4 +1606,17 @@ Date.prototype.addDays = function(days) {
 };
 function compareId(id1, id2) {
   return String(id1) === String(id2);
+}
+
+async function createNotify(user, info, code, type) {
+  return new Promise(async (resolve, reject) => {
+    let notification = new Notification();
+    notification.user = user;
+    notification.info = info;
+    notification.code = code;
+    notification.type = type;
+    await notification.save();
+    sendNotification({ userId: user._id, notification });
+    resolve();
+  });
 }

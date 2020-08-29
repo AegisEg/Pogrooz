@@ -10,7 +10,7 @@ import { CSSTransitionGroup } from "react-transition-group";
 import Button from "../../Elements/Button";
 import { Link } from "react-router-dom";
 import api from "../../config/api";
-import avatar from "../../img/avatar.png";
+import avatar from "../../img/avatar.svg";
 import ImgActiveStar from "../../img/active-star.png";
 import redWarning from "../../img/redWarning.svg";
 import NoMatch from "../NoMatch";
@@ -320,7 +320,6 @@ class User extends React.Component {
                         </span>
                         {this.props.user.isAuth && (
                           <>
-                          
                             <Link to={`/dialog/${this.state.user._id}`}>
                               <Button
                                 type="fill"

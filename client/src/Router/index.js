@@ -54,13 +54,24 @@ class AppRouter extends React.Component {
         },
       })
         .then((response) => response.json())
-        .then(({ user, myCountsArticles, takeCountsArticles }) => {
-          SocketController.init(apiToken);
-          this.props.userActions.loginUser(user, apiToken);
-          this.props.myArticlesActions.setMyCount(myCountsArticles);
-          this.props.myArticlesActions.setTakingCount(takeCountsArticles);
-          this.setState({ isRender: true });
-        })
+        .then(
+          ({
+            user,
+            myCountsArticles,
+            takeCountsArticles,
+            noReadNotifications,
+          }) => {
+            SocketController.init(apiToken);
+            this.props.userActions.loginUser(
+              user,
+              apiToken,
+              myCountsArticles,
+              takeCountsArticles,
+              noReadNotifications
+            );
+            this.setState({ isRender: true });
+          }
+        )
         .catch(() => {
           this.setState({ isRender: true });
         });

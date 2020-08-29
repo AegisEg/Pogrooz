@@ -26,7 +26,6 @@ class ArticlesMy extends React.Component {
     }
   }
   getAricles(page = 0) {
-    console.log("Asdasdasd");
     this.setState({ isFething: true }, () => {
       fetch(`${configApi.urlApi}/api/article/getMyArticles`, {
         method: "post",

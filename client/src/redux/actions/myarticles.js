@@ -23,13 +23,14 @@ import {
   ARTICLES_MY_DELETE_EXECUTOR,
   ARTICLES_MY_SET_EXECUTOR,
   ARTICLES_MY_CURRENT_UPDATE,
+  REVIEWS_MY_CREATE,
+  REVIEWS_MY_UPDATE,
 } from "../constants";
 import store from "../store";
 import api from "../../config/api";
 import settings from "../../config/settings";
 import SocketController from "../../controllers/SocketController";
 import { toast } from "react-toastify";
-import { EditorFormatListBulleted } from "material-ui/svg-icons";
 
 export const articlesMyLoad = (status, page, apiToken) => (dispatch) => {
   dispatch({
@@ -536,32 +537,34 @@ export const saveReview = (review, article, userId, apiToken) => (dispatch) => {
               toast.error(item.msg);
             });
           if (!data.error && data.newReview) {
-            article = store
-              .getState()
-              .myarticles.my[article.status - 1].articles.find(
-                (item) => item._id === article._id
-              );
-            if (article) {
-              let existReview = article.reviews.find(
-                (item) => item._id === data.newReview._id
-              );
-              if (existReview) {
-                dispatch({
-                  type: ARTICLE_MY_REVIEW_UPDATE,
-                  payload: {
-                    article,
-                    newReview: data.newReview,
-                  },
-                });
-              } else {
-                dispatch({
-                  type: ARTICLE_MY_REVIEW_CREATE,
-                  payload: {
-                    article,
-                    newReview: data.newReview,
-                  },
-                });
-              }
+            if (data.existReview) {
+              dispatch({
+                type: ARTICLE_MY_REVIEW_UPDATE,
+                payload: {
+                  article,
+                  newReview: data.newReview,
+                },
+              });
+              dispatch({
+                type: REVIEWS_MY_UPDATE,
+                payload: {
+                  review: data.newReview,
+                },
+              });
+            } else {
+              dispatch({
+                type: ARTICLE_MY_REVIEW_CREATE,
+                payload: {
+                  article,
+                  newReview: data.newReview,
+                },
+              });
+              dispatch({
+                type: REVIEWS_MY_CREATE,
+                payload: {
+                  review: data.newReview,
+                },
+              });
             }
           }
           resolve(data);

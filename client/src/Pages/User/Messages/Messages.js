@@ -1,6 +1,5 @@
 // App
 import React from "react";
-import reviews from "../../../config/reviewstest.js";
 import { LastMessageDate } from "../../../controllers/TimeController";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";

@@ -6,6 +6,7 @@
 
 const User = require("../models/User");
 const Article = require("../models/Article");
+const Notification = require("../models/Notification");
 const bcrypt = require("bcryptjs");
 const NUM_ROUNDS = 12;
 let { randomString } = require("../controllers/FileController");
@@ -47,8 +48,17 @@ module.exports = {
           },
         },
       ]);
+      let noReadNotifications = await Notification.find({
+        user: user,
+        isRead: false,
+      }).count();
       if (user) {
-        return res.json({ user, myCountsArticles, takeCountsArticles });
+        return res.json({
+          user,
+          myCountsArticles,
+          takeCountsArticles,
+          noReadNotifications,
+        });
       }
       const err = new Error(`User ${userId} not found.`);
       err.notFound = true;
