@@ -105,8 +105,10 @@ class Filter extends React.Component {
                   this.props.onSearch();
                 }}
               >
-                Услуги{" "}
-                <span className="d-380 d-sm-inline-block">перевозчиков</span>
+                Предложения{" "}
+                <span className="d-380 d-sm-inline-block">
+                  на перевозку
+                </span>
               </div>
               <div
                 className={`tab mx-3 text-uppercase ${

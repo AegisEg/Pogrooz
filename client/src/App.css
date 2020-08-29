@@ -487,9 +487,7 @@ input[type="checkbox"] ~ label {
   width: 100%;
   position: relative;
 }
-.selectTypeCargo {
-  margin: 0 15px;
-}
+
 .moreParams > * {
   padding: 0 15px;
 }
