@@ -184,14 +184,20 @@ class Header extends React.Component {
 
           {this.props.user.isAuth && (
             <div className="header-additionals d-md-block d-none">
-              <Link to="/offer-create" className="register">
+              <Link
+                to={`/${
+                  this.props.user.type === "cargo" ? "offer-create" : "order-create"
+                }`}
+                className="register"
+              >
                 <Button
                   type="fill"
                   className="d-none d-lg-block"
                   paddingVertical={"8px"}
                   paddingHorizontal={"20px"}
                 >
-                  Добавить предложение
+                  Добавить{" "}
+                  {this.props.user.type === "cargo" ? "заказ" : "предложение"}
                 </Button>
                 <Button
                   type="fill"
