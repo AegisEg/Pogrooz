@@ -24,6 +24,7 @@ export default [
     icon: addIcon,
     mobile: true,
     className: "yellow  custom-hover",
+    role: "carrier",
   },
   {
     name: "Добавить заказ",
@@ -31,23 +32,26 @@ export default [
     mobile: true,
     icon: addIcon,
     className: "yellow custom-hover",
+    role: "cargo",
   },
   {
     name: "Мои заказы",
     icon: myOrders,
     to: "/my-orders",
     onlyMobile: true,
+    role: "cargo",
   },
   {
     name: "Мои предложения",
     icon: myOrders,
     to: "/my-offers",
     onlyMobile: true,
+    role: "carrier",
   },
   {
     name: "Мои заказы",
     icon: myOrders,
-    // role: "cargo",
+    role: "cargo",
     childlist: [
       {
         name: "Открытые",
@@ -74,7 +78,7 @@ export default [
   {
     name: "Мои предложения",
     icon: acceptedOrders,
-    // role: "carrier",
+    role: "carrier",
     childlist: [
       {
         name: "Открытые",
@@ -103,11 +107,13 @@ export default [
     to: "/taken-offers",
     mobile: true,
     icon: acceptedOrders,
+    role: "cargo",
   },
   {
     name: "Мои шаблоны авто",
     to: "/mytemplate-auto",
     icon: car,
+    role: "carrier",
   },
   {
     name: "Мой тариф",
@@ -119,12 +125,14 @@ export default [
     to: "/taken-orders",
     mobile: true,
     icon: myOrders,
+    role: "carrier",
   },
   {
     name: "Отслеживание",
     to: "/geo-detect",
     icon: geoDetect,
     mobile: true,
+    role: "cargo",
   },
   {
     name: "Сообщения",

@@ -22,6 +22,12 @@ class OrderCreate2 extends React.Component {
   getArticlesInfo() {
     let errorArr = {};
     let isError = false;
+    if (this.state.startDate && new Date(this.state.startDate) <= new Date()) {
+      toast.error("Дата должна быть больше текущей", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      isError = true;
+    }
     if (
       !this.state.addressFrom ||
       Number(this.state.addressFrom.data.fias_level) !== 8
@@ -105,15 +111,50 @@ class OrderCreate2 extends React.Component {
     }
   };
   onChangeTimeInfo = (prop, val, callback) => {
+    let startTimeFrom = new Date(this.state.startTimeFrom);
+    let startTimeTo = new Date(this.state.startTimeTo);
     switch (prop) {
       case "date":
-        this.setState({ startDate: val }, callback);
+        {
+          let state = { startDate: val };
+          if (this.state.startTimeFrom) {
+            state.startTimeFrom = new Date(
+              val.getFullYear(),
+              val.getMonth(),
+              val.getDate(),
+              startTimeFrom.getHours(),
+              startTimeFrom.getMinutes(),
+              startTimeFrom.getSeconds()
+            );
+          }
+          if (this.state.startTimeTo) {
+            state.startTimeTo = new Date(
+              val.getFullYear(),
+              val.getMonth(),
+              val.getDate(),
+              startTimeTo.getHours(),
+              startTimeTo.getMinutes(),
+              startTimeTo.getSeconds()
+            );
+          }
+          this.setState(state, callback);
+        }
         break;
       case "From":
-        this.setState({ startTimeFrom: val }, callback);
+        let state;
+        if (!val) {
+          state = { startTimeFrom: false, startTimeTo: false };
+        } else if (startTimeTo < val)
+          state = { startTimeFrom: val, startTimeTo: false };
+        else state = { startTimeFrom: val };
+        this.setState(state, callback);
         break;
       case "To":
-        this.setState({ startTimeTo: val }, callback);
+        if (startTimeFrom > val && val)
+          toast.error(`Время "До" должно быть больше времени "От" `, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        else this.setState({ startTimeTo: val }, callback);
         break;
     }
   };
@@ -148,9 +189,9 @@ class OrderCreate2 extends React.Component {
                           addressFrom: false,
                         },
                       });
-                   
+
                     this.onChangeAddress("From", val, () => {
-                      if (val.data.geo_lat && val.data.geo_lon) {
+                      if (val && val.data.geo_lat && val.data.geo_lon) {
                         this.mapFrom.panTo(
                           [Number(val.data.geo_lat), Number(val.data.geo_lon)],
                           {
@@ -207,9 +248,9 @@ class OrderCreate2 extends React.Component {
                           addressTo: false,
                         },
                       });
-                   
+
                     this.onChangeAddress("To", val, () => {
-                      if (val.data.geo_lat && val.data.geo_lon) {
+                      if (val && val.data.geo_lat && val.data.geo_lon) {
                         this.mapTo.panTo(
                           [Number(val.data.geo_lat), Number(val.data.geo_lon)],
                           {
@@ -279,7 +320,6 @@ class OrderCreate2 extends React.Component {
                     this.state.errRequired.startDate ? "errRequired" : ""
                   }`}
                   style={{ width: "130px" }}
-                  placeholder="Введите дату"
                   value={this.state.startDate || null}
                   onChange={(val) => {
                     this.setState({
@@ -292,23 +332,26 @@ class OrderCreate2 extends React.Component {
                   }}
                 />
               </div>
-              <div
-                className="col d-flex align-items-center"
-                style={{
-                  marginTop: "21px",
-                  maxWidth: "146px",
-                }}
-              >
-                <CheckBox
-                  id="isTime"
-                  value={this.state.isTime}
-                  onChange={() => {
-                    if (this.state.isTime) this.onChangeTimeInfo("From", false);
-                    this.setState({ isTime: !this.state.isTime });
+              {this.state.startDate && (
+                <div
+                  className="col d-flex align-items-center"
+                  style={{
+                    marginTop: "21px",
+                    maxWidth: "146px",
                   }}
-                  text="Указать время"
-                />
-              </div>
+                >
+                  <CheckBox
+                    id="isTime"
+                    value={this.state.isTime}
+                    onChange={() => {
+                      if (this.state.isTime)
+                        this.onChangeTimeInfo("From", false);
+                      this.setState({ isTime: !this.state.isTime });
+                    }}
+                    text="Указать время"
+                  />
+                </div>
+              )}
               {this.state.isTime && (
                 <>
                   <div
@@ -345,7 +388,7 @@ class OrderCreate2 extends React.Component {
                     </span>
                     <Input
                       type="time"
-                      placeholder="Введите время"
+                      date={this.state.startDate}
                       value={this.state.startTimeFrom || null}
                       onChange={(val) => {
                         this.onChangeTimeInfo("From", val);
@@ -358,7 +401,7 @@ class OrderCreate2 extends React.Component {
                         </span>
                         <Input
                           type="time"
-                          placeholder="Введите время"
+                          date={this.state.startDate}
                           value={this.state.startTimeTo || null}
                           onChange={(val) => {
                             this.onChangeTimeInfo("To", val);

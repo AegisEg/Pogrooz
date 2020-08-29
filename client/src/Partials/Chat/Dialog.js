@@ -237,7 +237,8 @@ class Dialog extends React.Component {
       this.props.dialogsActions
         .loadMessages(
           { dialogId: this.props.dialog._id },
-          this.props.user.apiToken
+          this.props.user.apiToken,
+          !!this.props.dialog.orderId
         )
         .then(() => {
           if (controlGif)
@@ -255,7 +256,8 @@ class Dialog extends React.Component {
         this.setState({ canTyping: false });
         SocketController.typingDialog(
           this.props.dialog.user._id,
-          this.props.user._id
+          this.props.user._id,
+          !!this.props.dialog.orderId
         );
       }
 
@@ -296,7 +298,8 @@ class Dialog extends React.Component {
             recentMessage: this.state.recentMessage,
             dialogId: this.props.dialog._id,
           },
-          this.props.user.apiToken
+          this.props.user.apiToken,
+          !!this.props.dialog.orderId
         );
 
         this.setState({
@@ -318,12 +321,17 @@ class Dialog extends React.Component {
     message.dialogId = this.props.dialog._id;
     this.props.dialogsActions.retrySendMessage(
       message,
-      this.props.user.apiToken
+      this.props.user.apiToken,
+      !!this.props.dialog.orderId
     );
   }
   //Удаление локального сообщения
   deleteLocalMessage(_id) {
-    this.props.dialogsActions.deleteLocalMessage(_id, this.props.dialog._id);
+    this.props.dialogsActions.deleteLocalMessage(
+      _id,
+      this.props.dialog._id,
+      !!this.props.dialog.orderId
+    );
   }
   setRecentMessage(message) {
     this.setState({ recentMessage: message });
@@ -337,7 +345,8 @@ class Dialog extends React.Component {
           otherId: this.props.dialog.user._id,
           userId: this.props.user._id,
         },
-        this.props.user.apiToken
+        this.props.user.apiToken,
+        !!this.props.dialog.orderId
       );
     }, 100);
   }
@@ -541,14 +550,15 @@ class Dialog extends React.Component {
                     ></Message>
                   );
                 })}
-              {!this.props.dialog.messages.length && (
-                <div className="messages-block">
-                  <div className="col pl-0 avatar-message"></div>
-                  <div className="col row pl-0">
-                    <div className="col-12">Сообщений еще небыло</div>
+              {!this.props.dialog.isFetching &&
+                !this.props.dialog.messages.length && (
+                  <div className="messages-block">
+                    <div className="col pl-0 avatar-message"></div>
+                    <div className="col row pl-0">
+                      <div className="col-12">Сообщений еще небыло</div>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               <div className="dialog-typers">
                 <div

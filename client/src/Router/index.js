@@ -16,6 +16,7 @@ import NoMatch from "../Pages/NoMatch";
 // Redux
 import { connect } from "react-redux";
 import * as userActions from "../redux/actions/user";
+import * as myArticlesActions from "../redux/actions/myarticles";
 import { bindActionCreators } from "redux";
 import configApi from "../config/api";
 
@@ -53,9 +54,11 @@ class AppRouter extends React.Component {
         },
       })
         .then((response) => response.json())
-        .then((user) => {
+        .then(({ user, myCountsArticles, takeCountsArticles }) => {
           SocketController.init(apiToken);
           this.props.userActions.loginUser(user, apiToken);
+          this.props.myArticlesActions.setMyCount(myCountsArticles);
+          this.props.myArticlesActions.setTakingCount(takeCountsArticles);
           this.setState({ isRender: true });
         })
         .catch(() => {
@@ -246,6 +249,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(userActions, dispatch),
+    myArticlesActions: bindActionCreators(myArticlesActions, dispatch),
   };
 }
 

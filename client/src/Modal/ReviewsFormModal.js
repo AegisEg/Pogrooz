@@ -1,15 +1,9 @@
 // App
 import React from "react";
-import RatingInput from "../Elements/RatingInput";
-import Button from "../Elements/Button.js";
-import { CSSTransitionGroup } from "react-transition-group";
-//IMGS
-import AngleUp from "../img/angle-up.png";
-import AngleDown from "../img/angle-down.png";
 import Modal from "react-modal";
 import settings from "../config/settings.js";
 import { ReactComponent as CloseSVG } from "../img/close.svg";
-
+import ReviewItem from "./items/ReviewItem.js";
 class ReviewsFormModal extends React.Component {
   constructor(props) {
     super(props);
@@ -20,14 +14,28 @@ class ReviewsFormModal extends React.Component {
     isOpen: false,
     openIndex: 0,
   };
-  closeForm() {
-    this.setState({ isOpen: false });
+  closeForm(e) {
+    if (
+      e &&
+      document.getElementById("review-form") &&
+      !document.getElementById("review-form").contains(e.target)
+    ) {
+      this.setState({ isOpen: false });
+      document.removeEventListener("click", this.closeForm);
+    }
   }
-  toogleform() {
+  closePurgeForm = () => {
+    this.setState({ isOpen: false });
+    document.removeEventListener("click", this.closeForm);
+  };
+  toogleform(e) {
+    if (!this.state.isOpen) document.addEventListener("click", this.closeForm);
+    else document.removeEventListener("click", this.closeForm);
     this.setState({ isOpen: !this.state.isOpen });
   }
   openForm() {
     this.setState({ isOpen: true });
+    document.addEventListener("click", this.closeForm);
   }
   render() {
     if (this.state.isOpen) {
@@ -35,9 +43,14 @@ class ReviewsFormModal extends React.Component {
         <>
           {this.props.reviewsItems.map((item, index) => {
             return (
-              <ReviewsItem
+              <ReviewItem
                 key={index}
                 index={index}
+                close={this.closePurgeForm}
+                review={this.props.reviews.find(
+                  (itemX) => itemX.user._id === item._id
+                )}
+                article={this.props.article}
                 multiple={this.props.reviewsItems.length > 1}
                 open={(openIndex) => {
                   this.setState({ openIndex });
@@ -58,79 +71,20 @@ class ReviewsFormModal extends React.Component {
             style={settings.stylesModals}
           >
             {content}
-            <CloseSVG
-              className="close-svg"
-              onClick={this.closeForm}
-            ></CloseSVG>
+            <CloseSVG className="close-svg" onClick={this.closeForm}></CloseSVG>
           </Modal>
         );
       } else
         return (
-          <div className="pop-block notAngle padding bottom">{content}</div>
+          <div
+            id="review-form"
+            className="pop-block reviewsForm notAngle padding bottom"
+          >
+            {content}
+          </div>
         );
     } else return <></>;
   }
 }
 
 export default ReviewsFormModal;
-
-class ReviewsItem extends React.Component {
-  state = {
-    rating: 0,
-  };
-  render() {
-    return (
-      <div className="review-item padding">
-        <div className="f-14 mb-2 d-flex align-items-center">
-          {this.props.userReview.name}
-
-          {this.props.multiple && (
-            <img
-              onClick={() => {
-                if (this.props.isOpen) this.props.open(false);
-                else this.props.open(this.props.index);
-              }}
-              className="ml-2"
-              src={this.state.isOpen ? AngleUp : AngleDown}
-              style={{
-                cursor: "pointer",
-              }}
-              alt="AngleUp"
-            />
-          )}
-        </div>
-        <CSSTransitionGroup
-          transitionName="height-animation-item"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
-          style={{
-            display: "contents",
-          }}
-        >
-          {this.props.isOpen && (
-            <div>
-              <textarea
-                className="mx-auto d-block"
-                style={{
-                  height: "164px",
-                }}
-              ></textarea>
-              <div className="mt-2">Рейтинг:</div>
-              <div className="d-flex justify-content-between align-items-center">
-                <RatingInput
-                  value={this.state.rating}
-                  onClick={(val) => {
-                    this.setState({ rating: val });
-                  }}
-                />
-                <Button paddingVertical="7px" type="fill">
-                  Сохранить
-                </Button>
-              </div>
-            </div>
-          )}
-        </CSSTransitionGroup>
-      </div>
-    );
-  }
-}

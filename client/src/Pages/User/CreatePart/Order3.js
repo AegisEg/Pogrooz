@@ -229,7 +229,6 @@ class OrderCreate3 extends React.Component {
     this.setState({ car: { ...this.state.car, info: carDataX } });
   };
   render() {
-    console.log(this.state);
     let currentCarTypes =
       this.state.car.typesCar && !!this.state.car.typesCar.length
         ? carTypesList.filter((item) => {

@@ -3,29 +3,37 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Chat from "../../../Partials/Chat/Dialog";
+import NoMatch from "../../NoMatch";
 import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import * as dialogsActions from "../../../redux/actions/dialogs";
 import { bindActionCreators } from "redux";
 import { OnlineDate } from "../../../controllers/TimeController";
+import ArrowDown from "../../../img/arrowDownperple.svg";
+import Loading from "../../../Elements/Loading";
 class Messages extends React.Component {
+  state = {
+    isFetching: true,
+  };
   componentDidMount() {
+    let dialogs = this.props.dialogs.dialogsUser;
     if (
-      !this.props.dialogs.dialogs.find(
+      !dialogs.dialogs.find(
         (dialog) => dialog.user._id === this.props.match.params.id
       )
     ) {
-      this.props.dialogsActions.dialogGet(
-        this.props.match.params.id,
-        this.props.user.apiToken
-      );
+      this.props.dialogsActions
+        .dialogGet(this.props.match.params.id, this.props.user.apiToken)
+        .then(() => {
+          this.setState({ isFetching: false });
+        });
     } else {
       this.props.dialogsActions.updateOnline(
         this.props.match.params.id,
         this.props.user.apiToken
       );
       if (
-        !this.props.dialogs.dialogs.find(
+        !dialogs.dialogs.find(
           (dialog) => dialog.user._id === this.props.match.params.id
         ).getted
       )
@@ -33,14 +41,16 @@ class Messages extends React.Component {
           this.props.match.params.id,
           this.props.user.apiToken
         );
+      this.setState({ isFetching: false });
     }
   }
   render() {
-    let dialog = this.props.dialogs.dialogs.find(
+    let dialog = this.props.dialogs.dialogsUser.dialogs.find(
       (dialog) => dialog.user._id === this.props.match.params.id
     );
     return (
       <>
+        <Loading isLoading={this.state.isFetching} />
         {dialog && !dialog.isNotFound && (
           <div className="article-page">
             <div className="container-fluid">
@@ -48,7 +58,7 @@ class Messages extends React.Component {
               <div className="chat-header mt-3">
                 <div className="mb-1">
                   <Link
-                    className="href left-angle f-14 angle-go"
+                    className="href hover left-angle f-14 angle-go"
                     to="/"
                     style={{
                       maxWidth: "50px",
@@ -78,36 +88,6 @@ class Messages extends React.Component {
                     {dialog.user.online && <>online</>}
                   </span>
                 </div>
-                {/* <div className="row description-chat">
-                  <div
-                    className="col f-14"
-                    style={{
-                      maxWidth: "135px",
-                    }}
-                  >
-                    заказ №12134
-                  </div>
-                  <div className="col-12 col-sm f-14">
-                    Россия, Ленинградская область, г Пушкин, улица Бойко, 123
-                  </div>
-                  <div
-                    className="col"
-                    style={{
-                      maxWidth: "128px",
-                    }}
-                  >
-                    <Link className="f-12 href" to="/">
-                      Подробнее
-                      <img
-                        className="ml-2"
-                        src={ArrowDown}
-                        width="10"
-                        height="7"
-                        alt="ArrowDown"
-                      />
-                    </Link>
-                  </div>
-                </div> */}
                 <hr />
               </div>
             </div>
@@ -119,6 +99,9 @@ class Messages extends React.Component {
               dialog={dialog}
             />
           </div>
+        )}
+        {!this.state.isFetching && (!dialog || dialog.isNotFound) && (
+          <NoMatch />
         )}
       </>
     );

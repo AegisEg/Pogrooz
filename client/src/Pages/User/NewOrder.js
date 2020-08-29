@@ -30,11 +30,12 @@ class OrderCreate extends React.Component {
   };
   componentDidMount() {
     if (this.props.match.params.id)
-      fetch(`${api.urlApi}/api/article/getArticle`, {
+      fetch(`${api.urlApi}/api/article/getUserArticle`, {
         method: "post",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.apiToken}`,
         },
         body: JSON.stringify({
           id: this.props.match.params.id,

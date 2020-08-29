@@ -18,7 +18,7 @@ class Pagination extends React.Component {
       <div className="container-fluid">
         <ReactPaginate
           previousLabel={
-            this.props.currentPage === 1 ? (
+            this.props.currentPage === 0 ? (
               <img src={prevQuest} alt="nextQuest" />
             ) : (
               <img src={prevQuestEnable} alt="nextQuestEnable" />

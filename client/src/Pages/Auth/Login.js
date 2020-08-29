@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 // Redux
 import { connect } from "react-redux";
+import * as myArticlesActions from "../../redux/actions/myarticles";
 import * as userActions from "../../redux/actions/user";
 import { bindActionCreators } from "redux";
 import SocketController from "../../controllers/SocketController";
@@ -45,6 +46,8 @@ class Login extends React.Component {
           cookies.set("apiToken", data.token, { path: "/" });
           SocketController.init(data.token);
           this.props.userActions.loginUser(data.user, data.token);
+          this.props.myArticlesActions.setMyCount(data.myCountsArticles);
+          this.props.myArticlesActions.setTakingCount(data.takeCountsArticles);
           if (data.user.type == "carrier")
             this.props.history.push("/my-orders-open");
           else this.props.history.push("/taken-offers");
@@ -87,8 +90,7 @@ class Login extends React.Component {
                 error={
                   this.state.errors.find(
                     (value) => value.param === "password"
-                  ) ||
-                  this.state.errors.find((value) => value.param === "all")
+                  ) || this.state.errors.find((value) => value.param === "all")
                 }
                 value={this.state.password}
                 style={{ paddingRight: 50 }}
@@ -145,6 +147,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(userActions, dispatch),
+    myArticlesActions: bindActionCreators(myArticlesActions, dispatch),
   };
 }
 

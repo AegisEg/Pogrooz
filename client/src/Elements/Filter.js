@@ -13,6 +13,7 @@ import closePng from "../img/close.png";
 import angle from "../img/angle-up.png";
 import { ReactComponent as FilterImg } from "../img/filter.svg";
 import carTypesList from "../config/baseInfo/carTypesList";
+import { toast } from "react-toastify";
 import {
   extraParams,
   paymentParams,
@@ -69,12 +70,23 @@ class Filter extends React.Component {
   }
   render() {
     let options = this.props.options;
+
     let currentCargoType = options.cargoType
       ? cargoList.find((item) => item.id === options.cargoType)
       : false;
     let currentCarType = options.carType
       ? carTypesList.find((item) => item.id === options.carType)
       : false;
+    let cargoListPossible = cargoList;
+    if (currentCarType)
+      cargoListPossible = cargoList.filter((item) => {
+        return !!currentCarType.cargoTypes.find((itemX) => item.id === itemX);
+      });
+    let carListPossible = carTypesList;
+    if (currentCargoType)
+      carListPossible = carTypesList.filter((item) => {
+        return !!item.cargoTypes.find((itemX) => currentCargoType.id === itemX);
+      });
     return (
       <>
         {!this.props.notType && (
@@ -90,6 +102,7 @@ class Filter extends React.Component {
                 }`}
                 onClick={() => {
                   this.props.onChange({ type: "offer" });
+                  this.props.onSearch();
                 }}
               >
                 Услуги{" "}
@@ -101,6 +114,7 @@ class Filter extends React.Component {
                 }`}
                 onClick={() => {
                   this.props.onChange({ type: "order" });
+                  this.props.onSearch();
                 }}
               >
                 Заказы{" "}
@@ -132,7 +146,8 @@ class Filter extends React.Component {
                 <AdressSelect
                   placeholder="Откуда"
                   onChange={(val) => {
-                    val.coordinates = [val.data.geo_lat, val.data.geo_lon];
+                    if (val)
+                      val.coordinates = [val.data.geo_lat, val.data.geo_lon];
                     this.props.onChange({ from: val });
                   }}
                   value={options.from ? options.from.value : ""}
@@ -148,7 +163,8 @@ class Filter extends React.Component {
                 <AdressSelect
                   placeholder="Куда"
                   onChange={(val) => {
-                    val.coordinates = [val.data.geo_lat, val.data.geo_lon];
+                    if (val)
+                      val.coordinates = [val.data.geo_lat, val.data.geo_lon];
                     this.props.onChange({ to: val });
                   }}
                   value={options.to ? options.to.value : ""}
@@ -162,8 +178,8 @@ class Filter extends React.Component {
                 } col-lg-3 col-xl-3 col-sm-6`}
               >
                 <Select
-                  type="text"
-                  options={cargoList.map((item) => {
+                  isClearable={true}
+                  options={cargoListPossible.map((item) => {
                     return {
                       value: item.id,
                       label: item.name,
@@ -171,11 +187,18 @@ class Filter extends React.Component {
                   })}
                   className="selectTypeCargo"
                   onChange={(val) => {
-                    this.props.onChange({
-                      cargoType: val.value,
-                      cargoStandartData: {},
-                      cargoData: [],
-                    });
+                    if (val)
+                      this.props.onChange({
+                        cargoType: val.value,
+                        cargoStandartData: {},
+                        cargoData: [],
+                      });
+                    else
+                      this.props.onChange({
+                        cargoType: false,
+                        cargoStandartData: {},
+                        cargoData: [],
+                      });
                   }}
                   value={
                     currentCargoType
@@ -221,7 +244,8 @@ class Filter extends React.Component {
                     <Select
                       type="text"
                       placeholder="Тип машины"
-                      options={carTypesList.map((item) => {
+                      isClearable={true}
+                      options={carListPossible.map((item) => {
                         return {
                           value: item.id,
                           label: item.name,
@@ -236,7 +260,8 @@ class Filter extends React.Component {
                           : null
                       }
                       onChange={(val) => {
-                        this.props.onChange({ carType: val.value });
+                        if (val) this.props.onChange({ carType: val.value });
+                        else this.props.onChange({ carType: false });
                       }}
                     />
                   </div>
@@ -254,11 +279,36 @@ class Filter extends React.Component {
                     <Input
                       type="date"
                       style={{ width: "130px" }}
-                      placeholder="Введите дату"
                       value={options.startDate.date || null}
                       onChange={(val) => {
+                        let state = {
+                          date: val,
+                        };
+                        if (!val) {
+                          state.timeFrom = false;
+                          state.timeTo = false;
+                        } else {
+                          if (options.startDate.timeFrom)
+                            state.timeFrom = new Date(
+                              val.getFullYear(),
+                              val.getMonth(),
+                              val.getDate(),
+                              options.startDate.timeFrom.getHours(),
+                              options.startDate.timeFrom.getMinutes(),
+                              options.startDate.timeFrom.getSeconds()
+                            );
+                          if (options.startDate.timeTo)
+                            state.timeTo = new Date(
+                              val.getFullYear(),
+                              val.getMonth(),
+                              val.getDate(),
+                              options.startDate.timeTo.getHours(),
+                              options.startDate.timeTo.getMinutes(),
+                              options.startDate.timeTo.getSeconds()
+                            );
+                        }
                         this.props.onChange({
-                          startDate: { ...options.startDate, date: val },
+                          startDate: { ...options.startDate, ...state },
                         });
                       }}
                     />
@@ -277,23 +327,40 @@ class Filter extends React.Component {
                     </span>
                     <Input
                       type="time"
+                      date={options.startDate.date}
                       placeholder="От"
                       value={options.startDate.timeFrom || null}
                       onChange={(val) => {
+                        let state;
+                        if (!val) {
+                          state = { timeFrom: false, еimeTo: false };
+                        } else if (options.startDate.timeTo < val)
+                          state = { timeFrom: val, timeTo: false };
+                        else state = { timeFrom: val };
                         this.props.onChange({
-                          startDate: { ...options.startDate, timeFrom: val },
+                          startDate: { ...options.startDate, ...state },
                         });
                       }}
                     />
                     <span className="filter-input-title">&nbsp;&nbsp;-</span>
                     <Input
                       type="time"
+                      date={options.startDate.date}
                       placeholder="До"
+                      disabled={!options.startDate.timeFrom}
                       value={options.startDate.timeTo || null}
                       onChange={(val) => {
-                        this.props.onChange({
-                          startDate: { ...options.startDate, timeTo: val },
-                        });
+                        if (options.startDate.timeFrom > val && val)
+                          toast.error(
+                            `Время "До" должно быть больше времени "От" `,
+                            {
+                              position: toast.POSITION.TOP_CENTER,
+                            }
+                          );
+                        else
+                          this.props.onChange({
+                            startDate: { ...options.startDate, timeTo: val },
+                          });
                       }}
                     />
                   </div>

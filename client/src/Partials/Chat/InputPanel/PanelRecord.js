@@ -1,9 +1,9 @@
 // App
 import React from "react";
 import AudioVoice from "../AudioVoice";
-import ResetRecord from "../../../img/ResetRecord.svg";
-import stopRecord from "../../../img/stopRecord.svg";
-import send from "../../../img/send.svg";
+import { ReactComponent as ResetRecord } from "../../../img/ResetRecord.svg";
+import { ReactComponent as StopRecord } from "../../../img/stopRecord.svg";
+import { ReactComponent as Send } from "../../../img/send.svg";
 import LoadGif from "../../../img/load.gif";
 import { renderCanvas } from "../../../controllers/FunctionsController";
 // Internet Explorer 6-11
@@ -135,8 +135,7 @@ class PanelRecord extends React.Component {
   render() {
     return (
       <>
-        <img
-          src={ResetRecord}
+        <ResetRecord
           className="resetRecord"
           onClick={async () => {
             // if (!this.state.isRecordPause)
@@ -145,19 +144,16 @@ class PanelRecord extends React.Component {
               await this.props.addVoiceSound(false);
             });
           }}
-          alt="ResetRecord"
         />
         <div className="input-chat">
           {!this.state.isRecordPause && (
             <>
-              <img
-                src={stopRecord}
+              <StopRecord
                 onClick={() => {
                   this.setState({ isRecordPause: true });
                   this.recordStop();
                 }}
                 className="RecordPauseStart"
-                alt="stopRecord"
               />
               <canvas id="voice-canvas"></canvas>
               <div className="timer">
@@ -175,18 +171,19 @@ class PanelRecord extends React.Component {
             />
           )}
         </div>
-        <img
-          src={this.state.isSending ? LoadGif : send}
-          className="sendRecord"
-          onClick={async () => {
-            this.setState({ isSending: true });
-            this.recordStop().then(async () => {
-              await this.props.sendMessage();
-              await this.setState({ isSending: false });
-            });
-          }}
-          alt="microphone"
-        />
+        {!this.state.isSending && (
+          <Send
+            className="sendRecord"
+            onClick={async () => {
+              this.setState({ isSending: true });
+              this.recordStop().then(async () => {
+                await this.props.sendMessage();
+                await this.setState({ isSending: false });
+              });
+            }}
+          />
+        )}
+        {this.state.isSending && <img src={LoadGif} alt="microphone" />}
       </>
     );
   }

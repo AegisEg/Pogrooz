@@ -35,12 +35,12 @@ let contractParams = [
   {
     id: 1,
     name: "Физ лицо",
-    label: "Договор с Физ Лицом",
+    label: "Физ Лицом",
   },
   {
     id: 2,
     name: "ООО",
-    label: "Договор с ООО",
+    label: "ООО",
     additionFields: [
       {
         field: orgSelect,
@@ -54,7 +54,7 @@ let contractParams = [
   {
     id: 3,
     name: "ИП",
-    label: "Договор с ИП",
+    label: "ИП",
     additionFields: [
       {
         field: orgSelect,
@@ -68,7 +68,7 @@ let contractParams = [
   {
     id: 4,
     name: "Самозанятый",
-    label: "Договор с самозанятым водителем",
+    label: "самозанятым водителем",
   },
 ];
 let paymentParams = [

@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../../../Elements/Button";
 import Input from "../../../Elements/Input";
 import Select from "../../../Elements/Select";
+import CarSelect from "../../../Elements/CarSelect";
 import CheckBoxSwitcher from "../../../Elements/CheckBoxSwitcher";
 import CheckBox from "../../../Elements/CheckBox";
 import { CSSTransitionGroup } from "react-transition-group";
@@ -13,12 +14,15 @@ import {
   paymentParams,
 } from "../../../config/baseInfo/carParams";
 import carTypesList from "../../../config/baseInfo/carTypesList";
+
 //Configs
 class OfferCreate1 extends React.Component {
   state = {
     isExtra: false,
     isContract: false,
     isPayment: false,
+    openTemplate: false,
+    currentTemplate: false,
     //Step1
     car: {},
     comment: "",
@@ -64,7 +68,6 @@ class OfferCreate1 extends React.Component {
         budget: this.state.budget,
       };
   }
-
   componentDidMount() {
     //Инициализация
     let newState = {};
@@ -98,6 +101,25 @@ class OfferCreate1 extends React.Component {
       ...newState,
     });
   }
+  selectTemplate = (template) => {
+    let newState = {};
+    let car = {
+      additionally: [],
+      contractInfo: [],
+      info: [],
+      property: "",
+      paymentInfo: [],
+      ...template.car,
+    };
+    newState = {
+      ...newState,
+      isExtra: !!car.additionally.length,
+      isContract: !!car.contractInfo && car.contractInfo.length,
+      isPayment: !!car.paymentInfo.length,
+    };
+    this.props.onChange({ typesCar: template.car.typesCar });
+    this.setState({ car: car, currentTemplate: template, ...newState });
+  };
   getIfExit(array, item, prop) {
     let element = false;
     if ((element = array.find((itemX) => itemX.id == item)))
@@ -192,6 +214,7 @@ class OfferCreate1 extends React.Component {
     }
     this.setState({ car: { ...this.state.car, info: carDataX } });
   };
+
   render() {
     let currentCarType =
       this.state.car.typesCar && !!this.state.car.typesCar.length
@@ -207,6 +230,40 @@ class OfferCreate1 extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="mt-3 col-12 col-md-8 mx-0 px-0 row carInfo">
+              <div>
+                <a
+                  className="href hover"
+                  onClick={() => {
+                    this.setState({ openTemplate: !this.state.openTemplate });
+                  }}
+                >
+                  {this.state.openTemplate
+                    ? "Закрыть выбор шаблонов"
+                    : "Выбрать из шаблона Авто"}
+                </a>
+                {this.state.openTemplate && (
+                  <Select
+                    placeholder="Шаблоны машины"
+                    options={this.props.carTemplates.map((item) => {
+                      return {
+                        value: item,
+                        label: item.car.name,
+                      };
+                    })}
+                    value={
+                      this.state.currentTemplate
+                        ? {
+                            value: this.state.currentTemplate,
+                            label: this.state.currentTemplate.car.name,
+                          }
+                        : null
+                    }
+                    onChange={(val) => {
+                      this.selectTemplate(val.value);
+                    }}
+                  />
+                )}
+              </div>
               <h4
                 className="f-16 col-12 mb-1"
                 style={{
@@ -238,12 +295,11 @@ class OfferCreate1 extends React.Component {
                 />
               </div>
               <div className="carName mt-3">
-                <Input
-                  type="text"
-                  value={this.state.car.name || ""}
-                  placeholder="Марка, модель"
+                <CarSelect
+                  value={this.state.car.name}
+                  apiToken={this.props.user.apiToken}
                   onChange={(val) => {
-                    this.onChange(val.target.value, "carName");
+                    this.onChange(val.value, "carName");
                   }}
                 />
               </div>

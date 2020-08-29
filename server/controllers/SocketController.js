@@ -28,7 +28,7 @@ function initSocket(initIo) {
       // Set online status for user
       user = await User.findById(userVerify.data.userId);
       if (user) {
-        socket.join(`user.${user._id}`);        
+        socket.join(`user.${user._id}`);
         user.online = true;
         await user.save();
       }
@@ -40,39 +40,190 @@ function initSocket(initIo) {
         await user.save();
       }
     });
-    socket.on("typingDialog", ({ otherId, userId }) => {
+    socket.on("typingDialog", ({ otherId, userId, isOrder }) => {
       if (userId == user._id)
-        socket.to(`user.${otherId}`).emit("typingDialog", userId);
+        socket.to(`user.${otherId}`).emit("typingDialog", userId, isOrder);
     });
   });
 }
 // Chat dialog
-function sendMessageDialog({ userId, socketId, otherId, message }) {
+function sendMessageDialog({ userId, socketId, otherId, message, isOrder }) {
   if (userId != otherId) {
     io.sockets.connected[socketId]
       .to(`user.${otherId}`)
-      .emit("sendMessageDialog", { message, otherId: userId });
+      .emit("sendMessageDialog", { message, otherId: userId, isOrder });
     io.sockets.connected[socketId]
       .to(`user.${userId}`)
-      .emit("sendMessageDialog", { message, otherId });
+      .emit("sendMessageDialog", { message, otherId, isOrder });
   } else {
     io.sockets.connected[socketId]
       .to(`user.${otherId}`)
-      .emit("sendMessageDialog", { message, otherId: userId });
+      .emit("sendMessageDialog", { message, otherId: userId, isOrder });
   }
 }
-
-function readMessageDialog({ dialogId, userId, otherId, socketId }) {
-  io.sockets.connected[socketId]
-    .to(`user.${otherId}`)
-    .emit("readMessagesDialog", { dialogId, userId: otherId });
+function createTakingArticle({ userId, socketId, status, article }) {
   io.sockets.connected[socketId]
     .to(`user.${userId}`)
-    .emit("readMessagesDialog", { dialogId, userId: otherId });
+    .emit("createTakingArticle", { status, article });
+}
+function createMyArticle({ userId, socketId, status, article }) {
+  io.sockets.connected[socketId]
+    .to(`user.${userId}`)
+    .emit("createMyArticle", { status, article });
+}
+function updateStatusMyArticle({
+  userId,
+  socketId,
+  lastStatus,
+  status,
+  articleID,
+  isTaking,
+}) {
+  io.sockets.connected[socketId]
+    .to(`user.${userId}`)
+    .emit("updateStatusMyArticle", { lastStatus, status, articleID, isTaking });
+}
+function deleteTaking({ userId, socketId, lastStatus, status, articleID }) {
+  io.sockets.connected[socketId]
+    .to(`user.${userId}`)
+    .emit("deleteTaking", { lastStatus, status, articleID });
+}
+function editMyArticle({ userId, socketId, status, article }) {
+  io.sockets.connected[socketId]
+    .to(`user.${userId}`)
+    .emit("editMyArticle", { status, article });
+}
+
+function readMessageDialog({ dialogId, userId, otherId, socketId, isOrder }) {
+  io.sockets.connected[socketId]
+    .to(`user.${otherId}`)
+    .emit("readMessagesDialog", { dialogId, userId: otherId, isOrder });
+  io.sockets.connected[socketId]
+    .to(`user.${userId}`)
+    .emit("readMessagesDialog", { dialogId, userId: otherId, isOrder });
+}
+
+function updateArticleReview({
+  article,
+  newReview,
+  userId,
+  otherId,
+  socketId,
+}) {
+  io.sockets.connected[socketId]
+    .to(`user.${userId}`)
+    .emit("updateArticleReview", {
+      articleID: article._id,
+      articleStatus: article.status,
+      newReview: newReview,
+      isTaking: false,
+    });
+  io.sockets.connected[socketId]
+    .to(`user.${otherId}`)
+    .emit("updateArticleReview", {
+      articleID: article._id,
+      articleStatus: article.status,
+      newReview: newReview,
+      isTaking: true,
+    });
+}
+function setExecutor({ article, executor, lastStatus, userId, socketId }) {
+  io.sockets.connected[socketId].to(`user.${userId}`).emit("setExecutor", {
+    article: article,
+    lastStatus: lastStatus,
+    executor: executor,
+  });
+  io.sockets.connected[socketId]
+    .to(`user.${executor._id}`)
+    .emit("setExecutor", {
+      article: article,
+      lastStatus: lastStatus,
+      executor: executor,
+      isTaking: true,
+    });
+}
+function deleteExecutorSoket({
+  article,
+  executor,
+  lastStatus,
+  userId,
+  socketId,
+}) {
+  io.sockets.connected[socketId].to(`user.${userId}`).emit("deleteExecutor", {
+    article: article,
+    lastStatus: lastStatus,
+    executor: executor,
+  });
+  io.sockets.connected[socketId]
+    .to(`user.${executor._id}`)
+    .emit("deleteExecutor", {
+      article: article,
+      lastStatus: lastStatus,
+      executor: executor,
+      isTaking: true,
+    });
+}
+function createArticleReview({
+  article,
+  newReview,
+  userId,
+  otherId,
+  socketId,
+}) {
+  io.sockets.connected[socketId]
+    .to(`user.${userId}`)
+    .emit("createArticleReview", {
+      articleID: article._id,
+      articleStatus: article.status,
+      newReview: newReview,
+      isTaking: false,
+    });
+  io.sockets.connected[socketId]
+    .to(`user.${otherId}`)
+    .emit("createArticleReview", {
+      articleID: article._id,
+      articleStatus: article.status,
+      newReview: newReview,
+      isTaking: true,
+    });
+}
+function createRequestSoket({ article, request, userId, socketId }) {
+  io.sockets.connected[socketId].to(`user.${userId}`).emit("createRequest", {
+    article,
+    request,
+  });
+  io.sockets.connected[socketId].to(`user.${userId}`).emit("createRequest", {
+    article,
+    request,
+  });
+}
+function updateRequestSoket({ article, request, userId, socketId }) {
+  io.sockets.connected[socketId].to(`user.${userId}`).emit("updateRequest", {
+    article,
+    request,
+  });
+}
+function deleteRequestSoket({ article, requestId, userId, socketId }) {
+  io.sockets.connected[socketId].to(`user.${userId}`).emit("deleteRequest", {
+    article,
+    requestId,
+  });
 }
 
 module.exports = {
   initSocket,
   sendMessageDialog,
   readMessageDialog,
+  editMyArticle,
+  createMyArticle,
+  updateStatusMyArticle,
+  createTakingArticle,
+  deleteTaking,
+  updateArticleReview,
+  createArticleReview,
+  setExecutor,
+  deleteExecutorSoket,
+  createRequestSoket,
+  deleteRequestSoket,
+  updateRequestSoket,
 };

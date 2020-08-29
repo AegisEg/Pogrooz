@@ -6,9 +6,10 @@
 
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
-const crypto = require("crypto");
+const Article = require("../models/Article");
 const NUM_ROUNDS = 12;
 module.exports = {
   // Register method
@@ -33,13 +34,19 @@ module.exports = {
       const existingUserEmail = await User.findOne({ email: user.email });
       const existingUserPhone = await User.findOne({ phone: user.phone });
 
-      if (existingUserEmail || existingUserPhone) {
-        // Conflict: the resource already exists (HTTP 409)
-        const err = {};
-        err.param = `all`;
-        err.msg = `That email or phone is already taken.`;
+      if (existingUserEmail) {
+        let err = {};
+        err.param = `email`;
+        err.msg = `Этот email уже занят`;
         return res.status(409).json({ error: true, errors: [err] });
       }
+      if (existingUserPhone) {
+        let err = {};
+        err.param = `phone`;
+        err.msg = `Этот телефон уже занят`;
+        return res.status(409).json({ error: true, errors: [err] });
+      }
+
       /*СОздание юзера*/
       const newUser = new User();
       newUser.name = {
@@ -88,8 +95,41 @@ module.exports = {
         if (verifiedPassword) {
           // Success: generate and respond with the JWT
           let token = generateToken(user.id);
+          let myCountsArticles = await Article.aggregate([
+            {
+              $match: {
+                author: user._id,
+                type: user.type === "cargo" ? "order" : "offer",
+              },
+            },
+            {
+              $group: {
+                _id: "$status",
 
-          return res.json({ token, user: user.toJSON() });
+                count: { $sum: 1 },
+              },
+            },
+          ]);
+          let takeCountsArticles = await Article.aggregate([
+            {
+              $match: {
+                executors: user._id,
+                type: user.type === "cargo" ? "offer" : "order",
+              },
+            },
+            {
+              $group: {
+                _id: "$status",
+                count: { $sum: 1 },
+              },
+            },
+          ]);
+          return res.json({
+            token,
+            user: user.toJSON(),
+            myCountsArticles,
+            takeCountsArticles,
+          });
         }
       }
     } catch (e) {

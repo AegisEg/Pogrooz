@@ -14,7 +14,7 @@ import countryList from "../../config/countryList";
 class Register extends React.Component {
   state = {
     type: "cargo",
-    country: 0,
+    country: 1,
     email: "",
     firstName: "",
     middleName: "",
@@ -47,11 +47,16 @@ class Register extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          if (data.error)
+            // data.errors.map((item) => {
+            //   toast.error(item.msg);
+            // });
           this.setState({ error: true, errors: data.errors });
+        } else {
+          this.props.history.push("/");
+          toast.success("Регистрация прошла успешно");
         }
         this.setState({ isFetching: false });
-        this.props.history.push("/");
-        toast.success("Регистрация прошла успешно");
       });
   }
 
@@ -97,7 +102,7 @@ class Register extends React.Component {
                 Россия
               </span>
             </div>
-            <div className="col-12 col-sm-6">
+            {/* <div className="col-12 col-sm-6">
               <Select
                 options={selectCountry}
                 placeholder="Другая"
@@ -111,7 +116,7 @@ class Register extends React.Component {
                   ) || null
                 }
               />
-            </div>
+            </div> */}
           </div>
           <div className="row">
             <div className="col-12 col-sm-12">

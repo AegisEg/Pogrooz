@@ -1,7 +1,7 @@
 // App
 import React from "react";
 
-import Articles from "../../Catalog/Articles";
+import Articles from "../../ArticlesElements/Articles";
 
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -35,7 +35,6 @@ class User extends React.Component {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${this.props.user.apiToken}`,
       },
       body: JSON.stringify({
         userId: this.props.match.params.id,
@@ -78,7 +77,7 @@ class User extends React.Component {
           }}
         >
           <a
-            className="href left-angle mx-auto angle-go d-block"
+            className="href hover left-angle mx-auto angle-go d-block"
             style={{
               maxWidth: "50px",
             }}
@@ -303,9 +302,12 @@ class User extends React.Component {
                           Профиль скрыт
                         </div>
                       )} */}
-
-                          <div>{this.formatPhoneNumber(user.phone)}</div>
-                          <div>{user.email}</div>
+                          {this.state.user.type !== "cargo" && (
+                            <>
+                              <div>{this.formatPhoneNumber(user.phone)}</div>
+                              <div>{user.email}</div>
+                            </>
+                          )}
                         </div>
                       </div>
                       <div className="col-md-4 col-12 user-column-2">
@@ -316,24 +318,30 @@ class User extends React.Component {
                             <img src={ImgActiveStar} alt="ImgActiveStar" />
                           </span>
                         </span>
-                        <Link to={`/dialog/${this.state.user._id}`}>
-                          <Button
-                            type="fill"
-                            paddingVertical="11px"
-                            paddingHorizontal="30px"
-                            className="input-action"
-                          >
-                            Написать
-                          </Button>
-                        </Link>
-                        <Button
-                          type="empty"
-                          paddingVertical="11px"
-                          paddingHorizontal="30px"
-                          className="input-action"
-                        >
-                          Предложить заказ
-                        </Button>
+                        {this.props.user.isAuth && (
+                          <>
+                          
+                            <Link to={`/dialog/${this.state.user._id}`}>
+                              <Button
+                                type="fill"
+                                paddingVertical="11px"
+                                paddingHorizontal="30px"
+                                className="input-action"
+                              >
+                                Написать
+                              </Button>
+                            </Link>
+
+                            <Button
+                              type="empty"
+                              paddingVertical="11px"
+                              paddingHorizontal="30px"
+                              className="input-action"
+                            >
+                              Предложить заказ
+                            </Button>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

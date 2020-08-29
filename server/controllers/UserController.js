@@ -18,8 +18,37 @@ module.exports = {
     try {
       // Get this account as JSON
       const user = await User.findById(userId);
+      let myCountsArticles = await Article.aggregate([
+        {
+          $match: {
+            author: user._id,
+            type: user.type === "cargo" ? "order" : "offer",
+          },
+        },
+        {
+          $group: {
+            _id: "$status",
+
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+      let takeCountsArticles = await Article.aggregate([
+        {
+          $match: {
+            executors: user._id,
+            type: user.type === "cargo" ? "offer" : "order",
+          },
+        },
+        {
+          $group: {
+            _id: "$status",
+            count: { $sum: 1 },
+          },
+        },
+      ]);
       if (user) {
-        return res.send(user);
+        return res.json({ user, myCountsArticles, takeCountsArticles });
       }
       const err = new Error(`User ${userId} not found.`);
       err.notFound = true;

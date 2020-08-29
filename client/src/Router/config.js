@@ -15,7 +15,8 @@ import Application from "../Pages/Public/Application";
 import Carrier from "../Pages/Public/Carrier";
 import Profile from "../Pages/User/Profile";
 import MyArticles from "../Pages/User/MyArticles";
-import CreateTemplateAuto from "../Pages/User/CreateTemplateAuto";
+import TakingArticles from "../Pages/User/TakingArticles";
+import CreateTemplateAuto from "../Pages/User/CreatePart/CreateTemplateAuto";
 import MyTemplateAuto from "../Pages/User/MyTemplateCar";
 import User from "../Pages/Public/User";
 import ArticlePage from "../Pages/User/ArticlePage";
@@ -29,6 +30,7 @@ import TarifLk from "../Pages/User/TarifLk";
 import AutoPay from "../Pages/User/AutoPay";
 import Messages from "../Pages/User/Messages/Messages";
 import Dialog from "../Pages/User/Messages/Dialog";
+import DialogOrder from "../Pages/User/Messages/DialogOrder";
 import GeoDetect from "../Pages/User/GeoDetect";
 const routes = [
   //AUTH ROUTE
@@ -147,6 +149,14 @@ const routes = [
     path: "/messages",
     exact: true,
     type: "private",
+    tab: "all",
+    title: "Сообщения",
+    component: (props) => <Messages {...props} />,
+  },
+  {
+    path: "/messages-users",
+    exact: true,
+    type: "private",
     tab: 2,
     title: "Сообщения пользователей",
     component: (props) => <Messages {...props} />,
@@ -159,6 +169,15 @@ const routes = [
     dialogType: 2,
     title: "Сообщения пользователей",
     component: (props) => <Dialog {...props} />,
+  },
+  {
+    path: "/dialog-order/:order/:id",
+    exact: true,
+    type: "private",
+    lkHeight: true,
+    dialogType: 2,
+    title: "Сообщения пользователей",
+    component: (props) => <DialogOrder {...props} />,
   },
   {
     path: "/dialog-order/:id",
@@ -290,10 +309,10 @@ const routes = [
     exact: true,
     type: "private",
     typeArticle: "order",
-    statusArticle: [3, 4, 5, 6, 7],
+    statusArticle: [3, 4, 5, 6],
     title: "Взятые заказы",
     // role: "carrier",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <TakingArticles {...props} />,
   },
   {
     path: "/my-offers",
@@ -350,10 +369,10 @@ const routes = [
     exact: true,
     type: "private",
     typeArticle: "offer",
-    statusArticle: [3, 4, 5, 6, 7],
+    statusArticle: [3, 4, 5, 6],
     title: "Взятые предложения",
     // role: "carrier",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <TakingArticles {...props} />,
   },
   {
     path: "/offer-create",

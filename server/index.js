@@ -30,7 +30,8 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const articleRoutes = require("./routes/article");
 const dialogsRoutes = require("./routes/dialog");
-const openApi = require("./routes/openApi");
+const dialogOrderRoutes = require("./routes/dialogOrder");
+const carRoutes = require("./routes/car");
 // Use Express as our web server
 const app = express();
 
@@ -48,10 +49,11 @@ app
   .use(morgan("dev"))
   // Enable routes
   .use("/auth", authRoutes)
-  .use("/openApi", openApi)
   .use("/api/article", articleRoutes)
+  .use("/api/car", carRoutes)
   .use("/api/user", userRoutes)
   .use("/api/dialog", dialogsRoutes)
+  .use("/api/dialogsOrder", dialogOrderRoutes)
   // Serve static files
   .use(express.static(path.join(__dirname, "../client")))
   .use("/media", express.static(path.join(__dirname, "./uploads")))
