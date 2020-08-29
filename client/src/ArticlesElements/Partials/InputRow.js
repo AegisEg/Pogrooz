@@ -754,6 +754,9 @@ class InputRow extends React.Component {
             dialogs={this.props.article.executors}
           ></DialogsModal>
           <CompleteModal
+            ref={(ref) => {
+              this.CompleteModal = ref;
+            }}
             onComplete={() => {
               this.setState({ isFetching: true }, () => {
                 this.props.myArticlesActions
