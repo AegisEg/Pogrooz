@@ -8,6 +8,9 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
+    "admin-bro": "^3.2.3",
+    "admin-bro-expressjs": "^2.1.1",
+    "admin-bro-mongoose": "^0.5.2",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
@@ -19,6 +22,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.16.3",
     "express-fileupload": "^1.1.7-alpha.3",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.1",
     "express-validator": "^6.4.0",
     "google-auth-library": "^6.0.0",
     "googleapis": "^49.0.0",
@@ -27,6 +32,8 @@
     "knex": "^0.21.0",
     "mongoose": "^5.9.21",
     "mongoose-auto-increment": "^5.0.1",
+    "mongoose-observer": "^0.2.1",
+    "mongoose-trigger": "^1.0.1",
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
     "node-fetch": "^2.6.0",
@@ -36,6 +43,7 @@
     "socket.io": "^2.3.0",
     "sqlite3": "^4.0.9",
     "stripe": "^8.44.0",
+    "underscore": "^1.11.0",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {

@@ -12,6 +12,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const historyApiFallback = require("connect-history-api-fallback");
 const { initSocket } = require("./controllers/SocketController");
+const adminPanel = require('./controllers/AdminController')
+const formidableMiddleware = require('express-formidable');
 // const errors = require('./middleware/errors');
 
 //ENV load
@@ -37,6 +39,7 @@ const notification = require("./routes/notification");
 const app = express();
 
 app
+  .use('/admin', formidableMiddleware(), adminPanel)
   // Parse JSON
   .use(bodyParser.json())
   // Cors
