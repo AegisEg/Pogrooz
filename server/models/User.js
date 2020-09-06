@@ -1,5 +1,6 @@
 const mongoose = require("../database");
 const Schema = mongoose.Schema;
+const MongooseTrigger = require('mongoose-trigger');
 
 const UserSchema = new Schema({
   name: {
@@ -26,8 +27,23 @@ const UserSchema = new Schema({
   online: { type: Boolean, default: true },
   onlineAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now, select: false },
+  isPassportVerified: { type: Boolean, default: false, select: true },
   buff: Buffer,
 });
 
+UserSchema.pre('findOneAndUpdate', async function(next) {
+  let docToUpdate = await this.model.findOne(this.getQuery());
+  let docDoUpdate = this.getUpdate().$set
+
+  if(!docToUpdate.isPassportVerified && docDoUpdate.isPassportVerified) {
+    console.log('send notification with socket')
+  }
+  
+  next()
+});
+
 const User = mongoose.model("User", UserSchema);
+
+
+
 module.exports = User;
