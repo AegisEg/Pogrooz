@@ -5876,3 +5876,15 @@ span.errRequired {
 .load-content {
   min-height: 60vh;
 }
+.static-page {
+  min-height: 53vh;
+}
+.static-page h1.title {
+  font-size: 24px;
+  line-height: 28px;
+  color: #171717;
+  margin: 45px 0;
+}
+  font-size: 16px;
+  line-height: 19px;
+}

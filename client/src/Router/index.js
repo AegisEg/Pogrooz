@@ -60,6 +60,7 @@ class AppRouter extends React.Component {
             myCountsArticles,
             takeCountsArticles,
             noReadNotifications,
+            onlyNoRead,
           }) => {
             SocketController.init(apiToken);
             this.props.userActions.loginUser(
@@ -67,7 +68,8 @@ class AppRouter extends React.Component {
               apiToken,
               myCountsArticles,
               takeCountsArticles,
-              noReadNotifications
+              noReadNotifications,
+              onlyNoRead
             );
             this.setState({ isRender: true });
           }

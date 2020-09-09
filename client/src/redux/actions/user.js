@@ -2,8 +2,9 @@ import {
   USER_LOGIN,
   USER_LOGOUT,
   ARTICLES_MY_SET_COUNT,
-  NOTIFICATIONS_SET_NO_READ,
+  NOTIFICATIONS_ALL_SET_NO_READ,
   ARTICLES_TAKING_SET_COUNT,
+  NOTIFICATIONS_NOREAD_GET,
 } from "../constants";
 import store from "../store";
 import api from "../../config/api";
@@ -13,7 +14,8 @@ export const loginUser = (
   apiToken,
   myCountsArticles,
   takeCountsArticles,
-  noReadNotifications
+  noReadNotifications,
+  onlyNoRead
 ) => (dispatch) => {
   user.apiToken = apiToken;
   dispatch({
@@ -21,8 +23,12 @@ export const loginUser = (
     payload: user,
   });
   dispatch({
-    type: NOTIFICATIONS_SET_NO_READ,
+    type: NOTIFICATIONS_ALL_SET_NO_READ,
     payload: noReadNotifications,
+  });
+  dispatch({
+    type: NOTIFICATIONS_NOREAD_GET,
+    payload: onlyNoRead,
   });
   dispatch({
     type: ARTICLES_MY_SET_COUNT,
@@ -45,6 +51,8 @@ export const userEdit = (userChange, apiToken) => (dispatch) => {
     formData.append("userChange", JSON.stringify(userChange));
     if (userChange.avatar && userChange.avatar.file)
       formData.append("avatar", userChange.avatar.file);
+    if (userChange.passportPhoto && userChange.passportPhoto.file)
+      formData.append("passportPhoto", userChange.passportPhoto.file);
     fetch(`${api.urlApi}/api/user/user-edit`, {
       method: "post",
       headers: {

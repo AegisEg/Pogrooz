@@ -49,6 +49,8 @@ class Profile extends React.Component {
       country: this.props.user.country,
     };
     if (this.props.user.avatar) state.avatar = this.props.user.avatar;
+    if (this.props.user.passportPhoto)
+      state.passportPhoto = this.props.user.passportPhoto;
     this.setState(state);
   }
   saveUser = () => {
@@ -59,6 +61,7 @@ class Profile extends React.Component {
         last: this.state.lastName,
       },
       avatar: this.state.avatar,
+      passportPhoto: this.state.passportPhoto,
       contract: this.state.contract,
       address: this.state.address,
       country: this.state.country,
@@ -445,6 +448,9 @@ class Profile extends React.Component {
                     paddingHorizontal="30px"
                     paddingVertical="7px"
                     margin="0 0 12px 0"
+                    onClick={() => {
+                      document.getElementById("passportPhoto").click();
+                    }}
                   >
                     <span className="d-none d-md-block">Загрузить</span>
                     <img

@@ -48,16 +48,17 @@ module.exports = {
           },
         },
       ]);
-      let noReadNotifications = await Notification.find({
+      let onlyNoRead = await Notification.find({
         user: user,
         isRead: false,
-      }).count();
+      });
       if (user) {
         return res.json({
           user,
           myCountsArticles,
           takeCountsArticles,
-          noReadNotifications,
+          noReadNotifications: onlyNoRead.length,
+          onlyNoRead,
         });
       }
       const err = new Error(`User ${userId} not found.`);
@@ -189,6 +190,38 @@ module.exports = {
                 req.files["avatar"].name.split(".").pop(),
               name: req.files["avatar"].name,
               size: req.files["avatar"].size,
+            };
+          } else {
+            let err = {};
+            err.param = `file`;
+            err.msg = `max_size`;
+            return res.status(401).json({ error: true, errors: [err] });
+          }
+        }
+        if (req.files && req.files["passportPhoto"]) {
+          if (req.files["passportPhoto"].size / 1000 <= 10000) {
+            let fileName = randomString(24);
+            let filePath =
+              "./uploads/" +
+              user._id +
+              "/" +
+              fileName +
+              "." +
+              req.files["passportPhoto"].name.split(".").pop();
+            req.files["passportPhoto"].mv(filePath, function(err) {
+              if (err) return res.status(500).send(err);
+            });
+            user.passportPhoto = {
+              path:
+                process.env.API_URL +
+                "/media/" +
+                user._id +
+                "/" +
+                fileName +
+                "." +
+                req.files["passportPhoto"].name.split(".").pop(),
+              name: req.files["passportPhoto"].name,
+              size: req.files["passportPhoto"].size,
             };
           } else {
             let err = {};
