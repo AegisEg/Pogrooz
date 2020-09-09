@@ -34,13 +34,27 @@ import {
   ARTICLE_REMOVE_ME_REQUEST,
   ARTICLES_TAKING_DELETE_EXECUTOR,
   ARTICLES_TAKING_SET_EXECUTOR,
-  NOTIFICATIONS_ADD,
-  NOTIFICATIONS_SET_NO_READ,
   NOTIFICATIONS_READ,
   REVIEWS_ME_CREATE,
   REVIEWS_MY_CREATE,
   REVIEWS_ME_UPDATE,
   REVIEWS_MY_UPDATE,
+  //NOTIGICATION
+  NOTIFICATIONS_ALL_SET_NO_READ,
+  NOTIFICATIONS_OFFERS_ADD,
+  NOTIFICATIONS_OFFERS_READ,
+  NOTIFICATIONS_OFFERS_SET_NO_READ,
+  NOTIFICATIONS_ORDERS_ADD,
+  NOTIFICATIONS_ORDERS_READ,
+  NOTIFICATIONS_ORDERS_SET_NO_READ,
+  NOTIFICATIONS_SYSTEM_ADD,
+  NOTIFICATIONS_SYSTEM_READ,
+  NOTIFICATIONS_SYSTEM_SET_NO_READ,
+  NOTIFICATIONS_TARRIFS_ADD,
+  NOTIFICATIONS_TARRIFS_READ,
+  NOTIFICATIONS_TARRIFS_SET_NO_READ,
+  NOTIFICATIONS_ALL_READ,
+  NOTIFICATIONS_ALL_ADD,
 } from "../redux/constants";
 import { playNewMessage, playBeep } from "./SoundController";
 let socket = null;
@@ -404,23 +418,36 @@ export default {
     /*ARTICLES SOKETS*/
     /*NOTIFICATIONS SOKETS*/
     socket.on("sendNotification", (notification) => {
-      if (store.getState().notifications.getted) {
+      if (store.getState().notifications[notification.type].getted) {
         store.dispatch({
-          type: NOTIFICATIONS_ADD,
+          type: dipathType(notification.type, "add"),
           payload: notification,
         });
       } else
         store.dispatch({
-          type: NOTIFICATIONS_SET_NO_READ,
-          payload: store.getState().notifications.noRead + 1,
+          type: dipathType(notification.type, "noread"),
+          payload: store.getState().notifications[notification.type].noRead + 1,
         });
-
+      if (store.getState().notifications.all.getted) {
+        store.dispatch({
+          type: NOTIFICATIONS_ALL_ADD,
+          payload: notification,
+        });
+      } else
+        store.dispatch({
+          type: NOTIFICATIONS_ALL_SET_NO_READ,
+          payload: store.getState().notifications.all.noRead + 1,
+        });
       playBeep();
     });
 
-    socket.on("readNotification", (id) => {
+    socket.on("readNotification", ({ id, type }) => {
       store.dispatch({
-        type: NOTIFICATIONS_READ,
+        type: dipathType(type, "read"),
+        payload: id,
+      });
+      store.dispatch({
+        type: NOTIFICATIONS_ALL_READ,
         payload: id,
       });
     });
@@ -432,3 +459,38 @@ export default {
     socket.emit("typingDialog", { otherId, userId, isOrder });
   },
 };
+function dipathType(type, action) {
+  if (action === "get")
+    switch (type) {
+      case "offer":
+        return NOTIFICATIONS_OFFERS_ADD;
+      case "order":
+        return NOTIFICATIONS_ORDERS_ADD;
+      case "system":
+        return NOTIFICATIONS_SYSTEM_ADD;
+      case "tarrif":
+        return NOTIFICATIONS_TARRIFS_ADD;
+    }
+  if (action === "read")
+    switch (type) {
+      case "offer":
+        return NOTIFICATIONS_OFFERS_READ;
+      case "order":
+        return NOTIFICATIONS_ORDERS_READ;
+      case "system":
+        return NOTIFICATIONS_SYSTEM_READ;
+      case "tarrif":
+        return NOTIFICATIONS_TARRIFS_READ;
+    }
+  if (action === "noread")
+    switch (type) {
+      case "offer":
+        return NOTIFICATIONS_OFFERS_SET_NO_READ;
+      case "order":
+        return NOTIFICATIONS_ORDERS_SET_NO_READ;
+      case "system":
+        return NOTIFICATIONS_SYSTEM_SET_NO_READ;
+      case "tarrif":
+        return NOTIFICATIONS_TARRIFS_SET_NO_READ;
+    }
+}

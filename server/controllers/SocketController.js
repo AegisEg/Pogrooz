@@ -226,10 +226,10 @@ function sendNotification({ userId, notification }) {
   io.to(`user.${userId}`).emit("sendNotification", notification);
 }
 
-function readNotification({ socketId, userId, id }) {
+function readNotification({ socketId, userId, id, type }) {
   io.sockets.connected[socketId]
     .to(`user.${userId}`)
-    .emit("readNotification", id);
+    .emit("readNotification", { id, type });
 }
 module.exports = {
   initSocket,

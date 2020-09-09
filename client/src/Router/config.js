@@ -32,6 +32,8 @@ import Messages from "../Pages/User/Messages/Messages";
 import Dialog from "../Pages/User/Messages/Dialog";
 import DialogOrder from "../Pages/User/Messages/DialogOrder";
 import GeoDetect from "../Pages/User/GeoDetect";
+import Page from "../Pages/Page";
+import Question from "../Pages/Question";
 const routes = [
   //AUTH ROUTE
   {
@@ -65,6 +67,14 @@ const routes = [
   },
   //AUTH ROUTE END
   //PUBLIC ROUTE
+  {
+    path: "/page/:slug",
+    exact: true,
+    type: "public",
+    title: "Страница",
+    forseTitle: true,
+    component: () => <Page />,
+  },
   {
     path: "/",
     exact: true,
@@ -121,6 +131,14 @@ const routes = [
     title: "Перевозчикам",
     component: () => <Carrier />,
   },
+  {
+    path: "/question/:slug",
+    exact: true,
+    type: "public",
+    title: "Вопрос",
+    forseTitle: true,
+    component: () => <Question />,
+  },
   //PUBLIC ROUTE END
   //PRIVATE ROUTE
   {
@@ -129,6 +147,22 @@ const routes = [
     type: "private",
     title: "Профиль",
     component: () => <Profile />,
+  },
+  {
+    path: "/lk/question/:slug",
+    exact: true,
+    type: "private",
+    title: "Вопрос",
+    forseTitle: true,
+    component: () => <Question isPrivate={true} />,
+  },
+  {
+    path: "/lk/page/:slug",
+    exact: true,
+    type: "private",
+    title: "Страница",
+    forseTitle: true,
+    component: () => <Page isPrivate={true} />,
   },
   {
     path: "/notifications",

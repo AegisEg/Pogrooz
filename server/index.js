@@ -12,8 +12,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const historyApiFallback = require("connect-history-api-fallback");
 const { initSocket } = require("./controllers/SocketController");
-const adminPanel = require('./controllers/AdminController')
-const formidableMiddleware = require('express-formidable');
+const adminPanel = require("./controllers/AdminController");
+const formidableMiddleware = require("express-formidable");
 // const errors = require('./middleware/errors');
 
 //ENV load
@@ -35,11 +35,12 @@ const dialogsRoutes = require("./routes/dialog");
 const dialogOrderRoutes = require("./routes/dialogOrder");
 const carRoutes = require("./routes/car");
 const notification = require("./routes/notification");
+const page = require("./routes/page");
 // Use Express as our web server
 const app = express();
 
 app
-  .use('/admin', formidableMiddleware(), adminPanel)
+  .use("/admin", formidableMiddleware(), adminPanel)
   // Parse JSON
   .use(bodyParser.json())
   // Cors
@@ -59,6 +60,7 @@ app
   .use("/api/dialog", dialogsRoutes)
   .use("/api/dialogsOrder", dialogOrderRoutes)
   .use("/api/notification", notification)
+  .use("/api/page", page)
   // Serve static files
   .use(express.static(path.join(__dirname, "../client")))
   .use("/media", express.static(path.join(__dirname, "./uploads")))

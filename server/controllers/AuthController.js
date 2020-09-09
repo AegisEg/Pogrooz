@@ -124,11 +124,17 @@ module.exports = {
               },
             },
           ]);
+          let onlyNoRead = await Notification.find({
+            user: user,
+            isRead: false,
+          });
           return res.json({
             token,
             user: user.toJSON(),
             myCountsArticles,
             takeCountsArticles,
+            noReadNotifications: onlyNoRead.length,
+            onlyNoRead,
           });
         }
       }

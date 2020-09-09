@@ -14,23 +14,24 @@ class Notifications extends React.Component {
     typeNotification: "all",
   };
   componentDidMount() {
-    if (!this.props.notifications.getted)
-      this.props.notificationActions.notificationsGet(this.props.user.apiToken);
+    if (!this.props.notifications.all.getted)
+      this.props.notificationActions.notificationsGet(
+        "all",
+        this.props.user.apiToken
+      );
   }
   renderNotification = () => {
-    let notifications = this.props.notifications.notifications.filter(
-      (item) =>
-        item.type === this.state.typeNotification ||
-        this.state.typeNotification === "all"
-    );
+    let notifications = this.props.notifications[this.state.typeNotification]
+      .notifications;
     return (
       <>
         {notifications.map((item, index) => {
           return (
             <Notification
-              reading={(id) => {
+              reading={(id, type) => {
                 this.props.notificationActions.notificationRead(
                   id,
+                  type,
                   this.props.user.apiToken
                 );
               }}
@@ -46,10 +47,11 @@ class Notifications extends React.Component {
     );
   };
   render() {
+    let notifications = this.props.notifications[this.state.typeNotification];
     return (
       <div className="container-fluid">
         <h2 className="title">Уведомления</h2>
-        <Loading isLoading={this.props.notifications.isFetching}></Loading>
+        <Loading isLoading={notifications.isFetching}></Loading>
         <CSSTransitionGroup
           transitionName="height-animation-item"
           transitionEnterTimeout={500}
@@ -58,7 +60,7 @@ class Notifications extends React.Component {
             display: "contents",
           }}
         >
-          {!this.props.notifications.isFetching && (
+          {!notifications.isFetching && (
             <>
               <div className="tab_groups">
                 <span
@@ -67,6 +69,11 @@ class Notifications extends React.Component {
                   }`}
                   onClick={() => {
                     this.setState({ typeNotification: "all" });
+                    if (!this.props.notifications.all.getted)
+                      this.props.notificationActions.notificationsGet(
+                        "all",
+                        this.props.user.apiToken
+                      );
                   }}
                 >
                   Все
@@ -77,6 +84,11 @@ class Notifications extends React.Component {
                   }`}
                   onClick={() => {
                     this.setState({ typeNotification: "order" });
+                    if (!this.props.notifications.order.getted)
+                      this.props.notificationActions.notificationsGet(
+                        "order",
+                        this.props.user.apiToken
+                      );
                   }}
                 >
                   По заказам
@@ -87,6 +99,11 @@ class Notifications extends React.Component {
                   }`}
                   onClick={() => {
                     this.setState({ typeNotification: "offer" });
+                    if (!this.props.notifications.offer.getted)
+                      this.props.notificationActions.notificationsGet(
+                        "offer",
+                        this.props.user.apiToken
+                      );
                   }}
                 >
                   По предложениям
@@ -97,16 +114,26 @@ class Notifications extends React.Component {
                   }`}
                   onClick={() => {
                     this.setState({ typeNotification: "system" });
+                    if (!this.props.notifications.system.getted)
+                      this.props.notificationActions.notificationsGet(
+                        "system",
+                        this.props.user.apiToken
+                      );
                   }}
                 >
                   Системные
                 </span>
                 <span
                   className={`tab_group ${
-                    this.state.typeNotification === "tarif" ? "active" : ""
+                    this.state.typeNotification === "tarrif" ? "active" : ""
                   }`}
                   onClick={() => {
-                    this.setState({ typeNotification: "tarif" });
+                    this.setState({ typeNotification: "tarrif" });
+                    if (!this.props.notifications.tarrif.getted)
+                      this.props.notificationActions.notificationsGet(
+                        "tarrif",
+                        this.props.user.apiToken
+                      );
                   }}
                 >
                   По Тарифу

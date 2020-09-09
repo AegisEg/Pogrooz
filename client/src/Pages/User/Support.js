@@ -28,7 +28,7 @@ class Support extends React.Component {
             .
           </p>
         </div>
-        <FAQ noPadding={true} />
+        <FAQ noPadding={true} type={this.props.user.type} />
       </div>
     );
   }

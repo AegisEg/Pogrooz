@@ -10,7 +10,7 @@ import smallminilogo from "../img/mini-logo.svg";
 import notificationsFill from "../img/notifications-fill.png";
 import { ReactComponent as Support } from "../img/support.svg";
 import ImgActiveStar from "../img/active-star.png";
-
+import Notification from "../Elements/Notification";
 // Elements
 import Button from "../Elements/Button";
 import MenuNav from "./MenuNav";
@@ -148,7 +148,7 @@ class Header extends React.Component {
             <div className="header-fast-access">
               <div
                 className={`fast-access-btn  notifications ${
-                  !!this.props.notifications.noRead && "not-empty"
+                  !!this.props.notifications.all.noRead && "not-empty"
                 }`}
                 onMouseEnter={() => {
                   this.showNotificationsPop();
@@ -158,19 +158,30 @@ class Header extends React.Component {
                 }}
               >
                 <img src={notificationsFill} alt="Уведомления" />
-                {!!this.props.notifications.noRead && (
+                {!!this.props.notifications.all.noRead && (
                   <div className="action-counter">
-                    <span>{this.props.notifications.noRead}</span>
+                    <span>{this.props.notifications.all.noRead}</span>
                   </div>
                 )}
                 {this.state.showNotificationsPop && (
                   <div className="pop-block">
-                    <div className="pop-block-item">
-                      В личном кабинете произошли изменения
-                    </div>
-                    <div className="pop-block-item">
-                      В личном кабинете произошли изменения
-                    </div>
+                    <Link to="/notifications">
+                      {this.props.notifications.all.onlyNoread.slice(0,4).map(
+                        (item, index) => {
+                          return (
+                            <div key={index} className="pop-block-item">
+                              <Notification
+                                notification={item}
+                                onlyText={true}
+                              />
+                            </div>
+                          );
+                        }
+                      )}
+                    </Link>
+                    {!this.props.notifications.all.onlyNoread.length && (
+                      <div className="pop-block-item text-center">Пусто</div>
+                    )}
                     <div className="pop-block-additionally">Скрыть</div>
                   </div>
                 )}

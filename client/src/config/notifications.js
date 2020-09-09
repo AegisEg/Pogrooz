@@ -93,7 +93,7 @@ export default [
     ),
   },
   {
-    id: 4,
+    id: 5,
     code: "ARTICLE_SET_REVIEW",
     text: (info) => (
       <>
@@ -107,7 +107,7 @@ export default [
     ),
   },
   {
-    id: 4,
+    id: 6,
     code: "SEND_NEW_MESSAGE",
     text: (info) => (
       <>
@@ -117,7 +117,7 @@ export default [
     ),
   },
   {
-    id: 4,
+    id: 7,
     code: "SEND_NEW_MESSAGE_BY_ORDER",
     text: (info) => (
       <>
@@ -129,5 +129,10 @@ export default [
         появилось новое собщение
       </>
     ),
+  },
+  {
+    id: 8,
+    code: "ARTICLE_PASSPORT_MODERATION",
+    text: (info) => <>Фото паспотра прошло модерацию</>,
   },
 ];
