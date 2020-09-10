@@ -52,7 +52,7 @@ export const dialogsAllGet = (apiToken) => (dispatch) => {
 
         if (existDialog) {
           data.dialogs[i].messages = existDialog.messages;
-          data.dialogs[i].getted = true;
+          data.dialogs[i].isGetted = true;
         }
         data.dialogs[i].user = data.dialogs[i].users.find(
           (user) => user._id !== store.getState().user._id
@@ -90,7 +90,7 @@ export const dialogsGet = (apiToken) => (dispatch) => {
 
         if (existDialog) {
           data.dialogs[i].messages = existDialog.messages;
-          data.dialogs[i].getted = true;
+          data.dialogs[i].isGetted = true;
         }
         data.dialogs[i].user = data.dialogs[i].users.find(
           (user) => user._id !== store.getState().user._id
@@ -131,7 +131,7 @@ export const dialogGet = (userId, apiToken) => (dispatch) => {
 
           dialog.typing = false;
 
-          dialog.getted = true;
+          dialog.isGetted = true;
           dialog.messages = messages.reverse();
           dialog.lastMessage = false;
           dialog.canLoad = messages.length === 50;
@@ -144,7 +144,7 @@ export const dialogGet = (userId, apiToken) => (dispatch) => {
           resolve();
         } else {
           let dialog = {
-            getted: true,
+            isGetted: true,
             isNotFound: true,
             user: { _id: userId },
           };
@@ -512,7 +512,7 @@ export const dialogsOrderGet = (apiToken) => (dispatch) => {
 
         if (existDialog) {
           data.dialogs[i].messages = existDialog.messages;
-          data.dialogs[i].getted = true;
+          data.dialogs[i].isGetted = true;
         }
         data.dialogs[i].user = data.dialogs[i].users.find(
           (user) => user._id !== store.getState().user._id
@@ -554,7 +554,7 @@ export const dialogOrderGet = (userId, orderId, apiToken) => (dispatch) => {
 
           dialog.typing = false;
 
-          dialog.getted = true;
+          dialog.isGetted = true;
           dialog.messages = messages.reverse();
           dialog.lastMessage = false;
           dialog.canLoad = messages.length === 50;
@@ -567,7 +567,7 @@ export const dialogOrderGet = (userId, orderId, apiToken) => (dispatch) => {
           resolve();
         } else {
           let dialog = {
-            getted: true,
+            isGetted: true,
             isNotFound: true,
             user: { _id: userId },
           };

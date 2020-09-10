@@ -434,15 +434,15 @@ module.exports = {
   },
   getMyArticles: async (req, res, next) => {
     const { user } = res.locals;
-    let { status, type, page } = req.body;
+    let { status, type, offset } = req.body;
     try {
-      status = { $in: status };
       if (type === "my") {
-        let articles = await Article.find({
+        let filter = {
           author: user._id,
-          status: status,
           type: user.type === "cargo" ? "order" : "offer",
-        })
+        };
+        if (status) filter.status = { $in: status };
+        let articles = await Article.find(filter)
           .populate([
             {
               path: "author",
@@ -462,18 +462,19 @@ module.exports = {
             },
           ])
           .sort({ createdAt: -1 })
-          .limit(count)
-          .skip(page * count);
+          .skip(offset)
+          .limit(count);
         return res.json({
           articles,
         });
       }
       if (type === "taking") {
-        let articles = await Article.find({
-          status: status,
+        let filter = {
           type: user.type === "cargo" ? "offer" : "order",
           executors: user,
-        })
+        };
+        if (status) filter.status = { $in: status };
+        let articles = await Article.find(filter)
           .populate([
             {
               path: "author",
@@ -493,8 +494,9 @@ module.exports = {
             },
           ])
           .sort({ createdAt: -1 })
-          .limit(count)
-          .skip(page * count);
+          .skip(offset)
+          .limit(count);
+
         return res.json({
           articles,
         });
@@ -781,17 +783,16 @@ module.exports = {
             type: "Point",
             coordinates: [article.to.data.geo_lat, article.to.data.geo_lon],
           };
-        if (article.startDate.date) {
+        if (article.startDate && article.startDate.date) {
           article.startDate.date = new Date(article.startDate.date);
           article.startDate.date.setHours(0, 0, 0, 0);
         } else {
-          article.startDate.date = null;
+          editArticle.startDate.date = null;
         }
-        editArticle.startDate.date = article.startDate.date;
-        if (article.startDate.timeFrom) {
+        if (article.startDate && article.startDate.timeFrom) {
           editArticle.startDate.timeFrom = new Date(article.startDate.timeFrom);
         } else editArticle.startDate.timeFrom = null;
-        if (article.startDate.timeTo) {
+        if (article.startDate && article.startDate.timeTo) {
           editArticle.startDate.timeTo = new Date(article.startDate.timeTo);
         } else editArticle.startDate.timeTo = null;
         await editArticle.save();
@@ -815,9 +816,26 @@ module.exports = {
     let { articleId } = req.body;
     const { socketId } = req.body;
     try {
-      let article = await Article.findById(articleId);
+      let article = await Article.findById(articleId).populate([
+        {
+          path: "author",
+        },
+        {
+          path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
+        },
+      ]);
       let lastStatus = article.status;
-      if (article && compareId(user._id, article.author)) {
+      if (article && compareId(user._id, article.author._id)) {
         if (article.status === 1 || article.status === 2) {
           article.status = 7;
           await article.save();
@@ -825,8 +843,7 @@ module.exports = {
             userId: user._id,
             socketId,
             lastStatus,
-            status: 7,
-            articleID: article._id,
+            article,
           });
           return res.json({ error: false });
         }
@@ -851,8 +868,25 @@ module.exports = {
     let { articleId } = req.body;
     const { socketId } = req.body;
     try {
-      let article = await Article.findById(articleId);
-      if (article && compareId(user._id, article.author)) {
+      let article = await Article.findById(articleId).populate([
+        {
+          path: "author",
+        },
+        {
+          path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
+        },
+      ]);
+      if (article && compareId(user._id, article.author._id)) {
         if (article.status === 1) {
           article.status = 2;
           await article.save();
@@ -860,8 +894,7 @@ module.exports = {
             userId: user._id,
             socketId,
             lastStatus: 1,
-            status: 2,
-            articleID: article._id,
+            article,
           });
           return res.json({ error: false });
         }
@@ -886,12 +919,28 @@ module.exports = {
     let { articleId } = req.body;
     const { socketId } = req.body;
     try {
-      let article = await Article.findById(articleId);
-      console.log();
+      let article = await Article.findById(articleId).populate([
+        {
+          path: "author",
+        },
+        {
+          path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
+        },
+      ]);
       if (
         article &&
         user.type === "carrier" &&
-        (compareId(user._id, article.author) ||
+        (compareId(user._id, article.author._id) ||
           article.executors.find((item) => compareId(item, user._id)))
       ) {
         if (article.status === 3) {
@@ -902,8 +951,7 @@ module.exports = {
               userId: item,
               socketId,
               lastStatus: 3,
-              status: 4,
-              articleID: article._id,
+              article,
               isTaking: true,
             });
             createNotify(
@@ -918,11 +966,10 @@ module.exports = {
             );
           });
           updateStatusMyArticle({
-            userId: article.author,
+            userId: article.author._id,
             socketId,
             lastStatus: 3,
-            status: 4,
-            articleID: article._id,
+            article,
           });
           return res.json({ error: false });
         }
@@ -947,8 +994,25 @@ module.exports = {
     let { articleId } = req.body;
     const { socketId } = req.body;
     try {
-      let article = await Article.findById(articleId);
-      if (article && compareId(user._id, article.author)) {
+      let article = await Article.findById(articleId).populate([
+        {
+          path: "author",
+        },
+        {
+          path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
+        },
+      ]);
+      if (article && compareId(user._id, article.author._id)) {
         if (article.status === 4) {
           article.status = 5;
           await article.save();
@@ -957,8 +1021,7 @@ module.exports = {
               userId: item,
               socketId,
               lastStatus: 4,
-              status: 5,
-              articleID: article._id,
+              article,
               isTaking: true,
             });
             createNotify(
@@ -973,11 +1036,10 @@ module.exports = {
             );
           });
           updateStatusMyArticle({
-            userId: article.author,
+            userId: article.author._id,
             socketId,
             lastStatus: 4,
-            status: 5,
-            articleID: article._id,
+            article,
           });
           return res.json({ error: false });
         }
@@ -1002,8 +1064,25 @@ module.exports = {
     let { articleId } = req.body;
     const { socketId } = req.body;
     try {
-      let article = await Article.findById(articleId);
-      if (article && compareId(user._id, article.author)) {
+      let article = await Article.findById(articleId).populate([
+        {
+          path: "author",
+        },
+        {
+          path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
+        },
+      ]);
+      if (article && compareId(user._id, article.author._id)) {
         if (article.status === 4) {
           article.status = 6;
           await article.save();
@@ -1013,7 +1092,7 @@ module.exports = {
               socketId,
               lastStatus: 4,
               status: 6,
-              articleID: article._id,
+              article,
               isTaking: true,
             });
             createNotify(
@@ -1028,11 +1107,10 @@ module.exports = {
             );
           });
           updateStatusMyArticle({
-            userId: article.author,
+            userId: article.author._id,
             socketId,
             lastStatus: 4,
-            status: 6,
-            articleID: article._id,
+            article,
           });
 
           return res.json({ error: false });
@@ -1058,17 +1136,34 @@ module.exports = {
     let { articleId } = req.body;
     const { socketId } = req.body;
     try {
-      let article = await Article.findById(articleId);
-      if (article && compareId(user._id, article.author)) {
-        if (article.status === 2) {
+      let article = await Article.findById(articleId).populate([
+        {
+          path: "author",
+        },
+        {
+          path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
+        },
+      ]);
+      if (article && compareId(user._id, article.author._id)) {
+        let lastStatus = article.status;
+        if (lastStatus === 2 || lastStatus === 7) {
           article.status = 1;
           await article.save();
           updateStatusMyArticle({
             userId: user._id,
             socketId,
-            lastStatus: 2,
-            status: 1,
-            articleID: article._id,
+            lastStatus,
+            article,
           });
           return res.json({ error: false });
         }
@@ -1093,8 +1188,25 @@ module.exports = {
     let { articleId } = req.body;
     const { socketId } = req.body;
     try {
-      let article = await Article.findById(articleId);
-      if (article && compareId(user._id, article.author)) {
+      let article = await Article.findById(articleId).populate([
+        {
+          path: "author",
+        },
+        {
+          path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
+        },
+      ]);
+      if (article && compareId(user._id, article.author._id)) {
         if (article.status === 7) {
           article.status = 1;
           await article.save();
@@ -1102,8 +1214,7 @@ module.exports = {
             userId: user._id,
             socketId,
             lastStatus: 7,
-            status: 1,
-            articleID: article._id,
+            article,
           });
           return res.json({ error: false });
         }
@@ -1129,7 +1240,24 @@ module.exports = {
     const { socketId } = req.body;
     let { articleId } = req.body;
     try {
-      let article = await Article.findById(articleId).populate("author");
+      let article = await Article.findById(articleId).populate([
+        {
+          path: "author",
+        },
+        {
+          path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
+        },
+      ]);
       if (article && compareId(user._id, article.author._id)) {
         if (article && article.type === "offer" && !!article.executors.length) {
           article.status = 3;
@@ -1140,8 +1268,7 @@ module.exports = {
               userId: item,
               socketId,
               lastStatus: 2,
-              status: 3,
-              articleID: article._id,
+              article,
               isTaking: true,
             });
           });
@@ -1149,8 +1276,7 @@ module.exports = {
             userId: article.author._id,
             socketId,
             lastStatus: 2,
-            status: 3,
-            articleID: article._id,
+            article,
           });
           article.executors.map((item) => {
             createNotify(
@@ -1285,7 +1411,6 @@ module.exports = {
     let { requestId, socketId } = req.body;
     try {
       let article = await Article.findOne({ requests: requestId });
-      console.log(requestId);
       if (article && article.status === 2) {
         let removingRequest = await Request.findById(requestId);
         let author = removingRequest.author;
@@ -1333,6 +1458,10 @@ module.exports = {
         },
         {
           path: "executors",
+        },
+        {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
         },
         {
           path: "requests",
@@ -1387,8 +1516,7 @@ module.exports = {
             userId: user._id,
             socketId,
             lastStatus: 2,
-            status: 3,
-            articleID: article._id,
+            article,
           });
           //SOKET
         }
@@ -1427,6 +1555,10 @@ module.exports = {
           path: "executors",
         },
         {
+          path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
           path: "requests",
           populate: {
             path: "author",
@@ -1455,13 +1587,12 @@ module.exports = {
           });
         if (!article.executors.length) {
           article.status = 2;
-          updateStatusMyArticle({
-            userId: user._id,
-            socketId,
-            lastStatus: lastStatus,
-            status: 2,
-            articleID: article._id,
-          });
+          // updateStatusMyArticle({
+          //   userId: user._id,
+          //   socketId,
+          //   lastStatus: lastStatus,
+          //   article,
+          // });
         }
         await article.save();
         //УДаление Из  исполнителей SOKET
@@ -1510,6 +1641,13 @@ module.exports = {
         },
         {
           path: "reviews",
+          populate: [{ path: "user" }, { path: "author" }],
+        },
+        {
+          path: "requests",
+          populate: {
+            path: "author",
+          },
         },
       ]);
       let canDoReview = !article.reviews.find((item) => {

@@ -1,47 +1,52 @@
 import {
   NOTIFICATIONS_ALL_GET,
-  NOTIFICATIONS_ALL_ADD,
   NOTIFICATIONS_ALL_READ,
   NOTIFICATIONS_OFFERS_GET,
-  NOTIFICATIONS_OFFERS_ADD,
   NOTIFICATIONS_OFFERS_READ,
-  NOTIFICATIONS_OFFERS_SET_NO_READ,
   NOTIFICATIONS_ORDERS_GET,
-  NOTIFICATIONS_ORDERS_ADD,
   NOTIFICATIONS_ORDERS_READ,
-  NOTIFICATIONS_ORDERS_SET_NO_READ,
   NOTIFICATIONS_SYSTEM_GET,
-  NOTIFICATIONS_SYSTEM_ADD,
   NOTIFICATIONS_SYSTEM_READ,
-  NOTIFICATIONS_SYSTEM_SET_NO_READ,
   NOTIFICATIONS_TARRIFS_GET,
-  NOTIFICATIONS_TARRIFS_ADD,
   NOTIFICATIONS_TARRIFS_READ,
-  NOTIFICATIONS_TARRIFS_SET_NO_READ,
+  NOTIFICATIONS_ALL_LOAD,
+  NOTIFICATIONS_OFFERS_LOAD,
+  NOTIFICATIONS_ORDERS_LOAD,
+  NOTIFICATIONS_SYSTEM_LOAD,
+  NOTIFICATIONS_TARRIFS_LOAD,
+  NOTIFICATIONS_ALL_LOADING,
+  NOTIFICATIONS_OFFERS_LOADING,
+  NOTIFICATIONS_ORDERS_LOADING,
+  NOTIFICATIONS_SYSTEM_LOADING,
+  NOTIFICATIONS_TARRIFS_LOADING,
 } from "../constants";
 
 import api from "../../config/api";
+import store from "../store";
 import SocketController from "../../controllers/SocketController";
 
 export const notificationsGet = (type, apiToken) => (dispatch) => {
-  fetch(`${api.urlApi}/api/notification/get-all`, {
-    method: "post",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiToken}`,
-    },
-    body: JSON.stringify({
-      type: type,
-    }),
-  })
-    .then((response) => response.json())
-    .then((notifications) => {
-      let dispType = dispatch({
-        type: dipathType(type, "get"),
-        payload: notifications,
+  return new Promise((resolve, reject) => {
+    fetch(`${api.urlApi}/api/notification/get-all`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+      body: JSON.stringify({
+        type: type,
+      }),
+    })
+      .then((response) => response.json())
+      .then(({ notifications }) => {
+        let dispType = dispatch({
+          type: dipathType(type, "get"),
+          payload: notifications,
+        });
+        resolve();
       });
-    });
+  });
 };
 
 export const notificationRead = (id, type, apiToken) => (dispatch) => {
@@ -65,6 +70,33 @@ export const notificationRead = (id, type, apiToken) => (dispatch) => {
       id,
       socketId: SocketController.getSocketId(),
     }),
+  });
+};
+export const notifyLoad = (type, apiToken) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    let offset = store.getState().notifications[type].notifications.length;
+    dispatch({ type: dipathType(type, "loading"), payload: {} });
+
+    fetch(`${api.urlApi}/api/notification/get-all`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+      body: JSON.stringify({
+        type: type,
+        offset,
+      }),
+    })
+      .then((response) => response.json())
+      .then(({ notifications }) => {
+        dispatch({
+          type: dipathType(type, "load"),
+          payload: { notifications },
+        });
+        resolve();
+      });
   });
 };
 function dipathType(type, action) {
@@ -93,5 +125,31 @@ function dipathType(type, action) {
         return NOTIFICATIONS_SYSTEM_READ;
       case "tarrif":
         return NOTIFICATIONS_TARRIFS_READ;
+    }
+  if (action === "load")
+    switch (type) {
+      case "all":
+        return NOTIFICATIONS_ALL_LOAD;
+      case "offer":
+        return NOTIFICATIONS_OFFERS_LOAD;
+      case "order":
+        return NOTIFICATIONS_ORDERS_LOAD;
+      case "system":
+        return NOTIFICATIONS_SYSTEM_LOAD;
+      case "tarrif":
+        return NOTIFICATIONS_TARRIFS_LOAD;
+    }
+  if (action === "loading")
+    switch (type) {
+      case "all":
+        return NOTIFICATIONS_ALL_LOADING;
+      case "offer":
+        return NOTIFICATIONS_OFFERS_LOADING;
+      case "order":
+        return NOTIFICATIONS_ORDERS_LOADING;
+      case "system":
+        return NOTIFICATIONS_SYSTEM_LOADING;
+      case "tarrif":
+        return NOTIFICATIONS_TARRIFS_LOADING;
     }
 }

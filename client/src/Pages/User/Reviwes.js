@@ -1,7 +1,6 @@
 // App
 import React from "react";
 import Avatar from "../../Elements/Avatar";
-import Pagination from "../../Elements/Pagination";
 import { Link } from "react-router-dom";
 // Router
 import { connect } from "react-redux";
@@ -122,7 +121,7 @@ class Reviews extends React.Component {
   //my Я автор
   //me Мне написали
   componentDidMount() {
-    if (!this.props.reviews.reviewsMe.getted)
+    if (!this.props.reviews.reviewsMe.isGetted)
       this.props.reviewsAction.reviewsGet("me", this.props.user.apiToken);
   }
   onScroll() {
@@ -162,7 +161,7 @@ class Reviews extends React.Component {
               onClick={() => {
                 if (!this.props.reviews.reviewsMe.isFetching)
                   this.setState({ currentStatus: 0 }, () => {
-                    if (!this.props.reviews.reviewsMe.getted)
+                    if (!this.props.reviews.reviewsMe.isGetted)
                       this.props.reviewsAction.reviewsGet(
                         "me",
                         this.props.user.apiToken
@@ -179,7 +178,7 @@ class Reviews extends React.Component {
               onClick={() => {
                 if (!this.props.reviews.reviewsMy.isFetching)
                   this.setState({ currentStatus: 1 }, () => {
-                    if (!this.props.reviews.reviewsMy.getted)
+                    if (!this.props.reviews.reviewsMy.isGetted)
                       this.props.reviewsAction.reviewsGet(
                         "my",
                         this.props.user.apiToken
@@ -192,10 +191,10 @@ class Reviews extends React.Component {
           </div>
         </div>
         <Loading
-          isLoading={!reviewsObj.getted && reviewsObj.isFetching}
+          isLoading={!reviewsObj.isGetted && reviewsObj.isFetching}
         ></Loading>
         <LoadingFixed
-          isLoading={reviewsObj.getted && reviewsObj.isFetching}
+          isLoading={reviewsObj.isGetted && reviewsObj.isFetching}
         ></LoadingFixed>
         <CSSTransitionGroup
           transitionName="height-animation-item"
@@ -222,7 +221,7 @@ class Reviews extends React.Component {
               className="load-content scroll"
               autoHide
             >
-              {(reviewsObj.getted || !reviewsObj.isFetching) &&
+              {(reviewsObj.isGetted || !reviewsObj.isFetching) &&
                 !!reviewsObj.reviews.length && (
                   <>
                     <div className="article-block requests-article-block">
@@ -240,7 +239,7 @@ class Reviews extends React.Component {
                   </>
                 )}
 
-              {reviewsObj.getted && !reviewsObj.reviews.length && (
+              {reviewsObj.isGetted && !reviewsObj.reviews.length && (
                 <div className="text-center">Отзывов пока нет</div>
               )}
             </Scrollbars>

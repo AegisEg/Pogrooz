@@ -43,7 +43,7 @@ class Messages extends React.Component {
           (dialog) =>
             dialog.user._id === this.props.match.params.id &&
             dialog.orderId._id === this.props.match.params.order
-        ).getted
+        ).isGetted
       )
         this.props.dialogsActions.dialogOrderLoad(
           this.props.match.params.id,
@@ -135,7 +135,7 @@ class Messages extends React.Component {
               unRead={dialog.messages.filter(
                 (x) => !x.isRead && x.user._id !== this.props.user._id
               )}
-              loading={dialog && !dialog.getted}
+              loading={dialog && !dialog.isGetted}
               dialog={dialog}
             />
           </div>

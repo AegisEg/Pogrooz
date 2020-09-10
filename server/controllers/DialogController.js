@@ -7,8 +7,13 @@
 const Dialog = require("../models/Dialog");
 const Message = require("../models/Message");
 const User = require("../models/User");
+const Notification = require("../models/Notification");
 let { randomString } = require("../controllers/FileController");
-const { sendMessageDialog, readMessageDialog } = require("./SocketController");
+const {
+  sendMessageDialog,
+  readMessageDialog,
+  sendNotification,
+} = require("./SocketController");
 
 module.exports = {
   getAll: async (req, res, next) => {
@@ -365,6 +370,7 @@ module.exports = {
 
       await dialog.save();
 
+      createNotify({ _id: userId }, {}, "SEND_NEW_MESSAGE", "system");
       sendMessageDialog({
         userId: user._id,
         otherId: userId,
@@ -453,3 +459,15 @@ module.exports = {
     }
   },
 };
+async function createNotify(user, info, code, type) {
+  return new Promise(async (resolve, reject) => {
+    let notification = new Notification();
+    notification.user = user;
+    notification.info = info;
+    notification.code = code;
+    notification.type = type;
+    await notification.save();
+    sendNotification({ userId: user._id, notification });
+    resolve();
+  });
+}

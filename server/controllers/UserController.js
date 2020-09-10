@@ -52,13 +52,27 @@ module.exports = {
         user: user,
         isRead: false,
       });
+      let notificationCounts = await Notification.aggregate([
+        {
+          $match: {
+            user: user._id,
+            isRead: false,
+          },
+        },
+        {
+          $group: {
+            _id: "$type",
+            count: { $sum: 1 },
+          },
+        },
+      ]);
       if (user) {
         return res.json({
           user,
           myCountsArticles,
           takeCountsArticles,
-          noReadNotifications: onlyNoRead.length,
           onlyNoRead,
+          notificationCounts,
         });
       }
       const err = new Error(`User ${userId} not found.`);
@@ -93,7 +107,7 @@ module.exports = {
             },
           ]);
 
-          countData.getted = (!!datacount.length && datacount[0].count) || 0;
+          countData.isGetted = (!!datacount.length && datacount[0].count) || 0;
           datacount = await Article.aggregate([
             {
               $match: {

@@ -132,7 +132,7 @@ class User extends React.Component {
           }}
         >
           Взятые {type === "offer" ? "заказы" : "предложения"}
-          <span className="counter">{this.state.countData.getted} </span>
+          <span className="counter">{this.state.countData.isGetted} </span>
         </span>
 
         <span

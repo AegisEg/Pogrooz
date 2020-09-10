@@ -75,13 +75,12 @@ function updateStatusMyArticle({
   userId,
   socketId,
   lastStatus,
-  status,
-  articleID,
+  article,
   isTaking,
 }) {
   io.sockets.connected[socketId]
     .to(`user.${userId}`)
-    .emit("updateStatusMyArticle", { lastStatus, status, articleID, isTaking });
+    .emit("updateStatusMyArticle", { lastStatus, article, isTaking });
 }
 function deleteTaking({ userId, socketId, lastStatus, status, articleID }) {
   io.sockets.connected[socketId]
@@ -176,7 +175,7 @@ function createArticleReview({
       articleID: article._id,
       articleStatus: article.status,
       newReview: newReview,
-      isTaking: false,
+      isTaking: !compareId(article.author._id, userId),
     });
   io.sockets.connected[socketId]
     .to(`user.${otherId}`)
@@ -184,7 +183,7 @@ function createArticleReview({
       articleID: article._id,
       articleStatus: article.status,
       newReview: newReview,
-      isTaking: true,
+      isTaking: !compareId(article.author._id, otherId),
     });
 }
 function createRequestSoket({ article, request, userId, socketId }) {
@@ -230,6 +229,9 @@ function readNotification({ socketId, userId, id, type }) {
   io.sockets.connected[socketId]
     .to(`user.${userId}`)
     .emit("readNotification", { id, type });
+}
+function compareId(id1, id2) {
+  return String(id1) === String(id2);
 }
 module.exports = {
   initSocket,

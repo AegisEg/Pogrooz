@@ -342,7 +342,7 @@ class InputRow extends React.Component {
     {
       id: 10,
       label: "Смотреть отзыв",
-      img: Raiting,
+      img: Reviews,
       status: [5, 6],
       isButton: false,
       condition: (options) => {
@@ -360,7 +360,7 @@ class InputRow extends React.Component {
           }`}
         >
           <span className="d-flex" onClick={this.showReviewsShow}>
-            <Raiting></Raiting>
+            <Reviews />
             <div className="ml-2">Смотреть отзыв</div>
           </span>
           <ReviewsShow

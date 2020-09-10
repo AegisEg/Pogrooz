@@ -10,7 +10,7 @@ const { readNotification } = require("./SocketController");
 module.exports = {
   getAll: async (req, res, next) => {
     const { user } = res.locals;
-    let { type } = req.body;
+    let { type, offset } = req.body;
     try {
       let oneweekago = new Date() - 7 * 24 * 60 * 60 * 1000;
       let filter = {
@@ -18,10 +18,21 @@ module.exports = {
         createdAt: { $gte: oneweekago },
       };
       if (type !== "all") filter.type = type;
-      const notifications = await Notification.find(filter).sort({
-        createdAt: "DESC",
-      });
-      return res.json(notifications);
+      let notifications;
+      if (offset) {
+        notifications = await Notification.find(filter)
+          .sort({
+            createdAt: "DESC",
+          })
+          .skip(offset)
+          .limit(10);
+      } else
+        notifications = await Notification.find(filter)
+          .sort({
+            createdAt: "DESC",
+          })
+          .limit(10);
+      return res.json({ notifications });
     } catch (e) {
       return next(new Error(e));
     }

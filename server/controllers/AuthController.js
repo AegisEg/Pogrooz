@@ -10,6 +10,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const Article = require("../models/Article");
+const Notification = require("../models/Notification");
 const NUM_ROUNDS = 12;
 module.exports = {
   // Register method
@@ -95,6 +96,7 @@ module.exports = {
         if (verifiedPassword) {
           // Success: generate and respond with the JWT
           let token = generateToken(user.id);
+          //Дополнитлеьная информация при авторизации
           let myCountsArticles = await Article.aggregate([
             {
               $match: {
@@ -128,13 +130,27 @@ module.exports = {
             user: user,
             isRead: false,
           });
+          let notificationCounts = await Notification.aggregate([
+            {
+              $match: {
+                user: user._id,
+                isRead: false,
+              },
+            },
+            {
+              $group: {
+                _id: "$type",
+                count: { $sum: 1 },
+              },
+            },
+          ]);
           return res.json({
             token,
             user: user.toJSON(),
             myCountsArticles,
             takeCountsArticles,
-            noReadNotifications: onlyNoRead.length,
             onlyNoRead,
+            notificationCounts,
           });
         }
       }

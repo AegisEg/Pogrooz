@@ -151,11 +151,11 @@ class Dialog extends React.Component {
 
 class Messages extends React.Component {
   componentDidMount() {
-    if (!this.props.dialogs.dialogsUser.getted)
+    if (!this.props.dialogs.dialogsUser.isGetted)
       this.props.dialogsActions.dialogsGet(this.props.user.apiToken);
-    if (!this.props.dialogs.dialogsOrder.getted)
+    if (!this.props.dialogs.dialogsOrder.isGetted)
       this.props.dialogsActions.dialogsOrderGet(this.props.user.apiToken);
-    if (!this.props.dialogs.dialogsALL.getted)
+    if (!this.props.dialogs.dialogsALL.isGetted)
       this.props.dialogsActions.dialogsAllGet(this.props.user.apiToken);
   }
 
@@ -208,7 +208,7 @@ class Messages extends React.Component {
           </div>
         </div>
 
-        {!!dialogs.getted && (
+        {!!dialogs.isGetted && (
           <div className="articles-block full">
             <div className="dialogs-block">
               <div className="container-fluid">

@@ -12,8 +12,8 @@ import {
 } from "../constants";
 
 const INITIAL_STATE = {
-  reviewsMy: { isFetching: false, reviews: [], canLoad: true, getted: false },
-  reviewsMe: { isFetching: false, reviews: [], canLoad: true, getted: false },
+  reviewsMy: { isFetching: false, reviews: [], canLoad: true, isGetted: false },
+  reviewsMe: { isFetching: false, reviews: [], canLoad: true, isGetted: false },
 };
 
 const reviews = (state = INITIAL_STATE, action) => {
@@ -24,7 +24,7 @@ const reviews = (state = INITIAL_STATE, action) => {
         reviewsMy: {
           reviews: action.payload.reviews,
           canLoad: action.payload.reviews.length === 20,
-          getted: true,
+          isGetted: true,
           isFetching: false,
         },
       };
@@ -35,7 +35,7 @@ const reviews = (state = INITIAL_STATE, action) => {
         reviewsMe: {
           reviews: action.payload.reviews,
           canLoad: action.payload.reviews.length === 20,
-          getted: true,
+          isGetted: true,
           isFetching: false,
         },
       };
@@ -46,7 +46,7 @@ const reviews = (state = INITIAL_STATE, action) => {
         reviewsMy: {
           reviews: [...state.reviewsMy.reviews, ...action.payload.reviews],
           canLoad: action.payload.reviews.length === 20,
-          getted: true,
+          isGetted: true,
           isFetching: false,
         },
       };
@@ -57,7 +57,7 @@ const reviews = (state = INITIAL_STATE, action) => {
         reviewsMe: {
           reviews: [...state.reviewsMe.reviews, ...action.payload.reviews],
           canLoad: action.payload.reviews.length === 20,
-          getted: true,
+          isGetted: true,
           isFetching: false,
         },
       };
