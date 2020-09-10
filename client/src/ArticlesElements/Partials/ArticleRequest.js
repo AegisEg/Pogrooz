@@ -84,6 +84,7 @@ class ArticleRequest extends React.Component {
             {this.props.request.author.name.first}
             <br />
             {this.props.request.author.name.middle}
+            <Link to={`/user/${this.props.request.author._id}`} className="sharected-link"></Link>
           </div>
           <div
             className="col f-14"

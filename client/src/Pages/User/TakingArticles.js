@@ -2,7 +2,7 @@
 import React from "react";
 // Elements
 import ArticlesMy from "../../ArticlesElements/ArticlesMy.js";
-import ArticlesOuterLoading from "../../ArticlesElements/ArticlesOuterLoading";
+// import ArticlesOuterLoading from "../../ArticlesElements/ArticlesOuterLoading";
 import { connect } from "react-redux";
 import * as myArticlesActions from "../../redux/actions/myarticles";
 import { bindActionCreators } from "redux";
@@ -96,55 +96,56 @@ class MyArticles extends React.Component {
   render() {
     let reduxArticles = this.props.myarticles.taking;
     return (
-      <div className="lk-order-page">
-        <div className="container-fluid">
-          <h2 className="title">{this.props.title}</h2>
-          {this.renderTabs()}
-        </div>
-        {this.state.currentStatus === "all" && (
-          <ArticlesMy
-            isReload={this.props.myarticles.isReloadTakingAll}
-            reloadEnd={this.props.myArticlesActions.TakingAllLoadEnd}
-            user={this.props.user}
-            isTaking={true}
-            countAll={reduxArticles
-              .filter((item, index) => {
-                let status = index + this.prestatus;
-                return this.props.statusArticle.find((item) => item === status);
-              })
-              .reduce((accumulator, a) => {
-                return accumulator + a.countAll;
-              }, 0)}
-            statuses={this.props.statusArticle}
-          />
-        )}
-        {this.state.currentStatus !== "all" && (
-          <ArticlesOuterLoading
-            IsManage={true}
-            currentPage={
-              reduxArticles[this.state.currentStatus - this.prestatus].page
-            }
-            setPage={(page) => {
-              this.props.myArticlesActions.articlesMyLoad(
-                this.state.currentStatus,
-                page,
-                this.props.user.apiToken
-              );
-            }}
-            isFething={
-              reduxArticles[this.state.currentStatus - this.prestatus]
-                .isFetching
-            }
-            pageCount={
-              reduxArticles[this.state.currentStatus - this.prestatus]
-                .countAll / settings.countArticleOnPage
-            }
-            articles={
-              reduxArticles[this.state.currentStatus - this.prestatus].articles
-            }
-          />
-        )}
-      </div>
+      <></>
+      // <div className="lk-order-page">
+      //   <div className="container-fluid">
+      //     <h2 className="title">{this.props.title}</h2>
+      //     {this.renderTabs()}
+      //   </div>
+      //   {this.state.currentStatus === "all" && (
+      //     <ArticlesMy
+      //       isReload={this.props.myarticles.isReloadTakingAll}
+      //       reloadEnd={this.props.myArticlesActions.TakingAllLoadEnd}
+      //       user={this.props.user}
+      //       isTaking={true}
+      //       countAll={reduxArticles
+      //         .filter((item, index) => {
+      //           let status = index + this.prestatus;
+      //           return this.props.statusArticle.find((item) => item === status);
+      //         })
+      //         .reduce((accumulator, a) => {
+      //           return accumulator + a.countAll;
+      //         }, 0)}
+      //       statuses={this.props.statusArticle}
+      //     />
+      //   )}
+      //   {this.state.currentStatus !== "all" && (
+      //     <ArticlesOuterLoading
+      //       IsManage={true}
+      //       currentPage={
+      //         reduxArticles[this.state.currentStatus - this.prestatus].page
+      //       }
+      //       setPage={(page) => {
+      //         this.props.myArticlesActions.articlesMyLoad(
+      //           this.state.currentStatus,
+      //           page,
+      //           this.props.user.apiToken
+      //         );
+      //       }}
+      //       isFething={
+      //         reduxArticles[this.state.currentStatus - this.prestatus]
+      //           .isFetching
+      //       }
+      //       pageCount={
+      //         reduxArticles[this.state.currentStatus - this.prestatus]
+      //           .countAll / settings.countArticleOnPage
+      //       }
+      //       articles={
+      //         reduxArticles[this.state.currentStatus - this.prestatus].articles
+      //       }
+      //     />
+      //   )}
+      // </div>
     );
   }
 }

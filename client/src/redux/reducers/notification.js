@@ -20,24 +20,99 @@ import {
   NOTIFICATIONS_TARRIFS_READ,
   NOTIFICATIONS_TARRIFS_SET_NO_READ,
   NOTIFICATIONS_NOREAD_GET,
+  //Load
+  NOTIFICATIONS_ALL_LOAD,
+  NOTIFICATIONS_OFFERS_LOAD,
+  NOTIFICATIONS_ORDERS_LOAD,
+  NOTIFICATIONS_SYSTEM_LOAD,
+  NOTIFICATIONS_TARRIFS_LOAD,
+  NOTIFICATIONS_ALL_LOADING,
+  NOTIFICATIONS_OFFERS_LOADING,
+  NOTIFICATIONS_ORDERS_LOADING,
+  NOTIFICATIONS_SYSTEM_LOADING,
+  NOTIFICATIONS_TARRIFS_LOADING,
+  NOTIFICATIONS_SET_COUNT,
 } from "../constants";
-
+import settings from "../../config/settings";
 const INITIAL_STATE = {
   all: {
     isFetching: true,
-    getted: false,
+    isGetted: false,
     notifications: [],
     noRead: 0,
     onlyNoread: [],
+    canLoad: true,
   },
-  offer: { isFetching: true, getted: false, notifications: [], noRead: 0 },
-  order: { isFetching: true, getted: false, notifications: [], noRead: 0 },
-  system: { isFetching: true, getted: false, notifications: [], noRead: 0 },
-  tarrif: { isFetching: true, getted: false, notifications: [], noRead: 0 },
+  offer: {
+    isFetching: true,
+    isGetted: false,
+    notifications: [],
+    noRead: 0,
+    canLoad: true,
+  },
+  order: {
+    isFetching: true,
+    isGetted: false,
+    notifications: [],
+    noRead: 0,
+    canLoad: true,
+  },
+  system: {
+    isFetching: true,
+    isGetted: false,
+    notifications: [],
+    noRead: 0,
+    canLoad: true,
+  },
+  tarrif: {
+    isFetching: true,
+    isGetted: false,
+    notifications: [],
+    noRead: 0,
+    canLoad: true,
+  },
 };
 
-const rooms = (state = INITIAL_STATE, action) => {
+const notifications = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case NOTIFICATIONS_SET_COUNT: {
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          noRead:
+            action.payload
+              .map((item) => item.count)
+              .reduce((a, b) => {
+                return a + b;
+              }, 0) || 0,
+        },
+        offer: {
+          ...state.offer,
+          noRead: action.payload.find((item) => item._id === "offer")
+            ? action.payload.find((item) => item._id === "offer").count
+            : 0,
+        },
+        order: {
+          ...state.order,
+          noRead: action.payload.find((item) => item._id === "order")
+            ? action.payload.find((item) => item._id === "order").count
+            : 0,
+        },
+        system: {
+          ...state.system,
+          noRead: action.payload.find((item) => item._id === "system")
+            ? action.payload.find((item) => item._id === "system").count
+            : 0,
+        },
+        tarrif: {
+          ...state.tarrif,
+          noRead: action.payload.find((item) => item._id === "tarrif")
+            ? action.payload.find((item) => item._id === "tarrif").count
+            : 0,
+        },
+      };
+    }
     case NOTIFICATIONS_ALL_GET: {
       return {
         ...state,
@@ -45,7 +120,8 @@ const rooms = (state = INITIAL_STATE, action) => {
           ...state.all,
           notifications: action.payload,
           isFetching: false,
-          getted: true,
+          canLoad: action.payload.length === settings.notificationCountOfPage,
+          isGetted: true,
         },
       };
     }
@@ -94,7 +170,8 @@ const rooms = (state = INITIAL_STATE, action) => {
           ...state.offer,
           notifications: action.payload,
           isFetching: false,
-          getted: true,
+          canLoad: action.payload.length === settings.notificationCountOfPage,
+          isGetted: true,
         },
       };
     }
@@ -129,8 +206,9 @@ const rooms = (state = INITIAL_STATE, action) => {
         order: {
           ...state.order,
           notifications: action.payload,
+          canLoad: action.payload.length === settings.notificationCountOfPage,
           isFetching: false,
-          getted: true,
+          isGetted: true,
         },
       };
     }
@@ -165,8 +243,9 @@ const rooms = (state = INITIAL_STATE, action) => {
         system: {
           ...state.system,
           notifications: action.payload,
+          canLoad: action.payload.length === settings.notificationCountOfPage,
           isFetching: false,
-          getted: true,
+          isGetted: true,
         },
       };
     }
@@ -201,8 +280,9 @@ const rooms = (state = INITIAL_STATE, action) => {
         tarrif: {
           ...state.tarrif,
           notifications: action.payload,
+          canLoad: action.payload.length === settings.notificationCountOfPage,
           isFetching: false,
-          getted: true,
+          isGetted: true,
         },
       };
     }
@@ -230,9 +310,101 @@ const rooms = (state = INITIAL_STATE, action) => {
       };
     case NOTIFICATIONS_TARRIFS_SET_NO_READ:
       return { ...state, tarrif: { ...state.tarrif, noRead: action.payload } };
+    //LoadING
+    case NOTIFICATIONS_ALL_LOADING:
+      return { ...state, all: { ...state.all, isFetching: true } };
+    case NOTIFICATIONS_OFFERS_LOADING:
+      return { ...state, offer: { ...state.all, isFetching: true } };
+    case NOTIFICATIONS_ORDERS_LOADING:
+      return { ...state, order: { ...state.all, isFetching: true } };
+    case NOTIFICATIONS_SYSTEM_LOADING:
+      return { ...state, system: { ...state.all, isFetching: true } };
+    case NOTIFICATIONS_TARRIFS_LOADING:
+      return { ...state, tarrif: { ...state.all, isFetching: true } };
+    //LOAD
+    case NOTIFICATIONS_ALL_LOAD:
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          notifications: [
+            ...state.all.notifications,
+            ...action.payload.notifications,
+          ],
+          canLoad:
+            action.payload.notifications.length ===
+            settings.notificationCountOfPage,
+          isGetted: true,
+          isFetching: false,
+        },
+      };
+    case NOTIFICATIONS_OFFERS_LOAD:
+      return {
+        ...state,
+        offer: {
+          ...state.offer,
+          notifications: [
+            ...state.offer.notifications,
+            ...action.payload.notifications,
+          ],
+          canLoad:
+            action.payload.notifications.length ===
+            settings.notificationCountOfPage,
+          isGetted: true,
+          isFetching: false,
+        },
+      };
+    case NOTIFICATIONS_ORDERS_LOAD:
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          notifications: [
+            ...state.order.notifications,
+            ...action.payload.notifications,
+          ],
+          canLoad:
+            action.payload.notifications.length ===
+            settings.notificationCountOfPage,
+          isGetted: true,
+          isFetching: false,
+        },
+      };
+    case NOTIFICATIONS_SYSTEM_LOAD:
+      return {
+        ...state,
+        system: {
+          ...state.system,
+          notifications: [
+            ...state.system.notifications,
+            ...action.payload.notifications,
+          ],
+          canLoad:
+            action.payload.notifications.length ===
+            settings.notificationCountOfPage,
+          isGetted: true,
+          isFetching: false,
+        },
+      };
+    case NOTIFICATIONS_TARRIFS_LOAD:
+      return {
+        ...state,
+        tarrif: {
+          ...state.tarrif,
+          notifications: [
+            ...state.tarrif.notifications,
+            ...action.payload.notifications,
+          ],
+          canLoad:
+            action.payload.notifications.length ===
+            settings.notificationCountOfPage,
+          isGetted: true,
+          isFetching: false,
+        },
+      };
     default:
       return state;
   }
 };
 
-export default rooms;
+export default notifications;

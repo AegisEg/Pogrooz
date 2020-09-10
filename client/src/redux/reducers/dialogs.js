@@ -33,21 +33,21 @@ const INITIAL_STATE = {
     isFetching: true,
     dialogs: [],
     canLoad: false,
-    getted: false,
+    isGetted: false,
     noReadCount: 0,
   },
   dialogsOrder: {
     isFetching: true,
     dialogs: [],
     canLoad: false,
-    getted: false,
+    isGetted: false,
     noReadCount: 0,
   },
   dialogsALL: {
     isFetching: true,
     dialogs: [],
     canLoad: false,
-    getted: false,
+    isGetted: false,
     noReadCount: 0,
   },
 };
@@ -62,7 +62,7 @@ const dialogs = (state = INITIAL_STATE, action) => {
           ...state.dialogsUser,
           dialogs: action.payload.dialogs,
           isFetching: false,
-          getted: true,
+          isGetted: true,
           noReadCount: action.payload.noReadCount,
           canLoad: action.payload.dialogs.length === 20,
         },
@@ -76,7 +76,7 @@ const dialogs = (state = INITIAL_STATE, action) => {
           ...state.dialogsUser,
           dialogs: action.payload.dialogs,
           isFetching: false,
-          getted: true,
+          isGetted: true,
           noReadCount: action.payload.noReadCount,
           canLoad: action.payload.dialogs.length === 20,
         },
@@ -105,7 +105,7 @@ const dialogs = (state = INITIAL_STATE, action) => {
               ? {
                   ...dialog,
                   messages: action.payload.messages,
-                  getted: true,
+                  isGetted: true,
                   canLoad: action.payload.canLoad,
                 }
               : dialog
@@ -118,7 +118,7 @@ const dialogs = (state = INITIAL_STATE, action) => {
               ? {
                   ...dialog,
                   messages: action.payload.messages,
-                  getted: true,
+                  isGetted: true,
                   canLoad: action.payload.canLoad,
                 }
               : dialog
@@ -394,7 +394,7 @@ const dialogs = (state = INITIAL_STATE, action) => {
           ...state.dialogsOrder,
           dialogs: action.payload.dialogs,
           isFetching: false,
-          getted: true,
+          isGetted: true,
           noReadCount: action.payload.noReadCount,
           canLoad: action.payload.dialogs.length === 20,
         },
@@ -419,7 +419,7 @@ const dialogs = (state = INITIAL_STATE, action) => {
               ? {
                   ...dialog,
                   messages: action.payload.messages,
-                  getted: true,
+                  isGetted: true,
                   canLoad: action.payload.canLoad,
                 }
               : dialog

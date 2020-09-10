@@ -2,11 +2,7 @@ import io from "socket.io-client";
 import store from "../redux/store";
 import api from "../config/api";
 import settings from "../config/settings";
-import {
-  articlesMyLoad,
-  deleteAndReload,
-  deleteTaking,
-} from "../redux/actions/myarticles";
+import { articlesMyLoad, deleteTaking } from "../redux/actions/myarticles";
 import {
   DIALOGS_ADD_MESSAGE,
   DIALOGS_READ_MESSAGES,
@@ -18,13 +14,11 @@ import {
   DIALOGS_ADD,
   ARTICLES_MY_CREATE,
   ARTICLES_MY_CREATE_COUNT,
-  ARTICLES_MY_CREATE_REPLACE,
   ARTICLES_MY_UPDATE,
   ARTICLE_TAKING_REVIEW_CREATE,
   ARTICLE_TAKING_REVIEW_UPDATE,
   ARTICLE_MY_REVIEW_CREATE,
   ARTICLE_MY_REVIEW_UPDATE,
-  ARTICLES_TAKING_CREATE_REPLACE,
   ARTICLES_TAKING_CREATE,
   ARTICLES_TAKING_CREATE_COUNT,
   ARTICLES_MY_DELETE_EXECUTOR,
@@ -55,6 +49,8 @@ import {
   NOTIFICATIONS_TARRIFS_SET_NO_READ,
   NOTIFICATIONS_ALL_READ,
   NOTIFICATIONS_ALL_ADD,
+  ARTICLE_MY_UPDATE_STATUS,
+  ARTICLE_TAKING_UPDATE_STATUS,
 } from "../redux/constants";
 import { playNewMessage, playBeep } from "./SoundController";
 let socket = null;
@@ -161,7 +157,7 @@ export default {
               _id: message.dialogId,
               users: [store.getState().user, user],
               user: user,
-              getted: false,
+              isGetted: false,
               typing: false,
               noRead: 1,
               messages: [],
@@ -200,68 +196,54 @@ export default {
     /*ARTICLES SOKETS*/
     socket.on("createMyArticle", ({ status, article }) => {
       let objStatus = store.getState().myarticles.my[status - 1];
-      if (objStatus.isGetted && objStatus.page === 0) {
-        let articles = objStatus.articles;
-        if (articles.length === settings.countArticleOnPage)
-          store.dispatch({
-            type: ARTICLES_MY_CREATE_REPLACE,
-            payload: { status, article: article },
-          });
-        if (articles.length < settings.countArticleOnPage)
-          store.dispatch({
-            type: ARTICLES_MY_CREATE,
-            payload: { status, article: article },
-          });
+      if (objStatus.isGetted) {
+        store.dispatch({
+          type: ARTICLES_MY_CREATE,
+          payload: { status, article },
+        });
       } else {
         store.dispatch({
           type: ARTICLES_MY_CREATE_COUNT,
-          payload: { status, article: article },
+          payload: { status, article },
         });
       }
     });
     socket.on("createTakingArticle", ({ status, article }) => {
       let objStatus = store.getState().myarticles.taking[status - 2];
-      if (objStatus.isGetted && objStatus.page === 0) {
-        let articles = objStatus.articles;
-        if (articles.length === settings.countArticleOnPage)
-          store.dispatch({
-            type: ARTICLES_TAKING_CREATE_REPLACE,
-            payload: { status, article: article },
-          });
-        if (articles.length < settings.countArticleOnPage)
-          store.dispatch({
-            type: ARTICLES_TAKING_CREATE,
-            payload: { status, article: article },
-          });
+      if (objStatus.isGetted) {
+        store.dispatch({
+          type: ARTICLES_TAKING_CREATE,
+          payload: { status, article },
+        });
       } else {
         store.dispatch({
           type: ARTICLES_TAKING_CREATE_COUNT,
-          payload: { status, article: article },
+          payload: { status, article },
         });
       }
     });
     socket.on("editMyArticle", ({ status, article }) => {
       store.dispatch({
         type: ARTICLES_MY_UPDATE,
-        payload: { status: status, article: article },
+        payload: { status: status, article },
       });
     });
     socket.on("deleteTaking", ({ lastStatus, status, articleID }) => {
       deleteTaking(store.dispatch, lastStatus, articleID, apiToken);
     });
-    socket.on(
-      "updateStatusMyArticle",
-      ({ lastStatus, status, articleID, isTaking }) => {
-        deleteAndReload(
-          store.dispatch,
-          lastStatus,
-          status,
-          articleID,
-          apiToken,
-          isTaking
-        );
+    socket.on("updateStatusMyArticle", ({ lastStatus, article, isTaking }) => {
+      if (isTaking) {
+        store.dispatch({
+          type: ARTICLE_TAKING_UPDATE_STATUS,
+          payload: { lastStatus, article },
+        });
+      } else {
+        store.dispatch({
+          type: ARTICLE_MY_UPDATE_STATUS,
+          payload: { lastStatus, article },
+        });
       }
-    );
+    });
     socket.on(
       "createArticleReview",
       ({ articleID, articleStatus, newReview, isTaking }) => {
@@ -314,13 +296,10 @@ export default {
             article.status === 2 &&
             lastStatus !== 2
           ) {
-            deleteAndReload(
-              store.dispatch,
-              lastStatus,
-              2,
-              article._id,
-              store.getState().user.apiToken
-            );
+            store.dispatch({
+              type: ARTICLE_MY_UPDATE_STATUS,
+              payload: { lastStatus, article },
+            });
           }
           store.dispatch({
             type: ARTICLES_MY_DELETE_EXECUTOR,
@@ -337,13 +316,10 @@ export default {
     socket.on("setExecutor", ({ article, executor, lastStatus, isTaking }) => {
       if (!isTaking) {
         if (article.type === "order") {
-          deleteAndReload(
-            store.dispatch,
-            lastStatus,
-            3,
-            article._id,
-            store.getState().user.apiToken
-          );
+          store.dispatch({
+            type: ARTICLE_MY_UPDATE_STATUS,
+            payload: { lastStatus, article },
+          });
         }
         store.dispatch({
           type: ARTICLES_MY_SET_EXECUTOR,
@@ -418,7 +394,7 @@ export default {
     /*ARTICLES SOKETS*/
     /*NOTIFICATIONS SOKETS*/
     socket.on("sendNotification", (notification) => {
-      if (store.getState().notifications[notification.type].getted) {
+      if (store.getState().notifications[notification.type].isGetted) {
         store.dispatch({
           type: dipathType(notification.type, "add"),
           payload: notification,
@@ -428,7 +404,7 @@ export default {
           type: dipathType(notification.type, "noread"),
           payload: store.getState().notifications[notification.type].noRead + 1,
         });
-      if (store.getState().notifications.all.getted) {
+      if (store.getState().notifications.all.isGetted) {
         store.dispatch({
           type: NOTIFICATIONS_ALL_ADD,
           payload: notification,

@@ -157,28 +157,31 @@ class Header extends React.Component {
                   this.hideNotificationsPop();
                 }}
               >
-                <img src={notificationsFill} alt="Уведомления" />
-                {!!this.props.notifications.all.noRead && (
-                  <div className="action-counter">
-                    <span>{this.props.notifications.all.noRead}</span>
-                  </div>
-                )}
+                <Link to="/notifications">
+                  <img src={notificationsFill} alt="Уведомления" />
+                  {!!this.props.notifications.all.noRead && (
+                    <div className="action-counter">
+                      <span>{this.props.notifications.all.noRead}</span>
+                    </div>
+                  )}
+                </Link>
                 {this.state.showNotificationsPop && (
                   <div className="pop-block">
-                    <Link to="/notifications">
-                      {this.props.notifications.all.onlyNoread.slice(0,4).map(
-                        (item, index) => {
-                          return (
-                            <div key={index} className="pop-block-item">
-                              <Notification
-                                notification={item}
-                                onlyText={true}
-                              />
-                            </div>
-                          );
-                        }
-                      )}
-                    </Link>
+                    {this.props.notifications.all.onlyNoread
+                      .slice(0, 4)
+                      .map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="pop-block-item"
+                            onClick={() => {
+                              this.props.history.push("/notifications");
+                            }}
+                          >
+                            <Notification notification={item} onlyText={true} />
+                          </div>
+                        );
+                      })}
                     {!this.props.notifications.all.onlyNoread.length && (
                       <div className="pop-block-item text-center">Пусто</div>
                     )}

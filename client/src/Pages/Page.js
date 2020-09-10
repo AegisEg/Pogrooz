@@ -43,7 +43,6 @@ class Page extends React.Component {
       });
   }
   render() {
-    console.log(this.state);
     return (
       <>
         <div className="static-page">

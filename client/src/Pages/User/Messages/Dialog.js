@@ -35,7 +35,7 @@ class Messages extends React.Component {
       if (
         !dialogs.dialogs.find(
           (dialog) => dialog.user._id === this.props.match.params.id
-        ).getted
+        ).isGetted
       )
         this.props.dialogsActions.dialogLoad(
           this.props.match.params.id,
@@ -95,7 +95,7 @@ class Messages extends React.Component {
               unRead={dialog.messages.filter(
                 (x) => !x.isRead && x.user._id !== this.props.user._id
               )}
-              loading={dialog && !dialog.getted}
+              loading={dialog && !dialog.isGetted}
               dialog={dialog}
             />
           </div>

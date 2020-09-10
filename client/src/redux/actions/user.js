@@ -2,9 +2,9 @@ import {
   USER_LOGIN,
   USER_LOGOUT,
   ARTICLES_MY_SET_COUNT,
-  NOTIFICATIONS_ALL_SET_NO_READ,
   ARTICLES_TAKING_SET_COUNT,
   NOTIFICATIONS_NOREAD_GET,
+  NOTIFICATIONS_SET_COUNT
 } from "../constants";
 import store from "../store";
 import api from "../../config/api";
@@ -14,8 +14,8 @@ export const loginUser = (
   apiToken,
   myCountsArticles,
   takeCountsArticles,
-  noReadNotifications,
-  onlyNoRead
+  onlyNoRead,
+  notificationCounts
 ) => (dispatch) => {
   user.apiToken = apiToken;
   dispatch({
@@ -23,8 +23,8 @@ export const loginUser = (
     payload: user,
   });
   dispatch({
-    type: NOTIFICATIONS_ALL_SET_NO_READ,
-    payload: noReadNotifications,
+    type: NOTIFICATIONS_SET_COUNT,
+    payload: notificationCounts,
   });
   dispatch({
     type: NOTIFICATIONS_NOREAD_GET,
