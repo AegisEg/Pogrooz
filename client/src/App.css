@@ -2071,6 +2071,9 @@ a.mail {
   font-size: 12px;
   line-height: 14px;
 }
+.status-label.more-width {
+  max-width: 220px;
+}
 .status-label {
   max-width: 160px;
   text-align: left;
@@ -2100,6 +2103,7 @@ a.mail {
 .articles-block .input-action span {
   font-size: 14px;
   line-height: 16px;
+  word-break: break-all;
 }
 .articles-header {
   background-color: #f7f7f7;
@@ -2986,8 +2990,8 @@ a.href.hover:hover {
 }
 .ReactModal__Content .close-svg {
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: -20px;
+  top: -20px;
   cursor: pointer;
   z-index: 1000;
 }
@@ -5833,9 +5837,13 @@ span.errRequired {
   box-shadow: rgba(0, 0, 0, 0.13) 3px 2px 15px;
   border-radius: 10px;
   padding: 0;
-  padding-top: 30px;
-  overflow: hidden;
 }
+.delivered-executors > div,
+.cancels-modal > div,
+.dialogs-modal > div {
+  border-radius: 10px;
+}
+.delivered-executors > div,
 .cancels-executors > div,
 .dialogs-executors > div {
   position: relative;
@@ -5844,10 +5852,14 @@ span.errRequired {
   padding: 5px 10px;
   align-items: center;
 }
+.delivered-executors > div:hover {
+  background-color: #f7f7f7;
+}
 .cancels-executors > div:hover,
 .dialogs-executors > div:hover {
   background-color: #ffdc1c;
 }
+.delivered-executors > div .name,
 .cancels-executors > div .name,
 .dialogs-executors > div .name {
   width: 150px;
@@ -5889,6 +5901,6 @@ span.errRequired {
   font-size: 16px;
   line-height: 19px;
 }
-.user-avatar-image-block{
+.user-avatar-image-block {
   position: relative;
 }

@@ -12,6 +12,7 @@ import CompleteModal from "../../Modal/CompleteModal";
 //MODAL
 import DialogsModal from "../../Modal/DialogsModal";
 import CancelsModal from "../../Modal/CancelsModal";
+import DeliverModal from "../../Modal/DeliverModal";
 import RequestModal from "../../Modal/RequestModal.js";
 import ReviewsFormModal from "../../Modal/ReviewsFormModal.js";
 //MODAL
@@ -21,7 +22,6 @@ import { ReactComponent as Otmena } from "../../img/otmena.svg";
 import { ReactComponent as ExecutorCancel } from "../../img/executor-cancel.svg";
 import { ReactComponent as Refresh } from "../../img/refresh.svg";
 import { ReactComponent as CompletedAction } from "../../img/completedAction.svg";
-import { ReactComponent as Raiting } from "../../img/raiting.svg";
 import { ReactComponent as Reviews } from "../../img/reviews.svg";
 import { ReactComponent as GeoDetect } from "../../img/geo-detect.svg";
 import { ReactComponent as Clone } from "../../img/clone.svg";
@@ -36,7 +36,16 @@ import ArrowDownPng from "../../img/arrowDown.png";
 class InputRow extends React.Component {
   constructor(props) {
     super(props);
+    this.role = false;
   }
+  state = {
+    isOpenPopReviews: false,
+    isOpenModalRequest: false,
+    isOpenActionList: false,
+    isOpenReviewsShow: false,
+    isFetching: false,
+    notDelivered: false,
+  };
   showActionList = () => {
     this.setState({ isOpenActionList: true });
     document.addEventListener("click", this.hideActionList);
@@ -59,14 +68,28 @@ class InputRow extends React.Component {
       document.removeEventListener("click", this.hideReviewsShow);
     }
   };
+  reCalculate = () => {
+    let users =
+      this.role == 1
+        ? this.props.article.executors
+        : [this.props.article.author];
+    let delivered = this.props.article.delivered || [];
+    users = users.filter(
+      (item) => !delivered.find((itemX) => item._id === itemX)
+    );
 
-  state = {
-    isOpenPopReviews: false,
-    isOpenModalRequest: false,
-    isOpenActionList: false,
-    isOpenReviewsShow: false,
-    isFetching: false,
+    if (
+      !this.state.notDelivered ||
+      this.state.notDelivered.length > users.length
+    )
+      this.setState({ notDelivered: users });
   };
+  componentDidUpdate() {
+    this.reCalculate();
+  }
+  componentDidMount() {
+    this.reCalculate();
+  }
 
   buttons = [
     /*Роли показа
@@ -112,7 +135,9 @@ class InputRow extends React.Component {
       role: 1,
       img: Otmena,
       condition: (options) => {
-        return !!options.article.executors.length;
+        return (
+          !!options.article.executors.length && options.article.type === "offer"
+        );
       },
       mobileAction: () => {
         this.setState({ isFetching: true }, () => {
@@ -210,6 +235,32 @@ class InputRow extends React.Component {
         });
       },
       status: [3],
+      action: () => {
+        this.setState({ isFetching: true }, () => {
+          this.props.myArticlesActions
+            .setRequestCancel(
+              this.props.article,
+              this.props.user,
+              this.props.user.apiToken
+            )
+            .then((data) => {
+              this.setState({ isFetching: false });
+            });
+        });
+      },
+      mobileAction: () => {
+        this.setState({ isFetching: true }, () => {
+          this.props.myArticlesActions
+            .setRequestCancel(
+              this.props.article,
+              this.props.user,
+              this.props.user.apiToken
+            )
+            .then((data) => {
+              this.setState({ isFetching: false });
+            });
+        });
+      },
       img: Refresh,
       isButton: true,
       ButtonType: "empty",
@@ -255,7 +306,50 @@ class InputRow extends React.Component {
       isButton: true,
       ButtonType: "empty",
     },
-
+    //Отметка о доставке
+    {
+      id: 6,
+      label: "Доставлено",
+      status: [4],
+      condition: (options) => {
+        return (
+          options.user.type === "carrier" &&
+          this.state.notDelivered &&
+          !!this.state.notDelivered.length
+        );
+      },
+      action: () => {
+        if (this.state.notDelivered.length === 1)
+          this.setState({ isFetching: true }, () => {
+            this.props.myArticlesActions
+              .setDeliveredMyArticle(
+                this.props.article,
+                this.state.notDelivered[0],
+                this.props.user.apiToken
+              )
+              .then((data) => {
+                this.setState({ isFetching: false });
+              });
+          });
+        else this.DeliverModal.openForm();
+      },
+      mobileAction: () => {
+        if (this.state.notDelivered.length === 1)
+          this.props.myArticlesActions
+            .setDeliveredMyArticle(
+              this.props.article,
+              this.state.notDelivered[0],
+              this.props.user.apiToken
+            )
+            .then((data) => {
+              this.setState({ isFetching: false });
+            });
+        else this.DeliverModal.openForm();
+      },
+      img: ExecutorCancel,
+      isButton: true,
+      ButtonType: "empty",
+    },
     //В пути
     {
       id: 7,
@@ -314,6 +408,19 @@ class InputRow extends React.Component {
       id: 8,
       label: "Завершить",
       role: 1,
+      condition: (options) => {
+        if (this.role == 1)
+          return (
+            options.article.delivered &&
+            options.article.delivered.length ===
+              options.article.executors.length
+          );
+        if (this.role == 1)
+          return (
+            options.article.delivered && options.article.delivered.length === 1
+          );
+        return false;
+      },
       img: CompletedAction,
       action: () => {
         this.CompleteModal.openForm();
@@ -330,7 +437,13 @@ class InputRow extends React.Component {
       id: 9,
       label: "Отследить",
       condition: (options) => {
-        return options.user.type === "cargo";
+        return (
+          options.user.type === "cargo" &&
+          (!options.article.delivered ||
+            !options.article.delivered.find(
+              (item) => item === options.user._id
+            ))
+        );
       },
       img: GeoDetect,
       status: [4],
@@ -615,7 +728,6 @@ class InputRow extends React.Component {
         role = 2;
     }
     this.role = role;
-
     if (role) {
       return (
         <>
@@ -735,17 +847,31 @@ class InputRow extends React.Component {
               this.CancelsModal = ref;
             }}
             onDeleteExecutor={(executor) => {
+              this.setState({ isFetching: true }, () => {});
+            }}
+            article={this.props.article}
+            users={this.props.article.executors}
+          ></CancelsModal>
+          <DeliverModal
+            ref={(ref) => {
+              this.DeliverModal = ref;
+            }}
+            onDeleteExecutor={(user) => {
               this.setState({ isFetching: true }, () => {
                 this.props.myArticlesActions
-                  .deleteExecutor(this.props.article, executor)
+                  .setDeliveredMyArticle(
+                    this.props.article,
+                    user,
+                    this.props.user.apiToken
+                  )
                   .then((data) => {
                     this.setState({ isFetching: false });
                   });
               });
             }}
             article={this.props.article}
-            dialogs={this.props.article.executors}
-          ></CancelsModal>
+            users={this.state.notDelivered || []}
+          ></DeliverModal>
           <DialogsModal
             ref={(ref) => {
               this.DialogsModal = ref;
@@ -758,6 +884,7 @@ class InputRow extends React.Component {
               this.CompleteModal = ref;
             }}
             onComplete={() => {
+              this.CompleteModal.closeForm();
               this.setState({ isFetching: true }, () => {
                 this.props.myArticlesActions
                   .completeMyArticle(
@@ -765,17 +892,16 @@ class InputRow extends React.Component {
                     this.props.user.apiToken
                   )
                   .then((data) => {
-                    this.CompleteModal.closeForm();
                     this.setState({ isFetching: false });
                   });
               });
             }}
             onCancel={() => {
+              this.CompleteModal.closeForm();
               this.setState({ isFetching: true }, () => {
                 this.props.myArticlesActions
                   .cancelMyArticle(this.props.article, this.props.user.apiToken)
                   .then((data) => {
-                    this.CompleteModal.closeForm();
                     this.setState({ isFetching: false });
                   });
               });

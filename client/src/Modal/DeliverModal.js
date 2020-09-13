@@ -2,10 +2,10 @@
 import React from "react";
 import Modal from "react-modal";
 import settings from "../config/settings.js";
-import { ReactComponent as Otmena } from "../img/otmena.svg";
+import { ReactComponent as GeolocationYellow } from "../img/geolocationYellow.svg";
 import { ReactComponent as CloseSVG } from "../img/close.svg";
 
-class DialogsModal extends React.Component {
+class DeliverModal extends React.Component {
   constructor(props) {
     super(props);
     settings.stylesModals.content.padding = "25px 30px 20px";
@@ -26,7 +26,7 @@ class DialogsModal extends React.Component {
         onRequestClose={this.closeForm}
         className="cancels-modal"
       >
-        <div className="cancels-executors">
+        <div className="delivered-executors">
           {this.props.users.map((item, index) => {
             return (
               <div
@@ -40,7 +40,7 @@ class DialogsModal extends React.Component {
                   {" "}
                   {item.name.last} {item.name.first}
                 </div>
-                <Otmena />
+                <GeolocationYellow />
               </div>
             );
           })}
@@ -55,4 +55,4 @@ class DialogsModal extends React.Component {
   }
 }
 
-export default DialogsModal;
+export default DeliverModal;

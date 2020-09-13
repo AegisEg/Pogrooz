@@ -49,6 +49,11 @@ class ArticleRequest extends React.Component {
     let isExecutor = this.props.article.executors.find(
       (item) => item._id === this.props.request.author._id
     );
+    let isDelivered =
+      this.props.article.delivered &&
+      this.props.article.delivered.find(
+        (item) => item === this.props.request.author._id
+      );
     return (
       <div className="request-article">
         <LoadingFixed isLoading={this.state.isFetching} />
@@ -84,7 +89,10 @@ class ArticleRequest extends React.Component {
             {this.props.request.author.name.first}
             <br />
             {this.props.request.author.name.middle}
-            <Link to={`/user/${this.props.request.author._id}`} className="sharected-link"></Link>
+            <Link
+              to={`/user/${this.props.request.author._id}`}
+              className="sharected-link"
+            ></Link>
           </div>
           <div
             className="col f-14"
@@ -128,6 +136,9 @@ class ArticleRequest extends React.Component {
             {this.props.request.comment}
             {!this.props.request.comment && <>Нет комментария</>}
           </div>
+          {this.props.user.type === "carrier" &&
+            this.props.article.status > 3 &&
+            isDelivered && <div className="text-left col-12">Доставлено</div>}
           {isExecutor &&
             (this.props.article.status == 3 ||
               this.props.article.status == 2) &&
@@ -177,8 +188,7 @@ class ArticleRequest extends React.Component {
               )}
               {!myArticle &&
                 !isExecutor &&
-                this.props.request.author._id ===
-                  this.props.request.author._id && (
+                this.props.user._id === this.props.request.author._id && (
                   <>
                     <Button
                       type="empty"

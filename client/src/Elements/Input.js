@@ -40,6 +40,7 @@ class Input extends React.Component {
             inputExtraProps={{
               name: "phone",
             }}
+            country={"ru"}
             disableDropdown={false}
             style={this.props.style}
             inputClass={`col input-text ${this.props.className} ${

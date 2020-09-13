@@ -1,8 +1,6 @@
 import io from "socket.io-client";
 import store from "../redux/store";
 import api from "../config/api";
-import settings from "../config/settings";
-import { articlesMyLoad, deleteTaking } from "../redux/actions/myarticles";
 import {
   DIALOGS_ADD_MESSAGE,
   DIALOGS_READ_MESSAGES,
@@ -12,6 +10,7 @@ import {
   DIALOGSORDER_READ_MESSAGES,
   DIALOGSORDER_ADD,
   DIALOGS_ADD,
+  ARTICLE_TAKING_DELETE_FROM_STATUS,
   ARTICLES_MY_CREATE,
   ARTICLES_MY_CREATE_COUNT,
   ARTICLES_MY_UPDATE,
@@ -28,7 +27,8 @@ import {
   ARTICLE_REMOVE_ME_REQUEST,
   ARTICLES_TAKING_DELETE_EXECUTOR,
   ARTICLES_TAKING_SET_EXECUTOR,
-  NOTIFICATIONS_READ,
+  ARTICLE_MY_SET_DELIVERED,
+  ARTICLE_TAKING_SET_DELIVERED,
   REVIEWS_ME_CREATE,
   REVIEWS_MY_CREATE,
   REVIEWS_ME_UPDATE,
@@ -104,72 +104,65 @@ export default {
         }
       }
     });
-    socket.on("sendMessageDialog", ({ message, otherId, isOrder }) => {
-      let dialogs = isOrder
-        ? store.getState().dialogs.dialogsOrder
-        : store.getState().dialogs.dialogsUser;
-
-      if (
-        dialogs.dialogs.find((x) => x.user._id === message.user._id) &&
-        dialogs.dialogs.find((x) => x.user._id === message.user._id).typing
-      ) {
-        store.dispatch({
-          type: isOrder ? DIALOGSORDER_SET_TYPER : DIALOGS_SET_TYPER,
-          payload: { userId: message.user._id, typing: false },
-        });
-      }
-
-      if (dialogs.dialogs.find((x) => x._id === message.dialogId)) {
-        let noReadCount = false;
-
-        if (
-          message.user._id !== store.getState().user._id &&
-          !dialogs.dialogs.find((x) => x._id === message.dialogId).noRead
-        ) {
-          noReadCount = true;
-        }
-
-        store.dispatch({
-          type: isOrder ? DIALOGSORDER_ADD_MESSAGE : DIALOGS_ADD_MESSAGE,
-          payload: {
-            message,
-            dialogId: message.dialogId,
-            noRead: message.user._id !== store.getState().user._id,
-            noReadCount,
-          },
-        });
-      } else {
-        fetch(`${api.urlApi}/api/user/get`, {
-          method: "post",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiToken}`,
-          },
-          body: JSON.stringify({
-            userId: otherId,
-          }),
-        })
-          .then((response) => response.json())
-          .then(({ user }) => {
-            let dialog = {
-              lastMessage: message,
-              _id: message.dialogId,
-              users: [store.getState().user, user],
-              user: user,
-              isGetted: false,
-              typing: false,
-              noRead: 1,
-              messages: [],
-            };
-            store.dispatch({
-              type: isOrder ? DIALOGSORDER_ADD : DIALOGS_ADD,
-              payload: dialog,
-            });
+    socket.on(
+      "sendMessageDialog",
+      ({ message, otherId, isOrder, countNoread, isMy }) => {
+        let dialogs = isOrder
+          ? store.getState().dialogs.dialogsOrder
+          : store.getState().dialogs.dialogsUser;
+        if (dialogs.dialogs.find((x) => x._id === message.dialogId)) {
+          store.dispatch({
+            type: isOrder ? DIALOGSORDER_SET_TYPER : DIALOGS_SET_TYPER,
+            payload: { userId: message.user._id, typing: false },
           });
+
+          let noReadCount = false;
+          if (!isMy && !countNoread) {
+            noReadCount = true;
+          }
+          store.dispatch({
+            type: isOrder ? DIALOGSORDER_ADD_MESSAGE : DIALOGS_ADD_MESSAGE,
+            payload: {
+              message,
+              dialogId: message.dialogId,
+              noRead: message.user._id !== store.getState().user._id,
+              noReadCount,
+            },
+          });
+        } else {
+          fetch(`${api.urlApi}/api/user/get`, {
+            method: "post",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${apiToken}`,
+            },
+            body: JSON.stringify({
+              userId: otherId,
+            }),
+          })
+            .then((response) => response.json())
+            .then(({ user }) => {
+              let dialog = {
+                lastMessage: message,
+                _id: message.dialogId,
+                users: [store.getState().user, user],
+                user: user,
+                isGetted: false,
+                canLoad: true,
+                typing: false,
+                noRead: countNoread,
+                messages: [],
+              };
+              store.dispatch({
+                type: isOrder ? DIALOGSORDER_ADD : DIALOGS_ADD,
+                payload: { dialog, isAddCount: !isMy && countNoread },
+              });
+            });
+        }
+        playNewMessage();
       }
-      playNewMessage();
-    });
+    );
     socket.on("readMessagesDialog", ({ dialogId, userId, isOrder }) => {
       if (isOrder)
         store.dispatch({
@@ -228,8 +221,11 @@ export default {
         payload: { status: status, article },
       });
     });
-    socket.on("deleteTaking", ({ lastStatus, status, articleID }) => {
-      deleteTaking(store.dispatch, lastStatus, articleID, apiToken);
+    socket.on("deleteTaking", ({ lastStatus, articleID }) => {
+      store.dispatch({
+        type: ARTICLE_TAKING_DELETE_FROM_STATUS,
+        payload: { lastStatus, articleId: articleID },
+      });
     });
     socket.on("updateStatusMyArticle", ({ lastStatus, article, isTaking }) => {
       if (isTaking) {
@@ -348,6 +344,18 @@ export default {
         type: ARTICLE_UPDATE_ME_REQUEST,
         payload: { article, request },
       });
+    });
+    socket.on("setDelivered", ({ article, user }) => {
+      if (article.author === store.getState().user._id)
+        store.dispatch({
+          type: ARTICLE_MY_SET_DELIVERED,
+          payload: { article, user: user },
+        });
+      else
+        store.dispatch({
+          type: ARTICLE_TAKING_SET_DELIVERED,
+          payload: { article, user: user },
+        });
     });
     socket.on(
       "updateArticleReview",

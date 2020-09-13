@@ -51,7 +51,8 @@ class Login extends React.Component {
             data.myCountsArticles,
             data.takeCountsArticles,
             data.onlyNoRead,
-            data.notificationCounts
+            data.notificationCounts,
+            data.dialogsCount
           );
           if (data.user.type == "carrier")
             this.props.history.push("/my-orders-open");

@@ -11,6 +11,7 @@ export default {
   defaultCar: defaultCar,
   countArticleOnPage: 6,
   notificationCountOfPage: 10,
+  dialogsOnPage: 20,
   cargoTypes: [
     { id: 1, label: "Коробка", img: box },
     { id: 2, label: "Мебель", img: divan },

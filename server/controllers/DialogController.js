@@ -14,7 +14,7 @@ const {
   readMessageDialog,
   sendNotification,
 } = require("./SocketController");
-
+let count = 20;
 module.exports = {
   getAll: async (req, res, next) => {
     const { user } = res.locals;
@@ -36,8 +36,8 @@ module.exports = {
             },
           },
         ])
-        .sort({ updatedAt: "DESC" })
-        .limit(20);
+        .sort({ updatedAt: -1 })
+        .limit(count);
 
       const noReadDialogs = await Dialog.find({
         noRead: { $ne: 0 },
@@ -108,7 +108,7 @@ module.exports = {
             path: "lastMessage",
           },
         ])
-        .sort({ createdAt: "DESC" });
+        .sort({ createdAt: 1 });
       if (!dialog) {
         if (userId == user._id) {
           const err = {};
@@ -161,19 +161,25 @@ module.exports = {
   },
   load: async (req, res, next) => {
     const { user } = res.locals;
-    let { lastDialogId, firstDialogId } = req.body;
+    let { lastDialogId, type } = req.body;
 
     try {
-      const dialogs = await Dialog.find({
-        orderId: null,
+      let dialog = await Dialog.findById(lastDialogId);
+      let filter = {
         users: { $all: [user._id] },
         lastMessage: { $exists: true },
-        _id: { $gt: lastDialogId, $lt: firstDialogId },
-      })
+        updatedAt: { $lt: dialog.updatedAt },
+      };
+      if (type === "user") filter.orderId = null;
+      if (type === "order") filter.orderId = { $ne: null };
+      const dialogs = await Dialog.find(filter)
         .populate([
           {
             path: "users",
             select: ["_id", "name", "online", "color", "onlineAt"],
+          },
+          {
+            path: "orderId",
           },
           {
             path: "lastMessage",
@@ -182,10 +188,10 @@ module.exports = {
             },
           },
         ])
-        .sort({ updatedAt: "ASC" })
-        .limit(20);
+        .sort({ updatedAt: -1 })
+        .limit(count);
 
-      return res.json(dialogs);
+      return res.json({ dialogs });
     } catch (e) {
       return next(new Error(e));
     }
@@ -241,7 +247,6 @@ module.exports = {
         _id: dialog,
         users: query,
       }).populate("lastMessage");
-      console;
       let isOrder = !!dialog.orderId;
       const dialogId = String(dialog._id);
       if (
@@ -377,6 +382,7 @@ module.exports = {
         socketId,
         message,
         isOrder,
+        countNoread: dialog.noRead,
       });
 
       return res.json(message);

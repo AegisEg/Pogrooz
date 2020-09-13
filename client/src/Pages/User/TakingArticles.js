@@ -1,34 +1,36 @@
 // App
 import React from "react";
 // Elements
-import ArticlesMy from "../../ArticlesElements/ArticlesMy.js";
-// import ArticlesOuterLoading from "../../ArticlesElements/ArticlesOuterLoading";
+import Article from "../../ArticlesElements/Article";
+import ArticleHeader from "../../ArticlesElements/Partials/ArticleHeader";
+import LoadingFixed from "../../Elements/LoadingFixed";
+import { Scrollbars } from "react-custom-scrollbars";
+
+import { CSSTransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
 import * as myArticlesActions from "../../redux/actions/myarticles";
 import { bindActionCreators } from "redux";
-import settings from "../../config/settings";
+
 class MyArticles extends React.Component {
   constructor(props) {
     super(props);
-    this.articles = React.createRef();
     this.prestatus = 2;
   }
   state = {
     currentStatus: "all",
-    articles: false,
-    currentPage: 0,
-    isFething: true,
-    pageCount: 0,
   };
   componentDidMount() {
     if (this.props.statusArticle.length === 1)
       this.setState({ currentStatus: this.props.statusArticle[0] }, () => {
-        this.props.myArticlesActions.articlesTakingLoad(
+        this.props.myArticlesActions.articlesTakingGet(
           this.state.currentStatus,
-          0,
           this.props.user.apiToken
         );
       });
+    else
+      this.props.myArticlesActions.articlesAllTakingGet(
+        this.props.user.apiToken
+      );
   }
   renderTabs() {
     let reduxArticles = this.props.myarticles.taking;
@@ -40,18 +42,11 @@ class MyArticles extends React.Component {
               this.state.currentStatus === "all" ? "active" : ""
             }`}
             onClick={() => {
-              this.setState({ currentStatus: "all", currentPage: 0 });
+              this.setState({ currentStatus: "all" });
             }}
           >
             Все &nbsp;
-            {reduxArticles
-              .filter((item, index) => {
-                let status = index + this.prestatus;
-                return this.props.statusArticle.find((item) => item === status);
-              })
-              .reduce((accumulator, a) => {
-                return accumulator + a.countAll;
-              }, 0)}
+            {this.props.myarticles.takingAll.countAll}
           </span>
         )}
         {this.props.statusArticle.map((item, index) => {
@@ -62,16 +57,13 @@ class MyArticles extends React.Component {
                 this.state.currentStatus === item ? "active" : ""
               }`}
               onClick={() => {
-                this.setState({ currentStatus: item, currentPage: 0 }, () => {
+                this.setState({ currentStatus: item }, () => {
                   if (
                     !reduxArticles[this.state.currentStatus - this.prestatus]
-                      .isGetted &&
-                    reduxArticles[this.state.currentStatus - this.prestatus]
-                      .page === 0
+                      .isGetted
                   ) {
-                    this.props.myArticlesActions.articlesTakingLoad(
+                    this.props.myArticlesActions.articlesTakingGet(
                       this.state.currentStatus,
-                      0,
                       this.props.user.apiToken
                     );
                   }
@@ -93,59 +85,93 @@ class MyArticles extends React.Component {
       </div>
     );
   }
+  onScroll() {
+    if (
+      this.articlesBlock.getScrollHeight() -
+        this.articlesBlock.getScrollTop() <=
+      200 + this.articlesBlock.getClientHeight()
+    )
+      if (this.state.currentStatus !== "all") {
+        let reduxArticles = this.props.myarticles.taking;
+        if (
+          reduxArticles[this.state.currentStatus - this.prestatus].canLoad &&
+          !reduxArticles[this.state.currentStatus - this.prestatus].isFetching
+        ) {
+          this.props.myArticlesActions.articlesTakingLoad(
+            this.state.currentStatus,
+            this.props.user.apiToken
+          );
+        }
+      } else {
+        if (
+          this.props.myarticles.takingAll.canLoad &&
+          !this.props.myarticles.takingAll.isFetching
+        )
+          this.props.myArticlesActions.articlesAllTakingLoad(
+            this.props.user.apiToken
+          );
+      }
+  }
   render() {
-    let reduxArticles = this.props.myarticles.taking;
+    let reduxArticles;
+    if (this.state.currentStatus === "all")
+      reduxArticles = this.props.myarticles.takingAll;
+    else
+      reduxArticles = this.props.myarticles.taking[
+        this.state.currentStatus - this.prestatus
+      ];
     return (
-      <></>
-      // <div className="lk-order-page">
-      //   <div className="container-fluid">
-      //     <h2 className="title">{this.props.title}</h2>
-      //     {this.renderTabs()}
-      //   </div>
-      //   {this.state.currentStatus === "all" && (
-      //     <ArticlesMy
-      //       isReload={this.props.myarticles.isReloadTakingAll}
-      //       reloadEnd={this.props.myArticlesActions.TakingAllLoadEnd}
-      //       user={this.props.user}
-      //       isTaking={true}
-      //       countAll={reduxArticles
-      //         .filter((item, index) => {
-      //           let status = index + this.prestatus;
-      //           return this.props.statusArticle.find((item) => item === status);
-      //         })
-      //         .reduce((accumulator, a) => {
-      //           return accumulator + a.countAll;
-      //         }, 0)}
-      //       statuses={this.props.statusArticle}
-      //     />
-      //   )}
-      //   {this.state.currentStatus !== "all" && (
-      //     <ArticlesOuterLoading
-      //       IsManage={true}
-      //       currentPage={
-      //         reduxArticles[this.state.currentStatus - this.prestatus].page
-      //       }
-      //       setPage={(page) => {
-      //         this.props.myArticlesActions.articlesMyLoad(
-      //           this.state.currentStatus,
-      //           page,
-      //           this.props.user.apiToken
-      //         );
-      //       }}
-      //       isFething={
-      //         reduxArticles[this.state.currentStatus - this.prestatus]
-      //           .isFetching
-      //       }
-      //       pageCount={
-      //         reduxArticles[this.state.currentStatus - this.prestatus]
-      //           .countAll / settings.countArticleOnPage
-      //       }
-      //       articles={
-      //         reduxArticles[this.state.currentStatus - this.prestatus].articles
-      //       }
-      //     />
-      //   )}
-      // </div>
+      <div className="lk-order-page">
+        <div className="container-fluid">
+          <h2 className="title">{this.props.title}</h2>
+          {this.renderTabs()}
+        </div>
+        <div className="articles-block">
+          <ArticleHeader></ArticleHeader>
+          <LoadingFixed isLoading={reduxArticles.isFetching}></LoadingFixed>
+          <CSSTransitionGroup
+            transitionName="height-animation-item"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={1}
+            style={{
+              display: "contents",
+            }}
+          >
+            <Scrollbars
+              onScroll={() => {
+                this.onScroll();
+              }}
+              ref={(ref) => {
+                this.articlesBlock = ref;
+              }}
+              renderTrackVertical={(props) => (
+                <div className="track-vertical" />
+              )}
+              renderThumbVertical={(props) => (
+                <div className="thumb-vertical" />
+              )}
+              className="load-content scroll"
+              autoHide
+            >
+              {(!reduxArticles.isFetching || reduxArticles.isGetted) && (
+                <>
+                  {reduxArticles.articles &&
+                    reduxArticles.articles.map((article, i) => {
+                      return (
+                        <Article IsManage={true} key={i} article={article} />
+                      );
+                    })}
+                  {(!reduxArticles.isFetching || reduxArticles.isGetted) &&
+                    reduxArticles.articles &&
+                    !reduxArticles.articles.length && (
+                      <div className="text-center py-3">Записей не найдено</div>
+                    )}
+                </>
+              )}
+            </Scrollbars>
+          </CSSTransitionGroup>
+        </div>
+      </div>
     );
   }
 }

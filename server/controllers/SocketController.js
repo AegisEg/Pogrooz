@@ -47,24 +47,47 @@ function initSocket(initIo) {
   });
 }
 // Chat dialog
-function sendMessageDialog({ userId, socketId, otherId, message, isOrder }) {
+function sendMessageDialog({
+  userId,
+  socketId,
+  otherId,
+  message,
+  isOrder,
+  countNoread,
+}) {
   if (userId != otherId) {
     io.sockets.connected[socketId]
       .to(`user.${otherId}`)
-      .emit("sendMessageDialog", { message, otherId: userId, isOrder });
+      .emit("sendMessageDialog", {
+        message,
+        otherId: userId,
+        isOrder,
+        countNoread,
+        isMy: false,
+      });
     io.sockets.connected[socketId]
       .to(`user.${userId}`)
-      .emit("sendMessageDialog", { message, otherId, isOrder });
+      .emit("sendMessageDialog", {
+        message,
+        otherId,
+        isOrder,
+        countNoread,
+        isMy: true,
+      });
   } else {
     io.sockets.connected[socketId]
       .to(`user.${otherId}`)
-      .emit("sendMessageDialog", { message, otherId: userId, isOrder });
+      .emit("sendMessageDialog", {
+        message,
+        otherId: userId,
+        isOrder,
+        countNoread,
+        isMy: false,
+      });
   }
 }
-function createTakingArticle({ userId, socketId, status, article }) {
-  io.sockets.connected[socketId]
-    .to(`user.${userId}`)
-    .emit("createTakingArticle", { status, article });
+function createTakingArticle({ userId, article }) {
+  io.to(`user.${userId}`).emit("createTakingArticle", { status: 3, article });
 }
 function createMyArticle({ userId, socketId, status, article }) {
   io.sockets.connected[socketId]
@@ -82,10 +105,10 @@ function updateStatusMyArticle({
     .to(`user.${userId}`)
     .emit("updateStatusMyArticle", { lastStatus, article, isTaking });
 }
-function deleteTaking({ userId, socketId, lastStatus, status, articleID }) {
+function deleteTaking({ userId, socketId, lastStatus, articleID }) {
   io.sockets.connected[socketId]
     .to(`user.${userId}`)
-    .emit("deleteTaking", { lastStatus, status, articleID });
+    .emit("deleteTaking", { lastStatus, articleID });
 }
 function editMyArticle({ userId, socketId, status, article }) {
   io.sockets.connected[socketId]
@@ -105,12 +128,12 @@ function readMessageDialog({ dialogId, userId, otherId, socketId, isOrder }) {
 function updateArticleReview({
   article,
   newReview,
-  userId,
-  otherId,
+  myUser,
+  takingUser,
   socketId,
 }) {
   io.sockets.connected[socketId]
-    .to(`user.${userId}`)
+    .to(`user.${takingUser}`)
     .emit("updateArticleReview", {
       articleID: article._id,
       articleStatus: article.status,
@@ -118,7 +141,7 @@ function updateArticleReview({
       isTaking: false,
     });
   io.sockets.connected[socketId]
-    .to(`user.${otherId}`)
+    .to(`user.${myUser}`)
     .emit("updateArticleReview", {
       articleID: article._id,
       articleStatus: article.status,
@@ -198,6 +221,16 @@ function createRequestSoket({ article, request, userId, socketId }) {
       request,
     });
 }
+function setDelivered({ article, user, userId, otherId, socketId }) {
+  io.sockets.connected[socketId].to(`user.${userId}`).emit("setDelivered", {
+    article,
+    user,
+  });
+  io.sockets.connected[socketId].to(`user.${otherId}`).emit("setDelivered", {
+    article,
+    user,
+  });
+}
 function updateRequestSoket({ article, request, userId, socketId }) {
   io.to(`user.${userId}`).emit("updateRequest", {
     article,
@@ -251,4 +284,5 @@ module.exports = {
   updateRequestSoket,
   sendNotification,
   readNotification,
+  setDelivered,
 };

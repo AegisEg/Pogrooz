@@ -17,6 +17,7 @@ const {
   updateRequestSoket,
   deleteRequestSoket,
   sendNotification,
+  setDelivered,
 } = require("./SocketController");
 const Article = require("../models/Article");
 const Request = require("../models/Request");
@@ -471,6 +472,7 @@ module.exports = {
       if (type === "taking") {
         let filter = {
           type: user.type === "cargo" ? "offer" : "order",
+          status: { $gte: 3 },
           executors: user,
         };
         if (status) filter.status = { $in: status };
@@ -941,14 +943,14 @@ module.exports = {
         article &&
         user.type === "carrier" &&
         (compareId(user._id, article.author._id) ||
-          article.executors.find((item) => compareId(item, user._id)))
+          article.executors.find((item) => compareId(item._id, user._id)))
       ) {
         if (article.status === 3) {
           article.status = 4;
           await article.save();
           article.executors.map((item) => {
             updateStatusMyArticle({
-              userId: item,
+              userId: item._id,
               socketId,
               lastStatus: 3,
               article,
@@ -1018,7 +1020,7 @@ module.exports = {
           await article.save();
           article.executors.map((item) => {
             updateStatusMyArticle({
-              userId: item,
+              userId: item._id,
               socketId,
               lastStatus: 4,
               article,
@@ -1088,7 +1090,7 @@ module.exports = {
           await article.save();
           article.executors.map((item) => {
             updateStatusMyArticle({
-              userId: item,
+              userId: item._id,
               socketId,
               lastStatus: 4,
               status: 6,
@@ -1264,12 +1266,9 @@ module.exports = {
           await article.save();
           //SOKETS
           article.executors.map((item) => {
-            updateStatusMyArticle({
-              userId: item,
-              socketId,
-              lastStatus: 2,
-              article,
-              isTaking: true,
+            createTakingArticle({
+              userId: item._id,
+              article: article,
             });
           });
           updateStatusMyArticle({
@@ -1508,8 +1507,6 @@ module.exports = {
           //SOKET
           createTakingArticle({
             userId: executor._id,
-            socketId,
-            status: 3,
             article: article,
           });
           updateStatusMyArticle({
@@ -1581,9 +1578,7 @@ module.exports = {
             userId: executor._id,
             socketId,
             lastStatus: article.status,
-            status: 1212,
             articleID: article._id,
-            isTaking: true,
           });
         if (!article.executors.length) {
           article.status = 2;
@@ -1691,11 +1686,16 @@ module.exports = {
                 else reviewsNew.push(article.reviews[index]);
               }
               article.reviews = reviewsNew;
+
               updateArticleReview({
                 article,
                 newReview,
-                userId: newReview.author._id,
-                otherId: newReview.user._id,
+                myUser: compareId(article.author._id, newReview.author._id)
+                  ? newReview.user._id
+                  : newReview.author._id,
+                takingUser: compareId(article.author._id, newReview.author._id)
+                  ? newReview.author._id
+                  : newReview.user._id,
                 socketId,
               });
             } else {
@@ -1728,6 +1728,78 @@ module.exports = {
           {
             param: "notRole",
             msg: "Невозможно оставить отзыв",
+          },
+        ],
+      });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  setDeliveredCargo: async (req, res, next) => {
+    const { user } = res.locals;
+    let { articleId, deliveredUser } = req.body;
+    const { socketId } = req.body;
+    try {
+      if (user.type === "carrier") {
+        let article = await Article.findOne({
+          _id: articleId,
+          $or: [{ author: deliveredUser }, { executors: deliveredUser }],
+        });
+        if (article) {
+          article.delivered.push(deliveredUser);
+          // article.save();
+          setDelivered({
+            article,
+            user: deliveredUser,
+            userId: user._id,
+            otherId: deliveredUser,
+            socketId,
+          });
+          return res.json({ error: false });
+        }
+      }
+      return res.status(422).json({
+        error: true,
+        errors: [
+          {
+            param: "notRole",
+            msg: "Невозможно оставить отзыв",
+          },
+        ],
+      });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  setRequestCancel: async (req, res, next) => {
+    const { user } = res.locals;
+    let { articleId, deliveredUser } = req.body;
+    try {
+      let article = await Article.findOne({
+        _id: articleId,
+        executors: deliveredUser,
+      });
+      let user = await User.findById(deliveredUser);
+      if (article && user) {
+        createNotify(
+          article.author,
+          {
+            articleType: article.type,
+            articleId: article.articleId,
+            userFio: user.name.last + " " + user.name.first,
+            userType: user.type,
+          },
+          "ARTICLE_REQUEST_CANCEL",
+          article.type
+        );
+        return res.json({ error: false });
+      }
+      return res.status(422).json({
+        error: true,
+        errors: [
+          {
+            param: "notRole",
+            msg: "Невозможно запросить отмену",
           },
         ],
       });

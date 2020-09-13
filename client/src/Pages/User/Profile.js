@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import * as userActions from "../../redux/actions/user";
 import { bindActionCreators } from "redux";
 //IMGS
-import passport from "../../img/passport.png";
+import { ReactComponent as Passport } from "../../img/passport.svg";
 import upload from "../../img/upload.svg";
 import { contractParams } from "../../config/baseInfo/carParams";
 import countryList from "../../config/countryList";
@@ -508,7 +508,7 @@ class Profile extends React.Component {
                   Фото на провекре (первый статус)
                 </p>
                 <p className="d-flex align-items-center">
-                  <img src={passport} alt="" />
+                  <Passport></Passport>
                   Паспорт загружен (после подтверждения админом)
                 </p>
               </div>

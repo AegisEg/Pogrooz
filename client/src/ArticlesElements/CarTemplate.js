@@ -6,8 +6,8 @@ import Button from "../Elements/Button";
 import LoadingFixed from "../Elements/LoadingFixed";
 import settings from "../config/settings";
 import { Link } from "react-router-dom";
-import payIco from "../img/pay-ico.svg";
-import dogovor from "../img/dogovor.png";
+import { ReactComponent as PayIco } from "../img/pay-ico.svg";
+import { ReactComponent as Dogovor } from "../img/dogovor.svg";
 import api from "../config/api";
 import carTypesList from "../config/baseInfo/carTypesList";
 import { toast } from "react-toastify";
@@ -100,7 +100,11 @@ class CarTemplate extends React.Component {
         </div>
         <div className="row mt-4 template-content">
           <div className="templatePhoto">
-            <img className="w-100" src={this.props.template.car.photo.path} alt="" />
+            <img
+              className="w-100"
+              src={this.props.template.car.photo.path}
+              alt=""
+            />
           </div>
           <div className="px-3 f-14 carDescription">
             {this.props.template.car.typesCar.length === carTypesList.length &&
@@ -174,7 +178,7 @@ class CarTemplate extends React.Component {
             {this.props.template.car.contractInfo &&
               !!this.props.template.car.contractInfo.length && (
                 <span className="property-user f-12">
-                  <img src={dogovor} alt="dogovor" />
+                  <Dogovor></Dogovor>
                   Договор с &nbsp;
                   {this.props.template.car.contractInfo.map(
                     (item, index, items) => {
@@ -192,7 +196,7 @@ class CarTemplate extends React.Component {
             {this.props.template.car.paymentInfo &&
               !!this.props.template.car.paymentInfo.length && (
                 <span className="property-user f-12">
-                  <img src={payIco} alt="dogovor" />
+                  <PayIco></PayIco>
                   Оплата{" "}
                   {this.props.template.car.paymentInfo.map(
                     (item, index, items) => {

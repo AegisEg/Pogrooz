@@ -13,7 +13,7 @@ class RatingInput extends React.Component {
         className={`d-flex ${this.props.className}`}
         style={this.props.style}
         onMouseLeave={(e) => {
-          this.setState({ hoveredVal: false });
+          if (!this.props.isDisable) this.setState({ hoveredVal: false });
         }}
       >
         <img
@@ -27,7 +27,7 @@ class RatingInput extends React.Component {
             if (this.props.onClick) this.props.onClick(1);
           }}
           onMouseEnter={() => {
-            this.setState({ hoveredVal: 1 });
+            if (!this.props.isDisable) this.setState({ hoveredVal: 1 });
           }}
           alt="notActiveStar"
         />
@@ -42,7 +42,7 @@ class RatingInput extends React.Component {
             if (this.props.onClick) this.props.onClick(2);
           }}
           onMouseEnter={() => {
-            this.setState({ hoveredVal: 2 });
+            if (!this.props.isDisable) this.setState({ hoveredVal: 2 });
           }}
           alt="notActiveStar"
         />
@@ -57,7 +57,7 @@ class RatingInput extends React.Component {
             if (this.props.onClick) this.props.onClick(3);
           }}
           onMouseEnter={() => {
-            this.setState({ hoveredVal: 3 });
+            if (!this.props.isDisable) this.setState({ hoveredVal: 3 });
           }}
           alt="notActiveStar"
         />
@@ -72,7 +72,7 @@ class RatingInput extends React.Component {
             if (this.props.onClick) this.props.onClick(4);
           }}
           onMouseEnter={() => {
-            this.setState({ hoveredVal: 4 });
+            if (!this.props.isDisable) this.setState({ hoveredVal: 4 });
           }}
           alt="notActiveStar"
         />
@@ -87,7 +87,7 @@ class RatingInput extends React.Component {
             if (this.props.onClick) this.props.onClick(5);
           }}
           onMouseEnter={() => {
-            this.setState({ hoveredVal: 5 });
+            if (!this.props.isDisable) this.setState({ hoveredVal: 5 });
           }}
           alt="notActiveStar"
         />

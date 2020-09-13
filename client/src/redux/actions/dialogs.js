@@ -1,27 +1,33 @@
 import {
   DIALOGSALL_GET,
+  DIALOGSALL_LOAD,
+  DIALOGSALL_SET_LOADING,
+  DIALOGSORDER_SET_LOADING,
+  DIALOGS_SET_LOADING,
   //DIALOGUSER
+  DIALOGS_LOAD,
   DIALOGS_GET,
   DIALOGS_ADD,
   DIALOGS_ADD_MESSAGE,
   DIALOGS_SUCCESS_MESSAGE,
   DIALOGS_ERROR_MESSAGE,
   DIALOGS_READ_MESSAGES,
-  DIALOGS_LOAD,
+  DIALOG_LOAD,
   DIALOGS_DELETE_MESSAGE,
-  DIALOGS_SET_LOADING,
+  DIALOG_SET_LOADING,
   DIALOGS_LOAD_MESSAGES,
   DIALOGS_UPDATE_ONLINE,
   //DIALOGORDER
+  DIALOGSORDER_LOAD,
   DIALOGSORDER_GET,
   DIALOGSORDER_ADD,
   DIALOGSORDER_ADD_MESSAGE,
   DIALOGSORDER_SUCCESS_MESSAGE,
   DIALOGSORDER_ERROR_MESSAGE,
   DIALOGSORDER_READ_MESSAGES,
-  DIALOGSORDER_LOAD,
+  DIALOGORDER_LOAD,
   DIALOGSORDER_DELETE_MESSAGE,
-  DIALOGSORDER_SET_LOADING,
+  DIALOGORDER_SET_LOADING,
   DIALOGSORDER_LOAD_MESSAGES,
   DIALOGSORDER_UPDATE_ONLINE,
 } from "../constants";
@@ -33,79 +39,88 @@ import api from "../../config/api";
 
 //DIALOGALL
 export const dialogsAllGet = (apiToken) => (dispatch) => {
-  fetch(`${api.urlApi}/api/dialogsOrder/getAllDialog`, {
-    method: "post",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiToken}`,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      for (let i = 0; i < data.dialogs.length; i++) {
-        let existDialog = store
-          .getState()
-          .dialogs.dialogsUser.dialogs.find(
-            (x) => x._id === data.dialogs[i]._id
+  return new Promise((resolve, reject) => {
+    fetch(`${api.urlApi}/api/dialogsOrder/getAllDialog`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        for (let i = 0; i < data.dialogs.length; i++) {
+          let existDialog = store
+            .getState()
+            .dialogs.dialogsUser.dialogs.find(
+              (x) => x._id === data.dialogs[i]._id
+            );
+
+          if (existDialog) {
+            data.dialogs[i].messages = existDialog.messages;
+          }
+          data.dialogs[i].isGetted = false;
+          data.dialogs[i].canLoad = true;
+          data.dialogs[i].user = data.dialogs[i].users.find(
+            (user) => user._id !== store.getState().user._id
           );
 
-        if (existDialog) {
-          data.dialogs[i].messages = existDialog.messages;
-          data.dialogs[i].isGetted = true;
+          if (!data.dialogs[i].user)
+            data.dialogs[i].user = data.dialogs[i].users[0];
+
+          data.dialogs[i].typers = [];
         }
-        data.dialogs[i].user = data.dialogs[i].users.find(
-          (user) => user._id !== store.getState().user._id
-        );
-
-        if (!data.dialogs[i].user)
-          data.dialogs[i].user = data.dialogs[i].users[0];
-
-        data.dialogs[i].typers = [];
-      }
-      dispatch({
-        type: DIALOGSALL_GET,
-        payload: data,
+        dispatch({
+          type: DIALOGSALL_GET,
+          payload: data,
+        });
+        resolve();
       });
-    });
+  });
 };
 //DIALOGSUSER
 export const dialogsGet = (apiToken) => (dispatch) => {
-  fetch(`${api.urlApi}/api/dialog/get-all`, {
-    method: "post",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiToken}`,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      for (let i = 0; i < data.dialogs.length; i++) {
-        let existDialog = store
-          .getState()
-          .dialogs.dialogsUser.dialogs.find(
-            (x) => x._id === data.dialogs[i]._id
+  return new Promise((resolve, reject) => {
+    fetch(`${api.urlApi}/api/dialog/get-all`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        for (let i = 0; i < data.dialogs.length; i++) {
+          let existDialog = store
+            .getState()
+            .dialogs.dialogsUser.dialogs.find(
+              (x) => x._id === data.dialogs[i]._id
+            );
+
+          if (existDialog) {
+            data.dialogs[i].messages = existDialog.messages;
+          }
+          data.dialogs[i].isGetted = false;
+          data.dialogs[i].canLoad = true;
+
+          data.dialogs[i].user = data.dialogs[i].users.find(
+            (user) => user._id !== store.getState().user._id
           );
 
-        if (existDialog) {
-          data.dialogs[i].messages = existDialog.messages;
-          data.dialogs[i].isGetted = true;
+          if (!data.dialogs[i].user)
+            data.dialogs[i].user = data.dialogs[i].users[0];
+
+          data.dialogs[i].typers = [];
         }
-        data.dialogs[i].user = data.dialogs[i].users.find(
-          (user) => user._id !== store.getState().user._id
-        );
-
-        if (!data.dialogs[i].user)
-          data.dialogs[i].user = data.dialogs[i].users[0];
-
-        data.dialogs[i].typers = [];
-      }
-      dispatch({
-        type: DIALOGS_GET,
-        payload: data,
+        dispatch({
+          type: DIALOGS_GET,
+          payload: data,
+        });
+        resolve();
       });
-    });
+  });
 };
 
 export const dialogGet = (userId, apiToken) => (dispatch) => {
@@ -139,7 +154,7 @@ export const dialogGet = (userId, apiToken) => (dispatch) => {
 
           dispatch({
             type: DIALOGS_ADD,
-            payload: dialog,
+            payload: { dialog },
           });
           resolve();
         } else {
@@ -158,7 +173,67 @@ export const dialogGet = (userId, apiToken) => (dispatch) => {
       });
   });
 };
+export const dialogsLoad = (type, apiToken) => (dispatch) => {
+  let dialogs;
+  switch (type) {
+    case "all":
+      dispatch({ type: DIALOGSALL_SET_LOADING });
+      dialogs = store.getState().dialogs.dialogsALL;
+      break;
+    case "order":
+      dispatch({ type: DIALOGSORDER_SET_LOADING });
+      dialogs = store.getState().dialogs.dialogsOrder;
+      break;
+    case "user":
+      dispatch({ type: DIALOGS_SET_LOADING });
+      dialogs = store.getState().dialogs.dialogsUser;
+      break;
+  }
+  return new Promise((resolve, reject) => {
+    fetch(`${api.urlApi}/api/dialog/load`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+      body: JSON.stringify({
+        type,
+        lastDialogId: dialogs.dialogs[dialogs.dialogs.length - 1]._id,
+      }),
+    })
+      .then((response) => response.json())
+      .then(({ dialogs }) => {
+        for (let i = 0; i < dialogs.length; i++) {
+          dialogs[i].isGetted = false;
+          dialogs[i].canLoad = true;
+          dialogs[i].user = dialogs[i].users.find(
+            (user) => user._id !== store.getState().user._id
+          );
 
+          if (!dialogs[i].user) dialogs[i].user = dialogs[i].users[0];
+
+          dialogs[i].typers = [];
+        }
+        if (type === "order")
+          dispatch({
+            type: DIALOGSORDER_LOAD,
+            payload: { dialogs },
+          });
+        else if (type === "user")
+          dispatch({
+            type: DIALOGS_LOAD,
+            payload: { dialogs },
+          });
+        else if (type === "all")
+          dispatch({
+            type: DIALOGSALL_LOAD,
+            payload: { dialogs },
+          });
+        resolve();
+      });
+  });
+};
 export const dialogLoad = (userId, apiToken) => (dispatch) => {
   return new Promise((resolve, reject) => {
     fetch(`${api.urlApi}/api/dialog/get`, {
@@ -177,7 +252,7 @@ export const dialogLoad = (userId, apiToken) => (dispatch) => {
         dialog.messages = messages.reverse();
 
         dispatch({
-          type: DIALOGS_LOAD,
+          type: DIALOG_LOAD,
           payload: {
             dialogId: dialog._id,
             messages: dialog.messages,
@@ -451,7 +526,7 @@ export const readMessages = (
 
 export const loadMessages = ({ dialogId }, apiToken, isOrder) => (dispatch) => {
   let typeLoad = isOrder ? DIALOGSORDER_LOAD_MESSAGES : DIALOGS_LOAD_MESSAGES;
-  let typeSetLoad = isOrder ? DIALOGSORDER_SET_LOADING : DIALOGS_SET_LOADING;
+  let typeSetLoad = isOrder ? DIALOGORDER_SET_LOADING : DIALOG_SET_LOADING;
   let dialogs = isOrder
     ? store.getState().dialogs.dialogsOrder
     : store.getState().dialogs.dialogsUser;
@@ -512,8 +587,9 @@ export const dialogsOrderGet = (apiToken) => (dispatch) => {
 
         if (existDialog) {
           data.dialogs[i].messages = existDialog.messages;
-          data.dialogs[i].isGetted = true;
         }
+        data.dialogs[i].isGetted = false;
+        data.dialogs[i].canLoad = true;
         data.dialogs[i].user = data.dialogs[i].users.find(
           (user) => user._id !== store.getState().user._id
         );
@@ -562,7 +638,7 @@ export const dialogOrderGet = (userId, orderId, apiToken) => (dispatch) => {
 
           dispatch({
             type: DIALOGSORDER_ADD,
-            payload: dialog,
+            payload: { dialog },
           });
           resolve();
         } else {
@@ -600,7 +676,7 @@ export const dialogOrderLoad = (userId, orderId, apiToken) => (dispatch) => {
       dialog.messages = messages.reverse();
 
       dispatch({
-        type: DIALOGSORDER_LOAD,
+        type: DIALOGORDER_LOAD,
         payload: {
           dialogId: dialog._id,
           messages: dialog.messages,

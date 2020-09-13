@@ -6,6 +6,10 @@ import { connect } from "react-redux";
 import * as dialogsActions from "../../../redux/actions/dialogs";
 import { bindActionCreators } from "redux";
 import Avatar from "../../../Elements/Avatar";
+import Loading from "../../../Elements/Loading";
+import LoadingFixed from "../../../Elements/LoadingFixed";
+import { Scrollbars } from "react-custom-scrollbars";
+import { CSSTransitionGroup } from "react-transition-group";
 class Dialog extends React.Component {
   render() {
     if (!!this.props.dialog.orderId)
@@ -151,25 +155,52 @@ class Dialog extends React.Component {
 
 class Messages extends React.Component {
   componentDidMount() {
-    if (!this.props.dialogs.dialogsUser.isGetted)
+    if (this.props.tab == "user" && !this.props.dialogs.dialogsUser.isGetted)
       this.props.dialogsActions.dialogsGet(this.props.user.apiToken);
-    if (!this.props.dialogs.dialogsOrder.isGetted)
+    if (this.props.tab == "order" && !this.props.dialogs.dialogsOrder.isGetted)
       this.props.dialogsActions.dialogsOrderGet(this.props.user.apiToken);
-    if (!this.props.dialogs.dialogsALL.isGetted)
-      this.props.dialogsActions.dialogsAllGet(this.props.user.apiToken);
+    if (this.props.tab == "all" && !this.props.dialogs.dialogsALL.isGetted)
+      this.props.dialogsActions
+        .dialogsAllGet(this.props.user.apiToken)
+        .then(() => {
+          this.onScroll();
+        });
   }
+  onScroll() {
+    let dialogs = [];
+    if (this.props.tab == "user") dialogs = this.props.dialogs.dialogsUser;
+    if (this.props.tab == "order") dialogs = this.props.dialogs.dialogsOrder;
+    if (this.props.tab == "all") dialogs = this.props.dialogs.dialogsALL;
 
+    if (
+      !dialogs.isFetching &&
+      dialogs.canLoad &&
+      this.dialogsBlock.getScrollHeight() - this.dialogsBlock.getScrollTop() <=
+        200 + this.dialogsBlock.getClientHeight()
+    ) {
+      this.props.dialogsActions.dialogsLoad(
+        this.props.tab,
+        this.props.user.apiToken
+      );
+    }
+  }
   render() {
     let dialogs = [];
-    if (this.props.tab == 2) dialogs = this.props.dialogs.dialogsUser;
-    if (this.props.tab == 1) dialogs = this.props.dialogs.dialogsOrder;
+    if (this.props.tab == "user") dialogs = this.props.dialogs.dialogsUser;
+    if (this.props.tab == "order") dialogs = this.props.dialogs.dialogsOrder;
     if (this.props.tab == "all") dialogs = this.props.dialogs.dialogsALL;
+    for (let i = 0; i < dialogs.dialogs.length; i++)
+      for (let y = i + 1; y < dialogs.dialogs.length; y++) {
+        if (dialogs.dialogs[i]._id === dialogs.dialogs[y]._id) {
+          console.log("DUPLICATE" + dialogs.dialogs[i].user.name.first);
+        }
+      }
     return (
       <div className="article-page">
         <div className="container-fluid">
           <h2 className="title">
-            {this.props.tab === 1 && "Сообщения пользователей"}
-            {this.props.tab === 2 && "Сообщения по заказам/предложениям"}
+            {this.props.tab === "user" && "Сообщения пользователей"}
+            {this.props.tab === "order" && "Сообщения по заказам/предложениям"}
             {this.props.tab === "all" && "Сообщения"}
           </h2>
           <div className="tab_groups">
@@ -180,51 +211,80 @@ class Messages extends React.Component {
                 }`}
               >
                 Все
-                {(!!this.props.dialogs.dialogsUser.noReadCount ||
-                  !!this.props.dialogs.dialogsOrder.noReadCount) && (
+                {!!this.props.dialogs.dialogsALL.noReadCount && (
                   <div className="action-counter">
-                    <span>
-                      {this.props.dialogs.dialogsUser.noReadCount +
-                        this.props.dialogs.dialogsOrder.noReadCount}
-                    </span>
+                    <span>{this.props.dialogs.dialogsALL.noReadCount}</span>
                   </div>
                 )}
               </span>
             </Link>
             <Link to="/messages-by-order">
               <span
-                className={`tab_group ${this.props.tab === 1 ? "active" : ""}`}
+                className={`tab_group ${
+                  this.props.tab === "order" ? "active" : ""
+                }`}
               >
                 По заказам /предложениям
               </span>
             </Link>
             <Link to="messages-users">
               <span
-                className={`tab_group ${this.props.tab === 2 ? "active" : ""}`}
+                className={`tab_group ${
+                  this.props.tab === "user" ? "active" : ""
+                }`}
               >
                 От пользователей
               </span>
             </Link>
           </div>
         </div>
-
-        {!!dialogs.isGetted && (
-          <div className="articles-block full">
-            <div className="dialogs-block">
-              <div className="container-fluid">
-                {dialogs.dialogs.map((dialog, index) => {
-                  return !!dialog.lastMessage ? (
-                    <Dialog
-                      key={index}
-                      user={this.props.user}
-                      dialog={dialog}
-                    />
-                  ) : null;
-                })}
+        <Loading isLoading={!dialogs.isGetted && dialogs.isFetching}></Loading>
+        <LoadingFixed
+          isLoading={dialogs.isGetted && dialogs.isFetching}
+        ></LoadingFixed>
+        <CSSTransitionGroup
+          transitionName="height-animation-item"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={1}
+          style={{
+            display: "contents",
+          }}
+        >
+          {!!dialogs.isGetted && (
+            <Scrollbars
+              onScroll={() => {
+                this.onScroll();
+              }}
+              ref={(ref) => {
+                this.dialogsBlock = ref;
+              }}
+              renderTrackVertical={(props) => (
+                <div className="track-vertical" />
+              )}
+              renderThumbVertical={(props) => (
+                <div className="thumb-vertical" />
+              )}
+              className="load-content scroll"
+              autoHide
+            >
+              <div className="articles-block full">
+                <div className="dialogs-block">
+                  <div className="container-fluid">
+                    {dialogs.dialogs.map((dialog, index) => {
+                      return !!dialog.lastMessage ? (
+                        <Dialog
+                          key={index}
+                          user={this.props.user}
+                          dialog={dialog}
+                        />
+                      ) : null;
+                    })}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
+            </Scrollbars>
+          )}
+        </CSSTransitionGroup>
       </div>
     );
   }

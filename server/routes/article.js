@@ -33,4 +33,14 @@ router.post("/draftArticle", verifyToken, ArticleController.draftArticle);
 //Reviews
 router.post("/getUserReviews", verifyToken, ArticleController.getUserReviews);
 router.post("/saveReview", verifyToken, ArticleController.saveReview);
+router.post(
+  "/setDeliveredCargo",
+  verifyToken,
+  ArticleController.setDeliveredCargo
+);
+router.post(
+  "/setRequestCancel",
+  verifyToken,
+  ArticleController.setRequestCancel
+);
 module.exports = router;
