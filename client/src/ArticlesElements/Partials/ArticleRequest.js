@@ -102,7 +102,8 @@ class ArticleRequest extends React.Component {
           >
             Рейтинг:
             <br />
-            2 <img src={ImgActiveStar} alt="" />
+            {this.props.request.author.rating || 0}{" "}
+            <img src={ImgActiveStar} alt="" />
           </div>
           <div className="col-12 col-lg f-14 price-request">
             {this.props.request.budget && (
@@ -153,16 +154,35 @@ class ArticleRequest extends React.Component {
                 >
                   Убрать из исполнителей
                 </Button>
-                <Button
-                  type="empty"
-                  paddingHorizontal="29px"
-                  className="input-action mr-3"
-                >
-                  Написать
-                </Button>
+                <Link to={`/dialog/${this.props.request.author._id}`}>
+                  <Button
+                    type="empty"
+                    paddingHorizontal="29px"
+                    className="input-action mr-3"
+                  >
+                    Написать
+                  </Button>
+                </Link>
               </div>
             )}
-
+          {this.props.article.type === "offer" &&
+            this.props.article.status >= 3 &&
+            myArticle &&
+            isExecutor && (
+              <div className="text-right col-12">
+                <Link
+                  to={`/dialog-order/${this.props.article._id}/${this.props.request.author._id}`}
+                >
+                  <Button
+                    type="empty"
+                    paddingHorizontal="29px"
+                    className="input-action mr-3"
+                  >
+                    Написать
+                  </Button>
+                </Link>
+              </div>
+            )}
           {this.props.article.status === 2 && (
             <div className="text-right col-12">
               {myArticle && !isExecutor && (

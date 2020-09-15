@@ -29,7 +29,9 @@ class OrderCreate extends React.Component {
     isEditing: false,
   };
   componentDidMount() {
-    if (this.props.match.params.id)
+    if (this.props.user.type === "carrier")
+      this.setState({ notFound: true, isFetching: false });
+    else if (this.props.match.params.id)
       fetch(`${api.urlApi}/api/article/getUserArticle`, {
         method: "post",
         headers: {

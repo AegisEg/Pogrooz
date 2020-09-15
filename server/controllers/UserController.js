@@ -8,6 +8,7 @@ const User = require("../models/User");
 const Article = require("../models/Article");
 const Notification = require("../models/Notification");
 const Dialog = require("../models/Dialog");
+const Review = require("../models/Review");
 const bcrypt = require("bcryptjs");
 const NUM_ROUNDS = 12;
 let { randomString } = require("../controllers/FileController");
@@ -185,6 +186,7 @@ module.exports = {
             },
           ]);
           countData.canceled = (!!datacount.length && datacount[0].count) || 0;
+          countData.reviews = await Review.find({ user: userId }).count();
           return res.json({ user, countData });
         }
       }

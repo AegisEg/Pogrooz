@@ -159,9 +159,6 @@ const adminBro = new AdminBro({
             isVisible: { list: false, filter: false, show: true, edit: true },
             type: "richtext",
           },
-          isPrivate: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
-          },
           createdAt: {
             isVisible: { list: false, filter: false, show: false, edit: false },
           },

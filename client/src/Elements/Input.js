@@ -23,6 +23,7 @@ class Input extends React.Component {
     if (this.props.type === "password")
       if (this.state.showPassword) return "text";
       else return "password";
+    if (this.props.type === "number") return "text";
     else return this.props.type;
   }
   render() {
@@ -179,7 +180,15 @@ class Input extends React.Component {
               this.props.error ? "input-error" : ""
             }`}
             placeholder={this.props.placeholder}
-            onChange={this.props.onChange}
+            onPaste={(e) => {
+              e.preventDefault();
+            }}
+            onChange={(val) => {
+              if (this.props.type === "number") {
+                val.target.value = val.target.value.replace(/\D/, "");
+              }
+              this.props.onChange(val);
+            }}
           />
           {this.props.type === "password" && (
             <div

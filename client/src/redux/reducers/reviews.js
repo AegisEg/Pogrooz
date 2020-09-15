@@ -10,7 +10,7 @@ import {
   REVIEWS_MY_LOAD,
   REVIEWS_ME_LOAD,
 } from "../constants";
-
+import settings from "../../config/settings";
 const INITIAL_STATE = {
   reviewsMy: { isFetching: false, reviews: [], canLoad: true, isGetted: false },
   reviewsMe: { isFetching: false, reviews: [], canLoad: true, isGetted: false },
@@ -23,7 +23,7 @@ const reviews = (state = INITIAL_STATE, action) => {
         ...state,
         reviewsMy: {
           reviews: action.payload.reviews,
-          canLoad: action.payload.reviews.length === 20,
+          canLoad: action.payload.reviews.length === settings.reviewsOnPage,
           isGetted: true,
           isFetching: false,
         },
@@ -34,7 +34,7 @@ const reviews = (state = INITIAL_STATE, action) => {
         ...state,
         reviewsMe: {
           reviews: action.payload.reviews,
-          canLoad: action.payload.reviews.length === 20,
+          canLoad: action.payload.reviews.length === settings.reviewsOnPage,
           isGetted: true,
           isFetching: false,
         },
@@ -45,7 +45,7 @@ const reviews = (state = INITIAL_STATE, action) => {
         ...state,
         reviewsMy: {
           reviews: [...state.reviewsMy.reviews, ...action.payload.reviews],
-          canLoad: action.payload.reviews.length === 20,
+          canLoad: action.payload.reviews.length === settings.reviewsOnPage,
           isGetted: true,
           isFetching: false,
         },
@@ -56,7 +56,7 @@ const reviews = (state = INITIAL_STATE, action) => {
         ...state,
         reviewsMe: {
           reviews: [...state.reviewsMe.reviews, ...action.payload.reviews],
-          canLoad: action.payload.reviews.length === 20,
+          canLoad: action.payload.reviews.length === settings.reviewsOnPage,
           isGetted: true,
           isFetching: false,
         },
@@ -113,9 +113,9 @@ const reviews = (state = INITIAL_STATE, action) => {
         ...state,
         reviewsMy: {
           reviews: state.reviewsMy.reviews.map((item) => {
-            if (item._id === action.payload.review._id)
+            if (item._id === action.payload.review._id) {
               return action.payload.review;
-            else return item;
+            } else return item;
           }),
         },
       };

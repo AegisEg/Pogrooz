@@ -637,7 +637,10 @@ class InputRow extends React.Component {
       status: [3, 4, 5, 6],
       isButton: true,
       condition: (options) => {
-        return options.article.type === "offer";
+        return (
+          options.article.type === "offer" &&
+          (!this.props.onlyOpen || this.role === 2)
+        );
       },
       action: () => {
         if (this.role === 1) {
@@ -718,7 +721,7 @@ class InputRow extends React.Component {
 
   render() {
     let role = false;
-    if (this.props.IsManage && this.props.user.isAuth) {
+    if (this.props.user.isAuth) {
       if (this.props.user._id === this.props.article.author._id) role = 1;
       if (
         this.props.article.executors.find(
@@ -727,6 +730,7 @@ class InputRow extends React.Component {
       )
         role = 2;
     }
+    if (this.props.notControl) role = false;
     this.role = role;
     if (role) {
       return (
@@ -971,7 +975,16 @@ class InputRow extends React.Component {
               </Link>
               <Button
                 type="fill"
-                className="get-article"
+                className={`get-article ${
+                  !this.props.user.isAuth ||
+                  (this.props.user.isAuth &&
+                    this.props.user.type === "cargo" &&
+                    this.props.article.type === "offer") ||
+                  (this.props.user.type === "carrier" &&
+                    this.props.article.type === "order")
+                    ? ""
+                    : "disable"
+                }`}
                 paddingVertical={"8px"}
                 paddingHorizontal={"35px"}
                 fontSize={"14px"}

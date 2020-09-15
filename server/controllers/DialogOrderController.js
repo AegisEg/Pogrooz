@@ -139,8 +139,9 @@ module.exports = {
           executor = user;
         //Определение пары в заказе
         if (
-          (!article || [1, 2, 7].find((item) => item === article.status)) &&
-          !author &&
+          !article ||
+          [1, 2, 7].find((item) => item === article.status) ||
+          !author ||
           !executor
         ) {
           const err = {};

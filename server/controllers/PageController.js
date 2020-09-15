@@ -24,9 +24,9 @@ module.exports = {
   questions: async (req, res, next) => {
     let { type } = req.body;
     try {
-      let sections = await QuestionSection.find({ type: type }).populate(
-        "questions"
-      );
+      let filter = {};
+      if (type !== "all") filter.$or = [{ type }, { type: "all" }];
+      let sections = await QuestionSection.find(filter).populate("questions");
       if (sections) return res.json({ sections });
       else res.status(422).json({ error: true, errorType: "notFound" });
     } catch (e) {
@@ -34,10 +34,12 @@ module.exports = {
     }
   },
   question: async (req, res, next) => {
-    let { slug } = req.body;
+    let { slug, type } = req.body;
     try {
-      let question = await Question.findOne({ slug }).populate("questions");
-      if (question) return res.json({ question });
+      let partial = await QuestionSection.findOne({ slug }).populate(
+        "questions"
+      );
+      if (partial) return res.json({ partial });
       else res.status(422).json({ error: true, errorType: "notFound" });
     } catch (e) {
       return next(new Error(e));

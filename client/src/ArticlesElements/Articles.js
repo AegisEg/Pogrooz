@@ -64,7 +64,15 @@ class Articles extends React.Component {
           }}
         >
           {this.state.articles.map((article, i) => {
-            return <Article IsManage={false} key={i} article={article} />;
+            return (
+              <Article
+                IsManage={this.props.isManage}
+                notControl={this.props.notControl}
+                notLink={this.props.notLink}
+                key={i}
+                article={article}
+              />
+            );
           })}
         </CSSTransitionGroup>
         {!this.state.articles.length && (

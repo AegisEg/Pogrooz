@@ -139,6 +139,9 @@ input::-ms-clear {
 .search-tabs {
   margin: 0 !important;
 }
+.lk-page .about-page {
+  border-top: none;
+}
 .lk-page .articles-header {
   padding-top: 6px;
   padding-bottom: 6px;
@@ -597,7 +600,9 @@ input[type="checkbox"]:checked ~ label::after,
   margin-top: 15px;
   margin-bottom: 0;
 }
-
+.filter-line > .moreInfoCheckBox {
+  margin-top: 15px;
+}
 .filter-line .pop-block {
   padding: 5px 10px;
   top: 100%;
@@ -1006,8 +1011,8 @@ textarea {
 }
 @media (min-width: 992px) {
   .foto-lable-passport {
-    width: 85px;
-    vertical-align: top;
+    width: 140px;
+    vertical-align: center;
   }
 }
 .defaultPassport {
@@ -2420,6 +2425,13 @@ a.href.hover:hover {
   border: none;
   border-top: 1px solid #dddddd;
   height: 0;
+}
+.review-article{
+  overflow: hidden;
+  width: 100%;
+}
+.profile-page .passport-status {
+  display: inline-flex;
 }
 .profile-page > .row > div {
   margin: 15px 0;
@@ -5730,6 +5742,13 @@ span.errRequired {
 }
 .moreInfoCheckBox {
   margin: 0 -15px;
+  align-self: flex-end;
+}
+label {
+  -moz-user-select: none; /* Mozilla Firefox */
+  -ms-user-select: none; /* Internet Explorer (не поддерживается) */
+  -o-user-select: none; /* Opera Presto (не поддерживается) */
+  -webkit-user-select: none; /* Google Chrome, Opera Next, Safari */
 }
 .moreInfoCheckBox > div {
   padding: 0 15px;
@@ -5895,7 +5914,7 @@ span.errRequired {
   font-size: 24px;
   line-height: 28px;
   color: #171717;
-  margin: 45px 0;
+  margin: 45px 0 30px 0;
 }
 .static-page .content {
   font-size: 16px;

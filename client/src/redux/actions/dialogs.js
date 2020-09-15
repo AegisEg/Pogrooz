@@ -647,10 +647,9 @@ export const dialogOrderGet = (userId, orderId, apiToken) => (dispatch) => {
             isNotFound: true,
             user: { _id: userId },
           };
-
           dispatch({
             type: DIALOGSORDER_ADD,
-            payload: dialog,
+            payload: {dialog},
           });
           resolve();
         }

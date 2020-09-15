@@ -211,8 +211,8 @@ class Header extends React.Component {
               <Link
                 to={`/${
                   this.props.user.type === "cargo"
-                    ? "offer-create"
-                    : "order-create"
+                    ? "order-create"
+                    : "offer-create"
                 }`}
                 className="register"
               >

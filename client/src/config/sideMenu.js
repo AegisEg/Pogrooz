@@ -16,6 +16,7 @@ import gear from "../img/gear.svg";
 import notifications from "../img/notifications.png";
 import chatOrder from "../img/chat-order.png";
 import chatUser from "../img/chatUser.svg";
+import security from "../img/security.svg";
 
 export default [
   {
@@ -119,6 +120,7 @@ export default [
     name: "Мой тариф",
     to: "/mytarif",
     icon: ruble,
+    role: "carriers",
   },
   {
     name: "Взятые заказы",
@@ -161,7 +163,24 @@ export default [
     name: "Профиль",
     to: "/profile",
     icon: profile,
-    mobile: true,
+    onlyMobile: true,
+  },
+  {
+    name: "Профиль",
+    to: "/profile",
+    icon: profile,
+    childlist: [
+      {
+        name: "Личная информация",
+        to: "/profile/info",
+        icon: profile,
+      },
+      {
+        name: "Безопасность",
+        to: "/profile/security",
+        icon: security,
+      },
+    ],
   },
   {
     name: "Уведомления",

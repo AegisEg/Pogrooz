@@ -12,6 +12,7 @@ export default {
   countArticleOnPage: 6,
   notificationCountOfPage: 10,
   dialogsOnPage: 20,
+  reviewsOnPage: 10,
   cargoTypes: [
     { id: 1, label: "Коробка", img: box },
     { id: 2, label: "Мебель", img: divan },

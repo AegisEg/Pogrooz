@@ -48,7 +48,6 @@ class Messages extends React.Component {
   }
   render() {
     let dialog = this.props.dialogs.dialogsUser.dialogs.find((dialog) => {
-      console.log(dialog);
       return dialog.user._id === this.props.match.params.id;
     });
 

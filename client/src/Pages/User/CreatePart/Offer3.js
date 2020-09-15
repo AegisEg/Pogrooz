@@ -270,6 +270,7 @@ class OfferCreate3 extends React.Component {
                 ] === "Обычные")) && (
               <StandartParams
                 cargoStandartData={this.state.cargoStandartData}
+                needCube={false}
                 onChangeCargoStandartData={this.onChangeCargoStandartData}
               />
             )}

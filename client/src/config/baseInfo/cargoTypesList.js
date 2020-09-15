@@ -70,7 +70,8 @@ export default [
                   name="type"
                   value={obj["type"] == item}
                   onChange={() => {
-                    callback(3, "type", item);
+                    if (obj["type"] == item) callback(3, "type", false);
+                    else callback(3, "type", item);
                   }}
                   text={item}
                 />
@@ -162,9 +163,9 @@ export default [
     fieldsLabel: {
       type: "Тип",
       weight: "Вес в кг",
-      length: "Длинна",
-      width: "Ширина",
-      height: "Высота",
+      length: "Длинна в см",
+      width: "Ширина в см",
+      height: "Высота в см",
     },
     //IS стандарт если обычные, в условии в заказе прописано
     fields: (callback, obj, car = false) => {
@@ -256,7 +257,7 @@ export default [
                     {obj["length"] * obj["width"] * obj["height"] || ""}
                     &nbsp;
                   </div>
-                  м<sup>3</sup>
+                  см<sup>3</sup>
                 </span>
               </div>
             </>
@@ -464,7 +465,8 @@ export default [
                   name="type"
                   value={obj["type"] == item}
                   onChange={() => {
-                    callback(13, "type", item);
+                    if (obj["type"] == item) callback(13, "type", false);
+                    else callback(13, "type", item);
                   }}
                   text={item}
                 />

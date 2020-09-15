@@ -20,6 +20,7 @@ class Login extends React.Component {
   state = {
     phone: "",
     password: "",
+    remeberMe: false,
     error: false,
     errors: [],
   };
@@ -109,7 +110,14 @@ class Login extends React.Component {
           </div>
           <div className="row mx-0 bottom pb-3">
             <div className="col-12 col-sm-6 px-0">
-              <CheckBox id="remember" text="Запомнить меня"></CheckBox>
+              <CheckBox
+                id="remember"
+                value={this.state.remeberMe}
+                onChange={() => {
+                  this.setState({ remeberMe: !this.state.remeberMe });
+                }}
+                text="Запомнить меня"
+              ></CheckBox>
               <div className="d-block" style={{ marginLeft: "35px" }}>
                 <Link to="/forgot" className="href f-12">
                   Забыли пароль?

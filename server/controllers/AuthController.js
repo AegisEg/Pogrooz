@@ -49,7 +49,15 @@ module.exports = {
         err.msg = `Этот телефон уже занят`;
         return res.status(409).json({ error: true, errors: [err] });
       }
-
+      if (
+        !/(?:[а-яёa-z]\d|\d[в-яёa-z])/i.test(user.password) ||
+        user.password.length < 8
+      ) {
+        let err = {};
+        err.param = `password`;
+        err.msg = `Пароль должен содержать не менее 8-ми цифр и букв `;
+        return res.status(409).json({ error: true, errors: [err] });
+      }
       /*СОздание юзера*/
       const newUser = new User();
       newUser.name = {
@@ -65,12 +73,7 @@ module.exports = {
       await newUser.save();
       let token = generateToken(newUser.id);
       /*СОздание юзера*/
-      /*Обнуление перменных редакса*/
-      const dialogs = [];
-      let noReadCount = 0;
-      const noReadDialog = [];
-      const noReadNotifications = [];
-      /*Обнуление перменных редакса*/
+
       return res.json({ token, user: newUser });
     } catch (e) {
       console.log(e);

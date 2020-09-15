@@ -43,6 +43,12 @@ class Filter extends React.Component {
       cargoDataX.push({ typeID: typeID });
       cargoDataX[cargoDataX.length - 1][prop] = val;
     }
+    cargoDataX = cargoDataX.filter((item) => {
+      Object.keys(item).map((itemX) => {
+        if (!item[itemX]) delete item[itemX];
+      });
+      return Object.keys(item).length > 1;
+    });
     this.props.onChange({ cargoData: cargoDataX });
   };
   //Стандартные данные который участвуют в поиске
@@ -106,9 +112,7 @@ class Filter extends React.Component {
                 }}
               >
                 Предложения{" "}
-                <span className="d-380 d-sm-inline-block">
-                  на перевозку
-                </span>
+                <span className="d-380 d-sm-inline-block">на перевозку</span>
               </div>
               <div
                 className={`tab mx-3 text-uppercase ${
@@ -398,6 +402,71 @@ class Filter extends React.Component {
                       alt="Рейтинг"
                     />
                   </div>
+                  {currentCarType && (
+                    <div className="moreInfoCheckBox px-3">
+                      <div className="f-14">Свойство:</div>
+                      <div
+                        style={{
+                          display: "inline-block",
+                        }}
+                      >
+                        <CheckBox
+                          id="property1"
+                          name="property"
+                          value={options.property === "Манипулятор" || ""}
+                          onChange={() => {
+                            if (options.property === "Манипулятор")
+                              this.props.onChange({ property: false });
+                            else
+                              this.props.onChange({
+                                property: "Манипулятор",
+                              });
+                          }}
+                          text={"Манипулятор"}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "inline-block",
+                        }}
+                      >
+                        <CheckBox
+                          id="property2"
+                          name="property"
+                          value={options.property === "Рефрижератор" || ""}
+                          onChange={() => {
+                            if (options.property === "Рефрижератор")
+                              this.props.onChange({ property: false });
+                            else
+                              this.props.onChange({
+                                property: "Рефрижератор",
+                              });
+                          }}
+                          text={"Рефрижератор"}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "inline-block",
+                        }}
+                      >
+                        <CheckBox
+                          id="property3"
+                          name="property"
+                          value={options.property === "Изотерм" || ""}
+                          onChange={() => {
+                            if (options.property === "Изотерм")
+                              this.props.onChange({ property: false });
+                            else
+                              this.props.onChange({
+                                property: "Изотерм",
+                              });
+                          }}
+                          text={"Изотерм"}
+                        />
+                      </div>
+                    </div>
+                  )}
                   <div className="row mx-0 typeGrooz">
                     {currentCargoType && (
                       <div className="rowParams">
@@ -574,7 +643,7 @@ class Filter extends React.Component {
                     <Input
                       type="number"
                       placeholder="0"
-                      value={options.budget}
+                      value={options.budget || ""}
                       onChange={(e) => {
                         this.props.onChange({ budget: e.target.value });
                       }}

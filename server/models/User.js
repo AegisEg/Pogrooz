@@ -18,6 +18,7 @@ const UserSchema = new Schema({
     id: { type: Number, select: true },
     data: { type: Object, select: true },
   },
+  rating: { type: Number, select: true },
   password: { type: String, select: false },
   online: { type: Boolean, default: true },
   passportPhoto: { type: Object, select: true },

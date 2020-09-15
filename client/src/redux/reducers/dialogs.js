@@ -120,15 +120,6 @@ const dialogs = (state = INITIAL_STATE, action) => {
       };
     }
     case DIALOGS_ADD:
-      console.log({
-        dialogsALL: {
-          ...state.dialogsALL,
-          dialogs: [action.payload.dialog, ...state.dialogsALL.dialogs],
-          noReadCount: !action.payload.isAddCount
-            ? state.dialogsALL.noReadCount
-            : state.dialogsALL.noReadCount + 1,
-        },
-      });
       return {
         ...state,
         dialogsUser: {
@@ -137,13 +128,6 @@ const dialogs = (state = INITIAL_STATE, action) => {
           noReadCount: !action.payload.isAddCount
             ? state.dialogsUser.noReadCount
             : state.dialogsUser.noReadCount + 1,
-        },
-        dialogsALL: {
-          ...state.dialogsALL,
-          dialogs: [action.payload.dialog, ...state.dialogsALL.dialogs],
-          noReadCount: !action.payload.isAddCount
-            ? state.dialogsALL.noReadCount
-            : state.dialogsALL.noReadCount + 1,
         },
       };
     case DIALOGSALL_LOAD:
@@ -401,21 +385,21 @@ const dialogs = (state = INITIAL_STATE, action) => {
         },
         dialogsALL: {
           ...state.dialogsALL,
-          dialogs: state.dialogsALL.dialogs.map((dialog) =>
-            action.payload.dialogId === dialog._id
-              ? {
-                  ...dialog,
-                  messages: dialog.messages.map((message) =>
-                    !message.isRead &&
-                    message.user._id === action.payload.userId
-                      ? { ...message, isRead: true }
-                      : message
-                  ),
-                  noRead: action.payload.noRead ? 0 : dialog.noRead,
-                  lastMessage: { ...dialog.lastMessage, isRead: true },
-                }
-              : dialog
-          ),
+          dialogs: state.dialogsALL.dialogs.map((dialog) => {
+            if (action.payload.dialogId === dialog._id) {
+              console.log(dialog);
+              return {
+                ...dialog,
+                messages: dialog.messages.map((message) =>
+                  !message.isRead && message.user._id === action.payload.userId
+                    ? { ...message, isRead: true }
+                    : message
+                ),
+                noRead: action.payload.noRead ? 0 : dialog.noRead,
+                lastMessage: { ...dialog.lastMessage, isRead: true },
+              };
+            } else return dialog;
+          }),
           noReadCount: action.payload.noReadCount
             ? state.dialogsALL.noReadCount - 1
             : state.dialogsALL.noReadCount,
@@ -533,12 +517,6 @@ const dialogs = (state = INITIAL_STATE, action) => {
           noReadCount: !action.payload.isAddCount
             ? state.dialogsOrder.noReadCount
             : state.dialogsOrder.noReadCount + 1,
-        },
-        dialogsALL: {
-          ...state.dialogsALL,
-          noReadCount: !action.payload.isAddCount
-            ? state.dialogsALL.noReadCount
-            : state.dialogsALL.noReadCount + 1,
         },
       };
 

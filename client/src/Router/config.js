@@ -33,7 +33,8 @@ import Dialog from "../Pages/User/Messages/Dialog";
 import DialogOrder from "../Pages/User/Messages/DialogOrder";
 import GeoDetect from "../Pages/User/GeoDetect";
 import Page from "../Pages/Page";
-import Question from "../Pages/Question";
+import Questions from "../Pages/Questions";
+import LoginByToken from "../Pages/Auth/LoginByToken";
 const routes = [
   //AUTH ROUTE
   {
@@ -42,6 +43,13 @@ const routes = [
     type: "auth",
     title: "Авторизация",
     component: () => <Login />,
+  },
+  {
+    path: "/loginbytoken/:token",
+    exact: true,
+    type: "auth",
+    title: "Авторизация",
+    component: () => <LoginByToken />,
   },
   {
     path: "/register",
@@ -132,37 +140,36 @@ const routes = [
     component: () => <Carrier />,
   },
   {
-    path: "/question/:slug",
+    path: "/questions/:slug",
     exact: true,
     type: "public",
     title: "Вопрос",
     forseTitle: true,
-    component: () => <Question />,
+    component: () => <Questions />,
   },
   //PUBLIC ROUTE END
   //PRIVATE ROUTE
   {
-    path: "/profile",
+    path: "/profile/security",
     exact: true,
     type: "private",
-    title: "Профиль",
-    component: () => <Profile />,
+    title: "Безопасность",
+    component: () => <Profile step={2} />,
   },
   {
-    path: "/lk/question/:slug",
+    path: "/profile/info",
+    exact: true,
+    type: "private",
+    title: "Личная информация",
+    component: () => <Profile step={1} />,
+  },
+  {
+    path: "/lk/questions/:slug",
     exact: true,
     type: "private",
     title: "Вопрос",
     forseTitle: true,
-    component: () => <Question isPrivate={true} />,
-  },
-  {
-    path: "/lk/page/:slug",
-    exact: true,
-    type: "private",
-    title: "Страница",
-    forseTitle: true,
-    component: () => <Page isPrivate={true} />,
+    component: () => <Questions isPrivate={true} />,
   },
   {
     path: "/notifications",

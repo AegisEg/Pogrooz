@@ -119,8 +119,8 @@ class FAQ extends React.Component {
                           view && (
                             <li key={question.id}>
                               <Link
-                                to={`${this.props.type ? "/lk" : ""}/question/${
-                                  question.slug
+                                to={`${this.props.type ? "/lk" : ""}/questions/${
+                                  section.slug
                                 }`}
                               >
                                 {question.title}

@@ -44,9 +44,11 @@ class Article extends React.Component {
       this.props.article.author.id == this.props.user.id &&
       this.props.IsManage
     ) {
-      let isDelivered = this.props.article.delivered.find(
-        (item) => item === this.props.user._id
-      );
+      let isDelivered =
+        this.props.article.delivered &&
+        this.props.article.delivered.find(
+          (item) => item === this.props.user._id
+        );
       return (
         <div className="status-area">
           {this.props.article.status === 1 && (
@@ -153,7 +155,11 @@ class Article extends React.Component {
   }
   render() {
     return (
-      <div className={`article-block ${this.state.isHoverHref ? "hover" : ""}`}>
+      <div
+        className={`article-block ${
+          !this.props.notLink && this.state.isHoverHref ? "hover" : ""
+        }`}
+      >
         <div className="container-fluid">
           {!this.state.onMobile ? (
             <>
@@ -162,6 +168,7 @@ class Article extends React.Component {
                   {this.props.article.articleId || ""}
                 </div>
                 <div className="car-col">
+                  <span>{this.props.article.car.name}</span>
                   <div className="car-description">
                     {this.props.article.car.typesCar.length ===
                       carTypesList.length && "Любая"}
@@ -203,17 +210,16 @@ class Article extends React.Component {
                                     }
                                   }
                                 })}
-                              {this.props.article.car.property && (
-                                <div key={index}>
-                                  Свойство: {this.props.article.car.property}
-                                </div>
-                              )}
                             </div>
                           );
                         }
                       )}
+                    {this.props.article.car.property &&
+                      this.props.article.car.property !== "false" && (
+                        <div>Свойство: {this.props.article.car.property}</div>
+                      )}
                   </div>
-                  <span>{this.props.article.car.name}</span>
+
                   <CSSTransitionGroup
                     transitionName="height-animation-item"
                     transitionEnterTimeout={500}
@@ -433,7 +439,7 @@ class Article extends React.Component {
                   <span>
                     Рейтинг: &nbsp;
                     <span className="d-inline-block">
-                      2
+                      {this.props.article.author.rating || 0}
                       <img
                         src={ImgActiveStar}
                         style={{
@@ -446,18 +452,20 @@ class Article extends React.Component {
                     </span>
                   </span>
                 </div>
-                {!this.state.showMore && !this.props.singlePage && (
-                  <Link
-                    className="order-link"
-                    onMouseEnter={() => {
-                      this.setState({ isHoverHref: true });
-                    }}
-                    onMouseLeave={() => {
-                      this.setState({ isHoverHref: false });
-                    }}
-                    to={`/${this.props.article.type}/${this.props.article.articleId}`}
-                  ></Link>
-                )}
+                {!this.state.showMore &&
+                  !this.props.notLink &&
+                  !this.props.singlePage && (
+                    <Link
+                      className="order-link"
+                      onMouseEnter={() => {
+                        this.setState({ isHoverHref: true });
+                      }}
+                      onMouseLeave={() => {
+                        this.setState({ isHoverHref: false });
+                      }}
+                      to={`/${this.props.article.type}/${this.props.article.articleId}`}
+                    ></Link>
+                  )}
               </div>
             </>
           ) : (
@@ -581,7 +589,7 @@ class Article extends React.Component {
                   <h3 className="title-column">Рейтинг</h3>
                   <span>
                     <span className="d-inline-block">
-                      3
+                      {this.props.article.author.rating || 0}
                       <img src={ImgActiveStar} alt="ImgActiveStar" />
                     </span>
                   </span>
@@ -773,21 +781,23 @@ class Article extends React.Component {
           </CSSTransitionGroup>
           <div className="row mt-2">
             {this.renderStatus()}
-            <div className="row-input-controls">
-              <InputRow
-                article={this.props.article}
-                onMobile={this.state.onMobile}
-                IsManage={this.props.IsManage}
-                updateArticle={this.props.updateArticle}
-                onlyOpen={this.props.onlyOpen}
-                user={this.props.user}
-                articleOpen={this.state.showMore}
-                eOpen={(e) => {
-                  e.preventDefault();
-                  this.setState({ showMore: !this.state.showMore });
-                }}
-              />
-            </div>
+            {this.props.IsManage && (
+              <div className="row-input-controls">
+                <InputRow
+                  article={this.props.article}
+                  notControl={this.props.notControl}
+                  onMobile={this.state.onMobile}
+                  updateArticle={this.props.updateArticle}
+                  onlyOpen={this.props.onlyOpen}
+                  user={this.props.user}
+                  articleOpen={this.state.showMore}
+                  eOpen={(e) => {
+                    e.preventDefault();
+                    this.setState({ showMore: !this.state.showMore });
+                  }}
+                />
+              </div>
+            )}
           </div>
           <CSSTransitionGroup
             transitionName="fancybox-animation"

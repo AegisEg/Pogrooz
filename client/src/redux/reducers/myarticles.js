@@ -624,7 +624,6 @@ const articles = (state = INITIAL_STATE, action) => {
       };
     }
     case ARTICLES_TAKING_CREATE_COUNT: {
-      console.log("asdasdsa")
       return {
         ...state,
         taking: state.taking.map((item, index) => {

@@ -1,119 +1,15 @@
 // App
 import React from "react";
-import Avatar from "../../Elements/Avatar";
-import { Link } from "react-router-dom";
 // Router
 import { connect } from "react-redux";
 import * as reviewsAction from "../../redux/actions/reviews";
 import { bindActionCreators } from "redux";
 // Elements
-import Button from "../../Elements/Button";
 import Loading from "../../Elements/Loading";
 import LoadingFixed from "../../Elements/LoadingFixed";
 import { Scrollbars } from "react-custom-scrollbars";
 import { CSSTransitionGroup } from "react-transition-group";
-//IMGS
-import ImgActiveStar from "../../img/active-star.png";
-class ReviewItem extends React.Component {
-  render() {
-    return (
-      <div className="review-article">
-        <div className="container-fluid">
-          <div className="row">
-            <div
-              className="col f-14"
-              style={{
-                maxWidth: "115px",
-              }}
-            >
-              <span
-                style={{
-                  color: "#6C6C6C",
-                }}
-              >
-                {new Date(this.props.review.createdAt).toDateR()}
-              </span>
-            </div>
-            {this.props.isMy && (
-              <div
-                className="col f-14 d-flex align-items-start"
-                style={{
-                  whiteSpace: "pre-line",
-                  maxWidth: "150px",
-                  color: "#322F2F",
-                }}
-              >
-                {this.props.review.order.type === "offer"
-                  ? "предложение"
-                  : "заказ"}{" "}
-                №{this.props.review.order.articleId}
-              </div>
-            )}
-            <div
-              className="col f-14 d-flex align-items-start"
-              style={{
-                whiteSpace: "pre-line",
-                maxWidth: "190px",
-              }}
-            >
-              <Link
-                to={`/user/${this.props.review.author._id}`}
-                style={{
-                  color: "#000",
-                }}
-              >
-                <Avatar
-                  name={this.props.review.author.name.first}
-                  avatar={this.props.review.author.avatar}
-                />
-              </Link>
-              <Link
-                to={`/user/${this.props.review.author._id}`}
-                style={{
-                  color: "#000",
-                }}
-              >
-                <span style={{ lineHeight: "16px" }}>
-                  {this.props.review.author.name.last}
-                  <br />
-                  {this.props.review.author.name.first}
-                  <br />
-                  {this.props.review.author.name.middle}
-                </span>
-              </Link>
-            </div>
-            <div
-              className="col f-14"
-              style={{
-                maxWidth: "105px",
-              }}
-            >
-              Рейтинг:
-              <br />
-              {this.props.review.rating || 0} <img src={ImgActiveStar} alt="" />
-            </div>
-            <div className="col-12 col-md f-14 ">
-              {this.props.review.comment}
-            </div>
-            {this.props.isMy && (
-              <div
-                className="col text-center"
-                style={{
-                  maxWidth: "155px",
-                }}
-              >
-                <Button type="fill" paddingHorizontal="25px">
-                  Изменить
-                </Button>
-              </div>
-            )}
-          </div>
-          {!this.props.isLast && <hr />}
-        </div>
-      </div>
-    );
-  }
-}
+import ReviewItem from "../../Partials/ReviewsItem";
 class Reviews extends React.Component {
   state = {
     currentStatus: 0,
@@ -229,6 +125,18 @@ class Reviews extends React.Component {
                         return (
                           <ReviewItem
                             key={index}
+                            onChange={(rating, comment) => {
+                              this.props.reviewsAction.saveReview(
+                                {
+                                  _id: item._id,
+                                  rating,
+                                  comment,
+                                },
+                                item.order,
+                                item.user._id,
+                                this.props.user.apiToken
+                              );
+                            }}
                             isLast={reviewsObj.reviews.length === index + 1}
                             review={item}
                             isMy={this.state.currentStatus === 1}

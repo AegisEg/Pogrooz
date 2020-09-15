@@ -51,6 +51,8 @@ import {
   NOTIFICATIONS_ALL_ADD,
   ARTICLE_MY_UPDATE_STATUS,
   ARTICLE_TAKING_UPDATE_STATUS,
+  DIALOGSALL_ADD_MESSAGE,
+  DIALOGSALL_ADD,
 } from "../redux/constants";
 import { playNewMessage, playBeep } from "./SoundController";
 let socket = null;
@@ -117,9 +119,11 @@ export default {
           });
 
           let noReadCount = false;
-          if (!isMy && !countNoread) {
+          if (!isMy && countNoread === 1) {
             noReadCount = true;
           }
+
+          console.log(countNoread);
           store.dispatch({
             type: isOrder ? DIALOGSORDER_ADD_MESSAGE : DIALOGS_ADD_MESSAGE,
             payload: {
@@ -158,6 +162,31 @@ export default {
                 type: isOrder ? DIALOGSORDER_ADD : DIALOGS_ADD,
                 payload: { dialog, isAddCount: !isMy && countNoread },
               });
+              let noReadCount = false;
+              if (!isMy && !countNoread) {
+                noReadCount = true;
+              }
+              if (
+                store
+                  .getState()
+                  .dialogs.dialogsALL.dialogs.find(
+                    (x) => x._id === message.dialogId
+                  )
+              )
+                store.dispatch({
+                  type: DIALOGSALL_ADD_MESSAGE,
+                  payload: {
+                    message,
+                    dialogId: message.dialogId,
+                    noRead: message.user._id !== store.getState().user._id,
+                    noReadCount,
+                  },
+                });
+              else
+                store.dispatch({
+                  type: DIALOGSALL_ADD,
+                  payload: { dialog, isAddCount: !isMy && countNoread },
+                });
             });
         }
         playNewMessage();
