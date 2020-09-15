@@ -126,7 +126,6 @@ module.exports = {
       if (filter.carType) match = { ...match, "car.typesCar": filter.carType };
       if (filter.property)
         match = { ...match, "car.property": filter.property };
-      console.log(filter);
       //Дополнительно
       if (filter.additionally && filter.additionally.length) {
         if (!addFields) addFields = {};
@@ -177,7 +176,6 @@ module.exports = {
       if (filter.cargoData && filter.cargoData.length) {
         let property = {};
         Object.entries(filter.cargoData[0]).map((itemY, index) => {
-          console.log(itemY);
           if (itemY[1]) {
             if (itemY[0] === "type" || itemY[0] === "typeID")
               property[itemY[0]] = itemY[1];
@@ -417,6 +415,7 @@ module.exports = {
             user: user,
             _id: { $gt: lastReviewId },
           })
+            .populate("author")
             .populate({
               path: "order",
               populate: [{ path: "author" }],
@@ -440,6 +439,7 @@ module.exports = {
               path: "order",
               populate: [{ path: "author" }],
             })
+            .populate("author")
             .sort("createdAt")
             .limit(reviewsCount);
       }
@@ -1751,7 +1751,7 @@ module.exports = {
               .reduce(function(accumulator, current) {
                 return accumulator + current;
               });
-            let rating = sum / allReviews.length;
+            let rating = parseFloat(Mathsum / allReviews.length).toFixed(1);
             userTo.rating = rating;
             await userTo.save();
             //Перерасчет рейтинга

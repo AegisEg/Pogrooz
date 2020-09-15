@@ -273,7 +273,7 @@ class Header extends React.Component {
                       this.props.history.push("/reviews");
                     }}
                   >
-                    <span>4,6</span>
+                    <span>{this.props.user.rating}</span>
                     <img src={ImgActiveStar} alt="ImgActiveStar" />
                   </span>
                   {this.props.user.type === "cargo" && "Грузовладелец"}

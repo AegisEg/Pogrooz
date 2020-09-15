@@ -125,7 +125,7 @@ class User extends React.Component {
                 filter: {
                   type: type === "offer" ? "order" : type,
                   status: {
-                    $in: [5, 6],
+                    $in: [4,5, 6],
                   },
                   executors: this.state.user._id,
                 },
