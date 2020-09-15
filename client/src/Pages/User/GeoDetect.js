@@ -13,6 +13,16 @@ class AutoPay extends React.Component {
         this.setState({
           coords: [position.coords.latitude, position.coords.longitude],
         });
+        if (this.mapFrom)
+          this.mapFrom.panTo(
+            [
+              Number(position.coords.latitude),
+              Number(position.coords.longitude),
+            ],
+            {
+              delay: 1500,
+            }
+          );
       });
     }
   }
@@ -25,6 +35,9 @@ class AutoPay extends React.Component {
             <>{this.state.coords[0] + " : " + this.state.coords[1]}</>
           )}
           <Map
+            instanceRef={(ref) => {
+              this.mapFrom = ref;
+            }}
             defaultState={{
               center:
                 this.state.coords &&
