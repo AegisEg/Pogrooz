@@ -17,6 +17,7 @@ const {
   updateRequestSoket,
   deleteRequestSoket,
   sendNotification,
+  setDelivered,
 } = require("./SocketController");
 const Article = require("../models/Article");
 const Request = require("../models/Request");
@@ -26,6 +27,7 @@ const Review = require("../models/Review");
 const { Error } = require("mongoose");
 let { randomString } = require("../controllers/FileController");
 let count = 6;
+let reviewsCount = 10;
 module.exports = {
   //Articles Geting
   getArticles: async (req, res, next) => {
@@ -36,19 +38,31 @@ module.exports = {
     let sort = { createdAt: -1 };
     // let timeFrom = false;
     // let timeTo = false;
+    if (filter.allStatus) {
+      filter.status = { $in: filter.allStatus };
+      delete filter.allStatus;
+    }
     try {
-      if (filter.allStatus) {
-        filter.status = { $in: filter.allStatus };
-        delete filter.allStatus;
-      }
       if (filter.type) match.type = filter.type;
       if (filter.status) match.status = filter.status;
       if (filter.from) {
-        match = {
-          ...match,
-          "from.data.city_fias_id": filter.from.data.city_fias_id,
-        };
+        if (filter.from.data.house_fias_id)
+          match = {
+            ...match,
+            "from.data.house_fias_id": filter.from.data.house_fias_id,
+          };
+        else if (filter.from.data.street_fias_id)
+          match = {
+            ...match,
+            "from.data.street_fias_id": filter.from.data.street_fias_id,
+          };
+        else if (filter.from.data.city_fias_id)
+          match = {
+            ...match,
+            "from.data.city_fias_id": filter.from.data.city_fias_id,
+          };
         if (
+          filter.type === "cargo" &&
           filter.from.data.geo_lat &&
           filter.from.data.geo_lon &&
           filter.from.data.fias_level === "8"
@@ -69,12 +83,24 @@ module.exports = {
           };
       }
       if (filter.to) {
-        match = {
-          ...match,
-          "to.data.city_fias_id": filter.to.data.city_fias_id,
-        };
+        if (filter.to.data.house_fias_id)
+          match = {
+            ...match,
+            "to.data.house_fias_id": filter.to.data.house_fias_id,
+          };
+        else if (filter.to.data.street_fias_id)
+          match = {
+            ...match,
+            "to.data.street_fias_id": filter.to.data.street_fias_id,
+          };
+        else if (filter.to.data.city_fias_id)
+          match = {
+            ...match,
+            "to.data.city_fias_id": filter.to.data.city_fias_id,
+          };
         if (
           !geoNear &&
+          filter.type === "carrier" &&
           filter.to.data.geo_lat &&
           filter.to.data.geo_lon &&
           filter.to.data.fias_level === "8"
@@ -98,6 +124,9 @@ module.exports = {
       if (filter.cargoType) match.cargoTypes = filter.cargoType;
       //Машина
       if (filter.carType) match = { ...match, "car.typesCar": filter.carType };
+      if (filter.property)
+        match = { ...match, "car.property": filter.property };
+      console.log(filter);
       //Дополнительно
       if (filter.additionally && filter.additionally.length) {
         if (!addFields) addFields = {};
@@ -148,9 +177,12 @@ module.exports = {
       if (filter.cargoData && filter.cargoData.length) {
         let property = {};
         Object.entries(filter.cargoData[0]).map((itemY, index) => {
-          if (itemY[0] === "type" || itemY[0] === "typeID")
-            property[itemY[0]] = itemY[1];
-          else property[itemY[0]] = { $gte: itemY[1] };
+          console.log(itemY);
+          if (itemY[1]) {
+            if (itemY[0] === "type" || itemY[0] === "typeID")
+              property[itemY[0]] = itemY[1];
+            else property[itemY[0]] = { $gte: itemY[1] };
+          }
         });
         match = { ...match, cargoData: { $elemMatch: property } };
       }
@@ -241,7 +273,7 @@ module.exports = {
           filter.startDate.timeFrom.setSeconds(0);
           match = {
             ...match,
-            "startDate.timeFrom": { $lte: filter.startDate.timeFrom },
+            "startDate.timeFrom": { $gte: filter.startDate.timeFrom },
           };
         }
         if (filter.startDate.timeTo) {
@@ -249,7 +281,7 @@ module.exports = {
           filter.startDate.timeTo.setSeconds(0);
           match = {
             ...match,
-            "startDate.timeTo": { $gte: filter.startDate.timeTo },
+            "startDate.timeTo": { $lte: filter.startDate.timeTo },
           };
         }
       }
@@ -342,43 +374,74 @@ module.exports = {
     }
   },
   getUserReviews: async (req, res, next) => {
+    const { page, userId } = req.body;
+    try {
+      let reviews;
+      reviews = await Review.find({
+        user: userId,
+      })
+        .populate({
+          path: "author",
+        })
+        .populate({
+          path: "order",
+          populate: [{ path: "author" }],
+        })
+        .sort("createdAt")
+        .skip(page * reviewsCount)
+        .limit(reviewsCount);
+      return res.json({ error: false, reviews });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  getMyReviews: async (req, res, next) => {
     const { user } = res.locals;
-    let { lastDialogId } = req.body;
+    let { lastReviewId } = req.body;
     const { type } = req.body;
     try {
       let reviews;
-      if (lastDialogId) {
+      if (lastReviewId) {
         if (type == "my")
           reviews = await Review.find({
             author: user,
-            _id: { $gt: lastDialogId },
+            _id: { $gt: lastReviewId },
           })
             .populate("author")
             .populate("order")
+            .populate("user")
             .sort("createdAt")
-            .limit(20);
+            .limit(reviewsCount);
         if (type == "me")
           reviews = await Review.find({
             user: user,
-            _id: { $gt: lastDialogId },
+            _id: { $gt: lastReviewId },
           })
-            .populate("author")
-            .populate("order")
+            .populate({
+              path: "order",
+              populate: [{ path: "author" }],
+            })
             .sort("createdAt")
-            .limit(20);
+            .limit(reviewsCount);
       } else {
         if (type == "my")
           reviews = await Review.find({ author: user })
             .populate("author")
-            .populate("order")
+            .populate({
+              path: "order",
+              populate: [{ path: "author" }],
+            })
+            .populate("user")
             .sort("createdAt")
-            .limit(20);
+            .limit(reviewsCount);
         if (type == "me")
           reviews = await Review.find({ user: user })
-            .populate("author")
-            .populate("order")
+            .populate({
+              path: "order",
+              populate: [{ path: "author" }],
+            })
             .sort("createdAt")
-            .limit(20);
+            .limit(reviewsCount);
       }
       return res.json({ error: false, reviews });
     } catch (e) {
@@ -471,6 +534,7 @@ module.exports = {
       if (type === "taking") {
         let filter = {
           type: user.type === "cargo" ? "offer" : "order",
+          status: { $gte: 3 },
           executors: user,
         };
         if (status) filter.status = { $in: status };
@@ -786,6 +850,7 @@ module.exports = {
         if (article.startDate && article.startDate.date) {
           article.startDate.date = new Date(article.startDate.date);
           article.startDate.date.setHours(0, 0, 0, 0);
+          editArticle.startDate.date = article.startDate.date;
         } else {
           editArticle.startDate.date = null;
         }
@@ -941,14 +1006,14 @@ module.exports = {
         article &&
         user.type === "carrier" &&
         (compareId(user._id, article.author._id) ||
-          article.executors.find((item) => compareId(item, user._id)))
+          article.executors.find((item) => compareId(item._id, user._id)))
       ) {
         if (article.status === 3) {
           article.status = 4;
           await article.save();
           article.executors.map((item) => {
             updateStatusMyArticle({
-              userId: item,
+              userId: item._id,
               socketId,
               lastStatus: 3,
               article,
@@ -1018,7 +1083,7 @@ module.exports = {
           await article.save();
           article.executors.map((item) => {
             updateStatusMyArticle({
-              userId: item,
+              userId: item._id,
               socketId,
               lastStatus: 4,
               article,
@@ -1088,7 +1153,7 @@ module.exports = {
           await article.save();
           article.executors.map((item) => {
             updateStatusMyArticle({
-              userId: item,
+              userId: item._id,
               socketId,
               lastStatus: 4,
               status: 6,
@@ -1264,12 +1329,9 @@ module.exports = {
           await article.save();
           //SOKETS
           article.executors.map((item) => {
-            updateStatusMyArticle({
-              userId: item,
-              socketId,
-              lastStatus: 2,
-              article,
-              isTaking: true,
+            createTakingArticle({
+              userId: item._id,
+              article: article,
             });
           });
           updateStatusMyArticle({
@@ -1508,8 +1570,6 @@ module.exports = {
           //SOKET
           createTakingArticle({
             userId: executor._id,
-            socketId,
-            status: 3,
             article: article,
           });
           updateStatusMyArticle({
@@ -1581,9 +1641,7 @@ module.exports = {
             userId: executor._id,
             socketId,
             lastStatus: article.status,
-            status: 1212,
             articleID: article._id,
-            isTaking: true,
           });
         if (!article.executors.length) {
           article.status = 2;
@@ -1672,6 +1730,7 @@ module.exports = {
             newReview = await Review.findById(review._id).populate([
               { path: "user" },
               { path: "author" },
+              { path: "order" },
             ]);
             existReview = true;
           } else newReview = new Review();
@@ -1683,6 +1742,19 @@ module.exports = {
             newReview.author = user;
             newReview.rating = review.rating;
             await newReview.save();
+            //Перерасчет рейтинга
+            let allReviews = await Review.find({
+              user: userTo._id,
+            });
+            let sum = allReviews
+              .map((item) => item.rating)
+              .reduce(function(accumulator, current) {
+                return accumulator + current;
+              });
+            let rating = sum / allReviews.length;
+            userTo.rating = rating;
+            await userTo.save();
+            //Перерасчет рейтинга
             if (existReview) {
               let reviewsNew = [];
               for (let index = 0; index < article.reviews.length; index++) {
@@ -1691,11 +1763,16 @@ module.exports = {
                 else reviewsNew.push(article.reviews[index]);
               }
               article.reviews = reviewsNew;
+
               updateArticleReview({
                 article,
                 newReview,
-                userId: newReview.author._id,
-                otherId: newReview.user._id,
+                myUser: compareId(article.author._id, newReview.author._id)
+                  ? newReview.user._id
+                  : newReview.author._id,
+                takingUser: compareId(article.author._id, newReview.author._id)
+                  ? newReview.author._id
+                  : newReview.user._id,
                 socketId,
               });
             } else {
@@ -1728,6 +1805,78 @@ module.exports = {
           {
             param: "notRole",
             msg: "Невозможно оставить отзыв",
+          },
+        ],
+      });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  setDeliveredCargo: async (req, res, next) => {
+    const { user } = res.locals;
+    let { articleId, deliveredUser } = req.body;
+    const { socketId } = req.body;
+    try {
+      if (user.type === "carrier") {
+        let article = await Article.findOne({
+          _id: articleId,
+          $or: [{ author: deliveredUser }, { executors: deliveredUser }],
+        });
+        if (article) {
+          article.delivered.push(deliveredUser);
+          // article.save();
+          setDelivered({
+            article,
+            user: deliveredUser,
+            userId: user._id,
+            otherId: deliveredUser,
+            socketId,
+          });
+          return res.json({ error: false });
+        }
+      }
+      return res.status(422).json({
+        error: true,
+        errors: [
+          {
+            param: "notRole",
+            msg: "Невозможно оставить отзыв",
+          },
+        ],
+      });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  setRequestCancel: async (req, res, next) => {
+    const { user } = res.locals;
+    let { articleId, deliveredUser } = req.body;
+    try {
+      let article = await Article.findOne({
+        _id: articleId,
+        executors: deliveredUser,
+      });
+      let user = await User.findById(deliveredUser);
+      if (article && user) {
+        createNotify(
+          article.author,
+          {
+            articleType: article.type,
+            articleId: article.articleId,
+            userFio: user.name.last + " " + user.name.first,
+            userType: user.type,
+          },
+          "ARTICLE_REQUEST_CANCEL",
+          article.type
+        );
+        return res.json({ error: false });
+      }
+      return res.status(422).json({
+        error: true,
+        errors: [
+          {
+            param: "notRole",
+            msg: "Невозможно запросить отмену",
           },
         ],
       });

@@ -51,9 +51,9 @@ class Register extends React.Component {
             // data.errors.map((item) => {
             //   toast.error(item.msg);
             // });
-          this.setState({ error: true, errors: data.errors });
+            this.setState({ error: true, errors: data.errors });
         } else {
-          this.props.history.push("/");
+          this.props.history.push("/loginbytoken/" + data.token);
           toast.success("Регистрация прошла успешно");
         }
         this.setState({ isFetching: false });

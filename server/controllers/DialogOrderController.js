@@ -8,7 +8,7 @@ const Dialog = require("../models/Dialog");
 const Message = require("../models/Message");
 const Article = require("../models/Article");
 const User = require("../models/User");
-let count = 6;
+let count = 20;
 module.exports = {
   getAll: async (req, res, next) => {
     const { user } = res.locals;
@@ -33,7 +33,7 @@ module.exports = {
             },
           },
         ])
-        .sort({ updatedAt: "DESC" })
+        .sort({ updatedAt: -1 })
         .limit(count);
 
       const noReadDialogs = await Dialog.find({
@@ -114,7 +114,7 @@ module.exports = {
             path: "lastMessage",
           },
         ])
-        .sort({ createdAt: "DESC" });
+        .sort({ createdAt: 1 });
       if (!dialog) {
         let article = await Article.findById(orderId).populate([
           {
@@ -139,8 +139,9 @@ module.exports = {
           executor = user;
         //Определение пары в заказе
         if (
-          (!article || [1, 2, 7].find((item) => item === article.status)) &&
-          !author &&
+          !article ||
+          [1, 2, 7].find((item) => item === article.status) ||
+          !author ||
           !executor
         ) {
           const err = {};
@@ -189,37 +190,6 @@ module.exports = {
       return next(new Error(e));
     }
   },
-  load: async (req, res, next) => {
-    const { user } = res.locals;
-    let { lastDialogId, firstDialogId } = req.body;
-
-    try {
-      const dialogs = await Dialog.find({
-        orderId: { $ne: null },
-        users: { $all: [user._id] },
-        lastMessage: { $exists: true },
-        _id: { $gt: lastDialogId, $lt: firstDialogId },
-      })
-        .populate([
-          {
-            path: "users",
-            select: ["_id", "name", "online", "color", "onlineAt"],
-          },
-          {
-            path: "lastMessage",
-            populate: {
-              path: "user",
-            },
-          },
-        ])
-        .sort({ updatedAt: "ASC" })
-        .limit(count);
-
-      return res.json(dialogs);
-    } catch (e) {
-      return next(new Error(e));
-    }
-  },
   //Все диалоги
   getAllDialog: async (req, res, next) => {
     const { user } = res.locals;
@@ -243,7 +213,7 @@ module.exports = {
             },
           },
         ])
-        .sort({ updatedAt: "DESC" })
+        .sort({ updatedAt: -1 })
         .limit(count);
 
       const noReadDialogs = await Dialog.find({
@@ -276,35 +246,6 @@ module.exports = {
         });
       }
       return res.json({ dialogs, noReadCount });
-    } catch (e) {
-      return next(new Error(e));
-    }
-  },
-  loadALL: async (req, res, next) => {
-    const { user } = res.locals;
-    let { lastDialogId, firstDialogId } = req.body;
-    try {
-      const dialogs = await Dialog.find({
-        users: { $all: [user._id] },
-        lastMessage: { $exists: true },
-        _id: { $gt: lastDialogId, $lt: firstDialogId },
-      })
-        .populate([
-          {
-            path: "users",
-            select: ["_id", "name", "online", "color", "onlineAt"],
-          },
-          {
-            path: "lastMessage",
-            populate: {
-              path: "user",
-            },
-          },
-        ])
-        .sort({ updatedAt: "ASC" })
-        .limit(count);
-
-      return res.json(dialogs);
     } catch (e) {
       return next(new Error(e));
     }

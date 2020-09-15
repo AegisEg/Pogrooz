@@ -108,7 +108,7 @@ class Messages extends React.Component {
                     {dialog.orderId.articleId}
                   </div>
                   <div className="col-12 col-sm f-14">
-                    Россия, Ленинградская область, г Пушкин, улица Бойко, 123
+                    {dialog.orderId.to.data.country}, {dialog.orderId.to.value}
                   </div>
                   <div
                     className="col"
@@ -116,8 +116,11 @@ class Messages extends React.Component {
                       maxWidth: "128px",
                     }}
                   >
-                    <Link className="f-12 href" to="/">
-                      Подробнее
+                    <Link
+                      className="f-12 href"
+                      to={`/${dialog.orderId.type}/${dialog.orderId.articleId}`}
+                    >
+                      Открыть
                       <img
                         className="ml-2"
                         src={ArrowDown}

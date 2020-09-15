@@ -191,20 +191,14 @@ class Header extends React.Component {
               </div>
               <div
                 className={`fast-access-btn messages ${
-                  (!!this.props.dialogs.dialogsUser.noReadCount ||
-                    !!this.props.dialogs.dialogsOrder.noReadCount) &&
-                  "not-empty"
+                  !!this.props.dialogs.dialogsALL.noReadCount && "not-empty"
                 }`}
               >
                 <Link to="/messages">
                   <Support />
-                  {(!!this.props.dialogs.dialogsUser.noReadCount ||
-                    !!this.props.dialogs.dialogsOrder.noReadCount) && (
+                  {!!this.props.dialogs.dialogsALL.noReadCount && (
                     <div className="action-counter">
-                      <span>
-                        {this.props.dialogs.dialogsUser.noReadCount +
-                          this.props.dialogs.dialogsOrder.noReadCount}
-                      </span>
+                      <span>{this.props.dialogs.dialogsALL.noReadCount}</span>
                     </div>
                   )}
                 </Link>
@@ -217,8 +211,8 @@ class Header extends React.Component {
               <Link
                 to={`/${
                   this.props.user.type === "cargo"
-                    ? "offer-create"
-                    : "order-create"
+                    ? "order-create"
+                    : "offer-create"
                 }`}
                 className="register"
               >

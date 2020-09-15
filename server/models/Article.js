@@ -12,7 +12,9 @@ autoIncrement.initialize(mongoose);
 
 const ArticleSchema = new Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }],
+  requests: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Request", default: [] },
+  ],
   type: { type: String, enum: ["offer", "order"] },
   cargoTypes: [{ type: Number }],
   cargoData: [{ type: Object }],
@@ -20,7 +22,12 @@ const ArticleSchema = new Schema({
   cargoPhoto: [{ type: Object }],
   status: { type: Number },
   car: CarSchema,
-  executors: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  executors: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
+  ],
+  delivered: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
+  ],
   reviews: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Review", default: [] },
   ],

@@ -7,6 +7,8 @@
 const User = require("../models/User");
 const Article = require("../models/Article");
 const Notification = require("../models/Notification");
+const Dialog = require("../models/Dialog");
+const Review = require("../models/Review");
 const bcrypt = require("bcryptjs");
 const NUM_ROUNDS = 12;
 let { randomString } = require("../controllers/FileController");
@@ -51,7 +53,7 @@ module.exports = {
       let onlyNoRead = await Notification.find({
         user: user,
         isRead: false,
-      });
+      }).sort({ createdAt: -1 });
       let notificationCounts = await Notification.aggregate([
         {
           $match: {
@@ -66,6 +68,42 @@ module.exports = {
           },
         },
       ]);
+      let dialogsCount = await Dialog.aggregate([
+        {
+          $lookup: {
+            from: "messages",
+            localField: "lastMessage",
+            foreignField: "_id",
+            as: "lastMessage",
+          },
+        },
+        {
+          $match: {
+            users: { $all: [user._id] },
+            lastMessage: { $exists: true },
+            noRead: { $ne: 0 },
+            "lastMessage.user": { $ne: user._id },
+          },
+        },
+
+        {
+          $addFields: {
+            groupOrder: {
+              $cond: {
+                if: { $eq: ["$orderId", null] },
+                then: "user",
+                else: "order",
+              },
+            },
+          },
+        },
+        {
+          $group: {
+            _id: "$groupOrder",
+            count: { $sum: 1 },
+          },
+        },
+      ]);
       if (user) {
         return res.json({
           user,
@@ -73,6 +111,7 @@ module.exports = {
           takeCountsArticles,
           onlyNoRead,
           notificationCounts,
+          dialogsCount,
         });
       }
       const err = new Error(`User ${userId} not found.`);
@@ -147,6 +186,7 @@ module.exports = {
             },
           ]);
           countData.canceled = (!!datacount.length && datacount[0].count) || 0;
+          countData.reviews = await Review.find({ user: userId }).count();
           return res.json({ user, countData });
         }
       }

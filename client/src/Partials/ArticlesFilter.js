@@ -10,6 +10,8 @@ class ArticlesFilter extends React.Component {
     status: 2,
     type: "offer",
     carType: false,
+    property: false,
+    carProperty: [],
     additionally: [],
     contractInfo: [],
     paymentInfo: [],
@@ -40,7 +42,12 @@ class ArticlesFilter extends React.Component {
           options={this.state}
           className="background-gray-768 filter-main"
         />
-        <Articles ref={this.articles} filter={{ ...this.state }} />
+        <Articles
+          notControl={true}
+          ref={this.articles}
+          isManage={true}
+          filter={{ ...this.state }}
+        />
       </>
     );
   }

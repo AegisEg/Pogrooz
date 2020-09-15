@@ -11,6 +11,8 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const Article = require("../models/Article");
 const Notification = require("../models/Notification");
+const Dialog = require("../models/Dialog");
+// const { default: Dialog } = require("../../client/src/Partials/Chat/Dialog");
 const NUM_ROUNDS = 12;
 module.exports = {
   // Register method
@@ -47,7 +49,15 @@ module.exports = {
         err.msg = `Этот телефон уже занят`;
         return res.status(409).json({ error: true, errors: [err] });
       }
-
+      if (
+        !/(?:[а-яёa-z]\d|\d[в-яёa-z])/i.test(user.password) ||
+        user.password.length < 8
+      ) {
+        let err = {};
+        err.param = `password`;
+        err.msg = `Пароль должен содержать не менее 8-ми цифр и букв `;
+        return res.status(409).json({ error: true, errors: [err] });
+      }
       /*СОздание юзера*/
       const newUser = new User();
       newUser.name = {
@@ -63,12 +73,7 @@ module.exports = {
       await newUser.save();
       let token = generateToken(newUser.id);
       /*СОздание юзера*/
-      /*Обнуление перменных редакса*/
-      const dialogs = [];
-      let noReadCount = 0;
-      const noReadDialog = [];
-      const noReadNotifications = [];
-      /*Обнуление перменных редакса*/
+
       return res.json({ token, user: newUser });
     } catch (e) {
       console.log(e);
@@ -129,7 +134,8 @@ module.exports = {
           let onlyNoRead = await Notification.find({
             user: user,
             isRead: false,
-          });
+          }).sort({ createdAt: -1 });
+
           let notificationCounts = await Notification.aggregate([
             {
               $match: {
@@ -144,6 +150,42 @@ module.exports = {
               },
             },
           ]);
+          let dialogsCount = await Dialog.aggregate([
+            {
+              $lookup: {
+                from: "messages",
+                localField: "lastMessage",
+                foreignField: "_id",
+                as: "lastMessage",
+              },
+            },
+            {
+              $match: {
+                users: { $all: [user._id] },
+                lastMessage: { $exists: true },
+                noRead: { $ne: 0 },
+                "lastMessage.user": { $ne: user._id },
+              },
+            },
+
+            {
+              $addFields: {
+                groupOrder: {
+                  $cond: {
+                    if: { $eq: ["$orderId", null] },
+                    then: "user",
+                    else: "order",
+                  },
+                },
+              },
+            },
+            {
+              $group: {
+                _id: "$groupOrder",
+                count: { $sum: 1 },
+              },
+            },
+          ]);
           return res.json({
             token,
             user: user.toJSON(),
@@ -151,6 +193,7 @@ module.exports = {
             takeCountsArticles,
             onlyNoRead,
             notificationCounts,
+            dialogsCount,
           });
         }
       }

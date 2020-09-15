@@ -31,6 +31,17 @@ router.post("/cancelArticle", verifyToken, ArticleController.cancelArticle);
 router.post("/equipArticle", verifyToken, ArticleController.equipArticle);
 router.post("/draftArticle", verifyToken, ArticleController.draftArticle);
 //Reviews
-router.post("/getUserReviews", verifyToken, ArticleController.getUserReviews);
+router.post("/getMyReviews", verifyToken, ArticleController.getMyReviews);
+router.post("/getUserReviews", ArticleController.getUserReviews);
 router.post("/saveReview", verifyToken, ArticleController.saveReview);
+router.post(
+  "/setDeliveredCargo",
+  verifyToken,
+  ArticleController.setDeliveredCargo
+);
+router.post(
+  "/setRequestCancel",
+  verifyToken,
+  ArticleController.setRequestCancel
+);
 module.exports = router;

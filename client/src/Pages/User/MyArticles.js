@@ -3,7 +3,6 @@ import React from "react";
 // Elements
 import Article from "../../ArticlesElements/Article";
 import ArticleHeader from "../../ArticlesElements/Partials/ArticleHeader";
-import Loading from "../../Elements/Loading";
 import LoadingFixed from "../../Elements/LoadingFixed";
 import { Scrollbars } from "react-custom-scrollbars";
 

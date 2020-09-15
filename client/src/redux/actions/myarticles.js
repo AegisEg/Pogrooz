@@ -8,7 +8,8 @@ import {
   ARTICLES_TAKING_SET_COUNT,
   ARTICLES_TAKING_SET_LOADING,
   ARTICLES_TAKING_GET,
-  ARTICLE_TAKING_DELETE_FROM_STATUS,
+  ARTICLE_TAKING_REVIEW_UPDATE,
+  ARTICLE_TAKING_REVIEW_CREATE,
   ARTICLES_MY_GET,
   ARTICLES_MY_LOAD,
   ARTICLES_TAKING_LOAD,
@@ -28,6 +29,11 @@ import {
   REVIEWS_MY_CREATE,
   REVIEWS_MY_UPDATE,
   ARTICLE_MY_UPDATE_STATUS,
+  ARTICLE_TAKING_UPDATE_STATUS,
+  REVIEWS_ME_UPDATE,
+  REVIEWS_ME_CREATE,
+  ARTICLE_MY_SET_DELIVERED,
+  ARTICLE_TAKING_SET_DELIVERED,
 } from "../constants";
 import store from "../store";
 import api from "../../config/api";
@@ -517,34 +523,66 @@ export const saveReview = (review, article, userId, apiToken) => (dispatch) => {
               toast.error(item.msg);
             });
           if (!data.error && data.newReview) {
-            if (data.existReview) {
-              dispatch({
-                type: ARTICLE_MY_REVIEW_UPDATE,
-                payload: {
-                  article,
-                  newReview: data.newReview,
-                },
-              });
-              dispatch({
-                type: REVIEWS_MY_UPDATE,
-                payload: {
-                  review: data.newReview,
-                },
-              });
+            if (article.author._id === data.newReview.author._id) {
+              if (data.existReview) {
+                dispatch({
+                  type: ARTICLE_MY_REVIEW_UPDATE,
+                  payload: {
+                    article,
+                    newReview: data.newReview,
+                  },
+                });
+                dispatch({
+                  type: REVIEWS_MY_UPDATE,
+                  payload: {
+                    review: data.newReview,
+                  },
+                });
+              } else {
+                dispatch({
+                  type: ARTICLE_MY_REVIEW_CREATE,
+                  payload: {
+                    article,
+                    newReview: data.newReview,
+                  },
+                });
+                dispatch({
+                  type: REVIEWS_MY_CREATE,
+                  payload: {
+                    review: data.newReview,
+                  },
+                });
+              }
             } else {
-              dispatch({
-                type: ARTICLE_MY_REVIEW_CREATE,
-                payload: {
-                  article,
-                  newReview: data.newReview,
-                },
-              });
-              dispatch({
-                type: REVIEWS_MY_CREATE,
-                payload: {
-                  review: data.newReview,
-                },
-              });
+              if (data.existReview) {
+                dispatch({
+                  type: ARTICLE_TAKING_REVIEW_UPDATE,
+                  payload: {
+                    article,
+                    newReview: data.newReview,
+                  },
+                });
+                dispatch({
+                  type: REVIEWS_ME_UPDATE,
+                  payload: {
+                    review: data.newReview,
+                  },
+                });
+              } else {
+                dispatch({
+                  type: ARTICLE_TAKING_REVIEW_CREATE,
+                  payload: {
+                    article,
+                    newReview: data.newReview,
+                  },
+                });
+                dispatch({
+                  type: REVIEWS_ME_CREATE,
+                  payload: {
+                    review: data.newReview,
+                  },
+                });
+              }
             }
           }
           resolve(data);
@@ -553,12 +591,6 @@ export const saveReview = (review, article, userId, apiToken) => (dispatch) => {
   });
 };
 
-export async function deleteTaking(dispatch, lastStatus, articleId, apiToken) {
-  dispatch({
-    type: ARTICLE_TAKING_DELETE_FROM_STATUS,
-    payload: { lastStatus, articleId: articleId },
-  });
-}
 export const setTakingCount = (takeCountsArticles) => (dispatch) => {
   dispatch({
     type: ARTICLES_TAKING_SET_COUNT,
@@ -629,6 +661,30 @@ export const setRequest = (article, request) => (dispatch) => {
             },
           });
         }
+        resolve();
+      });
+  });
+};
+export const setRequestCancel = (article, user, apiToken) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${api.urlApi}/api/article/setRequestCancel`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+      body: JSON.stringify({
+        articleId: article._id,
+        deliveredUser: user._id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error)
+          data.errors.map((item) => {
+            toast.error(item.msg);
+          });
         resolve();
       });
   });
@@ -812,7 +868,7 @@ export const cancelMyArticle = (article, apiToken) => (dispatch) => {
   });
 };
 //OnWay
-export const onWayMyArticle = (article, apiToken) => (dispatch) => {
+export const onWayMyArticle = (article, apiToken, isExecutor) => (dispatch) => {
   return new Promise((resolve, reject) => {
     let lastStatus = article.status;
     if (apiToken) {
@@ -836,15 +892,20 @@ export const onWayMyArticle = (article, apiToken) => (dispatch) => {
             });
           if (!data.error) {
             article.status = 4;
-            dispatch({
-              type: ARTICLE_MY_UPDATE_STATUS,
-              payload: { lastStatus, article },
-            });
+            if (isExecutor)
+              dispatch({
+                type: ARTICLE_TAKING_UPDATE_STATUS,
+                payload: { lastStatus, article },
+              });
+            else
+              dispatch({
+                type: ARTICLE_MY_UPDATE_STATUS,
+                payload: { lastStatus, article },
+              });
             resolve({ error: false });
-          }
-          resolve(data);
+          } else resolve();
         });
-    }
+    } else resolve();
   });
 };
 //Complete
@@ -876,9 +937,8 @@ export const completeMyArticle = (article, apiToken) => (dispatch) => {
               type: ARTICLE_MY_UPDATE_STATUS,
               payload: { lastStatus, article },
             });
-            resolve({ error: false, articleId: article._id });
-          }
-          resolve(data);
+            resolve({ error: false });
+          } else resolve();
         });
     } else resolve({ error: true });
   });
@@ -950,6 +1010,49 @@ export const equipMyArticle = (article, apiToken) => (dispatch) => {
           }
           resolve(data);
         });
+    } else resolve({ error: true });
+  });
+};
+export const setDeliveredMyArticle = (article, user, apiToken) => (
+  dispatch
+) => {
+  return new Promise((resolve, reject) => {
+    if (apiToken) {
+      fetch(`${api.urlApi}/api/article/setDeliveredCargo`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiToken}`,
+        },
+        body: JSON.stringify({
+          articleId: article._id,
+          deliveredUser: user._id,
+          socketId: SocketController.getSocketId(),
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error)
+            data.errors.map((item) => {
+              toast.error(item.msg);
+            });
+          if (!data.error) {
+            if (article.author._id === store.getState().user._id)
+              dispatch({
+                type: ARTICLE_MY_SET_DELIVERED,
+                payload: { article, user: user._id },
+              });
+            else
+              dispatch({
+                type: ARTICLE_TAKING_SET_DELIVERED,
+                payload: { article, user: user._id },
+              });
+            resolve({ error: false });
+          }
+          resolve(data);
+        });
+      resolve();
     } else resolve({ error: true });
   });
 };

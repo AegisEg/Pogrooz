@@ -4,7 +4,8 @@ import {
   ARTICLES_MY_SET_COUNT,
   ARTICLES_TAKING_SET_COUNT,
   NOTIFICATIONS_NOREAD_GET,
-  NOTIFICATIONS_SET_COUNT
+  NOTIFICATIONS_SET_COUNT,
+  DIALOGS_SET_NOREAD,
 } from "../constants";
 import store from "../store";
 import api from "../../config/api";
@@ -15,7 +16,8 @@ export const loginUser = (
   myCountsArticles,
   takeCountsArticles,
   onlyNoRead,
-  notificationCounts
+  notificationCounts,
+  dialogsCount
 ) => (dispatch) => {
   user.apiToken = apiToken;
   dispatch({
@@ -38,8 +40,24 @@ export const loginUser = (
     type: ARTICLES_TAKING_SET_COUNT,
     payload: { takeCountsArticles },
   });
+  ///DIALOGS
+  dialogsCount = {
+    order: {
+      count: dialogsCount.find((item) => item._id === "order")
+        ? dialogsCount.find((item) => item._id === "order").count
+        : 0,
+    },
+    user: {
+      count: dialogsCount.find((item) => item._id === "user")
+        ? dialogsCount.find((item) => item._id === "user").count
+        : 0,
+    },
+  };
+  dispatch({
+    type: DIALOGS_SET_NOREAD,
+    payload: { dialogsCount },
+  });
 };
-
 export const logoutUser = () => (dispatch) => {
   dispatch({
     type: USER_LOGOUT,

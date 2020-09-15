@@ -10,7 +10,6 @@ import {
   ARTICLES_TAKING_SET_COUNT,
   ARTICLES_TAKING_SET_LOADING,
   ARTICLES_TAKING_CREATE_COUNT,
-  ARTICLES_MY_CURRENT_REFRESH,
   ARTICLES_MY_CURRENT_LOAD,
   ARTICLES_TAKING_CREATE,
   ARTICLE_TAKING_DELETE_FROM_STATUS,
@@ -18,6 +17,8 @@ import {
   ARTICLE_TAKING_UPDATE_STATUS,
   ARTICLES_MY_GET,
   ARTICLES_MY_UPDATE,
+  ARTICLE_MY_SET_DELIVERED,
+  ARTICLE_TAKING_SET_DELIVERED,
   ARTICLES_MY_CREATE,
   ARTICLES_MY_SET_COUNT,
   ARTICLES_MY_SET_LOADING,
@@ -165,7 +166,7 @@ const articles = (state = INITIAL_STATE, action) => {
                     ...item,
                     reviews: item.reviews.map((item) => {
                       if (item._id === action.payload.newReview._id)
-                        return action.payload.newReview;
+                        return { ...item, ...action.payload.newReview };
                       else return item;
                     }),
                   };
@@ -175,13 +176,28 @@ const articles = (state = INITIAL_STATE, action) => {
           }
           return item;
         }),
+        myAll: {
+          ...state.myAll,
+          articles: state.myAll.articles.map((item) => {
+            if (item._id === action.payload.article._id)
+              return {
+                ...item,
+                reviews: item.reviews.map((item) => {
+                  if (item._id === action.payload.newReview._id)
+                    return { ...item, ...action.payload.newReview };
+                  else return item;
+                }),
+              };
+            else return item;
+          }),
+        },
         currentArticle:
           state.currentArticle._id === action.payload.article._id
             ? {
                 ...state.currentArticle,
                 reviews: state.currentArticle.reviews.map((item) => {
                   if (item._id === action.payload.newReview._id)
-                    return action.payload.newReview;
+                    return { ...item, ...action.payload.newReview };
                   else return item;
                 }),
               }
@@ -208,6 +224,17 @@ const articles = (state = INITIAL_STATE, action) => {
           }
           return item;
         }),
+        myAll: {
+          ...state.myAll,
+          articles: state.myAll.articles.map((item) => {
+            if (item._id === action.payload.article._id)
+              return {
+                ...item,
+                reviews: [...item.reviews, action.payload.newReview],
+              };
+            else return item;
+          }),
+        },
         currentArticle:
           state.currentArticle._id === action.payload.article._id
             ? {
@@ -240,6 +267,17 @@ const articles = (state = INITIAL_STATE, action) => {
           }
           return item;
         }),
+        takingAll: {
+          ...state.takingAll,
+          articles: state.takingAll.articles.map((item) => {
+            if (item._id === action.payload.article._id)
+              return {
+                ...item,
+                reviews: [...item.reviews, action.payload.newReview],
+              };
+            else return item;
+          }),
+        },
         currentArticle:
           state.currentArticle._id === action.payload.article._id
             ? {
@@ -255,7 +293,7 @@ const articles = (state = INITIAL_STATE, action) => {
     case ARTICLE_TAKING_REVIEW_UPDATE: {
       return {
         ...state,
-        taking: state.taking.map((item, index) => {
+        taking: state.taking.map((item, index, items) => {
           let status = index + 2;
           if (status === action.payload.article.status) {
             return {
@@ -266,7 +304,7 @@ const articles = (state = INITIAL_STATE, action) => {
                     ...item,
                     reviews: item.reviews.map((item) => {
                       if (item._id === action.payload.newReview._id)
-                        return action.payload.newReview;
+                        return { ...item, ...action.payload.newReview };
                       else return item;
                     }),
                   };
@@ -276,13 +314,28 @@ const articles = (state = INITIAL_STATE, action) => {
           }
           return item;
         }),
+        takingAll: {
+          ...state.takingAll,
+          articles: state.takingAll.articles.map((item) => {
+            if (item._id === action.payload.article._id) {
+              return {
+                ...item,
+                reviews: item.reviews.map((item) => {
+                  if (item._id === action.payload.newReview._id) {
+                    return { ...item, ...action.payload.newReview };
+                  } else return item;
+                }),
+              };
+            } else return item;
+          }),
+        },
         currentArticle:
           state.currentArticle._id === action.payload.article._id
             ? {
                 ...state.currentArticle,
                 reviews: state.currentArticle.reviews.map((item) => {
                   if (item._id === action.payload.newReview._id)
-                    return action.payload.newReview;
+                    return { ...item, ...action.payload.newReview };
                   else return item;
                 }),
               }
@@ -428,12 +481,15 @@ const articles = (state = INITIAL_STATE, action) => {
           }
           return item;
         }),
-        currentArticle: action.payload.article,
+        currentArticle: {
+          ...state.currentArticle,
+          status: action.payload.article.status,
+        },
         myAll: {
           ...state.myAll,
           articles: state.myAll.articles.map((item) =>
             item._id === action.payload.article._id
-              ? action.payload.article
+              ? { ...item, status: action.payload.article.status }
               : item
           ),
         },
@@ -456,19 +512,26 @@ const articles = (state = INITIAL_STATE, action) => {
           if (status === action.payload.article.status) {
             return {
               ...item,
-              articles: [...item.articles, action.payload.article],
+              articles:
+                item.articles.length < settings.countArticleOnPage
+                  ? [...item.articles, action.payload.article]
+                  : item.articles,
               countAll: item.countAll + 1,
             };
           }
           return item;
         }),
+        currentArticle: {
+          ...state.currentArticle,
+          status: action.payload.article.status,
+        },
         takingAll: {
           ...state.takingAll,
-          articles: state.takingAll.articles.map((item) =>
-            item._id === action.payload.article._id
-              ? action.payload.article
-              : item
-          ),
+          articles: state.takingAll.articles.map((item) => {
+            return item._id === action.payload.article._id
+              ? { ...item, status: action.payload.article.status }
+              : item;
+          }),
         },
       };
     }
@@ -538,6 +601,13 @@ const articles = (state = INITIAL_STATE, action) => {
     case ARTICLE_TAKING_DELETE_FROM_STATUS: {
       return {
         ...state,
+        takingAll: {
+          ...state.takingAll,
+          articles: state.takingAll.articles.filter((item) => {
+            return item._id !== action.payload.articleId;
+          }),
+          countAll: state.takingAll.countAll - 1,
+        },
         taking: state.taking.map((item, index) => {
           let status = index + 2;
           if (status === action.payload.lastStatus) {
@@ -566,6 +636,11 @@ const articles = (state = INITIAL_STATE, action) => {
           }
           return item;
         }),
+        takingAll: {
+          ...state.takingAll,
+          articles: [action.payload.article, ...state.takingAll.articles],
+          countAll: state.takingAll.countAll + 1,
+        },
         currentArticle:
           state.currentArticle._id === action.payload.article._id
             ? {
@@ -589,12 +664,32 @@ const articles = (state = INITIAL_STATE, action) => {
           }
           return item;
         }),
+        takingAll: {
+          ...state.takingAll,
+          articles: [action.payload.article, ...state.takingAll.articles],
+          countAll: state.takingAll.countAll + 1,
+        },
+        currentArticle:
+          state.currentArticle._id === action.payload.article._id
+            ? {
+                ...state.currentArticle,
+                status: action.payload.status,
+              }
+            : state.currentArticle,
       };
     }
     //My ARticles
     case ARTICLES_TAKING_SET_COUNT: {
       return {
         ...state,
+        takingAll: {
+          ...state.takingAll,
+          countAll: action.payload.takeCountsArticles
+            .map((item) => item.count)
+            .reduce((sum, elem) => {
+              return sum + elem;
+            }, 0),
+        },
         taking: state.taking.map((item, index) => {
           let status = index + 2;
           let setVal;
@@ -793,6 +888,92 @@ const articles = (state = INITIAL_STATE, action) => {
             : state.currentArticle,
       };
     }
+    case ARTICLE_MY_SET_DELIVERED: {
+      return {
+        ...state,
+        my: state.my.map((item, index) => {
+          let status = index + 1;
+          if (status === action.payload.article.status) {
+            return {
+              ...item,
+              articles: item.articles.map((item) => {
+                if (item._id === action.payload.article._id) {
+                  return {
+                    ...item,
+                    delivered: [...item.delivered, action.payload.user],
+                  };
+                } else return item;
+              }),
+            };
+          }
+          return item;
+        }),
+        myAll: {
+          ...state.myAll,
+          articles: state.myAll.articles.map((item) => {
+            if (item._id === action.payload.article._id)
+              return {
+                ...item,
+                delivered: [...item.delivered, action.payload.user],
+              };
+            else return item;
+          }),
+        },
+        currentArticle:
+          state.currentArticle._id === action.payload.article._id
+            ? {
+                ...state.currentArticle,
+                delivered: [
+                  ...state.currentArticle.delivered,
+                  action.payload.user,
+                ],
+              }
+            : state.currentArticle,
+      };
+    }
+    case ARTICLE_TAKING_SET_DELIVERED: {
+      return {
+        ...state,
+        taking: state.taking.map((item, index) => {
+          let status = index + 2;
+          if (status === action.payload.article.status) {
+            return {
+              ...item,
+              articles: item.articles.map((item) => {
+                if (item._id === action.payload.article._id)
+                  return {
+                    ...item,
+                    delivered: [...item.delivered, action.payload.user],
+                  };
+                else return item;
+              }),
+            };
+          }
+          return item;
+        }),
+        takingAll: {
+          ...state.takingAll,
+          articles: state.takingAll.articles.map((item) => {
+            if (item._id === action.payload.article._id)
+              return {
+                ...item,
+                delivered: [...item.delivered, action.payload.user],
+              };
+            else return item;
+          }),
+        },
+        currentArticle:
+          state.currentArticle._id === action.payload.article._id
+            ? {
+                ...state.currentArticle,
+                delivered: [
+                  ...state.currentArticle.delivered,
+                  action.payload.user,
+                ],
+              }
+            : state.currentArticle,
+      };
+    }
     case ARTICLE_MY_DELETE_FROM_STATUS: {
       return {
         ...state,
@@ -847,9 +1028,6 @@ const articles = (state = INITIAL_STATE, action) => {
         currentArticle: { ...state.currentArticle, ...action.payload.change },
       };
     }
-    case ARTICLES_MY_CURRENT_REFRESH: {
-      return { ...state, currentArticle: false };
-    }
     case ARTICLE_SET_REQUEST: {
       return {
         ...state,
@@ -858,7 +1036,7 @@ const articles = (state = INITIAL_STATE, action) => {
             ? {
                 ...state.currentArticle,
                 requests: [
-                  ...state.currentArticle.reviews,
+                  ...state.currentArticle.requests,
                   action.payload.request,
                 ],
               }

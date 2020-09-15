@@ -40,7 +40,10 @@ class ReviewItem extends React.Component {
               <span>{this.props.review.comment || "Нет текста отзыва"}</span>
               <div>
                 Рейтинг:
-                <RatingInput value={this.props.review.rating} />
+                <RatingInput
+                  isDisable={true}
+                  value={this.props.review.rating}
+                />
               </div>
             </div>
           )}

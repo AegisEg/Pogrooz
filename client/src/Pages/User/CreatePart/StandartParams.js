@@ -6,6 +6,8 @@ import cargoUnit from "../../../config/baseInfo/unitCargo";
 
 class StandartParams extends React.Component {
   render() {
+    let unut = cargoUnit;
+    if (!this.props.needCube) unut = unut.slice(0, 2);
     return (
       <div className="standartParams">
         <div
@@ -18,13 +20,13 @@ class StandartParams extends React.Component {
           <Select
             type="text"
             placeholder="Ед. измерения"
-            options={cargoUnit}
+            options={unut}
             value={
               this.props.cargoStandartData &&
               this.props.cargoStandartData["unit"]
                 ? {
                     value: this.props.cargoStandartData["unit"],
-                    label: cargoUnit.find(
+                    label: unut.find(
                       (itemX) =>
                         itemX.value === this.props.cargoStandartData["unit"]
                     ).label,

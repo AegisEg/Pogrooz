@@ -135,4 +135,19 @@ export default [
     code: "ARTICLE_PASSPORT_MODERATION",
     text: (info) => <>Фото паспотра прошло модерацию</>,
   },
+  {
+    id: 9,
+    code: "ARTICLE_REQUEST_CANCEL",
+    text: (info) => (
+      <>
+        По{" "}
+        <Link to={`${info.articleType}/${info.articleId}`}>
+          {info.articleType === "offer" ? "предложению" : "заказу"} №
+          {info.articleId}
+        </Link>{" "}
+        {info.userType === "cargo" ? "грузовладелец" : "перевозчик"}{" "}
+        {info.userFio} послал запрос на исключения из исполнителей
+      </>
+    ),
+  },
 ];

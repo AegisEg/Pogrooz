@@ -15,6 +15,7 @@ import ImgActiveStar from "../../img/active-star.png";
 import redWarning from "../../img/redWarning.svg";
 import NoMatch from "../NoMatch";
 import Loading from "../../Elements/Loading";
+import ReviewsUser from "../../Partials/ReviewsUser";
 import { setForceTitle } from "../../functions/functions";
 class User extends React.Component {
   constructor(props) {
@@ -186,6 +187,18 @@ class User extends React.Component {
           Отмененные
           <span className="counter">{this.state.countData.canceled} </span>
         </span>
+        <span
+          className={`tab_group ${this.state.currentTab === 6 ? "active" : ""}`}
+          onClick={() => {
+            if (this.state.currentTab !== 6)
+              this.setState({
+                currentTab: 6,
+              });
+          }}
+        >
+          Отзывы
+          <span className="counter">{this.state.countData.reviews} </span>
+        </span>
       </div>
     );
   }
@@ -207,8 +220,9 @@ class User extends React.Component {
     return formatted;
   }
   onChengeArticles(state) {
-    this.setState(state);
-    this.articles.current.getAricles();
+    this.setState(state, () => {
+      this.articles.current.getAricles();
+    });
   }
   render() {
     //Ставлю статус(0,1 - открытый, 2,3 - в работе, 3,4 - закрытый) и Тип(Заказ
@@ -286,93 +300,116 @@ class User extends React.Component {
                             fontSize: "18px",
                           }}
                         >
-                          {/* {this.props.match.params.id == 2 && (
-                        <div
-                          className="d-flex"
-                          style={{
-                            color: "#DD2828",
-                            fontSize: "14px",
-                          }}
-                        >
-                          <img
-                            className="mr-2"
-                            src={redWarning}
-                            alt="redWarning"
-                          />
-                          Профиль скрыт
-                        </div>
-                      )} */}
-                          {this.state.user.type !== "cargo" && (
-                            <>
-                              <div>{this.formatPhoneNumber(user.phone)}</div>
-                              <div>{user.email}</div>
-                            </>
+                          {this.state.user.isLock && (
+                            <div
+                              className="d-flex"
+                              style={{
+                                color: "#DD2828",
+                                fontSize: "14px",
+                              }}
+                            >
+                              <img
+                                className="mr-2"
+                                src={redWarning}
+                                alt="redWarning"
+                              />
+                              Профиль скрыт
+                            </div>
                           )}
+
+                          {!this.state.user.isLock &&
+                            this.state.user.type !== "cargo" && (
+                              <>
+                                <div>{this.formatPhoneNumber(user.phone)}</div>
+                                <div>{user.email}</div>
+                              </>
+                            )}
                         </div>
                       </div>
                       <div className="col-md-4 col-12 user-column-2">
                         <span className="f-14 col-12">
                           Рейтинг: &nbsp;
                           <span className="d-inline-block">
-                            4.6
-                            <img src={ImgActiveStar} alt="ImgActiveStar" />
+                            {this.state.user.rating || 0}
+                            <img
+                              className="ml-1"
+                              src={ImgActiveStar}
+                              alt="ImgActiveStar"
+                            />
                           </span>
                         </span>
-                        {this.props.user.isAuth && (
-                          <>
-                            <Link to={`/dialog/${this.state.user._id}`}>
-                              <Button
-                                type="fill"
-                                paddingVertical="11px"
-                                paddingHorizontal="30px"
-                                className="input-action"
-                              >
-                                Написать
-                              </Button>
-                            </Link>
-
-                            <Button
-                              type="empty"
-                              paddingVertical="11px"
-                              paddingHorizontal="30px"
-                              className="input-action"
-                            >
-                              Предложить заказ
-                            </Button>
-                          </>
-                        )}
+                        {this.props.user.isAuth &&
+                          this.props.user._id !== this.state.user._id && (
+                            <>
+                              <Link to={`/dialog/${this.state.user._id}`}>
+                                <Button
+                                  type="fill"
+                                  paddingVertical="11px"
+                                  paddingHorizontal="30px"
+                                  className="input-action"
+                                >
+                                  Написать
+                                </Button>
+                              </Link>
+                              {this.props.user.type === "cargo" &&
+                                this.state.user.type === "carrier" && (
+                                  <Button
+                                    type="empty"
+                                    paddingVertical="11px"
+                                    paddingHorizontal="30px"
+                                    className="input-action"
+                                  >
+                                    Предложить заказ
+                                  </Button>
+                                )}
+                            </>
+                          )}
                       </div>
                     </div>
                   </div>
                   {this.renderTabs()}
                 </div>
-                <div className="lk-order-page">
-                  <Articles ref={this.articles} filter={this.state.filter} />
-                </div>
-                {this.props.match.params.id == 2 && (
-                  <div className="row">
-                    <div className="col-12 text-center">
-                      <img src={redWarning} width="70px" alt="" />
-                      <div
-                        className="mt-3"
-                        style={{
-                          fontSize: "24px",
-                          color: "#DD2828",
-                        }}
-                      >
-                        Профиль скрыт
-                      </div>
-                      <div
-                        className="mt-3 mx-auto"
-                        style={{
-                          fontSize: "12px",
-                          maxWidth: "567px",
-                        }}
-                      >
-                        Это значит, что пока Перевозчик не активирует свой
-                        профиль, его контакты и предложения и история заказов
-                        будет недостцпна для простомотра.
-                      </div>
+                {!this.state.user.isLock && (
+                  <div className="lk-order-page">
+                    {this.state.currentTab === 6 && (
+                      <ReviewsUser
+                        userId={this.state.user._id}
+                        countAll={this.state.countData.reviews}
+                      />
+                    )}
+                    {this.state.currentTab !== 6 && (
+                      <Articles
+                        notControl={true}
+                        notLink={this.state.currentTab !== 3}
+                        isManage={this.state.currentTab === 3}
+                        ref={this.articles}
+                        filter={this.state.filter}
+                      />
+                    )}
+                  </div>
+                )}{" "}
+                {this.state.user.isLock && (
+                  <div className="text-center">
+                    <img src={redWarning} width="70px" alt="" />
+                    <div
+                      className="mt-3"
+                      style={{
+                        fontSize: "24px",
+                        color: "#DD2828",
+                      }}
+                    >
+                      Профиль скрыт
+                    </div>
+                    <div
+                      className="mt-3 mx-auto"
+                      style={{
+                        fontSize: "12px",
+                        maxWidth: "567px",
+                      }}
+                    >
+                      Это значит, что пока Перевозчик не активирует свой
+                      профиль, его контакты и предложения и история заказов
+                      будет недоступны для просмотра.
                     </div>
                   </div>
                 )}

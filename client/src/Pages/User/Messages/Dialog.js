@@ -17,6 +17,7 @@ class Messages extends React.Component {
   };
   componentDidMount() {
     let dialogs = this.props.dialogs.dialogsUser;
+
     if (
       !dialogs.dialogs.find(
         (dialog) => dialog.user._id === this.props.match.params.id
@@ -32,6 +33,7 @@ class Messages extends React.Component {
         this.props.match.params.id,
         this.props.user.apiToken
       );
+
       if (
         !dialogs.dialogs.find(
           (dialog) => dialog.user._id === this.props.match.params.id
@@ -45,9 +47,10 @@ class Messages extends React.Component {
     }
   }
   render() {
-    let dialog = this.props.dialogs.dialogsUser.dialogs.find(
-      (dialog) => dialog.user._id === this.props.match.params.id
-    );
+    let dialog = this.props.dialogs.dialogsUser.dialogs.find((dialog) => {
+      return dialog.user._id === this.props.match.params.id;
+    });
+
     return (
       <>
         <Loading isLoading={this.state.isFetching} />

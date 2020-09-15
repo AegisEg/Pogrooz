@@ -456,7 +456,12 @@ class OfferCreate1 extends React.Component {
                           ""
                         }
                         onChange={() => {
-                          this.onChange("Манипулятор", "carProperty");
+                          if (
+                            this.state.car &&
+                            this.state.car.property === "Манипулятор"
+                          )
+                            this.onChange(false, "carProperty");
+                          else this.onChange("Манипулятор", "carProperty");
                         }}
                         text={"Манипулятор"}
                       />
@@ -475,7 +480,12 @@ class OfferCreate1 extends React.Component {
                           ""
                         }
                         onChange={() => {
-                          this.onChange("Рефрижератор", "carProperty");
+                          if (
+                            this.state.car &&
+                            this.state.car.property === "Рефрижератор"
+                          )
+                            this.onChange(false, "carProperty");
+                          else this.onChange("Рефрижератор", "carProperty");
                         }}
                         text={"Рефрижератор"}
                       />
@@ -494,7 +504,12 @@ class OfferCreate1 extends React.Component {
                           ""
                         }
                         onChange={() => {
-                          this.onChange("Изотерм", "carProperty");
+                          if (
+                            this.state.car &&
+                            this.state.car.property === "Изотерм"
+                          )
+                            this.onChange(false, "carProperty");
+                          else this.onChange("Изотерм", "carProperty");
                         }}
                         text={"Изотерм"}
                       />

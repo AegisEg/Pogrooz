@@ -13,6 +13,7 @@ class MenuNav extends React.Component {
         name: "Грузовладельцам",
         href: "/cargo",
         type: "menu",
+        alwaysVisible: true,
         width: 0,
       },
       {
@@ -20,13 +21,23 @@ class MenuNav extends React.Component {
         name: "Перевозчикам",
         href: "/carrier",
         type: "menu",
+        alwaysVisible: true,
         width: 0,
       },
       {
         id: 3,
         name: "FAQ",
-        href: this.props.isAuth ? "/support" : "/faq",
+        href: "/faq",
         type: "menu",
+        isAuth: false,
+        width: 0,
+      },
+      {
+        id: 21,
+        name: "FAQ",
+        href: "/support",
+        type: "menu",
+        isAuth: true,
         width: 0,
       },
       {
@@ -34,38 +45,40 @@ class MenuNav extends React.Component {
         name: "О портале",
         href: "/about",
         type: "menu",
+        alwaysVisible: true,
         width: 0,
       },
       {
         id: 5,
         name: "Тарифы",
         href: "/tariffs",
+        alwaysVisible: true,
       },
       {
         id: 6,
         name: "Скачать приложение",
         href: "/download-app",
+        alwaysVisible: true,
       },
     ],
     menuWidth: 200,
   };
-  onResizeItem = this.onResizeItem.bind(this);
-  onResize = this.onResize.bind(this);
 
-  onResize(menuWidth) {
+  onResize = (menuWidth) => {
     if (menuWidth !== 0) this.setState({ menuWidth });
-  }
-  onResizeItem(itemWidth, id) {
+  };
+  onResizeItem = (itemWidth, id) => {
     let menu = this.state.menu;
     for (let i = 0; i < menu.length; i++) {
-      if (menu[i].id === id) {
-        menu[i].width = itemWidth;
-        break;
-      }
+      if (this.props.isAuth === menu[i].isAuth || menu[i].alwaysVisible)
+        if (menu[i].id === id) {
+          menu[i].width = itemWidth;
+          break;
+        }
     }
 
     this.setState({ menu });
-  }
+  };
 
   render() {
     let menu = this.state.menu,
@@ -73,31 +86,42 @@ class MenuNav extends React.Component {
 
     for (let i = 0; i < menu.length; i++) {
       width += menu[i].width;
-      if (width >= this.state.menuWidth) {
-        menu[i].type = "submenu";
-      } else menu[i].type = "menu";
+      if (this.props.isAuth === menu[i].isAuth || menu[i].alwaysVisible)
+        if (width >= this.state.menuWidth) {
+          menu[i].type = "submenu";
+        } else menu[i].type = "menu";
     }
     return (
       <div className="header-navigation d-premd-none col">
         <nav>
           <ul>
             {menu.map((item) => {
-              return (
-                item.type === "menu" && (
-                  <li key={item.id} style={{ opacity: item.width ? 1 : 0 }}>
-                    <NavLink to={item.href} activeClassName="active">
-                      {item.name}
-                    </NavLink>
-                    <ReactResizeDetector
-                      handleWidth
-                      handleHeight={false}
-                      onResize={(width) => {
-                        this.onResizeItem(width, item.id);
-                      }}
-                    />
-                  </li>
-                )
-              );
+              if (this.props.isAuth === item.isAuth || item.alwaysVisible)
+                return (
+                  item.type === "menu" && (
+                    <li key={item.id} style={{ opacity: item.width ? 1 : 0 }}>
+                      <NavLink to={item.href} activeClassName="active">
+                        {item.name}
+                      </NavLink>
+                      <ReactResizeDetector
+                        handleWidth
+                        handleHeight={false}
+                        onResize={(width) => {
+                          this.onResizeItem(width, item.id);
+                        }}
+                      />
+                    </li>
+                  )
+                );
+              else
+                return (
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "contents",
+                    }}
+                  ></div>
+                );
             })}
           </ul>
           {menu.find((item) => item.type === "submenu") && (

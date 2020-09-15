@@ -27,7 +27,7 @@ class DialogsModal extends React.Component {
         className="cancels-modal"
       >
         <div className="cancels-executors">
-          {this.props.dialogs.map((item, index) => {
+          {this.props.users.map((item, index) => {
             return (
               <div
                 key={index}

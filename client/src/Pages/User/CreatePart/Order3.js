@@ -323,7 +323,7 @@ class OrderCreate3 extends React.Component {
                 )}
                 {this.state.isPro && (
                   <Select
-                    placeholder="Тип Груза"
+                    placeholder="Тип Авто"
                     options={this.state.carListPossible.map((item) => {
                       return {
                         value: item.id,
@@ -402,7 +402,12 @@ class OrderCreate3 extends React.Component {
                       ""
                     }
                     onChange={() => {
-                      this.onChange("Манипулятор", "carProperty");
+                      if (
+                        this.state.car &&
+                        this.state.car.property === "Манипулятор"
+                      )
+                        this.onChange(false, "carProperty");
+                      else this.onChange("Манипулятор", "carProperty");
                     }}
                     text={"Манипулятор"}
                   />
@@ -421,7 +426,12 @@ class OrderCreate3 extends React.Component {
                       ""
                     }
                     onChange={() => {
-                      this.onChange("Рефрижератор", "carProperty");
+                      if (
+                        this.state.car &&
+                        this.state.car.property === "Рефрижератор"
+                      )
+                        this.onChange(false, "carProperty");
+                      else this.onChange("Рефрижератор", "carProperty");
                     }}
                     text={"Рефрижератор"}
                   />
@@ -440,7 +450,12 @@ class OrderCreate3 extends React.Component {
                       ""
                     }
                     onChange={() => {
-                      this.onChange("Изотерм", "carProperty");
+                      if (
+                        this.state.car &&
+                        this.state.car.property === "Изотерм"
+                      )
+                        this.onChange(false, "carProperty");
+                      else this.onChange("Изотерм", "carProperty");
                     }}
                     text={"Изотерм"}
                   />
@@ -472,11 +487,18 @@ class OrderCreate3 extends React.Component {
                               ""
                             }
                             onChange={() => {
-                              this.onChangeCarData(
-                                9,
-                                "typeGazel",
-                                "Цельнометаллическая"
-                              );
+                              if (
+                                carInfo.find((item) => item.carId === 9) &&
+                                carInfo.find((item) => item.carId === 9)
+                                  .typeGazel === "Цельнометаллическая"
+                              )
+                                this.onChangeCarData(9, "typeGazel", false);
+                              else
+                                this.onChangeCarData(
+                                  9,
+                                  "typeGazel",
+                                  "Цельнометаллическая"
+                                );
                             }}
                             text={"Цельнометаллическая"}
                           />
@@ -496,7 +518,18 @@ class OrderCreate3 extends React.Component {
                               ""
                             }
                             onChange={() => {
-                              this.onChangeCarData(9, "typeGazel", "С тентом");
+                              if (
+                                carInfo.find((item) => item.carId === 9) &&
+                                carInfo.find((item) => item.carId === 9)
+                                  .typeGazel === "С тентом"
+                              )
+                                this.onChangeCarData(9, "typeGazel", false);
+                              else
+                                this.onChangeCarData(
+                                  9,
+                                  "typeGazel",
+                                  "С тентом"
+                                );
                             }}
                             text={"С тентом"}
                           />
@@ -520,11 +553,18 @@ class OrderCreate3 extends React.Component {
                                 .awning === "Жесткий борт"
                             }
                             onChange={() => {
-                              this.onChangeCarData(
-                                12,
-                                "awning",
-                                "Жесткий борт"
-                              );
+                              if (
+                                carInfo.find((item) => item.carId === 12) &&
+                                carInfo.find((item) => item.carId === 12)
+                                  .awning === "Жесткий борт"
+                              )
+                                this.onChangeCarData(12, "awning", false);
+                              else
+                                this.onChangeCarData(
+                                  12,
+                                  "awning",
+                                  "Жесткий борт"
+                                );
                             }}
                             text={"Жесткий борт"}
                           />
@@ -544,11 +584,18 @@ class OrderCreate3 extends React.Component {
                               ""
                             }
                             onChange={() => {
-                              this.onChangeCarData(
-                                12,
-                                "awning",
-                                "Съемная верхняя балка"
-                              );
+                              if (
+                                carInfo.find((item) => item.carId === 12) &&
+                                carInfo.find((item) => item.carId === 12)
+                                  .awning === "Съемная верхняя балка"
+                              )
+                                this.onChangeCarData(12, "awning", false);
+                              else
+                                this.onChangeCarData(
+                                  12,
+                                  "awning",
+                                  "Съемная верхняя балка"
+                                );
                             }}
                             text={"Съемная верхняя балка"}
                           />
@@ -568,11 +615,18 @@ class OrderCreate3 extends React.Component {
                               ""
                             }
                             onChange={() => {
-                              this.onChangeCarData(
-                                12,
-                                "awning",
-                                "Съемная боковая стойка"
-                              );
+                              if (
+                                carInfo.find((item) => item.carId === 12) &&
+                                carInfo.find((item) => item.carId === 12)
+                                  .awning === "Съемная боковая стойка"
+                              )
+                                this.onChangeCarData(12, "awning", false);
+                              else
+                                this.onChangeCarData(
+                                  12,
+                                  "awning",
+                                  "Съемная боковая стойка"
+                                );
                             }}
                             text={"Съемная боковая стойка"}
                           />
