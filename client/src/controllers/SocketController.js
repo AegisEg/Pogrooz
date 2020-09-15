@@ -122,8 +122,6 @@ export default {
           if (!isMy && countNoread === 1) {
             noReadCount = true;
           }
-
-          console.log(countNoread);
           store.dispatch({
             type: isOrder ? DIALOGSORDER_ADD_MESSAGE : DIALOGS_ADD_MESSAGE,
             payload: {

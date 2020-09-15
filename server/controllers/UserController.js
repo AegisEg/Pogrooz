@@ -136,8 +136,7 @@ module.exports = {
           datacount = await Article.aggregate([
             {
               $match: {
-                type: type === "order" ? "offer" : type,
-                status: { $in: [5, 6] },
+                status: { $in: [4, 5, 6] },
                 executors: user._id,
               },
             },
@@ -145,7 +144,6 @@ module.exports = {
               $count: "count",
             },
           ]);
-
           countData.isGetted = (!!datacount.length && datacount[0].count) || 0;
           datacount = await Article.aggregate([
             {

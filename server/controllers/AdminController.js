@@ -7,6 +7,7 @@ const User = require("../models/User");
 const Page = require("../models/Page");
 const Question = require("../models/Question");
 const QuestionSection = require("../models/QuestionSection");
+const Tarrif = require("../models/Tarrif");
 
 AdminBro.registerAdapter(AdminBroMongoose);
 const adminBro = new AdminBro({
@@ -255,13 +256,58 @@ const adminBro = new AdminBro({
         },
       },
     },
+    {
+      resource: Tarrif,
+      options: {
+        actions: {
+          delete: {
+            isVisible: true,
+          },
+          new: {
+            isVisible: true,
+          },
+          edit: {
+            isVisible: true,
+          },
+        },
+        properties: {
+          _id: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          buff: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          createdAt: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          name: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          price: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          discount: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          duration: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          isEnable: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          isDemo: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+        },
+      },
+    },
   ],
   locale: {
     translations: {
       resources: {
         User: {
-          actions:{
-            passportModeration:"Модерация пасспорта"
+          actions: {
+            passportModeration: "Модерация пасспорта",
           },
           properties: {
             email: "Почта",
