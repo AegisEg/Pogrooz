@@ -36,6 +36,7 @@ const dialogOrderRoutes = require("./routes/dialogOrder");
 const carRoutes = require("./routes/car");
 const notification = require("./routes/notification");
 const page = require("./routes/page");
+const tariffs = require("./routes/tariffs");
 // Use Express as our web server
 const app = express();
 
@@ -61,6 +62,7 @@ app
   .use("/api/dialogsOrder", dialogOrderRoutes)
   .use("/api/notification", notification)
   .use("/api/page", page)
+  .use("/api/tariffs", tariffs)
   // Serve static files
   .use(express.static(path.join(__dirname, "../client")))
   .use("/media", express.static(path.join(__dirname, "./uploads")))

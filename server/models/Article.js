@@ -22,6 +22,10 @@ const ArticleSchema = new Schema({
   cargoPhoto: [{ type: Object }],
   status: { type: Number },
   car: CarSchema,
+  lastCarrierLocation: {
+    type: { type: String, default: "Point" },
+    coordinates: [Number],
+  },
   executors: [
     { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
   ],

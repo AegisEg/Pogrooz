@@ -135,14 +135,6 @@ class Filter extends React.Component {
           } background-gray-768`}
         >
           <div className="container-fluid">
-            {this.state.show && (
-              <Link
-                to="/"
-                className="f-14 mb-2 go-to-pro mr-4 d-inline d-lg-none"
-              >
-                Перейти в режим PRO
-              </Link>
-            )}
             <div className="row filter-line">
               <div
                 className={`pop-hints col-480-6 ${
@@ -659,6 +651,7 @@ class Filter extends React.Component {
                       className="f-14 go-to-pro mr-4"
                       onClick={(e) => {
                         e.preventDefault();
+                        this.props.onResetFilter();
                       }}
                     >
                       Сбросить фильтр
@@ -674,13 +667,6 @@ class Filter extends React.Component {
                         Найти
                       </Button>
                     </span>
-
-                    <Link
-                      to="/"
-                      className="f-14 go-to-pro mr-4 d-none d-lg-inline"
-                    >
-                      Перейти в режим PRO
-                    </Link>
                     <a
                       onClick={() => {
                         this.setState({ show: !this.state.show });

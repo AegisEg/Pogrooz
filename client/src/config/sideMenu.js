@@ -120,7 +120,7 @@ export default [
     name: "Мой тариф",
     to: "/mytarif",
     icon: ruble,
-    role: "carriers",
+    role: "carrier",
   },
   {
     name: "Взятые заказы",
@@ -161,7 +161,7 @@ export default [
   },
   {
     name: "Профиль",
-    to: "/profile",
+    to: "/profile/info",
     icon: profile,
     onlyMobile: true,
   },

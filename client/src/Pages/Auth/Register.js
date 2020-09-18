@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 // Elements
 import Button from "../../Elements/Button";
-import Select from "../../Elements/Select";
+import InputPhone from "../../Elements/InputPhone";
 // Router
 import { Link } from "react-router-dom";
 import countryList from "../../config/countryList";
@@ -23,41 +23,44 @@ class Register extends React.Component {
     password: "",
     error: false,
     errors: [],
+    isVerified: false,
   };
 
   register() {
-    this.setState({ isFetching: true });
-    fetch(`${configApi.urlApi}/auth/register`, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: this.state.email,
-        phone: this.state.phone,
-        country: this.state.country,
-        type: this.state.type,
-        firstName: this.state.firstName,
-        middleName: this.state.middleName,
-        lastName: this.state.lastName,
-        password: this.state.password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          if (data.error)
-            // data.errors.map((item) => {
-            //   toast.error(item.msg);
-            // });
-            this.setState({ error: true, errors: data.errors });
-        } else {
-          this.props.history.push("/loginbytoken/" + data.token);
-          toast.success("Регистрация прошла успешно");
-        }
-        this.setState({ isFetching: false });
-      });
+    if (this.state.isVerified === "success") {
+      this.setState({ isFetching: true });
+      fetch(`${configApi.urlApi}/auth/register`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: this.state.email,
+          phone: this.state.phone,
+          country: this.state.country,
+          type: this.state.type,
+          firstName: this.state.firstName,
+          middleName: this.state.middleName,
+          lastName: this.state.lastName,
+          password: this.state.password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            if (data.error)
+              // data.errors.map((item) => {
+              //   toast.error(item.msg);
+              // });
+              this.setState({ error: true, errors: data.errors });
+          } else {
+            this.props.history.push("/loginbytoken/" + data.token);
+            toast.success("Регистрация прошла успешно");
+          }
+          this.setState({ isFetching: false });
+        });
+    } else toast.error("Подтвердите номер телефона");
   }
 
   render() {
@@ -89,7 +92,7 @@ class Register extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-sm-6 d-flex mb-custom align-items-center">
+            <div className="col-12 col-sm-6 d-flex  align-items-center">
               Страна:
               <span
                 className={`simple_select_city f-17-only col text-center ${
@@ -118,21 +121,19 @@ class Register extends React.Component {
               />
             </div> */}
           </div>
-          <div className="row">
-            <div className="col-12 col-sm-12">
-              <Input
-                type="phone"
-                error={this.state.errors.find(
-                  (value) => value.param === "phone"
-                )}
-                value={this.state.phone}
-                onChange={(phone) => {
-                  this.setState({ phone });
-                }}
-                placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
-              />
-            </div>
-          </div>
+          <InputPhone
+            error={this.state.errors.find((value) => value.param === "phone")}
+            value={this.state.phone}
+            isVerified={this.state.isVerified}
+            phone={this.state.phone}
+            setVerified={(val) => {
+              this.setState({ isVerified: val });
+            }}
+            onChange={(phone) => {
+              this.setState({ phone });
+            }}
+            placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
+          />
           <div className="row">
             <div className="col-12">
               <Input

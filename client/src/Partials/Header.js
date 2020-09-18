@@ -11,6 +11,7 @@ import notificationsFill from "../img/notifications-fill.png";
 import { ReactComponent as Support } from "../img/support.svg";
 import ImgActiveStar from "../img/active-star.png";
 import Notification from "../Elements/Notification";
+import TariffStatus from "../Partials/TariffStatus";
 // Elements
 import Button from "../Elements/Button";
 import MenuNav from "./MenuNav";
@@ -31,8 +32,6 @@ class Header extends React.Component {
     this.hideProfileMenu = this.hideProfileMenu.bind(this);
     this.showNotificationsPop = this.showNotificationsPop.bind(this);
     this.hideNotificationsPop = this.hideNotificationsPop.bind(this);
-    this.showTarrifPop = this.showTarrifPop.bind(this);
-    this.hideTarrifPop = this.hideTarrifPop.bind(this);
   }
 
   state = {
@@ -41,21 +40,13 @@ class Header extends React.Component {
     showProfileMenu: false,
     showNotificationsPop: false,
     showMessagesPop: false,
-    showTarrifPop: false,
   };
 
   showProfileMenu() {
     this.setState({ showProfileMenu: true });
     document.addEventListener("click", this.hideProfileMenu);
   }
-  showTarrifPop() {
-    this.setState({ showTarrifPop: true });
-    document.addEventListener("click", this.hideTarrifPop);
-  }
-  hideTarrifPop() {
-    this.setState({ showTarrifPop: false });
-    document.removeEventListener("click", this.hideTarrifPop);
-  }
+
   hideProfileMenu() {
     this.setState({ showProfileMenu: false });
     document.removeEventListener("click", this.hideProfileMenu);
@@ -323,31 +314,11 @@ class Header extends React.Component {
               )}
             </div>
           )}
-          {this.props.user.isAuth && (
-            <div
-              style={{ cursor: "pointer", width: "75px", marginRight: "5px" }}
-              className="header-profile tarrif-pop text-center f-12"
-              onClick={() => {
-                this.showTarrifPop();
-              }}
-            >
-              <span>Тариф ДЕМО активен до 20.12.2025</span>
-              {this.state.showTarrifPop && (
-                <div className="pop-block">
-                  <p>До окончания тарифа осталось 2 дня.</p>
-                  <p>
-                    Если его не продлить - ваш профиль и предлжения будут скрыты
-                    для других пользователей.
-                    <b>Вы не сможете брать заказы.</b>
-                  </p>
-                  <Link to="/mytarif">
-                    <Button type="fill" className="mt-2">
-                      Пополнить
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </div>
+          {this.props.user.type === "carrier" && this.props.user.isAuth && (
+            <TariffStatus
+              tariff={this.props.user.tariff}
+              expiriesAt={this.props.user.expiriesTariffAt}
+            />
           )}
           <div className="toogle-burger">
             <MobileMenu />

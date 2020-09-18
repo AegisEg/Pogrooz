@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../../Elements/Button";
-import Tarrifs from "../../Partials/Tarrifs";
+import Tariffs from "../../Partials/Tariffs";
 import Filter from "../../Elements/Filter";
 
 // Images
@@ -234,12 +234,12 @@ class Carrier extends React.Component {
             </div>
           </div>
         </div>
-        <div className="carrier-div tarrif-block">
+        <div className="carrier-div tariff-block">
           <div className="container-fluid">
             <h3 className="font-weight-normal f-16 mb-2">Пакеты для оплаты</h3>
-            <Tarrifs />
+            <Tariffs />
             <div className="f-12 mt-2">
-              *Расчет стоимости дня произведен из расчета 30 дней а месяц,
+              *Расчет стоимости дня произведен из расчета 30 дней в месяц,
               указывается в ознакомительных целях.
             </div>
           </div>

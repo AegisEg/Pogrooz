@@ -6,6 +6,8 @@ import {
   NOTIFICATIONS_NOREAD_GET,
   NOTIFICATIONS_SET_COUNT,
   DIALOGS_SET_NOREAD,
+  USER_SET_GEOLOCATION_ERROR,
+  USER_SET_LOCATION_ID,
 } from "../constants";
 import store from "../store";
 import api from "../../config/api";
@@ -112,4 +114,44 @@ export const passChange = (passObj, apiToken) => (dispatch) => {
         }
       });
   });
+};
+export const startLocationSent = (apiToken) => (dispatch) => {
+  if (navigator.geolocation) {
+    if (store.getState().user.geolocationId) {
+      navigator.geolocation.clearWatch(id);
+      dispatch({ type: USER_SET_LOCATION_ID, payload: { id: false } });
+    }
+    let id = navigator.geolocation.watchPosition(
+      (position) => {
+        dispatch({
+          type: USER_SET_GEOLOCATION_ERROR,
+          payload: { error: false },
+        });
+
+        fetch(`${api.urlApi}/api/article/setLocation`, {
+          method: "post",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiToken}`,
+          },
+          body: JSON.stringify({
+            position: [position.coords.latitude, position.coords.longitude],
+          }),
+        });
+      },
+      () => {
+        dispatch({
+          type: USER_SET_GEOLOCATION_ERROR,
+          payload: { error: true },
+        });
+      },
+      { timeout: 10000, maximumAge: 10000, enableHighAccuracy: true }
+    );
+    dispatch({ type: USER_SET_LOCATION_ID, payload: { id } });
+  } else
+    dispatch({
+      type: USER_SET_GEOLOCATION_ERROR,
+      payload: { error: false },
+    });
 };

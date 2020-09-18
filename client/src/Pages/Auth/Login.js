@@ -55,6 +55,8 @@ class Login extends React.Component {
             data.notificationCounts,
             data.dialogsCount
           );
+          if (data.user.needSendLocation)
+            this.props.userActions.startLocationSent(data.token);
           if (data.user.type == "carrier")
             this.props.history.push("/my-orders-open");
           else this.props.history.push("/taken-offers");

@@ -149,3 +149,63 @@ export function OnlineDate(timeR) {
       Math.ceil(day_diff / 7) + "недел. в" + hours + ":" + minutes);
   return r;
 }
+export function prettyDate(num) {
+  /**
+   * Определяет правильное с точки зрения русского языка окончание месяца
+   * @param int $num
+   * @param array $postfixes
+   * @return string
+   */
+  function postfix(num, postfixes) {
+    //Делим число без остатка на 100
+    num = num % 100;
+
+    //Если больше 19, делим его без остатка ещё раз, уже на 10
+    if (num > 19) {
+      num = num % 10;
+    }
+
+    //В зависимости от того, какие числа остались, возвращаем значения
+    switch (num) {
+      case 1:
+        return postfixes[0];
+
+      case 2:
+      case 3:
+      case 4:
+        return postfixes[1];
+
+      default:
+        return postfixes[2];
+    }
+  }
+
+  //Определяем массивы с годами и месяцами
+  var yearsPostfixes = ["год", "года", "лет"],
+    monthesPostfixes = ["месяц", "месяца", "месяцев"];
+
+  //Делим начальное число без остатка на 12, получаем количество месяцев
+  var monthes = num % 12,
+    //Отнимаем из начального числа количество месяцев и делим это на 12,
+    //получаем количество лет
+    years = (num - monthes) / 12;
+
+  //Возвращаем результат postfix() зависимости от значений $years и $monthes
+  if (years === 0) {
+    return monthes + " " + postfix(monthes, monthesPostfixes);
+  }
+
+  if (monthes === 0) {
+    return years + " " + postfix(years, yearsPostfixes);
+  }
+
+  return (
+    years +
+    " " +
+    postfix(years, yearsPostfixes) +
+    " " +
+    monthes +
+    " " +
+    postfix(monthes, monthesPostfixes)
+  );
+}

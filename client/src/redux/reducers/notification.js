@@ -64,7 +64,7 @@ const INITIAL_STATE = {
     noRead: 0,
     canLoad: true,
   },
-  tarrif: {
+  tariff: {
     isFetching: true,
     isGetted: false,
     notifications: [],
@@ -105,10 +105,10 @@ const notifications = (state = INITIAL_STATE, action) => {
             ? action.payload.find((item) => item._id === "system").count
             : 0,
         },
-        tarrif: {
-          ...state.tarrif,
-          noRead: action.payload.find((item) => item._id === "tarrif")
-            ? action.payload.find((item) => item._id === "tarrif").count
+        tariff: {
+          ...state.tariff,
+          noRead: action.payload.find((item) => item._id === "tariff")
+            ? action.payload.find((item) => item._id === "tariff").count
             : 0,
         },
       };
@@ -277,8 +277,8 @@ const notifications = (state = INITIAL_STATE, action) => {
     case NOTIFICATIONS_TARRIFS_GET: {
       return {
         ...state,
-        tarrif: {
-          ...state.tarrif,
+        tariff: {
+          ...state.tariff,
           notifications: action.payload,
           canLoad: action.payload.length === settings.notificationCountOfPage,
           isFetching: false,
@@ -289,27 +289,27 @@ const notifications = (state = INITIAL_STATE, action) => {
     case NOTIFICATIONS_TARRIFS_ADD:
       return {
         ...state,
-        tarrif: {
-          ...state.tarrif,
-          notifications: [action.payload, ...state.tarrif.notifications],
-          noRead: state.tarrif.noRead + 1,
+        tariff: {
+          ...state.tariff,
+          notifications: [action.payload, ...state.tariff.notifications],
+          noRead: state.tariff.noRead + 1,
         },
       };
     case NOTIFICATIONS_TARRIFS_READ:
       return {
         ...state,
-        tarrif: {
-          ...state.tarrif,
-          notifications: state.tarrif.notifications.map((notification) =>
+        tariff: {
+          ...state.tariff,
+          notifications: state.tariff.notifications.map((notification) =>
             action.payload === notification._id
               ? { ...notification, isRead: true }
               : notification
           ),
-          noRead: state.tarrif.noRead - 1,
+          noRead: state.tariff.noRead - 1,
         },
       };
     case NOTIFICATIONS_TARRIFS_SET_NO_READ:
-      return { ...state, tarrif: { ...state.tarrif, noRead: action.payload } };
+      return { ...state, tariff: { ...state.tariff, noRead: action.payload } };
     //LoadING
     case NOTIFICATIONS_ALL_LOADING:
       return { ...state, all: { ...state.all, isFetching: true } };
@@ -320,7 +320,7 @@ const notifications = (state = INITIAL_STATE, action) => {
     case NOTIFICATIONS_SYSTEM_LOADING:
       return { ...state, system: { ...state.all, isFetching: true } };
     case NOTIFICATIONS_TARRIFS_LOADING:
-      return { ...state, tarrif: { ...state.all, isFetching: true } };
+      return { ...state, tariff: { ...state.all, isFetching: true } };
     //LOAD
     case NOTIFICATIONS_ALL_LOAD:
       return {
@@ -389,10 +389,10 @@ const notifications = (state = INITIAL_STATE, action) => {
     case NOTIFICATIONS_TARRIFS_LOAD:
       return {
         ...state,
-        tarrif: {
-          ...state.tarrif,
+        tariff: {
+          ...state.tariff,
           notifications: [
-            ...state.tarrif.notifications,
+            ...state.tariff.notifications,
             ...action.payload.notifications,
           ],
           canLoad:

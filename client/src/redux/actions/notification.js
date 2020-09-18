@@ -110,7 +110,7 @@ function dipathType(type, action) {
         return NOTIFICATIONS_ORDERS_GET;
       case "system":
         return NOTIFICATIONS_SYSTEM_GET;
-      case "tarrif":
+      case "tariff":
         return NOTIFICATIONS_TARRIFS_GET;
     }
   if (action === "read")
@@ -123,7 +123,7 @@ function dipathType(type, action) {
         return NOTIFICATIONS_ORDERS_READ;
       case "system":
         return NOTIFICATIONS_SYSTEM_READ;
-      case "tarrif":
+      case "tariff":
         return NOTIFICATIONS_TARRIFS_READ;
     }
   if (action === "load")
@@ -136,7 +136,7 @@ function dipathType(type, action) {
         return NOTIFICATIONS_ORDERS_LOAD;
       case "system":
         return NOTIFICATIONS_SYSTEM_LOAD;
-      case "tarrif":
+      case "tariff":
         return NOTIFICATIONS_TARRIFS_LOAD;
     }
   if (action === "loading")
@@ -149,7 +149,7 @@ function dipathType(type, action) {
         return NOTIFICATIONS_ORDERS_LOADING;
       case "system":
         return NOTIFICATIONS_SYSTEM_LOADING;
-      case "tarrif":
+      case "tariff":
         return NOTIFICATIONS_TARRIFS_LOADING;
     }
 }

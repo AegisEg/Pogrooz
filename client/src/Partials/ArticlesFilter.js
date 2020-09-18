@@ -38,6 +38,29 @@ class ArticlesFilter extends React.Component {
           onChange={(state) => {
             this.setState({ ...state });
           }}
+          onResetFilter={() => {
+            this.setState({
+              status: 2,
+              carType: false,
+              property: false,
+              carProperty: [],
+              additionally: [],
+              contractInfo: [],
+              paymentInfo: [],
+              from: false,
+              to: false,
+              cargoType: false,
+              cargoStandartData: {},
+              cargoData: [],
+              startDate: {
+                date: false,
+                timeFrom: false,
+                timeTo: false,
+              },
+              budget: false,
+              rating: false,
+            });
+          }}
           onSearch={this.onSearch}
           options={this.state}
           className="background-gray-768 filter-main"

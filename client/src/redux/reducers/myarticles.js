@@ -247,6 +247,7 @@ const articles = (state = INITIAL_STATE, action) => {
             : state.currentArticle,
       };
     }
+
     case ARTICLE_TAKING_REVIEW_CREATE: {
       return {
         ...state,

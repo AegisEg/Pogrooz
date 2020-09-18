@@ -12,7 +12,8 @@ import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import routes from "./config";
 import NoMatch from "../Pages/NoMatch";
-
+import { ReactComponent as Gps } from "../img/gps.svg";
+import { ReactComponent as Error } from "../img/error-red.svg";
 // Redux
 import { connect } from "react-redux";
 import * as userActions from "../redux/actions/user";
@@ -73,6 +74,10 @@ class AppRouter extends React.Component {
               notificationCounts,
               dialogsCount
             );
+            if (!!user.needSendLocation)
+              this.props.userActions.startLocationSent(
+                this.props.user.apiToken
+              );
             this.setState({ isRender: true });
           }
         )
@@ -83,11 +88,16 @@ class AppRouter extends React.Component {
       this.setState({ isRender: true });
     }
   }
-
+  componentDidUpdate(b) {}
   render() {
     return (
       this.state.isRender && (
         <>
+          {" "}
+          {this.props.user.needSendLocation &&
+            !this.props.user.geolocationsError && <Gps className="gps-icon" />}
+          {this.props.user.needSendLocation &&
+            this.props.user.geolocationsError && <Error className="gps-icon" />}
           <Switch>
             {routes.map((route, index) => {
               switch (route.type) {
@@ -148,7 +158,6 @@ class AppRouter extends React.Component {
               <NoMatch />
             </this.PublicRoute>
           </Switch>
-
           <Header />
         </>
       )

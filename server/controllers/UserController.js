@@ -8,103 +8,36 @@ const User = require("../models/User");
 const Article = require("../models/Article");
 const Notification = require("../models/Notification");
 const Dialog = require("../models/Dialog");
+const Payment = require("../models/Payment");
 const Review = require("../models/Review");
 const bcrypt = require("bcryptjs");
 const NUM_ROUNDS = 12;
 let { randomString } = require("../controllers/FileController");
-const { aggregate } = require("../models/Article");
-
+const { InfoForLogin } = require("./AuthController");
 module.exports = {
   // Get user data
   user: async (req, res, next) => {
     const { userId } = res.locals;
     try {
       // Get this account as JSON
-      const user = await User.findById(userId);
-      let myCountsArticles = await Article.aggregate([
-        {
-          $match: {
-            author: user._id,
-            type: user.type === "cargo" ? "order" : "offer",
-          },
-        },
-        {
-          $group: {
-            _id: "$status",
-
-            count: { $sum: 1 },
-          },
-        },
-      ]);
-      let takeCountsArticles = await Article.aggregate([
-        {
-          $match: {
-            executors: user._id,
-            type: user.type === "cargo" ? "offer" : "order",
-          },
-        },
-        {
-          $group: {
-            _id: "$status",
-            count: { $sum: 1 },
-          },
-        },
-      ]);
-      let onlyNoRead = await Notification.find({
-        user: user,
-        isRead: false,
-      }).sort({ createdAt: -1 });
-      let notificationCounts = await Notification.aggregate([
-        {
-          $match: {
-            user: user._id,
-            isRead: false,
-          },
-        },
-        {
-          $group: {
-            _id: "$type",
-            count: { $sum: 1 },
-          },
-        },
-      ]);
-      let dialogsCount = await Dialog.aggregate([
-        {
-          $lookup: {
-            from: "messages",
-            localField: "lastMessage",
-            foreignField: "_id",
-            as: "lastMessage",
-          },
-        },
-        {
-          $match: {
-            users: { $all: [user._id] },
-            lastMessage: { $exists: true },
-            noRead: { $ne: 0 },
-            "lastMessage.user": { $ne: user._id },
-          },
-        },
-
-        {
-          $addFields: {
-            groupOrder: {
-              $cond: {
-                if: { $eq: ["$orderId", null] },
-                then: "user",
-                else: "order",
-              },
-            },
-          },
-        },
-        {
-          $group: {
-            _id: "$groupOrder",
-            count: { $sum: 1 },
-          },
-        },
-      ]);
+      let user = await User.findById(userId);
       if (user) {
+        let {
+          myCountsArticles,
+          takeCountsArticles,
+          onlyNoRead,
+          notificationCounts,
+          dialogsCount,
+          currentPaymentTariff,
+          lastPaymentExpiriesAt,
+          needSendLocation,
+        } = await InfoForLogin(user);
+        user = {
+          ...user._doc,
+          tariff: currentPaymentTariff,
+          expiriesTariffAt: lastPaymentExpiriesAt,
+          needSendLocation,
+        };
         return res.json({
           user,
           myCountsArticles,
@@ -217,7 +150,7 @@ module.exports = {
         _id: { $ne: user._id },
       });
       if (!emailExist || !emailExist.length) {
-        user.name = userChange.name;
+        if (userChange.name) user.name = userChange.name;
         if (req.files && req.files["avatar"]) {
           if (req.files["avatar"].size / 1000 <= 10000) {
             let fileName = randomString(24);
@@ -282,9 +215,10 @@ module.exports = {
             return res.status(401).json({ error: true, errors: [err] });
           }
         }
-        user.contract = userChange.contract;
-        user.address = userChange.address;
-        user.country = userChange.country;
+        if (userChange.contract) user.contract = userChange.contract;
+        if (userChange.address) user.address = userChange.address;
+        if (userChange.country) user.country = userChange.country;
+        if (userChange.phone) user.phone = userChange.phone;
         user.save();
 
         return res.json({ user });

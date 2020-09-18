@@ -145,13 +145,13 @@ class Notifications extends React.Component {
                   </span>
                   <span
                     className={`tab_group ${
-                      this.state.typeNotification === "tarrif" ? "active" : ""
+                      this.state.typeNotification === "tariff" ? "active" : ""
                     }`}
                     onClick={() => {
-                      this.setState({ typeNotification: "tarrif" });
-                      if (!this.props.notifications.tarrif.isGetted)
+                      this.setState({ typeNotification: "tariff" });
+                      if (!this.props.notifications.tariff.isGetted)
                         this.props.notificationActions.notificationsGet(
-                          "tarrif",
+                          "tariff",
                           this.props.user.apiToken
                         );
                     }}
