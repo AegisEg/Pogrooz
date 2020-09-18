@@ -4,6 +4,7 @@ import api from "../config/api";
 import {
   DIALOGS_ADD_MESSAGE,
   DIALOGS_READ_MESSAGES,
+  USER_SET_TARIFF,
   DIALOGS_SET_TYPER,
   DIALOGSORDER_SET_TYPER,
   DIALOGSORDER_ADD_MESSAGE,
@@ -53,6 +54,7 @@ import {
   ARTICLE_TAKING_UPDATE_STATUS,
   DIALOGSALL_ADD_MESSAGE,
   DIALOGSALL_ADD,
+  GEOARTICLE_SET_LOCATION,
 } from "../redux/constants";
 import { playNewMessage, playBeep } from "./SoundController";
 let socket = null;
@@ -106,6 +108,14 @@ export default {
         }
       }
     });
+    socket.on("setTariff", ({ tariff, expiriesTariffAt }) => {
+      if (store.getState().user.tariff) tariff = store.getState().user.tariff;
+      store.dispatch({
+        type: USER_SET_TARIFF,
+        payload: { tariff, expiriesTariffAt },
+      });
+    });
+
     socket.on(
       "sendMessageDialog",
       ({ message, otherId, isOrder, countNoread, isMy }) => {
@@ -267,6 +277,14 @@ export default {
         });
       }
     });
+    socket.on("setLocation", ({ articleId, location }) => {
+      if (store.getState().geoarticles.isGetted)
+        store.dispatch({
+          type: GEOARTICLE_SET_LOCATION,
+          payload: { articleId, location },
+        });
+    });
+
     socket.on(
       "createArticleReview",
       ({ articleID, articleStatus, newReview, isTaking }) => {
@@ -479,7 +497,7 @@ function dipathType(type, action) {
         return NOTIFICATIONS_ORDERS_ADD;
       case "system":
         return NOTIFICATIONS_SYSTEM_ADD;
-      case "tarrif":
+      case "tariff":
         return NOTIFICATIONS_TARRIFS_ADD;
     }
   if (action === "read")
@@ -490,7 +508,7 @@ function dipathType(type, action) {
         return NOTIFICATIONS_ORDERS_READ;
       case "system":
         return NOTIFICATIONS_SYSTEM_READ;
-      case "tarrif":
+      case "tariff":
         return NOTIFICATIONS_TARRIFS_READ;
     }
   if (action === "noread")
@@ -501,7 +519,7 @@ function dipathType(type, action) {
         return NOTIFICATIONS_ORDERS_SET_NO_READ;
       case "system":
         return NOTIFICATIONS_SYSTEM_SET_NO_READ;
-      case "tarrif":
+      case "tariff":
         return NOTIFICATIONS_TARRIFS_SET_NO_READ;
     }
 }

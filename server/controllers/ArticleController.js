@@ -18,6 +18,7 @@ const {
   deleteRequestSoket,
   sendNotification,
   setDelivered,
+  setLocationSoket,
 } = require("./SocketController");
 const Article = require("../models/Article");
 const Request = require("../models/Request");
@@ -1880,6 +1881,51 @@ module.exports = {
           },
         ],
       });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  setLocation: async (req, res, next) => {
+    const { user } = res.locals;
+    let { position } = req.body;
+    try {
+      let article = await Article.find({
+        $or: [{ executors: user._id }, { author: user._id }],
+        status: 4,
+      });
+      article.map((item) => {
+        item.lastCarrierLocation = {
+          coordinates: position,
+        };
+        item.save();
+        if (item.author === user._id)
+          item.executors.map((itemX) => {
+            setLocationSoket({
+              userId: itemX,
+              articleId: item._id,
+              location: item.lastCarrierLocation,
+            });
+          });
+        else
+          setLocationSoket({
+            userId: item.author,
+            articleId: item._id,
+            location: item.lastCarrierLocation,
+          });
+      });
+      return res.json({ error: false });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  getGeoArticles: async (req, res, next) => {
+    const { user } = res.locals;
+    try {
+      let articles = await Article.find({
+        $or: [{ executors: user._id }, { author: user._id }],
+        status: 4,
+      });
+      return res.json({ error: false, articles });
     } catch (e) {
       return next(new Error(e));
     }

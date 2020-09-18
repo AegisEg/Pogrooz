@@ -3,6 +3,7 @@ import React from "react";
 import ConfigSettings from "../../config/settings";
 // Elements
 import Button from "../../Elements/Button";
+import InputPhone from "../../Elements/InputPhone";
 import Input from "../../Elements/Input";
 import { Link } from "react-router-dom";
 import Fancybox from "../../Elements/Fancybox.js";
@@ -29,6 +30,7 @@ class Profile extends React.Component {
     lastName: "",
     email: "",
     phone: "",
+    isVerified: false,
     contract: {},
     address: "",
     country: "",
@@ -501,25 +503,33 @@ class Profile extends React.Component {
           <div className="row">
             <div className="col-12 col-sm-6 col-md-6">
               <h4 className="subtitle pt-0">Изменение телефона *</h4>
-              <span className="d-block">
-                <Input
-                  type="text"
-                  placeholder="Телефон *"
-                  className=""
-                  style={{
-                    marginBottom: 12,
-                    marginRight: "4px",
-                    maxWidth: "265px",
-                  }}
-                  value={this.state.phone}
-                  onChange={(e) => {
-                    this.setState({ firstName: e.target.value });
-                  }}
-                />
-                <Button type="empty" margin="0 0 12px 0">
-                  Получить код
-                </Button>
-              </span>
+              <InputPhone
+                ref={(ref) => {
+                  this.InputPhone = ref;
+                }}
+                value={this.state.phone}
+                isVerified={this.state.isVerified}
+                setVerified={(val) => {
+                  if (val === "success") {
+                    this.props.userActions
+                      .userEdit(
+                        { phone: this.state.phone },
+                        this.props.user.apiToken
+                      )
+                      .then((responce) => {
+                        if (!responce.error)
+                          toast.success("Данные успешно сохранены", {
+                            position: toast.POSITION.TOP_CENTER,
+                          });
+                      });
+                    this.InputPhone.refresh();
+                  } else this.setState({ isVerified: val });
+                }}
+                onChange={(phone) => {
+                  this.setState({ phone });
+                }}
+                placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
+              />
             </div>
             <div className="col-12 col-sm-6 col-md-6">
               <h4 className="subtitle pt-0">Безопасность</h4>

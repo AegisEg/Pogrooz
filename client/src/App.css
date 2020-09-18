@@ -582,6 +582,7 @@ input[type="checkbox"]:checked ~ label::after,
 .filter-open {
   display: inline;
   color: #a038e3;
+  cursor: pointer;
 }
 .filter-actions {
   text-align: right;
@@ -781,6 +782,16 @@ input:-ms-input-placeholder {
   padding: 0;
   height: 100%;
 }
+.notTariff svg {
+  margin-bottom: 5px;
+}
+.notTariff * {
+  display: block;
+  margin: auto;
+}
+.notTariff {
+  text-align: center;
+}
 .header-navigation ul li {
   display: inline-block;
   height: 100%;
@@ -804,6 +815,7 @@ header ~ div {
   padding-left: 10px;
   padding-right: 10px;
 }
+
 .register-form > .tabs {
   margin-bottom: 10px;
 }
@@ -905,11 +917,11 @@ header ~ div {
   position: relative;
   z-index: 1;
 }
-.tarrif-pop span {
+.tariff-pop span {
   line-height: 14px;
   color: #171717;
 }
-.tarrif-pop .pop-block {
+.tariff-pop .pop-block {
   font-size: 12px;
   padding: 21px 18px;
   width: 169px;
@@ -917,21 +929,21 @@ header ~ div {
 .message-nav img {
   min-width: 15px;
 }
-.tarrif-pop .pop-block p {
+.tariff-pop .pop-block p {
   text-align: left;
 }
 @media (max-width: 585px) {
-  .tarrif-pop,
+  .tariff-pop,
   .header-fast-access {
     display: none !important;
   }
 }
-.tarrif-pop .pop-block {
+.tariff-pop .pop-block {
   right: 0;
   left: unset;
 }
-.tarrif-pop .pop-block::before,
-.tarrif-pop .pop-block:after {
+.tariff-pop .pop-block::before,
+.tariff-pop .pop-block:after {
   right: 11px;
   left: unset;
 }
@@ -985,7 +997,7 @@ textarea {
   pointer-events: none;
   transition: all 0.3s;
 }
-.tarrif-pop .pop-block,
+.tariff-pop .pop-block,
 .fast-access-btn .pop-block,
 .pop-wrapper:hover .pop-block {
   opacity: 1;
@@ -2426,7 +2438,7 @@ a.href.hover:hover {
   border-top: 1px solid #dddddd;
   height: 0;
 }
-.review-article{
+.review-article {
   overflow: hidden;
   width: 100%;
 }
@@ -2552,7 +2564,7 @@ a.href.hover:hover {
 /* Cargo end */
 /* carrier */
 .carrier-page,
-.tarrifs-page,
+.tariffs-page,
 .nomatch-page,
 .search-page,
 .application-page,
@@ -3099,59 +3111,60 @@ a.href.hover:hover {
 }
 /* Paginations */
 /* TARIFS */
-.tarrif {
+.tariff {
   border-radius: 13px;
   border: 1px solid transparent;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.12);
   background: #ffffff;
   padding: 18px 17px;
 }
-.tarrif.yellow {
+.tariff.yellow {
   background: #ffdc1c;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.12);
 }
-.tarrif .name {
+.tariff .name {
   font-size: 12px;
   line-height: 13px;
   color: #919191;
 }
-.tarrif .price {
+.tariff .price {
   display: block;
   margin-top: 12px;
   font-size: 20px;
   line-height: 23px;
   color: #322f2f;
 }
-.tarrif .tags {
+.tariff .tags {
   margin-top: 18px;
 }
-.tarrif .info {
-  height: 141px;
+.tariff .info {
+  height: 159px;
 }
-.tarrif .tags span {
+.tariff .tags span {
   display: block;
   font-size: 12px;
   line-height: 14px;
   color: #322f2f;
+  white-space: break-spaces;
 }
-.tarrif .left-angle:before,
+.tariff .left-angle:before,
 .left-angle.yellow:before {
   border-color: #ffdc1c;
 }
 .left-angle.gray:before {
   border-color: #b9b9b9;
 }
-.tarrif.yellow .left-angle:before,
+.tariff.yellow .left-angle:before,
 .left-angle.white:before {
   border-color: #ffff;
 }
-.tarrif:not(.yellow):hover {
+.tariff:not(.yellow):hover {
   border: 1px solid #ffdc1c;
 }
-.tarrif.yellow:hover {
+.tariff.yellow:hover {
   border: 1px solid #b9b9b9;
 }
-.tarrif .sale {
+.tariff .sale {
   display: inline-block;
   font-size: 12px;
   line-height: 14px;
@@ -3159,33 +3172,34 @@ a.href.hover:hover {
   width: 100%;
   color: #322f2f;
 }
-.tarrif.yellow .name {
+.tariff.yellow .name {
   color: #322f2f;
 }
-.tarrif.yellow .withoutSale {
+.tariff.yellow .withoutSale {
   font-weight: bold;
   font-size: 12px;
   line-height: 14px;
   color: #ffffff;
+  text-decoration: line-through;
 }
-.tarrif-block {
+.tariff-block {
   margin-top: 15px;
   margin-bottom: 40px;
 }
 @media (min-width: 321px) {
-  .tarrif-wrapper {
+  .tariff-wrapper {
     width: 212px;
   }
 }
 @media (max-width: 320px) {
-  .tarrif-wrapper {
+  .tariff-wrapper {
     width: 100%;
   }
-  .tarrif .price,
-  .tarrif .sale {
+  .tariff .price,
+  .tariff .sale {
     text-align: center;
   }
-  .tarrif .tags span {
+  .tariff .tags span {
     width: 70px;
     margin: auto;
   }
@@ -3343,29 +3357,29 @@ a.href.hover:hover {
   cursor: auto;
   width: auto;
 }
-.tarrif .button-empty {
+.tariff .button-empty {
   border: none;
 }
-.tarrifs-list {
+.tariffs-list {
   margin-left: -16px;
   margin-right: -16px;
 }
-.tarrifs-list .slider-wrapper {
+.tariffs-list .slider-wrapper {
   width: 100%;
   white-space: nowrap;
   padding: 20px 0;
 }
-.tarrifs-list .slider-wrapper .tarrif-wrapper {
+.tariffs-list .slider-wrapper .tariff-wrapper {
   display: inline-block;
   margin: auto 0;
 }
 @media (min-width: 961px) {
-  .tarrifs-list .slider-wrapper > div {
+  .tariffs-list .slider-wrapper > div {
     padding: 0 16px;
   }
 }
 @media (max-width: 960px) {
-  .tarrifs-list .slider-wrapper > div {
+  .tariffs-list .slider-wrapper > div {
     padding: 0 10px;
   }
 }
@@ -3375,11 +3389,11 @@ a.href.hover:hover {
     max-width: 50%;
   }
 }
-.tarrifs-list .btn-block {
+.tariffs-list .btn-block {
   top: -20px;
   right: 30px;
 }
-.tarrifs-page {
+.tariffs-page {
   padding-bottom: 150px !important;
 }
 
@@ -3979,8 +3993,9 @@ a.href.hover:hover {
   width: 100%;
   text-align: left;
 }
-.pay-history .table {
+.pay-history {
   min-width: 712px;
+  min-height: 200px;
 }
 @media (min-width: 576px) {
   .user-avatar-wrapper {
@@ -5887,11 +5902,13 @@ label {
   text-overflow: ellipsis;
   padding: 5px;
 }
+.adress-select {
+  position: relative;
+}
 .adress-select svg {
   position: absolute;
-  right: 23px;
-  top: 0;
-  bottom: 5px;
+  right: 7px;
+  top: 10px;
   margin: auto;
   cursor: pointer;
 }
@@ -5922,4 +5939,25 @@ label {
 }
 .user-avatar-image-block {
   position: relative;
+}
+.gps-icon {
+  position: fixed !important;
+  z-index: 5;
+  width: 30px !important;
+  top: 30px;
+  left: 20px;
+  animation: ld-breath 1s infinite linear;
+}
+@keyframes ld-breath {
+  0% {
+    animation-timing-function: cubic-bezier(0.9647, 0.2413, -0.0705, 0.7911);
+    transform: scale(0.9099999999999999);
+  }
+  51% {
+    animation-timing-function: cubic-bezier(0.9226, 0.2631, -0.0308, 0.7628);
+    transform: scale(1.2994);
+  }
+  100% {
+    transform: scale(0.9099999999999999);
+  }
 }

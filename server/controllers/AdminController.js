@@ -7,7 +7,7 @@ const User = require("../models/User");
 const Page = require("../models/Page");
 const Question = require("../models/Question");
 const QuestionSection = require("../models/QuestionSection");
-const Tarrif = require("../models/Tarrif");
+const Tariff = require("../models/Tariff");
 
 AdminBro.registerAdapter(AdminBroMongoose);
 const adminBro = new AdminBro({
@@ -132,6 +132,18 @@ const adminBro = new AdminBro({
             position: 201,
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
+          rating: {
+            position: 201,
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          onlineAt: {
+            position: 201,
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          password: {
+            position: 201,
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
         },
       },
     },
@@ -151,13 +163,13 @@ const adminBro = new AdminBro({
         },
         properties: {
           _id: {
-            isVisible: { list: false, filter: false, show: true, edit: false },
+            isVisible: { list: false, filter: false, show: false, edit: false },
           },
           slug: {
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
           content: {
-            isVisible: { list: false, filter: false, show: true, edit: true },
+            isVisible: { list: false, filter: false, show: false, edit: true },
             type: "richtext",
           },
           createdAt: {
@@ -188,7 +200,7 @@ const adminBro = new AdminBro({
         },
         properties: {
           _id: {
-            isVisible: { list: false, filter: false, show: true, edit: false },
+            isVisible: { list: false, filter: false, show: false, edit: false },
           },
           createdAt: {
             isVisible: { list: false, filter: false, show: false, edit: false },
@@ -222,7 +234,7 @@ const adminBro = new AdminBro({
         },
         properties: {
           _id: {
-            isVisible: { list: false, filter: false, show: true, edit: false },
+            isVisible: { list: false, filter: false, show: false, edit: false },
           },
           createdAt: {
             isVisible: { list: false, filter: false, show: false, edit: false },
@@ -234,7 +246,7 @@ const adminBro = new AdminBro({
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
           questions: {
-            isVisible: { list: true, filter: true, show: true, edit: true },
+            isVisible: { list: false, filter: false, show: true, edit: true },
           },
           type: {
             isVisible: { list: true, filter: true, show: true, edit: true },
@@ -257,7 +269,7 @@ const adminBro = new AdminBro({
       },
     },
     {
-      resource: Tarrif,
+      resource: Tariff,
       options: {
         actions: {
           delete: {
@@ -304,10 +316,23 @@ const adminBro = new AdminBro({
   ],
   locale: {
     translations: {
+      actions: { new: "Создать" },
+      buttons: {
+        filter: "Фильтр",
+        save: "Сохранить",
+        createnew: "Создать",
+        addNewItem: "Добавить",
+        applyChanges: "Применить",
+        resetFilter: "Сбросить",
+        logout: "Выйти",
+        createFirstRecord: "Создать",
+      },
       resources: {
         User: {
           actions: {
             passportModeration: "Модерация пасспорта",
+            show: "Смотреть",
+            edit: "Изменить",
           },
           properties: {
             email: "Почта",
@@ -318,6 +343,59 @@ const adminBro = new AdminBro({
             type: "Тип пользователя",
             online: "Онлайн",
             isPassportVerified: "Прошел модерацию?",
+          },
+        },
+        Page: {
+          actions: {
+            show: "Смотреть",
+            edit: "Изменить",
+            delete: "Удалить",
+          },
+          properties: {
+            title: "Заголовок",
+            slug: "URL",
+            content: "Контент",
+          },
+        },
+        Question: {
+          actions: {
+            show: "Смотреть",
+            edit: "Изменить",
+            delete: "Удалить",
+          },
+          properties: {
+            title: "Заголовок",
+            slug: "URL",
+            content: "Контент",
+          },
+        },
+        QuestionSection: {
+          actions: {
+            show: "Смотреть",
+            edit: "Изменить",
+            delete: "Удалить",
+          },
+          properties: {
+            title: "Заголовок",
+            type: "Тип",
+            questions: "Вопросы",
+            slug: "URL",
+            content: "Контент",
+          },
+        },
+        Tariff: {
+          actions: {
+            show: "Смотреть",
+            edit: "Изменить",
+            delete: "Удалить",
+          },
+          properties: {
+            name: "Название",
+            duration: "Длительность в днях",
+            price: "Цена без скидки",
+            discount: "Скидка в процентах",
+            isEnable: "Включен?",
+            isDemo: "Демо?",
           },
         },
       },

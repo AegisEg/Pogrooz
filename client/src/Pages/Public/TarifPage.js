@@ -3,11 +3,12 @@ import React from "react";
 
 // Router
 import Button from "../../Elements/Button";
-import Tarifs from "../../Partials/Tarrifs";
+import Tarifs from "../../Partials/Tariffs";
+
 class TarifPage extends React.Component {
   render() {
     return (
-      <div className="tarrifs-page standart-page">
+      <div className="tariffs-page standart-page">
         <div className="container-fluid">
           <h1 className="px-0">Тарифы</h1>
           <div className="row">
@@ -45,6 +46,7 @@ class TarifPage extends React.Component {
             год). При оплате Тарифа PRO от 3 до 12 месяцев дается скидка от 10
             до 20%.
           </p>
+
           <div className="row mt-2">
             <div className="row px-0 mx-0 col-12 col-lg-6">
               <div className="px-3 d-flex mt-3 fixed760">
@@ -108,7 +110,7 @@ class TarifPage extends React.Component {
               marginTop: "20px",
             }}
           >
-            *Расчет стоимости дня произведен из расчета 30 дней а месяц,
+            *Расчет стоимости дня произведен из расчета 30 дней в месяц,
             указывается в ознакомительных целях.
           </p>
         </div>

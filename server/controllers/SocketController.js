@@ -89,6 +89,18 @@ function sendMessageDialog({
 function createTakingArticle({ userId, article }) {
   io.to(`user.${userId}`).emit("createTakingArticle", { status: 3, article });
 }
+function setTariff({ userId, tariff, expiriesAt }) {
+  io.to(`user.${userId}`).emit("setTariff", {
+    tariff,
+    expiriesTariffAt: expiriesAt,
+  });
+}
+function setLocationSoket({ userId, articleId, location }) {
+  io.to(`user.${userId}`).emit("setLocation", {
+    articleId,
+    location,
+  });
+}
 function createMyArticle({ userId, socketId, status, article }) {
   io.sockets.connected[socketId]
     .to(`user.${userId}`)
@@ -285,4 +297,6 @@ module.exports = {
   sendNotification,
   readNotification,
   setDelivered,
+  setTariff,
+  setLocationSoket,
 };

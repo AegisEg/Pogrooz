@@ -8,9 +8,11 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
+const fetch = require("node-fetch");
 const User = require("../models/User");
 const Article = require("../models/Article");
 const Notification = require("../models/Notification");
+const Payment = require("../models/Payment");
 const Dialog = require("../models/Dialog");
 // const { default: Dialog } = require("../../client/src/Partials/Chat/Dialog");
 const NUM_ROUNDS = 12;
@@ -80,6 +82,45 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  smsSend: async (req, res, next) => {
+    let { phone } = req.body;
+    try {
+      let code = String(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
+      let codeHash = await bcrypt.hash(code, NUM_ROUNDS);
+      let error = false;
+      await fetch(`https://smscentre.com/sys/send.php`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login: "Pogrooz",
+          psw: "Hanbikov",
+          phones: phone,
+          mes: code,
+        }),
+      }).then((data) => {
+        console.log(data);
+      });
+
+      return res.json({ error: error, code: codeHash });
+    } catch (e) {
+      console.log(e);
+      return next(new Error(e));
+    }
+  },
+  uniquePhone: async (req, res, next) => {
+    let { phone } = req.body;
+    try {
+      let unique = false;
+      let user = await User.findOne({ phone });
+      if (!user) unique = true;
+      return res.json({ error: false, unique });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
   // Login method
   login: async (req, res, next) => {
     // This route expects the body parameters:
@@ -94,7 +135,7 @@ module.exports = {
 
     try {
       // Get the user for this email address
-      const user = await User.findOne({ phone }).select("+password");
+      let user = await User.findOne({ phone }).select("+password");
       if (user) {
         const verifiedPassword = await bcrypt.compare(password, user.password);
 
@@ -102,93 +143,26 @@ module.exports = {
           // Success: generate and respond with the JWT
           let token = generateToken(user.id);
           //Дополнитлеьная информация при авторизации
-          let myCountsArticles = await Article.aggregate([
-            {
-              $match: {
-                author: user._id,
-                type: user.type === "cargo" ? "order" : "offer",
-              },
-            },
-            {
-              $group: {
-                _id: "$status",
+          let {
+            myCountsArticles,
+            takeCountsArticles,
+            onlyNoRead,
+            notificationCounts,
+            dialogsCount,
+            currentPaymentTariff,
+            lastPaymentExpiriesAt,
+            needSendLocation,
+          } = await InfoForLogin(user);
+          user = {
+            ...user._doc,
+            tariff: currentPaymentTariff,
+            expiriesTariffAt: lastPaymentExpiriesAt,
+            needSendLocation,
+          };
 
-                count: { $sum: 1 },
-              },
-            },
-          ]);
-          let takeCountsArticles = await Article.aggregate([
-            {
-              $match: {
-                executors: user._id,
-                type: user.type === "cargo" ? "offer" : "order",
-              },
-            },
-            {
-              $group: {
-                _id: "$status",
-                count: { $sum: 1 },
-              },
-            },
-          ]);
-          let onlyNoRead = await Notification.find({
-            user: user,
-            isRead: false,
-          }).sort({ createdAt: -1 });
-
-          let notificationCounts = await Notification.aggregate([
-            {
-              $match: {
-                user: user._id,
-                isRead: false,
-              },
-            },
-            {
-              $group: {
-                _id: "$type",
-                count: { $sum: 1 },
-              },
-            },
-          ]);
-          let dialogsCount = await Dialog.aggregate([
-            {
-              $lookup: {
-                from: "messages",
-                localField: "lastMessage",
-                foreignField: "_id",
-                as: "lastMessage",
-              },
-            },
-            {
-              $match: {
-                users: { $all: [user._id] },
-                lastMessage: { $exists: true },
-                noRead: { $ne: 0 },
-                "lastMessage.user": { $ne: user._id },
-              },
-            },
-
-            {
-              $addFields: {
-                groupOrder: {
-                  $cond: {
-                    if: { $eq: ["$orderId", null] },
-                    then: "user",
-                    else: "order",
-                  },
-                },
-              },
-            },
-            {
-              $group: {
-                _id: "$groupOrder",
-                count: { $sum: 1 },
-              },
-            },
-          ]);
           return res.json({
             token,
-            user: user.toJSON(),
+            user: user,
             myCountsArticles,
             takeCountsArticles,
             onlyNoRead,
@@ -295,6 +269,7 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  InfoForLogin: InfoForLogin,
 };
 // Generates a signed JWT that encodes a user ID
 // This function requires:
@@ -308,4 +283,145 @@ function generateToken(userId) {
     },
     process.env.JWT_SECRET
   );
+}
+async function InfoForLogin(user) {
+  let myCountsArticles = await Article.aggregate([
+    {
+      $match: {
+        author: user._id,
+        type: user.type === "cargo" ? "order" : "offer",
+      },
+    },
+    {
+      $group: {
+        _id: "$status",
+
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  let needSendLocation = false;
+  if (user.type === "carrier") {
+    needSendLocation = await Article.aggregate([
+      {
+        $match: {
+          $or: [
+            {
+              author: user._id,
+            },
+            {
+              executors: user._id,
+            },
+          ],
+          status: 4,
+        },
+      },
+      {
+        $group: {
+          _id: "null",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    needSendLocation = needSendLocation && needSendLocation[0].count;
+  }
+  let takeCountsArticles = await Article.aggregate([
+    {
+      $match: {
+        executors: user._id,
+        type: user.type === "cargo" ? "offer" : "order",
+      },
+    },
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  let onlyNoRead = await Notification.find({
+    user: user,
+    isRead: false,
+  }).sort({ createdAt: -1 });
+
+  let notificationCounts = await Notification.aggregate([
+    {
+      $match: {
+        user: user._id,
+        isRead: false,
+      },
+    },
+    {
+      $group: {
+        _id: "$type",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  let dialogsCount = await Dialog.aggregate([
+    {
+      $lookup: {
+        from: "messages",
+        localField: "lastMessage",
+        foreignField: "_id",
+        as: "lastMessage",
+      },
+    },
+    {
+      $match: {
+        users: { $all: [user._id] },
+        lastMessage: { $exists: true },
+        noRead: { $ne: 0 },
+        "lastMessage.user": { $ne: user._id },
+      },
+    },
+
+    {
+      $addFields: {
+        groupOrder: {
+          $cond: {
+            if: { $eq: ["$orderId", null] },
+            then: "user",
+            else: "order",
+          },
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$groupOrder",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  let currentPaymentTariff = await Payment.findOne(
+    {
+      userId: user._id,
+      status: "success",
+      expiriesAt: { $gte: new Date() },
+    },
+    ["tariff"],
+    { sort: { expiriesAt: 1 } }
+  ).populate("tariff");
+  currentPaymentTariff = currentPaymentTariff && currentPaymentTariff.tariff;
+  let lastPaymentExpiriesAt = await Payment.findOne(
+    {
+      userId: user._id,
+      status: "success",
+    },
+    ["expiriesAt"],
+    { sort: { expiriesAt: -1 } }
+  );
+  lastPaymentExpiriesAt =
+    lastPaymentExpiriesAt && lastPaymentExpiriesAt.expiriesAt;
+  return {
+    myCountsArticles,
+    takeCountsArticles,
+    onlyNoRead,
+    notificationCounts,
+    dialogsCount,
+    currentPaymentTariff,
+    lastPaymentExpiriesAt,
+    needSendLocation,
+  };
 }

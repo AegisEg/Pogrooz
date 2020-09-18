@@ -182,7 +182,7 @@ class OrderCreate2 extends React.Component {
                     this.state.addressFrom ? this.state.addressFrom.value : ""
                   }
                   onChange={(val) => {
-                    if (Number(val.data.fias_level) === 8)
+                    if (val && Number(val.data.fias_level) === 8)
                       this.setState({
                         errRequired: {
                           ...this.state.errRequired,
@@ -241,7 +241,7 @@ class OrderCreate2 extends React.Component {
                   }`}
                   value={this.state.addressTo ? this.state.addressTo.value : ""}
                   onChange={(val) => {
-                    if (Number(val.data.fias_level) === 8)
+                    if (val && Number(val.data.fias_level) === 8)
                       this.setState({
                         errRequired: {
                           ...this.state.errRequired,

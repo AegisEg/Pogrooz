@@ -44,4 +44,6 @@ router.post(
   verifyToken,
   ArticleController.setRequestCancel
 );
+router.post("/setLocation", verifyToken, ArticleController.setLocation);
+router.post("/getGeoArticles", verifyToken, ArticleController.getGeoArticles);
 module.exports = router;

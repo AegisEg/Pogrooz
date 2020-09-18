@@ -1,75 +1,18 @@
 // App
 import React from "react";
-import FAQ from "../Public/FAQ";
-
+import { ReactComponent as Warning } from "../../img/warning.svg";
 // Router
 import { Link } from "react-router-dom";
 import Button from "../../Elements/Button";
-import Pagination from "../../Elements/Pagination";
 import { connect } from "react-redux";
-import Tarrifs from "../../Partials/Tarrifs";
+import Tariffs from "../../Partials/Tariffs";
+import PayHistoryTable from "../../Partials/PayHistoryTable";
 
-class PayHistoryTable extends React.Component {
-  render() {
-    return (
-      <div className="pay-history">
-        <div className="table-wrapper">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Дата оплаты</th>
-                <th>Способ оплаты</th>
-                <th>Тариф</th>
-                <th>Сумма</th>
-                <th>Срок</th>
-                <th>Дата действия</th>
-                <th>Статус</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row"> 18.12.2025 г</th>
-                <td>visa / master cart</td>
-                <td>Тариф PRO</td>
-                <td>280 руб</td>
-                <td>1 неделя</td>
-                <td>18.12.2025- 25.12.2025 г</td>
-                <td>
-                  <span className="left-angle yellow">Активен</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row"> 18.12.2025 г</th>
-                <td>visa / master cart</td>
-                <td>Тариф PRO</td>
-                <td>280 руб</td>
-                <td>1 неделя</td>
-                <td>18.12.2025- 25.12.2025 г</td>
-                <td>
-                  <span className="left-angle yellow">Ожидает</span>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row"> 18.12.2025 г</th>
-                <td>visa / master cart</td>
-                <td>Тариф PRO</td>
-                <td>280 руб</td>
-                <td>1 неделя</td>
-                <td>18.12.2025- 25.12.2025 г</td>
-                <td>
-                  <span className="left-angle gray">Использован</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination className="mt-4" />
-      </div>
-    );
-  }
-}
 class Support extends React.Component {
   state = {};
+  diffDates(day_one, day_two) {
+    return (day_one - day_two) / (60 * 60 * 24 * 1000);
+  }
   render() {
     return (
       <div className="standart-page">
@@ -77,7 +20,38 @@ class Support extends React.Component {
           <h2 className="title">Мои тариф</h2>
           <div className="row align-items-center">
             <p className="f-14 mt-2 d-inline-block px-3">
-              Тариф PRO оплачен до 25.12.2025 г
+              {!this.props.user.expiriesTariffAt && !this.props.user.tariff && (
+                <>
+                  <Warning /> Профиль скрыт
+                </>
+              )}
+
+              {this.props.user.tariff &&
+                this.diffDates(
+                  new Date(this.props.user.expiriesTariffAt),
+                  new Date()
+                ) <= 3 && (
+                  <>
+                    <span>
+                      {this.props.user.tariff.name}{" "}
+                      {this.props.user.tariff.isDemo ? "активен" : "оплачен"} до
+                      {new Date(this.props.user.expiriesTariffAt).toDateR()}
+                    </span>
+                  </>
+                )}
+              {this.props.user.tariff &&
+                this.diffDates(
+                  new Date(this.props.user.expiriesTariffAt),
+                  new Date()
+                ) > 3 && (
+                  <>
+                    <span>
+                      {this.props.user.tariff.name}{" "}
+                      {this.props.user.tariff.isDemo ? "активен" : "оплачен"} до{" "}
+                      {new Date(this.props.user.expiriesTariffAt).toDateR()}
+                    </span>
+                  </>
+                )}
             </p>
             <div className="col mt-2">
               <Button type="fill" className="f-12" paddingVertical="6px">
@@ -86,12 +60,12 @@ class Support extends React.Component {
             </div>
           </div>
           <h3 className="f-16 font-weight-normal mt-3">История пополнений</h3>
-          <PayHistoryTable />
+          <PayHistoryTable user={this.props.user} />
           <h3 className="f-16 font-weight-normal mt-4">Продлить тариф</h3>
-          <Tarrifs />
+          <Tariffs />
           <span className="f-14">Тарификация понедельная.</span>
           <p className="f-12 mt-0">
-            *Расчет стоимости дня произведен из расчета 30 дней а месяц,
+            *Расчет стоимости дня произведен из расчета 30 дней в месяц,
             указывается в ознакомительных целях.
           </p>
           <span className="mb-4 mt-2 d-block">
