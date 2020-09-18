@@ -723,6 +723,7 @@ class InputRow extends React.Component {
     let role = false;
     if (this.props.user.isAuth) {
       if (this.props.user._id === this.props.article.author._id) role = 1;
+      console.log(this.props.article);
       if (
         this.props.article.executors.find(
           (item) => item._id === this.props.user._id
