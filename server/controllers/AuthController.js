@@ -133,6 +133,7 @@ module.exports = {
       return res.status(422).json({ error: true, errors: errors.array() });
     }
 
+    try {
       // Get the user for this email address
       let user = await User.findOne({ phone }).select("+password");
       if (user) {
@@ -170,7 +171,9 @@ module.exports = {
           });
         }
       }
-    
+    } catch (e) {
+      return next(new Error(e));
+    }
     // Unauthorized (HTTP 401)
     const err = {};
     err.param = `all`;
@@ -320,7 +323,10 @@ async function InfoForLogin(user) {
         },
       },
     ]);
-    needSendLocation = needSendLocation && needSendLocation[0].count;
+    needSendLocation =
+      needSendLocation &&
+      !!needSendLocation.length &&
+      needSendLocation[0].count;
   }
   let takeCountsArticles = await Article.aggregate([
     {
