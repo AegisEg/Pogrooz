@@ -73,6 +73,7 @@ module.exports = {
             //60 * 60 * 24
             payment.updatedAt = Date.now();
             await payment.save();
+            const agenda = require("../agenta/agenta");
             let job = await agenda.schedule(
               payment.expiriesAt,
               "setTarrifCancel",
