@@ -56,34 +56,37 @@ function sendMessageDialog({
   countNoread,
 }) {
   if (userId != otherId) {
-    io.sockets.connected[socketId]
-      .to(`user.${otherId}`)
-      .emit("sendMessageDialog", {
-        message,
-        otherId: userId,
-        isOrder,
-        countNoread,
-        isMy: false,
-      });
-    io.sockets.connected[socketId]
-      .to(`user.${userId}`)
-      .emit("sendMessageDialog", {
-        message,
-        otherId,
-        isOrder,
-        countNoread,
-        isMy: true,
-      });
+    if (io.sockets.connected[socketId])
+      io.sockets.connected[socketId]
+        .to(`user.${otherId}`)
+        .emit("sendMessageDialog", {
+          message,
+          otherId: userId,
+          isOrder,
+          countNoread,
+          isMy: false,
+        });
+    if (io.sockets.connected[socketId])
+      io.sockets.connected[socketId]
+        .to(`user.${userId}`)
+        .emit("sendMessageDialog", {
+          message,
+          otherId,
+          isOrder,
+          countNoread,
+          isMy: true,
+        });
   } else {
-    io.sockets.connected[socketId]
-      .to(`user.${otherId}`)
-      .emit("sendMessageDialog", {
-        message,
-        otherId: userId,
-        isOrder,
-        countNoread,
-        isMy: false,
-      });
+    if (io.sockets.connected[socketId])
+      io.sockets.connected[socketId]
+        .to(`user.${otherId}`)
+        .emit("sendMessageDialog", {
+          message,
+          otherId: userId,
+          isOrder,
+          countNoread,
+          isMy: false,
+        });
   }
 }
 function createTakingArticle({ userId, article }) {
@@ -95,6 +98,18 @@ function setTariff({ userId, tariff, expiriesAt }) {
     expiriesTariffAt: expiriesAt,
   });
 }
+function setBan({ userId }) {
+  io.to(`user.${userId}`).emit("setBan", {});
+}
+function cancelBan({ userId, tariff, expiriesAt }) {
+  io.to(`user.${userId}`).emit("cancelBan", {
+    tariff,
+    expiriesTariffAt: expiriesAt,
+  });
+}
+function donTariff({ userId }) {
+  io.to(`user.${userId}`).emit("dontTariff", {});
+}
 function setLocationSoket({ userId, articleId, location }) {
   io.to(`user.${userId}`).emit("setLocation", {
     articleId,
@@ -102,9 +117,10 @@ function setLocationSoket({ userId, articleId, location }) {
   });
 }
 function createMyArticle({ userId, socketId, status, article }) {
-  io.sockets.connected[socketId]
-    .to(`user.${userId}`)
-    .emit("createMyArticle", { status, article });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${userId}`)
+      .emit("createMyArticle", { status, article });
 }
 function updateStatusMyArticle({
   userId,
@@ -113,28 +129,33 @@ function updateStatusMyArticle({
   article,
   isTaking,
 }) {
-  io.sockets.connected[socketId]
-    .to(`user.${userId}`)
-    .emit("updateStatusMyArticle", { lastStatus, article, isTaking });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${userId}`)
+      .emit("updateStatusMyArticle", { lastStatus, article, isTaking });
 }
 function deleteTaking({ userId, socketId, lastStatus, articleID }) {
-  io.sockets.connected[socketId]
-    .to(`user.${userId}`)
-    .emit("deleteTaking", { lastStatus, articleID });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${userId}`)
+      .emit("deleteTaking", { lastStatus, articleID });
 }
 function editMyArticle({ userId, socketId, status, article }) {
-  io.sockets.connected[socketId]
-    .to(`user.${userId}`)
-    .emit("editMyArticle", { status, article });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${userId}`)
+      .emit("editMyArticle", { status, article });
 }
 
 function readMessageDialog({ dialogId, userId, otherId, socketId, isOrder }) {
-  io.sockets.connected[socketId]
-    .to(`user.${otherId}`)
-    .emit("readMessagesDialog", { dialogId, userId: otherId, isOrder });
-  io.sockets.connected[socketId]
-    .to(`user.${userId}`)
-    .emit("readMessagesDialog", { dialogId, userId: otherId, isOrder });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${otherId}`)
+      .emit("readMessagesDialog", { dialogId, userId: otherId, isOrder });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${userId}`)
+      .emit("readMessagesDialog", { dialogId, userId: otherId, isOrder });
 }
 
 function updateArticleReview({
@@ -144,37 +165,41 @@ function updateArticleReview({
   takingUser,
   socketId,
 }) {
-  io.sockets.connected[socketId]
-    .to(`user.${takingUser}`)
-    .emit("updateArticleReview", {
-      articleID: article._id,
-      articleStatus: article.status,
-      newReview: newReview,
-      isTaking: false,
-    });
-  io.sockets.connected[socketId]
-    .to(`user.${myUser}`)
-    .emit("updateArticleReview", {
-      articleID: article._id,
-      articleStatus: article.status,
-      newReview: newReview,
-      isTaking: true,
-    });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${takingUser}`)
+      .emit("updateArticleReview", {
+        articleID: article._id,
+        articleStatus: article.status,
+        newReview: newReview,
+        isTaking: false,
+      });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${myUser}`)
+      .emit("updateArticleReview", {
+        articleID: article._id,
+        articleStatus: article.status,
+        newReview: newReview,
+        isTaking: true,
+      });
 }
 function setExecutor({ article, executor, lastStatus, userId, socketId }) {
-  io.sockets.connected[socketId].to(`user.${userId}`).emit("setExecutor", {
-    article: article,
-    lastStatus: lastStatus,
-    executor: executor,
-  });
-  io.sockets.connected[socketId]
-    .to(`user.${executor._id}`)
-    .emit("setExecutor", {
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId].to(`user.${userId}`).emit("setExecutor", {
       article: article,
       lastStatus: lastStatus,
       executor: executor,
-      isTaking: true,
     });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${executor._id}`)
+      .emit("setExecutor", {
+        article: article,
+        lastStatus: lastStatus,
+        executor: executor,
+        isTaking: true,
+      });
 }
 function deleteExecutorSoket({
   article,
@@ -183,19 +208,21 @@ function deleteExecutorSoket({
   userId,
   socketId,
 }) {
-  io.sockets.connected[socketId].to(`user.${userId}`).emit("deleteExecutor", {
-    article: article,
-    lastStatus: lastStatus,
-    executor: executor,
-  });
-  io.sockets.connected[socketId]
-    .to(`user.${executor._id}`)
-    .emit("deleteExecutor", {
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId].to(`user.${userId}`).emit("deleteExecutor", {
       article: article,
       lastStatus: lastStatus,
       executor: executor,
-      isTaking: true,
     });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${executor._id}`)
+      .emit("deleteExecutor", {
+        article: article,
+        lastStatus: lastStatus,
+        executor: executor,
+        isTaking: true,
+      });
 }
 function createArticleReview({
   article,
@@ -204,66 +231,74 @@ function createArticleReview({
   otherId,
   socketId,
 }) {
-  io.sockets.connected[socketId]
-    .to(`user.${userId}`)
-    .emit("createArticleReview", {
-      articleID: article._id,
-      articleStatus: article.status,
-      newReview: newReview,
-      isTaking: !compareId(article.author._id, userId),
-    });
-  io.sockets.connected[socketId]
-    .to(`user.${otherId}`)
-    .emit("createArticleReview", {
-      articleID: article._id,
-      articleStatus: article.status,
-      newReview: newReview,
-      isTaking: !compareId(article.author._id, otherId),
-    });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${userId}`)
+      .emit("createArticleReview", {
+        articleID: article._id,
+        articleStatus: article.status,
+        newReview: newReview,
+        isTaking: !compareId(article.author._id, userId),
+      });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${otherId}`)
+      .emit("createArticleReview", {
+        articleID: article._id,
+        articleStatus: article.status,
+        newReview: newReview,
+        isTaking: !compareId(article.author._id, otherId),
+      });
 }
 function createRequestSoket({ article, request, userId, socketId }) {
-  io.sockets.connected[socketId].to(`user.${userId}`).emit("createRequest", {
-    article,
-    request,
-  });
-  io.sockets.connected[socketId]
-    .to(`user.${request.author._id}`)
-    .emit("createRequest", {
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId].to(`user.${userId}`).emit("createRequest", {
       article,
       request,
     });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${request.author._id}`)
+      .emit("createRequest", {
+        article,
+        request,
+      });
 }
 function setDelivered({ article, user, userId, otherId, socketId }) {
-  io.sockets.connected[socketId].to(`user.${userId}`).emit("setDelivered", {
-    article,
-    user,
-  });
-  io.sockets.connected[socketId].to(`user.${otherId}`).emit("setDelivered", {
-    article,
-    user,
-  });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId].to(`user.${userId}`).emit("setDelivered", {
+      article,
+      user,
+    });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId].to(`user.${otherId}`).emit("setDelivered", {
+      article,
+      user,
+    });
 }
 function updateRequestSoket({ article, request, userId, socketId }) {
   io.to(`user.${userId}`).emit("updateRequest", {
     article,
     request,
   });
-  io.sockets.connected[socketId]
-    .to(`user.${request.author._id}`)
-    .emit("updateRequest", {
-      article,
-      request,
-    });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${request.author._id}`)
+      .emit("updateRequest", {
+        article,
+        request,
+      });
 }
 function deleteRequestSoket({ article, requestId, userId, otherId, socketId }) {
   io.to(`user.${userId}`).emit("deleteRequest", {
     article,
     requestId,
   });
-  io.sockets.connected[socketId].to(`user.${otherId}`).emit("deleteRequest", {
-    article,
-    requestId,
-  });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId].to(`user.${otherId}`).emit("deleteRequest", {
+      article,
+      requestId,
+    });
 }
 // Notifications
 function sendNotification({ userId, notification }) {
@@ -271,9 +306,10 @@ function sendNotification({ userId, notification }) {
 }
 
 function readNotification({ socketId, userId, id, type }) {
-  io.sockets.connected[socketId]
-    .to(`user.${userId}`)
-    .emit("readNotification", { id, type });
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${userId}`)
+      .emit("readNotification", { id, type });
 }
 function compareId(id1, id2) {
   return String(id1) === String(id2);
@@ -299,4 +335,7 @@ module.exports = {
   setDelivered,
   setTariff,
   setLocationSoket,
+  donTariff,
+  setBan,
+  cancelBan,
 };

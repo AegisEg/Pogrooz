@@ -14,6 +14,8 @@ const Article = require("../models/Article");
 const Notification = require("../models/Notification");
 const Payment = require("../models/Payment");
 const Dialog = require("../models/Dialog");
+const Tariff = require("../models/Tariff");
+const { setDemoTariff } = require("../controllers/TariffController");
 // const { default: Dialog } = require("../../client/src/Partials/Chat/Dialog");
 const NUM_ROUNDS = 12;
 module.exports = {
@@ -73,9 +75,10 @@ module.exports = {
       newUser.type = user.type;
       newUser.password = await bcrypt.hash(user.password, 12);
       await newUser.save();
+
       let token = generateToken(newUser.id);
       /*СОздание юзера*/
-
+      if (newUser.type === "carrier") setDemoTariff(newUser._id);
       return res.json({ token, user: newUser });
     } catch (e) {
       console.log(e);
@@ -401,7 +404,7 @@ async function InfoForLogin(user) {
     {
       userId: user._id,
       status: "success",
-      expiriesAt: { $gte: new Date() },
+      expiriesAt: { $gte: Date.now() },
     },
     ["tariff"],
     { sort: { expiriesAt: 1 } }
@@ -411,6 +414,7 @@ async function InfoForLogin(user) {
     {
       userId: user._id,
       status: "success",
+      expiriesAt: { $gte: Date.now() },
     },
     ["expiriesAt"],
     { sort: { expiriesAt: -1 } }

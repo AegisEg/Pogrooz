@@ -6,6 +6,8 @@
 
 const router = require("express").Router();
 const verifyToken = require("../middleware/verifyToken");
+const tariffCheck = require("../middleware/tariffCheck");
+const BanCheck = require("../middleware/BanCheck");
 const ArticleController = require("../controllers/ArticleController");
 
 router.post("/createArticle", verifyToken, ArticleController.createArticle);
@@ -16,11 +18,21 @@ router.post("/getArticle", ArticleController.getArticle);
 router.post("/getUserArticle", verifyToken, ArticleController.getUserArticle);
 router.post("/getMyArticles", verifyToken, ArticleController.getMyArticles);
 //Манипуляции с Откликами
-router.post("/createRequest", verifyToken, ArticleController.createRequest);
+router.post(
+  "/createRequest",
+  verifyToken,
+  tariffCheck,
+  ArticleController.createRequest
+);
 router.post("/updateRequest", verifyToken, ArticleController.updateRequest);
 router.post("/deleteRequest", verifyToken, ArticleController.deleteRequest);
 router.post("/deleteExecutor", verifyToken, ArticleController.deleteExecutor);
-router.post("/setExecutor", verifyToken, ArticleController.setExecutor);
+router.post(
+  "/setExecutor",
+  verifyToken,
+  tariffCheck,
+  ArticleController.setExecutor
+);
 //Изменения статусов
 router.post("/deleteArticle", verifyToken, ArticleController.deleteArticle);
 router.post("/restoreArticle", verifyToken, ArticleController.restoreArticle);
@@ -46,4 +58,10 @@ router.post(
 );
 router.post("/setLocation", verifyToken, ArticleController.setLocation);
 router.post("/getGeoArticles", verifyToken, ArticleController.getGeoArticles);
+router.post(
+  "/offerCargoOrder",
+  verifyToken,
+  BanCheck,
+  ArticleController.offerCargoOrder
+);
 module.exports = router;

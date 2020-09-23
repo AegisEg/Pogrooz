@@ -5,6 +5,7 @@ import {
   DIALOGS_ADD_MESSAGE,
   DIALOGS_READ_MESSAGES,
   USER_SET_TARIFF,
+  USER_UNSET_TARIFF,
   DIALOGS_SET_TYPER,
   DIALOGSORDER_SET_TYPER,
   DIALOGSORDER_ADD_MESSAGE,
@@ -50,11 +51,16 @@ import {
   NOTIFICATIONS_TARRIFS_SET_NO_READ,
   NOTIFICATIONS_ALL_READ,
   NOTIFICATIONS_ALL_ADD,
+  NOTIFICATIONS_NOREAD_ADD,
   ARTICLE_MY_UPDATE_STATUS,
   ARTICLE_TAKING_UPDATE_STATUS,
   DIALOGSALL_ADD_MESSAGE,
   DIALOGSALL_ADD,
   GEOARTICLE_SET_LOCATION,
+  GEOARTICLES_ADD,
+  GEOARTICLES_DELETE,
+  USER_SET_BAN,
+  USER_SET_CANCEL_BAN,
 } from "../redux/constants";
 import { playNewMessage, playBeep } from "./SoundController";
 let socket = null;
@@ -108,11 +114,27 @@ export default {
         }
       }
     });
+    socket.on("setBan", ({ tariff, expiriesTariffAt }) => {
+      store.dispatch({
+        type: USER_SET_BAN,
+      });
+    });
+    socket.on("cancelBan", ({ tariff, expiriesTariffAt }) => {
+      store.dispatch({
+        type: USER_SET_CANCEL_BAN,
+        payload: { tariff, expiriesTariffAt },
+      });
+    });
     socket.on("setTariff", ({ tariff, expiriesTariffAt }) => {
       if (store.getState().user.tariff) tariff = store.getState().user.tariff;
       store.dispatch({
         type: USER_SET_TARIFF,
         payload: { tariff, expiriesTariffAt },
+      });
+    });
+    socket.on("dontTariff", ({ tariff, expiriesTariffAt }) => {
+      store.dispatch({
+        type: USER_UNSET_TARIFF,
       });
     });
 
@@ -276,6 +298,20 @@ export default {
           payload: { lastStatus, article },
         });
       }
+      //       GEOARTICLES_ADD
+      // GEOARTICLES_DELETE
+      if (store.getState().geoarticles.isGetted) {
+        if (lastStatus === 3 && article.status === 4)
+          store.dispatch({
+            type: GEOARTICLES_ADD,
+            payload: { article },
+          });
+        if (lastStatus === 4)
+          store.dispatch({
+            type: GEOARTICLES_DELETE,
+            payload: { articleId: article._id },
+          });
+      }
     });
     socket.on("setLocation", ({ articleId, location }) => {
       if (store.getState().geoarticles.isGetted)
@@ -401,6 +437,10 @@ export default {
           type: ARTICLE_TAKING_SET_DELIVERED,
           payload: { article, user: user },
         });
+      store.dispatch({
+        type: GEOARTICLES_DELETE,
+        payload: { articleId: article._id },
+      });
     });
     socket.on(
       "updateArticleReview",
@@ -452,21 +492,27 @@ export default {
           type: dipathType(notification.type, "add"),
           payload: notification,
         });
-      } else
+      } else {
         store.dispatch({
           type: dipathType(notification.type, "noread"),
           payload: store.getState().notifications[notification.type].noRead + 1,
         });
-      if (store.getState().notifications.all.isGetted) {
-        store.dispatch({
-          type: NOTIFICATIONS_ALL_ADD,
-          payload: notification,
-        });
-      } else
-        store.dispatch({
-          type: NOTIFICATIONS_ALL_SET_NO_READ,
-          payload: store.getState().notifications.all.noRead + 1,
-        });
+        if (store.getState().notifications.all.isGetted) {
+          store.dispatch({
+            type: NOTIFICATIONS_ALL_ADD,
+            payload: notification,
+          });
+        } else {
+          store.dispatch({
+            type: NOTIFICATIONS_ALL_SET_NO_READ,
+            payload: store.getState().notifications.all.noRead + 1,
+          });
+          store.dispatch({
+            type: NOTIFICATIONS_NOREAD_ADD,
+            payload: notification,
+          });
+        }
+      }
       playBeep();
     });
 

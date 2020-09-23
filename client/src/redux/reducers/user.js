@@ -5,6 +5,9 @@ import {
   USER_SET_TARIFF,
   USER_SET_GEOLOCATION_ERROR,
   USER_SET_LOCATION_ID,
+  USER_UNSET_TARIFF,
+  USER_SET_BAN,
+  USER_SET_CANCEL_BAN,
 } from "../constants";
 
 const INITIAL_STATE = {
@@ -33,6 +36,24 @@ const user = (state = INITIAL_STATE, action) => {
         ...state,
         tariff: action.payload.tariff,
         expiriesTariffAt: action.payload.expiriesTariffAt,
+      };
+    case USER_SET_BAN:
+      return {
+        ...state,
+        isBan: true,
+      };
+    case USER_SET_CANCEL_BAN:
+      return {
+        ...state,
+        isBan: false,
+        tariff: action.payload.tariff,
+        expiriesTariffAt: action.payload.expiriesTariffAt,
+      };
+    case USER_UNSET_TARIFF:
+      return {
+        ...state,
+        tariff: false,
+        expiriesTariffAt: false,
       };
     case USER_SET_GEOLOCATION_ERROR: {
       return {

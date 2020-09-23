@@ -44,7 +44,10 @@ class Login extends React.Component {
           this.setState({ error: true, errors: data.errors });
         } else {
           const { cookies } = this.props;
-          cookies.set("apiToken", data.token, { path: "/" });
+          cookies.set("apiToken", data.token, {
+            path: "/",
+            maxAge: this.state.remeberMe ? 60 * 60 * 24 * 360 : 60 * 60,
+          });
           SocketController.init(data.token);
           this.props.userActions.loginUser(
             data.user,

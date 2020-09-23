@@ -1,0 +1,65 @@
+import React, {useState} from 'react'
+import { Box, Text, useCurrentAdmin } from 'admin-bro'
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts'
+
+const dataUserStats = [
+    {name: 'Page A', uv: 400, pv: 2400, amt: 2400},
+    {name: 'Page B', uv: 100, pv: 2400, amt: 2400},
+    {name: 'Page C', uv: 300, pv: 2400, amt: 2400}
+]
+const dataPaymentStats = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},{name: 'Page B', uv: 100, pv: 2400, amt: 2400},{name: 'Page C', uv: 300, pv: 2400, amt: 2400}]
+
+const Dashboard = () =>  {
+    const [userStats, setUserStats] = useState(false);
+    const [paymentStats, setPaymentStats] = useState(false);
+    const admin = useCurrentAdmin()
+    console.log(admin)
+
+    if(!userStats)
+        fetch(`${window.location.origin}/api/stats/get-users`, {
+            method: "post",
+            headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                admin: admin[0]
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            setUserStats(data)
+        })
+
+    return (
+        <Box backgroundColor={"#fff"} minHeight={'calc(100vh - 64px)'}>
+            <div style={{display: 'flex'}}>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Text paddingLeft={'63px'} fontSize={18} onClick={() => {
+                        setUserStats(dataUserStats)
+                    }}>Статистика регистраций</Text>
+                    <LineChart width={400} height={400} data={dataUserStats}>
+                        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                        <CartesianGrid stroke="#ccc" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                    </LineChart>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Text paddingLeft={'63px'} fontSize={18} onClick={() => {
+                        setPaymentStats(dataPaymentStats)
+                    }}>Статистика заказов</Text>
+                    <LineChart width={400} height={400} data={paymentStats}>
+                        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                        <CartesianGrid stroke="#ccc" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                    </LineChart>
+                </div>
+            </div>
+        </Box>
+    )
+}
+
+export default Dashboard

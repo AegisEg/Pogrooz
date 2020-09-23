@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import Loading from "../Elements/Loading";
 import LoadingFixed from "../Elements/LoadingFixed";
 import { CSSTransitionGroup } from "react-transition-group";
+import { toast } from "react-toastify";
 import api from "../config/api";
 
 class Tariffs extends React.Component {
@@ -30,7 +31,11 @@ class Tariffs extends React.Component {
         }),
       })
         .then((response) => response.json())
-        .then(({}) => {
+        .then(({ error, errors }) => {
+          if (error)
+            errors.map((item) => {
+              toast.error(item.msg);
+            });
           this.setState({ isFetching: false });
         });
     });

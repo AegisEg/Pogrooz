@@ -264,7 +264,7 @@ class Header extends React.Component {
                       this.props.history.push("/reviews");
                     }}
                   >
-                    <span>{this.props.user.rating}</span>
+                    <span>{this.props.user.rating || 0}</span>
                     <img src={ImgActiveStar} alt="ImgActiveStar" />
                   </span>
                   {this.props.user.type === "cargo" && "Грузовладелец"}
@@ -317,6 +317,7 @@ class Header extends React.Component {
           {this.props.user.type === "carrier" && this.props.user.isAuth && (
             <TariffStatus
               tariff={this.props.user.tariff}
+              isBan={this.props.user.isBan}
               expiriesAt={this.props.user.expiriesTariffAt}
             />
           )}

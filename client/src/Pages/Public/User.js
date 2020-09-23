@@ -17,6 +17,8 @@ import NoMatch from "../NoMatch";
 import Loading from "../../Elements/Loading";
 import ReviewsUser from "../../Partials/ReviewsUser";
 import { setForceTitle } from "../../functions/functions";
+
+import OrdersListModal from "../../Modal/OrdersListModal";
 class User extends React.Component {
   constructor(props) {
     super(props);
@@ -45,7 +47,10 @@ class User extends React.Component {
       .then((responce) => {
         if (responce.error || !responce.user)
           this.setState({ notFound: true, isFething: false });
-        else
+        else {
+          let isHidden =
+            responce.user.type === "carrier" && !responce.user.isTariff;
+          let isBan = responce.user.isBan;
           this.setState(
             {
               user: responce.user,
@@ -56,6 +61,9 @@ class User extends React.Component {
                 },
                 author: this.state.user._id,
               },
+              isHidden,
+              isBan,
+              currentTab: isBan || isHidden ? false : this.state.currentTab,
               countData: responce.countData,
               isFething: false,
             },
@@ -65,6 +73,7 @@ class User extends React.Component {
               );
             }
           );
+        }
       });
   }
   renderTabs() {
@@ -125,7 +134,7 @@ class User extends React.Component {
                 filter: {
                   type: type === "offer" ? "order" : type,
                   status: {
-                    $in: [4,5, 6],
+                    $in: [4, 5, 6],
                   },
                   executors: this.state.user._id,
                 },
@@ -220,10 +229,12 @@ class User extends React.Component {
     return formatted;
   }
   onChengeArticles(state) {
-    this.setState(state, () => {
-      this.articles.current.getAricles();
-    });
+    if (!this.state.isHidden && !this.state.isBan)
+      this.setState(state, () => {
+        this.articles.current.getAricles();
+      });
   }
+
   render() {
     //Ставлю статус(0,1 - открытый, 2,3 - в работе, 3,4 - закрытый) и Тип(Заказ
     //или Предложение) для отображения
@@ -300,7 +311,7 @@ class User extends React.Component {
                             fontSize: "18px",
                           }}
                         >
-                          {this.state.user.isLock && (
+                          {this.state.isHidden && !this.state.isBan && (
                             <div
                               className="d-flex"
                               style={{
@@ -316,8 +327,24 @@ class User extends React.Component {
                               Профиль скрыт
                             </div>
                           )}
-
-                          {!this.state.user.isLock &&
+                          {this.state.isBan && (
+                            <div
+                              className="d-flex"
+                              style={{
+                                color: "#DD2828",
+                                fontSize: "14px",
+                              }}
+                            >
+                              <img
+                                className="mr-2"
+                                src={redWarning}
+                                alt="redWarning"
+                              />
+                              Профиль заблокирован
+                            </div>
+                          )}
+                          {!this.state.isHidden &&
+                            !this.state.isBan &&
                             this.state.user.type !== "cargo" && (
                               <>
                                 <div>{this.formatPhoneNumber(user.phone)}</div>
@@ -339,6 +366,8 @@ class User extends React.Component {
                           </span>
                         </span>
                         {this.props.user.isAuth &&
+                          !this.state.isHidden &&
+                          !this.state.isBan &&
                           this.props.user._id !== this.state.user._id && (
                             <>
                               <Link to={`/dialog/${this.state.user._id}`}>
@@ -353,14 +382,24 @@ class User extends React.Component {
                               </Link>
                               {this.props.user.type === "cargo" &&
                                 this.state.user.type === "carrier" && (
-                                  <Button
-                                    type="empty"
-                                    paddingVertical="11px"
-                                    paddingHorizontal="30px"
-                                    className="input-action"
-                                  >
-                                    Предложить заказ
-                                  </Button>
+                                  <>
+                                    <Button
+                                      type="empty"
+                                      paddingVertical="11px"
+                                      paddingHorizontal="30px"
+                                      className="input-action"
+                                      onClick={() => {
+                                        this.orderOfered.openForm();
+                                      }}
+                                    >
+                                      Предложить заказ
+                                    </Button>
+                                    <OrdersListModal
+                                      ref={(ref) => (this.orderOfered = ref)}
+                                      userId={this.state.user._id}
+                                      apiToken={this.props.user.apiToken}
+                                    />
+                                  </>
                                 )}
                             </>
                           )}
@@ -369,7 +408,7 @@ class User extends React.Component {
                   </div>
                   {this.renderTabs()}
                 </div>
-                {!this.state.user.isLock && (
+                {!this.state.isHidden && !this.state.isBan && (
                   <div className="lk-order-page">
                     {this.state.currentTab === 6 && (
                       <ReviewsUser
@@ -388,7 +427,7 @@ class User extends React.Component {
                     )}
                   </div>
                 )}{" "}
-                {this.state.user.isLock && (
+                {this.state.isHidden && !this.state.isBan && (
                   <div className="text-center">
                     <img src={redWarning} width="70px" alt="" />
                     <div
@@ -410,6 +449,32 @@ class User extends React.Component {
                       Это значит, что пока Перевозчик не активирует свой
                       профиль, его контакты и предложения и история заказов
                       будет недоступны для просмотра.
+                    </div>
+                  </div>
+                )}
+                {this.state.isBan && (
+                  <div className="text-center">
+                    <img src={redWarning} width="70px" alt="" />
+                    <div
+                      className="mt-3"
+                      style={{
+                        fontSize: "24px",
+                        color: "#DD2828",
+                      }}
+                    >
+                      Профиль заблокирован
+                    </div>
+                    <div
+                      className="mt-3 mx-auto"
+                      style={{
+                        fontSize: "12px",
+                        maxWidth: "567px",
+                      }}
+                    >
+                      Это значит, что администратор сайта заблокировал этот
+                      профиль. Если ВЫ владелец профиля, Вы можете написать
+                      администратору вопрос о причине блокировки из раздела
+                      Техподдердка в личном кабинете.
                     </div>
                   </div>
                 )}
