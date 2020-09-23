@@ -69,7 +69,7 @@ module.exports = {
             payment.status = "success";
             payment.startedAt = lastPaymentExpiriesAt;
             payment.expiriesAt =
-              lastPaymentExpiriesAt + Number(tariff.duration) * 1000 * 2;
+              lastPaymentExpiriesAt + Number(tariff.duration) * 1000 * 60;
             //60 * 60 * 24
             payment.updatedAt = Date.now();
             await payment.save();
@@ -111,7 +111,7 @@ module.exports = {
     payment.tariff = demoTariff;
     payment.status = "success";
     payment.startedAt = new Date();
-    payment.expiriesAt = Date.now() + Number(demoTariff.duration) * 1000 * 2;
+    payment.expiriesAt = Date.now() + Number(demoTariff.duration) * 1000 * 60;
     //60 * 60 * 24
     payment.updatedAt = Date.now();
     await payment.save();

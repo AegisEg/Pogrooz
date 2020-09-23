@@ -300,7 +300,7 @@ module.exports = {
       if (!user.isBan) {
         let ban = new Ban();
         ban.user = userId;
-        ban.expiriesAt = Date.now() + 1000 * 60 * 60 * 24 * duration;
+        ban.expiriesAt = Date.now() + 1000 * 60 * duration;
         //1000 * 60 * 60 * 24 * duration
         await ban.save();
         setBan({ userId });
