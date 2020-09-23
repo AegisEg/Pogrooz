@@ -104,7 +104,7 @@ class Tariffs extends React.Component {
                                 )}
                               </div>
                               <span className="price">
-                                {priceWithSale !== 0
+                                {!!priceWithSale
                                   ? priceWithSale + " руб"
                                   : "Бесплатно"}
                               </span>
