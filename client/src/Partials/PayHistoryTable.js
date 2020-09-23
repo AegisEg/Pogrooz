@@ -43,81 +43,98 @@ class PayHistoryTable extends React.Component {
             display: "contents",
           }}
         >
-          {!this.state.isFetching && this.state.payments && (
-            <>
-              <div className="table-wrapper">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Дата оплаты</th>
-                      <th>Способ оплаты</th>
-                      <th>Тариф</th>
-                      <th>Сумма</th>
-                      <th>Срок</th>
-                      <th>Дата действия</th>
-                      <th>Статус</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.payments.map((item, index, items) => {
-                      let duration;
-                      if (item.tariff.duration <= 28) {
-                        duration = item.tariff.duration / 7;
-                        if (duration > 1) duration += " недели";
-                        else duration += " неделя";
-                      }
-                      if (item.tariff.duration > 28) {
-                        duration = prettyDate(item.tariff.duration / 30);
-                      }
-                      return (
-                        <tr key={index}>
-                          <th scope="row">{item.updatedAt}</th>
-                          <td>visa / master cart</td>
-                          <td>{item.tariff.name}</td>
-                          <td>
-                            {item.tariff.price -
-                              (item.tariff.price * item.tariff.discount) / 100}
-                            руб
-                          </td>
-                          <td>{duration}</td>
-                          <td>
-                            {new Date(
-                              new Date(item.expiriesAt).getTime() -
-                                item.tariff.duration * 1000 * 60 * 60 * 24
-                            ).toDateR()}{" "}
-                            - {new Date(item.expiriesAt).toDateR()} г
-                          </td>
-                          <td>
-                            <span className="left-angle yellow">
-                              {new Date(item.expiriesAt) > new Date() &&
-                                !(
+          {!this.state.isFetching &&
+            this.state.payments &&
+            !!this.state.payments.length && (
+              <>
+                <h3 className="f-16 font-weight-normal mt-3">
+                  История пополнений
+                </h3>
+                <div className="table-wrapper">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Дата оплаты</th>
+                        <th>Способ оплаты</th>
+                        <th>Тариф</th>
+                        <th>Сумма</th>
+                        <th>Срок</th>
+                        <th>Дата действия</th>
+                        <th>Статус</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.payments.map((item, index, items) => {
+                        let duration;
+                        if (item.tariff) {
+                          if (item.tariff.duration <= 28) {
+                            duration = item.tariff.duration / 7;
+                            if (duration > 1) duration += " недели";
+                            else duration += " неделя";
+                          }
+                          if (item.tariff.duration > 28) {
+                            duration = prettyDate(item.tariff.duration / 30);
+                          }
+                        }
+                        return (
+                          <tr key={index}>
+                            <th scope="row">
+                              {new Date(item.updatedAt).toDateR()}
+                            </th>
+                            <td>
+                              {item.tariff && "visa / master cart"}
+                              {item.ban && "----------------"}
+                            </td>
+                            <td>
+                              {item.tariff && item.tariff.name}
+                              {item.ban && "Возврат"}
+                            </td>
+                            <td>
+                              {item.tariff && (
+                                <>
+                                  {item.tariff.price -
+                                    (item.tariff.price * item.tariff.discount) /
+                                      100}
+                                  руб
+                                </>
+                              )}
+                            </td>
+                            <td>{item.tariff && duration}</td>
+                            <td>
+                              {new Date(item.startedAt).toDateR()} -{" "}
+                              {new Date(item.expiriesAt).toDateR()} г
+                            </td>
+                            <td>
+                              <span className="left-angle yellow">
+                                {new Date(item.expiriesAt) > new Date() &&
+                                  !(
+                                    !!index &&
+                                    new Date(items[index - 1].expiriesAt) >
+                                      new Date()
+                                  ) &&
+                                  "Активен"}
+                                {new Date(item.expiriesAt) > new Date() &&
                                   !!index &&
                                   new Date(items[index - 1].expiriesAt) >
-                                    new Date()
-                                ) &&
-                                "Активен"}
-                              {new Date(item.expiriesAt) > new Date() &&
-                                !!index &&
-                                new Date(items[index - 1].expiriesAt) >
-                                  new Date() &&
-                                "Ожидает"}
-                              {new Date(item.expiriesAt) < new Date() &&
-                                "Использован"}
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-              <Pagination
-                currentPage={this.state.currentPage}
-                pageCount={this.state.countAll - 1}
-                onPageChange={this.getPaymentHistory}
-              />
-            </>
-          )}
+                                    new Date() &&
+                                  "Ожидает"}
+                                {new Date(item.expiriesAt) < new Date() &&
+                                  "Использован"}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                <Pagination
+                  currentPage={this.state.currentPage}
+                  pageCount={this.state.countAll - 1}
+                  onPageChange={this.getPaymentHistory}
+                />
+              </>
+            )}
         </CSSTransitionGroup>
       </div>
     );

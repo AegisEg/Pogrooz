@@ -246,7 +246,9 @@ module.exports = {
       dialog = await Dialog.findOne({
         _id: dialog,
         users: query,
-      }).populate("lastMessage");
+      })
+        .populate("lastMessage")
+        .populate("orderId");
       let isOrder = !!dialog.orderId;
       const dialogId = String(dialog._id);
       if (
@@ -374,8 +376,25 @@ module.exports = {
       dialog.updatedAt = new Date();
 
       await dialog.save();
-
-      createNotify({ _id: userId }, {}, "SEND_NEW_MESSAGE", "system");
+      let toUser = await User.findById(userId);
+      if (isOrder) {
+        if (
+          (dialog.orderId.type === "offer" &&
+            toUser.notificationSettings.offer_new_message.push) ||
+          (dialog.orderId.type === "order" &&
+            toUser.notificationSettings.order_new_message.push)
+        )
+          createNotify(
+            { _id: userId },
+            {
+              articleType: dialog.orderId.type,
+              articleId: dialog.orderId.articleId,
+            },
+            "SEND_NEW_MESSAGE_BY_ORDER",
+            "system"
+          );
+      } else if (toUser.notificationSettings.user_new_message.push)
+        createNotify({ _id: userId }, {}, "SEND_NEW_MESSAGE", "system");
       sendMessageDialog({
         userId: user._id,
         otherId: userId,

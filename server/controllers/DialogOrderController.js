@@ -217,7 +217,6 @@ module.exports = {
         .limit(count);
 
       const noReadDialogs = await Dialog.find({
-        orderId: orderId,
         noRead: { $ne: 0 },
         users: { $all: [user._id] },
         lastMessage: { $exists: true },

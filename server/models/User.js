@@ -18,6 +18,83 @@ const UserSchema = new Schema({
     id: { type: Number, select: true },
     data: { type: Object, select: true },
   },
+  isBan: { type: Boolean, default: false },
+  isTariff: { type: Boolean, default: true },
+  banJobId: { type: mongoose.Schema.Types.ObjectId },
+  notificationSettings: {
+    offer_new_request: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    offer_you_executor: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    offer_status: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    offer_new_review: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    offer_new_message: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    order_tracking: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    order_new_request: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    order_you_executor: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    order_status: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    order_new_review: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    order_new_message: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    order_tracking: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    user_new_message: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    order_moderation: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    offer_moderation: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    system: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    tarif_ends: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+    tarif_payed: {
+      mail: { type: Boolean, default: true },
+      push: { type: Boolean, default: true },
+    },
+  },
   rating: { type: Number, select: true },
   password: { type: String, select: false },
   online: { type: Boolean, default: true },

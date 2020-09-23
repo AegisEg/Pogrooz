@@ -41,26 +41,27 @@ class RequestForm extends React.Component {
       toast.error("Необходимо ввести дату отправления");
       return 0;
     }
-    this.setState({ isFetching: true }, () => {
-      this.props.myArticlesActions
-        .setRequest(this.props.article, {
-          comment: this.state.comment,
-          date: this.state.date,
-          timeFrom: this.state.timeFrom,
-          timeTo: this.state.timeTo,
-          budget: this.state.budget,
-        })
-        .then(() => {
-          this.setState({
-            comment: "",
-            date: false,
-            timeFrom: false,
-            timeTo: false,
-            budget: 0,
-            isFetching: false,
+    if (!this.state.isFetching)
+      this.setState({ isFetching: true }, () => {
+        this.props.myArticlesActions
+          .setRequest(this.props.article, {
+            comment: this.state.comment,
+            date: this.state.date,
+            timeFrom: this.state.timeFrom,
+            timeTo: this.state.timeTo,
+            budget: this.state.budget,
+          })
+          .then(() => {
+            this.setState({
+              comment: "",
+              date: false,
+              timeFrom: false,
+              timeTo: false,
+              budget: 0,
+              isFetching: false,
+            });
           });
-        });
-    });
+      });
   };
   requestSave = () => {
     if (!this.state.comment) {
@@ -71,31 +72,32 @@ class RequestForm extends React.Component {
       toast.error("Необходимо ввести дату отправления");
       return 0;
     }
-    this.setState({ isFetching: true }, () => {
-      this.props.myArticlesActions
-        .updateRequest(
-          this.props.request._id,
-          {
-            comment: this.state.comment,
-            date: this.state.date,
-            timeFrom: this.state.timeFrom,
-            timeTo: this.state.timeTo,
-            budget: this.state.budget,
-          },
-          this.props.article
-        )
-        .then(() => {
-          this.setState({
-            comment: "",
-            date: false,
-            timeFrom: false,
-            timeTo: false,
-            budget: 0,
-            isFetching: false,
+    if (!this.state.isFetching)
+      this.setState({ isFetching: true }, () => {
+        this.props.myArticlesActions
+          .updateRequest(
+            this.props.request._id,
+            {
+              comment: this.state.comment,
+              date: this.state.date,
+              timeFrom: this.state.timeFrom,
+              timeTo: this.state.timeTo,
+              budget: this.state.budget,
+            },
+            this.props.article
+          )
+          .then(() => {
+            this.setState({
+              comment: "",
+              date: false,
+              timeFrom: false,
+              timeTo: false,
+              budget: 0,
+              isFetching: false,
+            });
+            this.props.endEdit();
           });
-          this.props.endEdit();
-        });
-    });
+      });
   };
   render() {
     if (this.props.user.isAuth) {
@@ -191,28 +193,7 @@ class RequestForm extends React.Component {
                         }}
                       />
                     </div>
-                    <div
-                      className="d-inline-flex px-3 mt-3 budjet_div"
-                      style={{
-                        marginLeft: "0",
-                        marginRight: "0",
-                        alignItems: "center",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <span className="filter-input-title mb-0">
-                        Желаемый<br></br>бюджет, руб
-                      </span>
-                      <Input
-                        type="number"
-                        placeholder="0"
-                        value={this.state.budget || ""}
-                        onChange={(e) => {
-                          this.setState({ budget: e.target.value });
-                        }}
-                        max="20000"
-                      />
-                    </div>
+
                     <div
                       className="d-inline-flex   px-3 mt-3"
                       style={{
@@ -243,6 +224,28 @@ class RequestForm extends React.Component {
                         onChange={(val) => {
                           this.setState({ timeTo: val });
                         }}
+                      />
+                    </div>
+                    <div
+                      className="d-inline-flex px-3 mt-3 budjet_div"
+                      style={{
+                        marginLeft: "0",
+                        marginRight: "0",
+                        alignItems: "center",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <span className="filter-input-title mb-0">
+                        Желаемый<br></br>бюджет, руб
+                      </span>
+                      <Input
+                        type="number"
+                        placeholder="0"
+                        value={this.state.budget || ""}
+                        onChange={(e) => {
+                          this.setState({ budget: e.target.value });
+                        }}
+                        max="20000"
                       />
                     </div>
                     <Button

@@ -4,19 +4,53 @@ import Modal from "react-modal";
 import Button from "../Elements/Button";
 import Input from "../Elements/Input";
 import settings from "../config/settings.js";
-import { ReactComponent as CloseSVG  } from "../img/close.svg";
-
+import { ReactComponent as CloseSVG } from "../img/close.svg";
+import { toast } from "react-toastify";
 class RequestModal extends React.Component {
   constructor(props) {
     super(props);
     settings.stylesModals.content.padingBottom = "37px";
   }
   state = {
-    isMailSend: false,
+    comment: "",
+    date: false,
+    timeFrom: false,
+    timeTo: false,
+    budget: 0,
+    isFetching: false,
   };
-  send() {
-    this.setState({ isMailSend: true });
-  }
+  requestCreate = () => {
+    if (!this.state.comment) {
+      toast.error("Напишите коментарий");
+      return 0;
+    }
+    if (!this.state.date) {
+      toast.error("Необходимо ввести дату отправления");
+      return 0;
+    }
+    if (!this.state.isFetching)
+      this.setState({ isFetching: true }, () => {
+        this.props
+          .setRequest(this.props.article, {
+            comment: this.state.comment,
+            date: this.state.date,
+            timeFrom: this.state.timeFrom,
+            timeTo: this.state.timeTo,
+            budget: this.state.budget,
+          })
+          .then(() => {
+            this.setState({
+              comment: "",
+              date: false,
+              timeFrom: false,
+              timeTo: false,
+              budget: 0,
+              isFetching: false,
+            });
+            this.props.onRequestClose();
+          });
+      });
+  };
   render() {
     return (
       <Modal
@@ -34,6 +68,10 @@ class RequestModal extends React.Component {
               style={{
                 width: "100%",
                 height: "100px",
+              }}
+              value={this.state.comment}
+              onChange={(e) => {
+                this.setState({ comment: e.target.value });
               }}
             ></textarea>
           </div>
@@ -55,7 +93,29 @@ class RequestModal extends React.Component {
               <Input
                 type="date"
                 style={{ width: "130px" }}
-                placeholder="21.12.2020"
+                value={this.state.date || null}
+                onChange={(val) => {
+                  let state = { date: val };
+                  if (this.state.timeFrom)
+                    state.timeFrom = new Date(
+                      val.getFullYear(),
+                      val.getMonth(),
+                      val.getDate(),
+                      this.state.timeFrom.getHours(),
+                      this.state.timeFrom.getMinutes(),
+                      this.state.timeFrom.getSeconds()
+                    );
+                  if (this.state.timeTo)
+                    state.timeTo = new Date(
+                      val.getFullYear(),
+                      val.getMonth(),
+                      val.getDate(),
+                      this.state.timeTo.getHours(),
+                      this.state.timeTo.getMinutes(),
+                      this.state.timeTo.getSeconds()
+                    );
+                  this.setState(state);
+                }}
               />
             </div>
             <div
@@ -70,9 +130,23 @@ class RequestModal extends React.Component {
               <span className="filter-input-title mb-0">
                 Время<br></br>погрузки
               </span>
-              <Input type="time" placeholder="12:00" />
+              <Input
+                type="time"
+                date={this.state.date}
+                value={this.state.timeFrom || null}
+                onChange={(val) => {
+                  this.setState({ timeFrom: val });
+                }}
+              />
               <span className="filter-input-title mb-0">&nbsp;&nbsp;-</span>
-              <Input type="time" placeholder="12:00" />
+              <Input
+                type="time"
+                date={this.state.date}
+                value={this.state.timeTo || null}
+                onChange={(val) => {
+                  this.setState({ timeTo: val });
+                }}
+              />
             </div>
             <div
               className="d-inline-flex px-3 mt-3 budjet_div"
@@ -86,19 +160,32 @@ class RequestModal extends React.Component {
               <span className="filter-input-title mb-0">
                 Желаемый<br></br>бюджет, руб
               </span>
-              <Input type="number" placeholder="0" max="20000" />
+              <Input
+                type="number"
+                placeholder="0"
+                value={this.state.budget || ""}
+                onChange={(e) => {
+                  this.setState({ budget: e.target.value });
+                }}
+                max="20000"
+              />
             </div>
             <Button
               type="fill"
               paddingVertical="11px"
               paddingHorizontal="36px"
               className="mt-3 ml-auto mr-3 input-action"
+              onClick={this.requestCreate}
             >
               Отправить
             </Button>
           </div>
         </div>
-        <CloseSVG className="close-svg" onClick={this.props.onRequestClose} className="close-svg"></CloseSVG>
+        <CloseSVG
+          className="close-svg"
+          onClick={this.props.onRequestClose}
+          className="close-svg"
+        ></CloseSVG>
       </Modal>
     );
   }

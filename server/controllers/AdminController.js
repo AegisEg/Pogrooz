@@ -8,24 +8,46 @@ const Page = require("../models/Page");
 const Question = require("../models/Question");
 const QuestionSection = require("../models/QuestionSection");
 const Tariff = require("../models/Tariff");
+const Ban = require("../models/Ban");
+const UserController = require("../controllers/UserController");
 
 AdminBro.registerAdapter(AdminBroMongoose);
 const adminBro = new AdminBro({
   rootPath: "/admin",
   branding: {
     companyName: "Pogrooz",
+    logo: "/media/mini-logo.svg",
     softwareBrothers: false,
+  },
+  // dashboard: {
+  //   handler: async () => {},
+  //   component: AdminBro.bundle("../adminComponents/dashboard"),
+  // },
+  pages: {
+    articlesStats: {
+      label: "Статистика пользователей",
+      component: AdminBro.bundle("../adminComponents/articlesStats.jsx"),
+    },
+    tariffsStats: {
+      label: "Статистика тарифов",
+      component: AdminBro.bundle("../adminComponents/tariffsStats.jsx"),
+    },
+    usersStats: {
+      label: "Статистика пользователей",
+      component: AdminBro.bundle("../adminComponents/usersStats.jsx"),
+    },
   },
   resources: [
     {
       resource: User,
       options: {
         listProperties: [
-          "email",
-          "isPassportVerified",
           "name.first",
           "name.last",
           "type",
+          "isPassportVerified",
+          "isBan",
+          "isTariff",
         ],
         actions: {
           delete: {
@@ -52,9 +74,149 @@ const adminBro = new AdminBro({
               };
             },
           },
+          userBan: {
+            actionType: "record",
+            isVisible: (context) =>
+              !context.record.params.isBan && context.record.params.isTariff,
+            component: AdminBro.bundle("../adminComponents/bannedComonent"),
+            handler: async (request, response, context) => {
+              return {
+                record: context.record.toJSON(context.record),
+              };
+            },
+          },
+          userUnBan: {
+            actionType: "record",
+            isVisible: (context) => context.record.params.isBan,
+            component: false,
+            handler: async (request, response, context) => {
+              UserController.cancelBanRequest(context.record.params._id);
+              context.record.params.isBan = false;
+              return {
+                record: context.record.toJSON(context.record),
+              };
+            },
+          },
         },
         properties: {
           _id: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          tariffJob: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          isBan: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          isTariff: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+          },
+          "notificationSettings.offer_new_request.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_you_executor.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_status.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_new_review.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_new_message.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_tracking.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_new_request.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_you_executor.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_status.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_new_review.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_new_message.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_tracking.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.user_new_message.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_moderation.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_moderation.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.system.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.tarif_ends.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.tarif_payed.push": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_new_request.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_you_executor.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_status.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_new_review.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_new_message.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_tracking.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_new_request.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_you_executor.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_status.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_new_review.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_new_message.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_tracking.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.user_new_message.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.order_moderation.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.offer_moderation.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.system.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.tarif_ends.mail": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "notificationSettings.tarif_payed.mail": {
             isVisible: { list: false, filter: false, show: false, edit: false },
           },
           email: {
@@ -316,7 +478,12 @@ const adminBro = new AdminBro({
   ],
   locale: {
     translations: {
-      actions: { new: "Создать" },
+      actions: {
+        new: "Создать",
+        userBan: "Заблокировать",
+        userUnBan: "Снять блокировку",
+      },
+      dashboard: "Рабочий стол",
       buttons: {
         filter: "Фильтр",
         save: "Сохранить",
@@ -340,6 +507,8 @@ const adminBro = new AdminBro({
             "name.last": "Имя",
             "name.middle": "Отчество",
             phone: "Телефон",
+            isBan: "Заблокирован?",
+            isTariff: "Без тарифа?",
             type: "Тип пользователя",
             online: "Онлайн",
             isPassportVerified: "Прошел модерацию?",
@@ -405,6 +574,12 @@ const adminBro = new AdminBro({
         Tariff: "Тарифы",
         Question: "Вопросы",
         QuestionSection: "Разделы вопросов",
+        articlesStats: "Статистика Заказов/Предложений",
+        usersStats: "Статистика пользователей",
+        tariffsStats: "Статистика тарифов",
+        dashboard: "Панель",
+        pages: "Страницы",
+        navigation: "Меню",
       },
     },
   },
@@ -416,7 +591,10 @@ module.exports = adminRouter = AdminBroExpress.buildAuthenticatedRouter(
   adminBro,
   {
     authenticate: async (email, password) => {
-      if (email === "neostar1996@mail.ru" && password === "23021954") {
+      if (
+        email === process.env.ADMIN_LOGIN &&
+        password === process.env.ADMIN_PASSWORD
+      ) {
         return { email: email, password };
       }
 

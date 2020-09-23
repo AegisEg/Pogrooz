@@ -126,7 +126,8 @@ export default [
           {info.articleType === "offer" ? "предложению" : "заказу"} №
           {info.articleId}
         </Link>{" "}
-        появилось новое собщение
+        появилось новое собщение, для просмотра перейдите на страницу{" "}
+        <Link to="/messages-by-order">сообщений</Link>
       </>
     ),
   },
@@ -149,5 +150,21 @@ export default [
         {info.userFio} послал запрос на исключения из исполнителей
       </>
     ),
+  },
+  {
+    id: 10,
+    code: "ARTICLE_OFFERED_ORDER",
+    text: (info) => (
+      <>
+        Грузовладелец <Link to={`/user/${info.author}`}>{info.authorFIO}</Link>{" "}
+        предложиил вам участе в{" "}
+        <Link to={`/order/${info.articleId}`}>заказу №{info.articleId}</Link>
+      </>
+    ),
+  },
+  {
+    id: 11,
+    code: "BAN_COMMENT_NOTIFY",
+    text: (info) => <>Вы заблокированы по причине: {info.commentBan}.</>,
   },
 ];

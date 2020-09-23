@@ -14,40 +14,48 @@ class Support extends React.Component {
     return (day_one - day_two) / (60 * 60 * 24 * 1000);
   }
   render() {
+    let tariff;
+    if (this.props.user.expiriesTariffAt && this.props.user.tariff)
+      tariff = this.props.user.tariff;
+    if (this.props.user.expiriesTariffAt && !this.props.user.tariff)
+      tariff = {
+        name: "Тариф Возврат",
+        isDemo: true,
+      };
+    if (!this.props.user.expiriesTariffAt && !this.props.user.tariff)
+      tariff = false;
     return (
       <div className="standart-page">
         <div className="container-fluid">
           <h2 className="title">Мои тариф</h2>
           <div className="row align-items-center">
             <p className="f-14 mt-2 d-inline-block px-3">
-              {!this.props.user.expiriesTariffAt && !this.props.user.tariff && (
+              {!this.props.user.expiriesTariffAt && !tariff && (
                 <>
                   <Warning /> Профиль скрыт
                 </>
               )}
 
-              {this.props.user.tariff &&
+              {tariff &&
                 this.diffDates(
                   new Date(this.props.user.expiriesTariffAt),
                   new Date()
                 ) <= 3 && (
                   <>
                     <span>
-                      {this.props.user.tariff.name}{" "}
-                      {this.props.user.tariff.isDemo ? "активен" : "оплачен"} до
+                      {tariff.name} {tariff.isDemo ? "активен" : "оплачен"} до{" "}
                       {new Date(this.props.user.expiriesTariffAt).toDateR()}
                     </span>
                   </>
                 )}
-              {this.props.user.tariff &&
+              {tariff &&
                 this.diffDates(
                   new Date(this.props.user.expiriesTariffAt),
                   new Date()
                 ) > 3 && (
                   <>
                     <span>
-                      {this.props.user.tariff.name}{" "}
-                      {this.props.user.tariff.isDemo ? "активен" : "оплачен"} до{" "}
+                      {tariff.name} {tariff.isDemo ? "активен" : "оплачен"} до{" "}
                       {new Date(this.props.user.expiriesTariffAt).toDateR()}
                     </span>
                   </>
@@ -59,7 +67,7 @@ class Support extends React.Component {
               </Button>
             </div>
           </div>
-          <h3 className="f-16 font-weight-normal mt-3">История пополнений</h3>
+
           <PayHistoryTable user={this.props.user} />
           <h3 className="f-16 font-weight-normal mt-4">Продлить тариф</h3>
           <Tariffs />

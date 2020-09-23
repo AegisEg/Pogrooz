@@ -7,7 +7,6 @@ import Loading from "../../Elements/Loading";
 import { CSSTransitionGroup } from "react-transition-group";
 import Select from "../../Elements/Select";
 import { Map, Placemark } from "react-yandex-maps";
-import { getPreciseDistance, getCenter } from "geolib";
 import geolocation from "../../img/location-pointer.svg";
 // Router
 
@@ -24,36 +23,18 @@ class GeoDetect extends React.Component {
         }
       );
   }
+  componentDidUpdate(b) {
+    if (
+      this.props.articles.articles.length > 0 &&
+      b.articles.articles.length === 0
+    )
+      this.setState({ articleId: this.props.articles.articles[0]._id });
+  }
   render() {
     let article = this.props.articles.articles.find(
       (item) => item._id === this.state.articleId
     );
-    let zoom;
-    let center;
-    if (article) {
-      zoom =
-        getPreciseDistance(
-          {
-            latitude: article.fromLocation.coordinates[0],
-            longitude: article.fromLocation.coordinates[1],
-          },
-          {
-            latitude: article.toLocation.coordinates[0],
-            longitude: article.toLocation.coordinates[1],
-          }
-        ) / 200000;
-      center = getCenter([
-        {
-          latitude: article.fromLocation.coordinates[0],
-          longitude: article.fromLocation.coordinates[1],
-        },
-        {
-          latitude: article.toLocation.coordinates[0],
-          longitude: article.toLocation.coordinates[1],
-        },
-      ]);
-      center = [center.latitude, center.longitude];
-    }
+
     return (
       <div className="standart-page">
         <div className="container-fluid">
@@ -94,15 +75,28 @@ class GeoDetect extends React.Component {
                     }
                   }
                 />
-                {!article && <div>Отслеживание больше не доступно</div>}
+                {!article && !!this.props.articles.articles.length && (
+                  <div className="text-center mt-4">
+                    Отслеживание больше не доступно
+                  </div>
+                )}
+                {!article && !this.props.articles.articles.length && (
+                  <div className="text-center mt-4">
+                    Заказов/предложений в пути пока нет
+                  </div>
+                )}
                 {article && (
                   <Map
                     instanceRef={(ref) => {
                       this.mapFrom = ref;
                     }}
                     defaultState={{
-                      center: center,
-                      zoom: zoom,
+                      center:
+                        article.lastCarrierLocation &&
+                        article.lastCarrierLocation.coordinates.length
+                          ? article.lastCarrierLocation.coordinates
+                          : article.fromLocation.coordinates,
+                      zoom: 15,
                     }}
                     style={{
                       marginTop: "21px",
@@ -128,14 +122,21 @@ class GeoDetect extends React.Component {
                       geometry={article.fromLocation.coordinates}
                     />
                     {article.lastCarrierLocation &&
-                      article.lastCarrierLocation.coordinates && (
+                      article.lastCarrierLocation.coordinates.length && (
                         <Placemark
                           options={{
                             iconLayout: "default#image",
                             iconImageHref: geolocation,
                           }}
+                          date
                           properties={{
                             iconCaption: "Расположение перевозчика",
+                            hintContent:
+                              new Date(
+                                article.lastCarrierLocation.date
+                              ).toDateR() +
+                              " " +
+                              new Date(article.lastCarrierLocation.date).toHM(),
                           }}
                           geometry={article.lastCarrierLocation.coordinates}
                         />

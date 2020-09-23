@@ -7,7 +7,8 @@
 const router = require("express").Router();
 const verifyToken = require("../middleware/verifyToken");
 const TariffController = require("../controllers/TariffController");
+const BanCheck = require("../middleware/BanCheck");
 router.post("/", TariffController.getTariffs);
-router.post("/buy", verifyToken, TariffController.buy);
+router.post("/buy", verifyToken, BanCheck, TariffController.buy);
 router.post("/payments", verifyToken, TariffController.payments);
 module.exports = router;

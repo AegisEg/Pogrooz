@@ -2144,6 +2144,10 @@ a.mail {
     line-height: 16px;
   }
 }
+.article-block .moreinfo_block .fio {
+  max-width: 240px;
+  word-break: break-all;
+}
 .article-block .moreinfo_block .fio a {
   white-space: pre-line;
   color: #000;
@@ -3230,6 +3234,9 @@ a.href.hover:hover {
 .public-page .container-fluid {
   max-width: 1500px;
   margin: auto;
+}
+.settings-notification {
+  min-height: 70vh;
 }
 @media (max-width: 768px) {
   .common-settings {
@@ -5872,11 +5879,33 @@ label {
   border-radius: 10px;
   padding: 0;
 }
+
+.orders-modal {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 320px;
+  position: absolute;
+  width: 320px;
+  margin: auto;
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 221, 221);
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.13) 3px 2px 15px;
+  border-radius: 10px;
+  padding: 0;
+}
+.orders-item > div {
+  justify-content: center;
+}
 .delivered-executors > div,
+.orders-item > div,
 .cancels-modal > div,
 .dialogs-modal > div {
   border-radius: 10px;
 }
+.orders-item > div,
 .delivered-executors > div,
 .cancels-executors > div,
 .dialogs-executors > div {
@@ -5886,9 +5915,11 @@ label {
   padding: 5px 10px;
   align-items: center;
 }
+.orders-item > div:hover,
 .delivered-executors > div:hover {
   background-color: #f7f7f7;
 }
+.orders-item > div:hover,
 .cancels-executors > div:hover,
 .dialogs-executors > div:hover {
   background-color: #ffdc1c;
@@ -5960,4 +5991,7 @@ label {
   100% {
     transform: scale(0.9099999999999999);
   }
+}
+.fast-access-btn.notifications {
+  word-break: break-all;
 }

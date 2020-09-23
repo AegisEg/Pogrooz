@@ -79,7 +79,7 @@ class Notifications extends React.Component {
             display: "contents",
           }}
         >
-          {!notifications.isFetching && (
+          {(!notifications.isFetching || notifications.isGetted) && (
             <>
               <div className="container-fluid">
                 <div className="tab_groups">
@@ -90,10 +90,11 @@ class Notifications extends React.Component {
                     onClick={() => {
                       this.setState({ typeNotification: "all" });
                       if (!this.props.notifications.all.isGetted)
-                        this.props.notificationActions.notificationsGet(
-                          "all",
-                          this.props.user.apiToken
-                        );
+                        this.props.notificationActions
+                          .notificationsGet("all", this.props.user.apiToken)
+                          .then(() => {
+                            this.onScroll();
+                          });
                     }}
                   >
                     Все
@@ -105,10 +106,11 @@ class Notifications extends React.Component {
                     onClick={() => {
                       this.setState({ typeNotification: "order" });
                       if (!this.props.notifications.order.isGetted)
-                        this.props.notificationActions.notificationsGet(
-                          "order",
-                          this.props.user.apiToken
-                        );
+                        this.props.notificationActions
+                          .notificationsGet("order", this.props.user.apiToken)
+                          .then(() => {
+                            this.onScroll();
+                          });
                     }}
                   >
                     По заказам
@@ -120,10 +122,11 @@ class Notifications extends React.Component {
                     onClick={() => {
                       this.setState({ typeNotification: "offer" });
                       if (!this.props.notifications.offer.isGetted)
-                        this.props.notificationActions.notificationsGet(
-                          "offer",
-                          this.props.user.apiToken
-                        );
+                        this.props.notificationActions
+                          .notificationsGet("offer", this.props.user.apiToken)
+                          .then(() => {
+                            this.onScroll();
+                          });
                     }}
                   >
                     По предложениям
@@ -135,10 +138,11 @@ class Notifications extends React.Component {
                     onClick={() => {
                       this.setState({ typeNotification: "system" });
                       if (!this.props.notifications.system.isGetted)
-                        this.props.notificationActions.notificationsGet(
-                          "system",
-                          this.props.user.apiToken
-                        );
+                        this.props.notificationActions
+                          .notificationsGet("system", this.props.user.apiToken)
+                          .then(() => {
+                            this.onScroll();
+                          });
                     }}
                   >
                     Системные
@@ -150,10 +154,11 @@ class Notifications extends React.Component {
                     onClick={() => {
                       this.setState({ typeNotification: "tariff" });
                       if (!this.props.notifications.tariff.isGetted)
-                        this.props.notificationActions.notificationsGet(
-                          "tariff",
-                          this.props.user.apiToken
-                        );
+                        this.props.notificationActions
+                          .notificationsGet("tariff", this.props.user.apiToken)
+                          .then(() => {
+                            this.onScroll();
+                          });
                     }}
                   >
                     По Тарифу

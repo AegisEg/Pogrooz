@@ -157,12 +157,15 @@ class ArticlePage extends React.Component {
                     </div>
                   </div>
 
-                  {this.props.user && this.props.myarticles.currentArticle && (
-                    <RequestForm
-                      user={this.props.user}
-                      article={this.props.myarticles.currentArticle}
-                    />
-                  )}
+                  {this.props.user &&
+                    (this.props.user.tariff ||
+                      this.props.user.type === "cargo") &&
+                    this.props.myarticles.currentArticle && (
+                      <RequestForm
+                        user={this.props.user}
+                        article={this.props.myarticles.currentArticle}
+                      />
+                    )}
                 </div>
               </div>
             </>

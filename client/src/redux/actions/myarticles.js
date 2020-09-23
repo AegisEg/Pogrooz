@@ -312,7 +312,7 @@ export const createMyArticle = (article, status, apiToken) => (dispatch) => {
           else
             dispatch({
               type: ARTICLES_MY_CREATE_COUNT,
-              payload: { status, article },
+              payload: { status, article: data.article },
             });
           resolve({ error: false });
         } else resolve(data);

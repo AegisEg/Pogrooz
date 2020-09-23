@@ -13,6 +13,8 @@ const PaymentSchema = new Schema({
   orderId: { type: String },
   userId: { type: mongoose.Schema.Types.ObjectId },
   tariff: { type: mongoose.Schema.Types.ObjectId, ref: "Tariff" },
+  ban: { type: Object },
+  startedAt: { type: Date },
   expiriesAt: { type: Date },
   createdAt: { type: Date, default: Date.now },
   status: { type: String, default: "wait" },

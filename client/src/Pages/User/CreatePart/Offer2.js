@@ -21,7 +21,10 @@ class OfferCreate2 extends React.Component {
   getArticlesInfo() {
     let errorArr = {};
     let isError = false;
-    if (this.state.startDate && new Date(this.state.startDate) <= new Date()) {
+    if (
+      this.state.startDate &&
+      new Date(this.state.startDate) < new Date().setHours(0,0,0,0)
+    ) {
       toast.error("Дата должна быть больше текущей", {
         position: toast.POSITION.TOP_CENTER,
       });

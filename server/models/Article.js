@@ -25,6 +25,7 @@ const ArticleSchema = new Schema({
   lastCarrierLocation: {
     type: { type: String, default: "Point" },
     coordinates: [Number],
+    date: Date,
   },
   executors: [
     { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },

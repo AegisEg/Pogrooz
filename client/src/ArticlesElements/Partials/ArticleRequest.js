@@ -80,7 +80,7 @@ class ArticleRequest extends React.Component {
             className="col f-14 d-flex align-items-start user-avatar-image-block"
             style={{
               whiteSpace: "pre-line",
-              maxWidth: "180px",
+              maxWidth: "220px",
             }}
           >
             <Avatar avatar={this.props.request.author.avatar} />
@@ -154,15 +154,17 @@ class ArticleRequest extends React.Component {
                 >
                   Убрать из исполнителей
                 </Button>
-                <Link to={`/dialog/${this.props.request.author._id}`}>
-                  <Button
-                    type="empty"
-                    paddingHorizontal="29px"
-                    className="input-action mr-3"
-                  >
-                    Написать
-                  </Button>
-                </Link>
+                {this.props.article.status == 2 && (
+                  <Link to={`/dialog/${this.props.request.author._id}`}>
+                    <Button
+                      type="empty"
+                      paddingHorizontal="29px"
+                      className="input-action mr-3"
+                    >
+                      Написать
+                    </Button>
+                  </Link>
+                )}
               </div>
             )}
           {this.props.article.type === "offer" &&

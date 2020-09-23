@@ -20,6 +20,7 @@ import {
   NOTIFICATIONS_TARRIFS_READ,
   NOTIFICATIONS_TARRIFS_SET_NO_READ,
   NOTIFICATIONS_NOREAD_GET,
+  NOTIFICATIONS_NOREAD_ADD,
   //Load
   NOTIFICATIONS_ALL_LOAD,
   NOTIFICATIONS_OFFERS_LOAD,
@@ -134,6 +135,15 @@ const notifications = (state = INITIAL_STATE, action) => {
         },
       };
     }
+    case NOTIFICATIONS_NOREAD_ADD: {
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          onlyNoread: [action.payload, ...state.all.onlyNoread],
+        },
+      };
+    }
     case NOTIFICATIONS_ALL_ADD:
       return {
         ...state,
@@ -183,6 +193,12 @@ const notifications = (state = INITIAL_STATE, action) => {
           notifications: [action.payload, ...state.offer.notifications],
           noRead: state.offer.noRead + 1,
         },
+        all: {
+          ...state.all,
+          notifications: [action.payload, ...state.all.notifications],
+          noRead: state.all.noRead + 1,
+          onlyNoread: [action.payload, ...state.all.onlyNoread],
+        },
       };
     case NOTIFICATIONS_OFFERS_READ:
       return {
@@ -219,6 +235,12 @@ const notifications = (state = INITIAL_STATE, action) => {
           ...state.order,
           notifications: [action.payload, ...state.order.notifications],
           noRead: state.order.noRead + 1,
+        },
+        all: {
+          ...state.all,
+          notifications: [action.payload, ...state.all.notifications],
+          noRead: state.all.noRead + 1,
+          onlyNoread: [action.payload, ...state.all.onlyNoread],
         },
       };
     case NOTIFICATIONS_ORDERS_READ:
@@ -257,6 +279,12 @@ const notifications = (state = INITIAL_STATE, action) => {
           notifications: [action.payload, ...state.system.notifications],
           noRead: state.system.noRead + 1,
         },
+        all: {
+          ...state.all,
+          notifications: [action.payload, ...state.all.notifications],
+          noRead: state.all.noRead + 1,
+          onlyNoread: [action.payload, ...state.all.onlyNoread],
+        },
       };
     case NOTIFICATIONS_SYSTEM_READ:
       return {
@@ -294,6 +322,12 @@ const notifications = (state = INITIAL_STATE, action) => {
           notifications: [action.payload, ...state.tariff.notifications],
           noRead: state.tariff.noRead + 1,
         },
+        all: {
+          ...state.all,
+          notifications: [action.payload, ...state.all.notifications],
+          noRead: state.all.noRead + 1,
+          onlyNoread: [action.payload, ...state.all.onlyNoread],
+        },
       };
     case NOTIFICATIONS_TARRIFS_READ:
       return {
@@ -314,13 +348,13 @@ const notifications = (state = INITIAL_STATE, action) => {
     case NOTIFICATIONS_ALL_LOADING:
       return { ...state, all: { ...state.all, isFetching: true } };
     case NOTIFICATIONS_OFFERS_LOADING:
-      return { ...state, offer: { ...state.all, isFetching: true } };
+      return { ...state, offer: { ...state.offer, isFetching: true } };
     case NOTIFICATIONS_ORDERS_LOADING:
-      return { ...state, order: { ...state.all, isFetching: true } };
+      return { ...state, order: { ...state.order, isFetching: true } };
     case NOTIFICATIONS_SYSTEM_LOADING:
-      return { ...state, system: { ...state.all, isFetching: true } };
+      return { ...state, system: { ...state.system, isFetching: true } };
     case NOTIFICATIONS_TARRIFS_LOADING:
-      return { ...state, tariff: { ...state.all, isFetching: true } };
+      return { ...state, tariff: { ...state.tariff, isFetching: true } };
     //LOAD
     case NOTIFICATIONS_ALL_LOAD:
       return {

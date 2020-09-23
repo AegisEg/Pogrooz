@@ -723,7 +723,6 @@ class InputRow extends React.Component {
     let role = false;
     if (this.props.user.isAuth) {
       if (this.props.user._id === this.props.article.author._id) role = 1;
-      console.log(this.props.article);
       if (
         this.props.article.executors.find(
           (item) => item._id === this.props.user._id
@@ -1003,6 +1002,8 @@ class InputRow extends React.Component {
           )}
           <RequestModal
             isOpen={this.state.isOpenModalRequest}
+            article={this.props.article}
+            setRequest={this.props.myArticlesActions.setRequest}
             onRequestClose={() => {
               this.setState({ isOpenModalRequest: false });
             }}
