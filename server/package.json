@@ -8,7 +8,7 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "admin-bro": "^3.2.3",
+    "admin-bro": "^3.2.5",
     "admin-bro-expressjs": "^2.1.1",
     "admin-bro-mongoose": "^0.5.2",
     "axios": "^0.19.2",
