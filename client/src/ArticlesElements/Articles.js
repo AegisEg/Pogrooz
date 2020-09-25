@@ -66,9 +66,9 @@ class Articles extends React.Component {
           {this.state.articles.map((article, i) => {
             return (
               <Article
-                IsManage={this.props.isManage}
+                IsManage={this.props.isManage || article.status === 2}
                 notControl={this.props.notControl}
-                notLink={this.props.notLink}
+                notLink={this.props.onlyPublic && article.status !== 2}
                 key={i}
                 article={article}
               />

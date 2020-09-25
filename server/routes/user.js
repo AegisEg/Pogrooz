@@ -18,4 +18,5 @@ router.post("/password-change", verifyToken, UserController.passChange);
 router.post("/save-settings", verifyToken, UserController.notificationSettings);
 router.post("/getSettings", verifyToken, UserController.getSettings);
 router.post("/userBan", adminVerifi, UserController.userBan);
+router.post("/modarationFail", adminVerifi, UserController.modarationFail);
 module.exports = router;

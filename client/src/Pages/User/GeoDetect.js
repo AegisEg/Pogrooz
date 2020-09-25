@@ -7,7 +7,7 @@ import Loading from "../../Elements/Loading";
 import { CSSTransitionGroup } from "react-transition-group";
 import Select from "../../Elements/Select";
 import { Map, Placemark } from "react-yandex-maps";
-import geolocation from "../../img/location-pointer.svg";
+import geolocation from "../../img/carGeo.svg";
 // Router
 
 class GeoDetect extends React.Component {
@@ -109,16 +109,15 @@ class GeoDetect extends React.Component {
                     ]}
                   >
                     <Placemark
+                      options={{
+                        iconColor: "#F5D210",
+                      }}
                       properties={{
                         hintContent: article.from.value,
                         iconCaption: "Начальная точка",
                         balloonContentHeader: "Начальная точка",
                         balloonContentBody: article.from.value,
-                      }}
-                      options={{
-                        openEmptyHint: true,
-                        openHintOnHover: true,
-                      }}
+                      }}я
                       geometry={article.fromLocation.coordinates}
                     />
                     {article.lastCarrierLocation &&
@@ -143,7 +142,7 @@ class GeoDetect extends React.Component {
                       )}
                     <Placemark
                       options={{
-                        iconColor: "#ff0000",
+                        iconColor: "#D36161",
                       }}
                       properties={{
                         iconCaption: "Конечная точка",

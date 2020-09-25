@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import { Box, Text, useCurrentAdmin } from "admin-bro";
-import {
-  Button,
-  Input,
-  Label,
-  TextArea,
-} from "@admin-bro/design-system";
+import { Button, Input, Label, TextArea } from "@admin-bro/design-system";
 
 const BanAndTariff = (props) => {
-  const [commentBan, setCommentBan] = useState(false);
-  const [duration, setDuration] = useState(false);
+  const [commentFail, setCommentFail] = useState(false);
   const admin = useCurrentAdmin();
   let user = props.record.params;
   return (
@@ -18,7 +12,7 @@ const BanAndTariff = (props) => {
         Пользователь: {user["name.last"]} {user["name.first"]}
       </Text>
       <Label paddingTop={"50px"} htmlFor="cause">
-        Причина блокировки
+        Причина
       </Label>
       <TextArea
         id="cause"
@@ -28,26 +22,10 @@ const BanAndTariff = (props) => {
           backgroundColor: "#fff",
           height: "150px",
         }}
-        value={commentBan || ""}
+        value={commentFail || ""}
         onChange={(e) => {
-          if (e.target.value.length < 50) setCommentBan(e.target.value);
+          if (e.target.value.length < 50) setCommentFail(e.target.value);
           else alert("Максимум 50 символов");
-        }}
-      />
-      <Label paddingTop={"50px"} htmlFor="duration">
-        Длительсность блокировки
-      </Label>
-      <Input
-        id="duration"
-        type="number"
-        style={{
-          backgroundColor: "#fff",
-        }}
-        value={duration || ""}
-        onChange={(e) => {
-          let val = e.target.value.replace(/\D/, "");
-          if (val <= 14) setDuration(Math.floor(val, 0));
-          else alert("Нельзя больше 14 дней");
         }}
       />
       <Button
@@ -56,8 +34,8 @@ const BanAndTariff = (props) => {
           display: "block",
         }}
         onClick={() => {
-          if (!!duration && !!commentBan)
-            fetch(`${window.location.origin}/api/user/userBan`, {
+          if (!!commentFail)
+            fetch(`${window.location.origin}/api/user/modarationFail`, {
               method: "post",
               headers: {
                 Accept: "application/json",
@@ -65,8 +43,7 @@ const BanAndTariff = (props) => {
               },
               body: JSON.stringify({
                 admin: admin[0],
-                commentBan,
-                duration,
+                commentFail,
                 userId: user._id,
               }),
             }).then(() => {
@@ -75,7 +52,7 @@ const BanAndTariff = (props) => {
           else alert("Запоните поля");
         }}
       >
-        Заблокировать
+        Отправить
       </Button>
     </Box>
   );

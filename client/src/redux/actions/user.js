@@ -117,8 +117,9 @@ export const passChange = (passObj, apiToken) => (dispatch) => {
 };
 export const startLocationSent = (apiToken) => (dispatch) => {
   if (navigator.geolocation) {
-    if (store.getState().user.geolocationId) {
-      navigator.geolocation.clearWatch(id);
+    let idWatch;
+    if ((idWatch = store.getState().user.geolocationId)) {
+      navigator.geolocation.clearWatch(idWatch);
       dispatch({ type: USER_SET_LOCATION_ID, payload: { id: false } });
     }
     let id = navigator.geolocation.watchPosition(
@@ -154,4 +155,13 @@ export const startLocationSent = (apiToken) => (dispatch) => {
       type: USER_SET_GEOLOCATION_ERROR,
       payload: { error: false },
     });
+};
+export const stopLocationSent = () => (dispatch) => {
+  if (navigator.geolocation) {
+    let idWatch;
+    if ((idWatch = store.getState().user.geolocationId)) {
+      navigator.geolocation.clearWatch(idWatch);
+      dispatch({ type: USER_SET_LOCATION_ID, payload: { id: false } });
+    }
+  }
 };

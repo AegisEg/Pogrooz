@@ -12,7 +12,7 @@ import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import routes from "./config";
 import NoMatch from "../Pages/NoMatch";
-import { ReactComponent as Gps } from "../img/gps.svg";
+import { ReactComponent as Gps } from "../img/geoPoint.svg";
 import { ReactComponent as Error } from "../img/error-red.svg";
 // Redux
 import { connect } from "react-redux";
@@ -20,6 +20,7 @@ import * as userActions from "../redux/actions/user";
 import * as myArticlesActions from "../redux/actions/myarticles";
 import { bindActionCreators } from "redux";
 import configApi from "../config/api";
+import { isThisQuarter } from "date-fns/esm";
 
 export function setTitle(path, routeArray) {
   var pageTitle;
@@ -88,16 +89,33 @@ class AppRouter extends React.Component {
       this.setState({ isRender: true });
     }
   }
-  componentDidUpdate(b) {}
+  componentDidUpdate(b) {
+    if (this.props.user.needSendLocation && !b.user.needSendLocation) {
+      this.props.userActions.startLocationSent(this.props.user.apiToken);
+    }
+    if (!this.props.user.needSendLocation && b.user.needSendLocation) {
+      this.props.userActions.stopLocationSent();
+    }
+  }
   render() {
     return (
       this.state.isRender && (
         <>
           {" "}
           {this.props.user.needSendLocation &&
-            !this.props.user.geolocationsError && <Gps className="gps-icon" />}
+            !this.props.user.geolocationsError && (
+              <div className="geo-active">
+                <Gps />
+                <div>Идет передача данных для отслеживания</div>
+              </div>
+            )}
           {this.props.user.needSendLocation &&
-            this.props.user.geolocationsError && <Error className="gps-icon" />}
+            this.props.user.geolocationsError && (
+              <div className="geo-active">
+                <Error />
+                <div>Ошибка передачи геоданных</div>
+              </div>
+            )}
           <Switch>
             {routes.map((route, index) => {
               switch (route.type) {

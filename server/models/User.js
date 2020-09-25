@@ -18,6 +18,14 @@ const UserSchema = new Schema({
     id: { type: Number, select: true },
     data: { type: Object, select: true },
   },
+  rating: { type: Number, select: true },
+  password: { type: String, select: false },
+  online: { type: Boolean, default: true },
+  passportPhoto: {
+    path: String,
+    name: String,
+    size: Number,
+  },
   isBan: { type: Boolean, default: false },
   isTariff: { type: Boolean, default: true },
   banJobId: { type: mongoose.Schema.Types.ObjectId },
@@ -95,12 +103,9 @@ const UserSchema = new Schema({
       push: { type: Boolean, default: true },
     },
   },
-  rating: { type: Number, select: true },
-  password: { type: String, select: false },
-  online: { type: Boolean, default: true },
-  passportPhoto: { type: Object, select: true },
   isVerified: { type: Boolean, select: false },
   isPassportVerified: { type: Boolean, default: false, select: true },
+  isPassportUploaded: { type: Boolean, default: false, select: true },
   resetPasswordToken: { type: String, select: false },
   resetPasswordExpires: { type: String, select: false },
   verifiedToken: { type: String, select: false },
@@ -114,7 +119,10 @@ UserSchema.pre("findOneAndUpdate", async function(next) {
   let docToUpdate = await this.model.findOne(this.getQuery());
   let docDoUpdate = this.getUpdate().$set;
   const Notification = require("./Notification");
-  const { sendNotification } = require("../controllers/SocketController");
+  const {
+    sendNotification,
+    modarationSuccess,
+  } = require("../controllers/SocketController");
   if (!docToUpdate.isPassportVerified && docDoUpdate.isPassportVerified) {
     let notification = new Notification();
     notification.user = docToUpdate._id;
@@ -126,6 +134,7 @@ UserSchema.pre("findOneAndUpdate", async function(next) {
       userId: docToUpdate._id,
       notification,
     });
+    modarationSuccess({ userId: docToUpdate._id });
   }
 
   next();

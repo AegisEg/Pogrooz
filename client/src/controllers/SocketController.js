@@ -61,6 +61,8 @@ import {
   GEOARTICLES_DELETE,
   USER_SET_BAN,
   USER_SET_CANCEL_BAN,
+  USER_SET_MODERATION_SUCCESS,
+  USER_SET_MODERATION_FAIL,
 } from "../redux/constants";
 import { playNewMessage, playBeep } from "./SoundController";
 let socket = null;
@@ -123,6 +125,18 @@ export default {
       store.dispatch({
         type: USER_SET_CANCEL_BAN,
         payload: { tariff, expiriesTariffAt },
+      });
+    });
+    socket.on("modarationSuccess", ({}) => {
+      store.dispatch({
+        type: USER_SET_MODERATION_SUCCESS,
+        payload: {},
+      });
+    });
+    socket.on("modarationFail", ({}) => {
+      store.dispatch({
+        type: USER_SET_MODERATION_FAIL,
+        payload: {},
       });
     });
     socket.on("setTariff", ({ tariff, expiriesTariffAt }) => {

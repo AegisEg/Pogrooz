@@ -22,6 +22,7 @@ import {
 
 const Dashboard = () => {
   const [tariffsStats, setTariffsStats] = useState(false);
+  const [sumStats, setSumStats] = useState(false);
   const admin = useCurrentAdmin();
 
   if (!tariffsStats)
@@ -36,8 +37,9 @@ const Dashboard = () => {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
-        setTariffsStats(data);
+      .then(({ tariffs, sums }) => {
+        setTariffsStats(tariffs);
+        setSumStats(sums);
       });
 
   return (
@@ -64,6 +66,9 @@ const Dashboard = () => {
                 tariffsStats.reduce((a, b) => {
                   return a + b.Пользователи;
                 }, 0)}
+            </Text>
+            <Text fontSize={20} paddingLeft={"10px"}>
+              Сумма в рублях: {sumStats} руб.
             </Text>
           </div>
         </div>

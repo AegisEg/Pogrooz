@@ -31,12 +31,15 @@ class Tariffs extends React.Component {
         }),
       })
         .then((response) => response.json())
-        .then(({ error, errors }) => {
-          if (error)
-            errors.map((item) => {
-              toast.error(item.msg);
-            });
-          this.setState({ isFetching: false });
+        .then(({ error, formUrl }) => {
+          if (!error) {
+            if (formUrl) {
+              window.location.href = formUrl;
+            } else {
+              this.setState({ isFetching: false });
+              this.props.history.push("/");
+            }
+          }
         });
     });
   };
@@ -69,6 +72,7 @@ class Tariffs extends React.Component {
           {this.state.tariffs && (
             <>
               <div
+                id="tariffs"
                 className={`tariffs-list position-relative ${this.props.className}`}
               >
                 <Slider>
@@ -155,7 +159,12 @@ class Tariffs extends React.Component {
                                   "Активировать"}
                                 {this.props.user.isAuth &&
                                   item.isDemo &&
+                                  !this.props.user.tariff.isDemo &&
                                   "Использован"}
+                                {this.props.user.isAuth &&
+                                  this.props.user.tariff.isDemo &&
+                                  item.isDemo &&
+                                  "Активен"}
                                 {!item.isDemo && "Оплатить"}
                               </Button>
                             </div>
