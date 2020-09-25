@@ -41,6 +41,19 @@ class Profile extends React.Component {
     confirmPassword: "",
     dataFancybox: false,
   };
+  componentDidUpdate(a) {
+    let state = {};
+    if (
+      Object.entries(this.props.user.passportPhoto).length !==
+      Object.entries(a.user.passportPhoto).length
+    ) {
+      state.passportPhoto = this.props.user.passportPhoto;
+    }
+    if (this.props.user.isPassportVerified !== a.user.isPassportVerified) {
+      state.isPassportVerified = this.props.user.isPassportVerified;
+    }
+    if (!!Object.entries(state).length) this.setState(state);
+  }
   componentDidMount() {
     let state = {
       firstName: this.props.user.name.first,
@@ -142,6 +155,11 @@ class Profile extends React.Component {
       return (
         <div className="profile-page container-fluid">
           <h2 className="title">Личная информация</h2>
+          <div>
+            <a href={`/user/${this.props.user._id}`}>
+              Как вас видят пользователи
+            </a>
+          </div>
           <div className="row profile-input-fixed">
             <div className="col-12 col-sm">
               <Input
@@ -373,18 +391,16 @@ class Profile extends React.Component {
                   }}
                 >
                   <div className="placeholder" onClick={() => {}}></div>
-                  {this.state.passportPhoto && (
+                  {!!Object.entries(this.state.passportPhoto).length && (
                     <img
-                      src={
-                        this.state.passportPhoto
-                          ? this.state.passportPhoto.path
-                          : false
-                      }
+                      src={this.state.passportPhoto.path}
                       className="avatarPhoto"
                       alt="avatarPhoto"
                     />
                   )}
-                  {!this.state.passportPhoto && <div className="carPhoto" />}
+                  {!Object.entries(this.state.passportPhoto).length && (
+                    <div className="carPhoto" />
+                  )}
                 </div>
                 <Button
                   type="fill"
@@ -410,14 +426,14 @@ class Profile extends React.Component {
                   />
                 </Button>
                 {!this.props.user.isPassportVerified &&
-                  this.props.user.passportPhoto && (
+                  !!Object.entries(this.props.user.passportPhoto).length && (
                     <span className="f-12 passport-status">
                       <GreyAngle className="mr-2" />
                       Фото с паспортом на проверке
                     </span>
                   )}
                 {!this.props.user.isPassportVerified &&
-                  !this.props.user.passportPhoto && (
+                  !Object.entries(this.props.user.passportPhoto).length && (
                     <span className="f-12 passport-status">
                       <RedClose className="mr-2" />
                       Фото с паспортом не загружено

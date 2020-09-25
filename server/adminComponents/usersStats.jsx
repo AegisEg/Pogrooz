@@ -83,7 +83,7 @@ const Dashboard = () => {
           </div>
         </div>
       </Box>
-      <Box backgroundColor={"#fff"}>
+      <Box backgroundColor={"#fff"} >
         <Text paddingLeft={"63px"} fontSize={18}>
           Статистика регистраций
         </Text>
@@ -101,6 +101,7 @@ const Dashboard = () => {
           style={{
             width: "300px",
             marginLeft: "50px",
+             minHeight: "300px"
           }}
         >
           <DropDown>

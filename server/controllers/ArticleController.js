@@ -25,7 +25,7 @@ const Request = require("../models/Request");
 const Notification = require("../models/Notification");
 const User = require("../models/User");
 const Review = require("../models/Review");
-
+const { isNeedLocation } = require("../controllers/AuthController");
 const { Error } = require("mongoose");
 let { randomString } = require("../controllers/FileController");
 let count = 6;
@@ -330,6 +330,7 @@ module.exports = {
         {
           $match: {
             $or: [{ isTariff: { $gt: 0 } }, { "author.type": "cargo" }],
+            "author.isBan": { $ne: true },
           },
         },
       ];
@@ -1931,7 +1932,8 @@ module.exports = {
             otherId: deliveredUser,
             socketId,
           });
-          return res.json({ error: false });
+          let needSendLocation = await isNeedLocation(user._id);
+          return res.json({ error: false, isDisableGeo: !needSendLocation });
         }
       }
       return res.status(422).json({

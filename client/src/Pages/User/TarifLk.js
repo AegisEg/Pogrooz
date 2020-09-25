@@ -62,7 +62,16 @@ class Support extends React.Component {
                 )}
             </p>
             <div className="col mt-2">
-              <Button type="fill" className="f-12" paddingVertical="6px">
+              <Button
+                type="fill"
+                className="f-12"
+                onClick={() => {
+                  document.getElementById("tariffs").scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+                paddingVertical="6px"
+              >
                 Пополнить
               </Button>
             </div>

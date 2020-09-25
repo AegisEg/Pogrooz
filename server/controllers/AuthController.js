@@ -273,6 +273,7 @@ module.exports = {
     }
   },
   InfoForLogin: InfoForLogin,
+  isNeedLocation: isNeedLocation,
 };
 // Generates a signed JWT that encodes a user ID
 // This function requires:
@@ -286,6 +287,85 @@ function generateToken(userId) {
     },
     process.env.JWT_SECRET
   );
+}
+async function isNeedLocation(userId) {
+  let needSendLocation = false;
+  let needSendLocation1 = false;
+  let needSendLocation2 = false;
+
+  needSendLocation1 = await Article.aggregate([
+    {
+      $match: {
+        author: userId,
+        status: 4,
+      },
+    },
+    {
+      $addFields: {
+        isNeed: {
+          $cond: {
+            if: { $ne: [{ $size: "$executors" }, { $size: "$delivered" }] },
+            then: 1,
+            else: 0,
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        isNeed: 1,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  needSendLocation2 = await Article.aggregate([
+    {
+      $match: {
+        executors: userId,
+        status: 4,
+      },
+    },
+    {
+      $addFields: {
+        isNeed: {
+          $cond: {
+            if: { $ne: [1, { $size: "$delivered" }] },
+            then: 1,
+            else: 0,
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        isNeed: 1,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  needSendLocation1 =
+    (needSendLocation1 &&
+      !!needSendLocation1.length &&
+      needSendLocation1[0].count) ||
+    0;
+  needSendLocation2 =
+    (needSendLocation2 &&
+      !!needSendLocation2.length &&
+      needSendLocation2[0].count) ||
+    0;
+  needSendLocation = needSendLocation1 + needSendLocation2;
+  return !!needSendLocation;
 }
 async function InfoForLogin(user) {
   let myCountsArticles = await Article.aggregate([
@@ -303,34 +383,7 @@ async function InfoForLogin(user) {
       },
     },
   ]);
-  let needSendLocation = false;
-  if (user.type === "carrier") {
-    needSendLocation = await Article.aggregate([
-      {
-        $match: {
-          $or: [
-            {
-              author: user._id,
-            },
-            {
-              executors: user._id,
-            },
-          ],
-          status: 4,
-        },
-      },
-      {
-        $group: {
-          _id: "null",
-          count: { $sum: 1 },
-        },
-      },
-    ]);
-    needSendLocation =
-      needSendLocation &&
-      !!needSendLocation.length &&
-      needSendLocation[0].count;
-  }
+
   let takeCountsArticles = await Article.aggregate([
     {
       $match: {
@@ -400,6 +453,10 @@ async function InfoForLogin(user) {
       },
     },
   ]);
+
+  let needSendLocation = false;
+  if (user.type === "carrier")
+    needSendLocation = await isNeedLocation(user._id);
   let currentPaymentTariff = await Payment.findOne(
     {
       userId: user._id,

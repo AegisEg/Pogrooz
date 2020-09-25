@@ -2575,6 +2575,9 @@ a.href.hover:hover {
 .user-page {
   border-top: 1px solid #6c6c6c;
 }
+.search-page {
+  min-height: 53vh;
+}
 .standart-page h1 {
   font-size: 24px;
   color: #171717;
@@ -5971,14 +5974,6 @@ label {
 .user-avatar-image-block {
   position: relative;
 }
-.gps-icon {
-  position: fixed !important;
-  z-index: 5;
-  width: 30px !important;
-  top: 30px;
-  left: 20px;
-  animation: ld-breath 1s infinite linear;
-}
 @keyframes ld-breath {
   0% {
     animation-timing-function: cubic-bezier(0.9647, 0.2413, -0.0705, 0.7911);
@@ -5994,4 +5989,48 @@ label {
 }
 .fast-access-btn.notifications {
   word-break: break-all;
+}
+
+.geo-active {
+  position: fixed !important;
+  display: flex;
+  align-items: center;
+  right: 50px;
+  max-width: 58px;
+  height: 57px;
+  bottom: 50px;
+  transition: all 0.5s;
+  z-index: 1;
+  overflow: hidden;
+  animation: ld-breath 1s infinite linear;
+  background: #eeeeee;
+  border: 1px solid #eeeeee;
+  box-shadow: 9px 4px 15px rgba(64, 61, 58, 0.18);
+  border-radius: 30px;
+}
+.geo-active:hover {
+  max-width: 250px;
+}
+
+.geo-active div {
+  position: absolute;
+  font-size: 14px;
+  line-height: 15px;
+  color: #4f4f4f;
+  width: 212px;
+  transform: translateX(800px);
+  transition: all 0.2s;
+  pointer-events: none;
+}
+.geo-active:hover div {
+  opacity: 1;
+  transform: translateX(46px);
+}
+.geo-active:hover {
+  animation: none;
+}
+.geo-active svg {
+  margin-left: 18px;
+  width: 20px;
+  height: 28px;
 }

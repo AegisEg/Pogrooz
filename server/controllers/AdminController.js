@@ -36,6 +36,10 @@ const adminBro = new AdminBro({
       label: "Статистика пользователей",
       component: AdminBro.bundle("../adminComponents/usersStats.jsx"),
     },
+    exelUsers: {
+      label: "Выгрузка пользователей",
+      component: AdminBro.bundle("../adminComponents/exelUsers.jsx"),
+    },
   },
   resources: [
     {
@@ -57,11 +61,13 @@ const adminBro = new AdminBro({
             isVisible: false,
           },
           edit: {
-            isVisible: true,
+            isVisible: false,
           },
           passportModeration: {
             actionType: "record",
-            isVisible: (context) => !context.record.params.isPassportVerified,
+            isVisible: (context) =>
+              !context.record.params.isPassportVerified &&
+              context.record.params.isPassportUploaded,
             component: false,
             handler: async (request, response, context) => {
               await User.findOneAndUpdate(
@@ -74,10 +80,24 @@ const adminBro = new AdminBro({
               };
             },
           },
+          passportModerationFail: {
+            actionType: "record",
+            isVisible: (context) =>
+              !context.record.params.isPassportVerified &&
+              context.record.params.isPassportUploaded,
+            component: AdminBro.bundle("../adminComponents/moderationFail.jsx"),
+            handler: async (request, response, context) => {
+              return {
+                record: context.record.toJSON(context.record),
+              };
+            },
+          },
           userBan: {
             actionType: "record",
             isVisible: (context) =>
-              !context.record.params.isBan && context.record.params.isTariff,
+              !context.record.params.isBan &&
+              (context.record.params.type === "cargo" ||
+                context.record.params.isTariff),
             component: AdminBro.bundle("../adminComponents/bannedComonent"),
             handler: async (request, response, context) => {
               return {
@@ -102,7 +122,7 @@ const adminBro = new AdminBro({
           _id: {
             isVisible: { list: false, filter: false, show: false, edit: false },
           },
-          tariffJob: {
+          banJobId: {
             isVisible: { list: false, filter: false, show: false, edit: false },
           },
           isBan: {
@@ -226,7 +246,7 @@ const adminBro = new AdminBro({
             isVisible: { list: false, filter: false, show: false, edit: false },
           },
           online: {
-            isVisible: { list: true, filter: true, show: true, edit: false },
+            isVisible: { list: false, filter: false, show: false, edit: false },
           },
           buff: {
             isVisible: { list: false, filter: false, show: false, edit: false },
@@ -237,8 +257,17 @@ const adminBro = new AdminBro({
           passportPhoto: {
             isVisible: { list: false, filter: false, show: false, edit: false },
           },
+          "passportPhoto.path": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "passportPhoto.name": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          "passportPhoto.size": {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
           type: {
-            isVisible: { list: false, filter: false, show: true, edit: false },
+            isVisible: { list: false, filter: true, show: true, edit: false },
             availableValues: [
               {
                 value: "cargo",
@@ -289,6 +318,10 @@ const adminBro = new AdminBro({
             },
             position: 200,
             isVisible: { list: false, filter: false, show: true, edit: false },
+          },
+          isPassportUploaded: {
+            position: 201,
+            isVisible: { list: true, filter: true, show: true, edit: true },
           },
           isPassportVerified: {
             position: 201,
@@ -497,21 +530,23 @@ const adminBro = new AdminBro({
       resources: {
         User: {
           actions: {
-            passportModeration: "Модерация пасспорта",
+            passportModeration: "Пасспорт прошел модерацию",
+            passportModerationFail: "Пасспорт не прошел модерацию",
             show: "Смотреть",
             edit: "Изменить",
           },
           properties: {
             email: "Почта",
             "name.first": "Имя",
-            "name.last": "Имя",
+            "name.last": "Фамилия",
             "name.middle": "Отчество",
             phone: "Телефон",
             isBan: "Заблокирован?",
-            isTariff: "Без тарифа?",
+            isTariff: "Активный тариф?",
             type: "Тип пользователя",
             online: "Онлайн",
-            isPassportVerified: "Прошел модерацию?",
+            isPassportVerified: "Пасспорт одобрен?",
+            isPassportUploaded: "Паспорт загружен?",
           },
         },
         Page: {
@@ -577,8 +612,9 @@ const adminBro = new AdminBro({
         articlesStats: "Статистика Заказов/Предложений",
         usersStats: "Статистика пользователей",
         tariffsStats: "Статистика тарифов",
+        exelUsers: "Выгрузка пользоватлей",
         dashboard: "Панель",
-        pages: "Страницы",
+        pages: "Отчеты",
         navigation: "Меню",
       },
     },

@@ -419,8 +419,7 @@ class User extends React.Component {
                     {this.state.currentTab !== 6 && (
                       <Articles
                         notControl={true}
-                        notLink={this.state.currentTab !== 3}
-                        isManage={this.state.currentTab === 3}
+                        onlyPublic={true}
                         ref={this.articles}
                         filter={this.state.filter}
                       />

@@ -8,6 +8,9 @@ import {
   USER_UNSET_TARIFF,
   USER_SET_BAN,
   USER_SET_CANCEL_BAN,
+  USER_SET_MODERATION_SUCCESS,
+  USER_SET_MODERATION_FAIL,
+  USER_SET_NEED_LOCATION,
 } from "../constants";
 
 const INITIAL_STATE = {
@@ -37,11 +40,28 @@ const user = (state = INITIAL_STATE, action) => {
         tariff: action.payload.tariff,
         expiriesTariffAt: action.payload.expiriesTariffAt,
       };
+    case USER_SET_NEED_LOCATION:
+      return {
+        ...state,
+        needSendLocation: action.payload,
+      };
     case USER_SET_BAN:
       return {
         ...state,
         isBan: true,
       };
+    case USER_SET_MODERATION_SUCCESS:
+      return {
+        ...state,
+        isPassportVerified: true,
+      };
+    case USER_SET_MODERATION_FAIL:
+      return {
+        ...state,
+        isPassportUploaded: false,
+        passportPhoto: {},
+      };
+
     case USER_SET_CANCEL_BAN:
       return {
         ...state,

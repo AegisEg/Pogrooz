@@ -18,7 +18,6 @@ const PaymentSchema = new Schema({
   expiriesAt: { type: Date },
   createdAt: { type: Date, default: Date.now },
   status: { type: String, default: "wait" },
-  formUrl: { type: String },
   updatedAt: { type: Date, default: Date.now },
   buff: Buffer,
 });

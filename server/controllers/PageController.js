@@ -11,10 +11,9 @@ const Question = require("../models/Question");
 
 module.exports = {
   page: async (req, res, next) => {
-    let { slug, isPrivate } = req.body;
+    let { slug } = req.body;
     try {
-      let page = await Page.findOne({ slug, isPrivate });
-
+      let page = await Page.findOne({ slug });
       if (page) return res.json({ page });
       else res.status(422).json({ error: true, errorType: "notFound" });
     } catch (e) {

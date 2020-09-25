@@ -10,7 +10,13 @@ const Ban = require("../models/Ban");
 const Notification = require("../models/Notification");
 const Payment = require("../models/Payment");
 const Review = require("../models/Review");
-const { setBan, cancelBan, sendNotification } = require("./SocketController");
+const {
+  setBan,
+  cancelBan,
+  sendNotification,
+  modarationSuccess,
+  modarationFail,
+} = require("./SocketController");
 const bcrypt = require("bcryptjs");
 const agenda = require("../agenta/agenta");
 const NUM_ROUNDS = 12;
@@ -41,7 +47,7 @@ module.exports = {
         expiriesTariffAt: lastPaymentExpiriesAt,
         needSendLocation,
       };
-
+      // await User.updateMany({}, { $set: { isPassportUploaded: false } });
       return res.json({
         user,
         myCountsArticles,
@@ -214,6 +220,7 @@ module.exports = {
               name: req.files["passportPhoto"].name,
               size: req.files["passportPhoto"].size,
             };
+            user.isPassportUploaded = true;
           } else {
             let err = {};
             err.param = `file`;
@@ -293,15 +300,30 @@ module.exports = {
         ],
       });
   },
+  modarationFail: async (req, res, next) => {
+    let { userId, commentFail } = req.body;
+    let user = await User.findById(userId);
+    user.isPassportUploaded = false;
+    user.passportPhoto = {};
+    user.save();
+    if (user && commentFail) {
+      createNotify(user, { commentFail }, "PASSPORT_MODERATION_FAIL", "system");
+      modarationFail({ userId });
+      return res.json({ error: false });
+    }
+    return res.json({ error: true });
+  },
   userBan: async (req, res, next) => {
     const { userId, duration, commentBan } = req.body;
     try {
       let user = await User.findById(userId);
-      if (!user.isBan) {
+      if (
+        (!user.isBan && (user.isTariff && user.type === "carrier")) ||
+        user.type === "cargo"
+      ) {
         let ban = new Ban();
         ban.user = userId;
-        ban.expiriesAt = Date.now() + 1000 * 60 * duration;
-        //1000 * 60 * 60 * 24 * duration
+        ban.expiriesAt = Date.now() + 1000 * 60 * 60 * 24 * duration;
         await ban.save();
         setBan({ userId });
         if (commentBan)
@@ -315,8 +337,9 @@ module.exports = {
           { _id: userId },
           { $set: { isBan: true, banJobId: job.attrs._id } }
         );
+        return res.json({ error: false });
       }
-      return res.json({ error: false });
+      return res.json({ error: true });
     } catch (error) {
       console.log(error);
     }

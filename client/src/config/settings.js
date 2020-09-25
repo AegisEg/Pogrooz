@@ -1,5 +1,6 @@
 import defaultPassport from "../img/defaultpassport.png";
 import defaultCar from "../img/default-car.png";
+import defaultAvatar from "../img/avatar.svg";
 import box from "../img/offer&order/box.svg";
 import circles from "../img/offer&order/circles.svg";
 import commerce from "../img/offer&order/commerce.svg";
@@ -9,6 +10,7 @@ import list from "../img/offer&order/list.svg";
 export default {
   defaultPassport: defaultPassport,
   defaultCar: defaultCar,
+  defaultAvatar: defaultAvatar,
   countArticleOnPage: 6,
   notificationCountOfPage: 10,
   dialogsOnPage: 20,

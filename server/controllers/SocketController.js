@@ -122,6 +122,14 @@ function createMyArticle({ userId, socketId, status, article }) {
       .to(`user.${userId}`)
       .emit("createMyArticle", { status, article });
 }
+function modarationSuccess({ userId }) {
+  io.to(`user.${userId}`).emit("modarationSuccess", {});
+}
+
+function modarationFail({ userId }) {
+  io.to(`user.${userId}`).emit("modarationFail", {});
+}
+
 function updateStatusMyArticle({
   userId,
   socketId,
@@ -338,4 +346,6 @@ module.exports = {
   donTariff,
   setBan,
   cancelBan,
+  modarationSuccess,
+  modarationFail,
 };

@@ -34,6 +34,7 @@ import {
   REVIEWS_ME_CREATE,
   ARTICLE_MY_SET_DELIVERED,
   ARTICLE_TAKING_SET_DELIVERED,
+  USER_SET_NEED_LOCATION,
 } from "../constants";
 import store from "../store";
 import api from "../../config/api";
@@ -590,7 +591,6 @@ export const saveReview = (review, article, userId, apiToken) => (dispatch) => {
     } else resolve({});
   });
 };
-
 export const setTakingCount = (takeCountsArticles) => (dispatch) => {
   dispatch({
     type: ARTICLES_TAKING_SET_COUNT,
@@ -902,6 +902,12 @@ export const onWayMyArticle = (article, apiToken, isExecutor) => (dispatch) => {
                 type: ARTICLE_MY_UPDATE_STATUS,
                 payload: { lastStatus, article },
               });
+            if (!store.getState().user.needSendLocation) {
+              dispatch({
+                type: USER_SET_NEED_LOCATION,
+                payload: true,
+              });
+            }
             resolve({ error: false });
           } else resolve();
         });
@@ -1048,6 +1054,12 @@ export const setDeliveredMyArticle = (article, user, apiToken) => (
                 type: ARTICLE_TAKING_SET_DELIVERED,
                 payload: { article, user: user._id },
               });
+            if (data.isDisableGeo && store.getState().user.needSendLocation) {
+              dispatch({
+                type: USER_SET_NEED_LOCATION,
+                payload: false,
+              });
+            }
             resolve({ error: false });
           }
           resolve(data);
