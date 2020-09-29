@@ -8,6 +8,7 @@ import NoMatch from "./NoMatch";
 import { setForceTitle } from "../functions/functions";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import queryString from "query-string";
 const scrollToAnswer = (ref) => {
   ref.current.scrollIntoView({
     behavior: "smooth",
@@ -47,10 +48,21 @@ class Questions extends React.Component {
           partial.questions = partial.questions.map((item) => {
             return { ...item, ref: React.createRef() };
           });
-          this.setState({
-            isFetching: false,
-            partial: partial,
-          });
+          this.setState(
+            {
+              isFetching: false,
+              partial: partial,
+            },
+            () => {
+              let element = document.getElementById(
+                this.props.location.hash.slice(1)
+              );
+              if (element)
+                element.scrollIntoView({
+                  behavior: "smooth",
+                });
+            }
+          );
           setForceTitle(partial.title);
         }
       });
@@ -105,7 +117,7 @@ class Questions extends React.Component {
                   </ul>
                   {this.state.partial.questions.map((question, index) => {
                     return (
-                      <div key={index}>
+                      <div id={question._id} key={index}>
                         <h3 ref={question.ref}>{question.title}</h3>
                         <div
                           className="content"

@@ -15,7 +15,6 @@ import iosapp from "../img/iosapp.png";
 import googleapp from "../img/google.png";
 import iosapphover from "../img/iosapp-hover.png";
 import googleapphover from "../img/google-hover.png";
-
 // Router
 import { Link } from "react-router-dom";
 class Footer extends React.Component {
@@ -26,7 +25,13 @@ class Footer extends React.Component {
     isHoveriosapp: false,
     isHovergoogleapp: false,
   };
+  isExternal(url) {
+    let tempLink = document.createElement("a");
+    tempLink.href = url;
+    return tempLink.hostname === window.location.hostname;
+  }
   render() {
+    console.log(this.props.settings);
     return (
       <footer className="footer  py-4">
         <div className="container-fluid">
@@ -34,98 +39,62 @@ class Footer extends React.Component {
             <div className="d-none d-md-block col-2 text-left">
               <img src={logo} className="footer-logo-img" alt="Pogrooz" />
             </div>
-            <div className="col-presm-8 col-sm-7 col-md-6 footer_menu row align-content-start">
-              <div className="footer_list col-min380-12 col-576px-6  col-sm-5">
-                <p>
-                  <span className="text-uppercase title-ul">
-                    <Link to="/faq">Грузовладельцам</Link>
-                  </span>
-                </p>
-                <ul>
-                  <li>
-                    <Link to="/faq">Договор</Link>
-                  </li>
-                  <li>
-                    <Link to="/faq">Интсрукция</Link>
-                  </li>
-                  {!this.props.user.isAuth && (
-                    <li>
-                      <Link to="/register">Регистрация</Link>
-                    </li>
-                  )}
-                </ul>
-                <p>
-                  <span className="text-uppercase title-ul">
-                    <Link to="/faq">Перевозчику</Link>
-                  </span>
-                </p>
-                <ul>
-                  <li>
-                    <Link to="/faq">Договор с перевозчиком</Link>
-                  </li>
-                  <li>
-                    <Link to="/faq">Интсрукция</Link>
-                  </li>
-                  <li>
-                    <Link to="/tariffs">Тарифы</Link>
-                  </li>
-                  {!this.props.user.isAuth && (
-                    <li>
-                      <Link to="/register">Регистрация</Link>
-                    </li>
-                  )}
-                </ul>
-              </div>
-              <div className="footer_list col-min380-12 col-576px-6  col-sm-7">
-                <p>
-                  <span className="text-uppercase title-ul">
-                    <Link to="/faq">Услги</Link>
-                  </span>
-                </p>
-                <ul>
-                  <li>
-                    <Link to="/search">
-                      Найти предложение на грузоперевозку
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/search">Найти Перевозчика</Link>
-                  </li>
-                  <li>
-                    <Link to="/search">Найти заказ</Link>
-                  </li>
-                </ul>
-                <p>
-                  <span className="text-uppercase title-ul">
-                    <Link to="/faq">Информация</Link>
-                  </span>
-                </p>
-                <ul>
-                  <li>
-                    <Link to="/faq">Вопросы и ответы</Link>
-                  </li>
-                  <li>
-                    <Link to="/faq">
-                      Соглашения о обработке персональных данных
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/faq">
-                      Положение о защите персональных данных
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+            <div className="footer_menu footer_list  col-presm-8 col-sm-7 col-md-6  row align-content-start">
+              {this.props.settings.isGetted &&
+                this.props.settings.menu.map((item, index) => {
+                  let items = item.items.filter(
+                    (item) => !this.props.user.isAuth || !item.onlyNoAuth
+                  );
+                  if (!!items.length)
+                    return (
+                      <div key={index} className="col">
+                        <p>
+                          <span className="text-uppercase title-ul">
+                            {item.partition.link &&
+                              this.isExternal(item.partition.link) && (
+                                <Link to={item.partition.link}>
+                                  {item.partition.name}
+                                </Link>
+                              )}
+                            {item.partition.link &&
+                              !this.isExternal(item.partition.link) && (
+                                <a href={item.partition.link}>
+                                  {item.partition.name}
+                                </a>
+                              )}
+                            {!item.partition.link && item.partition.name}
+                          </span>
+                        </p>
+                        <ul>
+                          {items.map((item, index) => {
+                            return (
+                              <li key={index}>
+                                {item.link && this.isExternal(item.link) && (
+                                  <Link to={item.link}>{item.name}</Link>
+                                )}
+                                {item.link && !this.isExternal(item.link) && (
+                                  <a href={item.link}>{item.name}</a>
+                                )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    );
+                })}
             </div>
             <div className="col-380-12 col text-right">
               <div className="row">
                 <div className="text-lg-left footer_list col-380-6 col-premd-12 col-lg-5 text-380-left text-premd-right">
                   <p>Контакты</p>
                   <ul>
-                    <li>8 (800) 000 00 00</li>
+                    <li>{this.props.settings.settings.phone}</li>
                     <li>
-                      <a href="mailto:info@dasdo.ru" className="mail">
-                        info@dasdo.ru
+                      <a
+                        href={`mailto:${this.props.settings.settings.email}`}
+                        className="mail"
+                      >
+                        {this.props.settings.settings.email}
                       </a>
                     </li>
                   </ul>
@@ -140,7 +109,7 @@ class Footer extends React.Component {
                   </p>
                   <div className="social_link">
                     <span>
-                      <Link to="/">
+                      <a target="_blank" href={this.props.settings.settings.vk}>
                         <img
                           src={this.state.isHovervk ? vkhover : vk}
                           onMouseEnter={() => {
@@ -151,10 +120,13 @@ class Footer extends React.Component {
                           }}
                           alt="vk"
                         />
-                      </Link>
+                      </a>
                     </span>
                     <span>
-                      <Link to="/">
+                      <a
+                        target="_blank"
+                        href={this.props.settings.settings.facebook}
+                      >
                         <img
                           src={
                             this.state.isHoverfacebook
@@ -169,10 +141,13 @@ class Footer extends React.Component {
                           }}
                           alt="facebook"
                         />
-                      </Link>
+                      </a>
                     </span>
                     <span>
-                      <Link to="/">
+                      <a
+                        target="_blank"
+                        href={this.props.settings.settings.instagram}
+                      >
                         <img
                           src={
                             this.state.isHoverinstagramm
@@ -187,7 +162,7 @@ class Footer extends React.Component {
                           }}
                           alt="instagramm"
                         />
-                      </Link>
+                      </a>
                     </span>
                   </div>
                 </div>
@@ -201,7 +176,7 @@ class Footer extends React.Component {
                   Скачать приложения
                 </p>
                 <div className="download_link">
-                  <Link to="/">
+                  <Link to="/download-app">
                     <img
                       className="pr-1"
                       width="107"
@@ -215,7 +190,7 @@ class Footer extends React.Component {
                       alt="iosapp"
                     />
                   </Link>
-                  <Link to="/">
+                  <Link to="/download-app">
                     <img
                       className="pl-1"
                       width="107"
@@ -236,7 +211,7 @@ class Footer extends React.Component {
             </div>
             <div className="col-12 text-640-center text-md-left my-4">
               <span className="postscript">
-                © 2017-2020 Pogrooz Попутные грузоперевозки
+                © {this.props.settings.settings.copyright}
               </span>
             </div>
           </div>
@@ -248,6 +223,8 @@ class Footer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    settings: state.settings,
   };
 };
+
 export default connect(mapStateToProps)(Footer);

@@ -4,6 +4,7 @@ import moreico from "../img/more_icon.png";
 import ReactResizeDetector from "react-resize-detector";
 // Router
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 class MenuNav extends React.Component {
   state = {
@@ -43,7 +44,7 @@ class MenuNav extends React.Component {
       {
         id: 4,
         name: "О портале",
-        href: "/about",
+        href: this.props.settings.aboutPage,
         type: "menu",
         alwaysVisible: true,
         width: 0,
@@ -158,5 +159,9 @@ class MenuNav extends React.Component {
     );
   }
 }
-
-export default MenuNav;
+const mapStateToProps = (state) => {
+  return {
+    settings: state.settings.settings,
+  };
+};
+export default connect(mapStateToProps)(MenuNav);

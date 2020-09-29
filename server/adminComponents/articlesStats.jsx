@@ -5,8 +5,6 @@ import {
   DropDownMenu,
   DropDown,
   DropDownItem,
-  Link,
-  Icon,
   DropDownTrigger,
   useCurrentAdmin,
 } from "admin-bro";

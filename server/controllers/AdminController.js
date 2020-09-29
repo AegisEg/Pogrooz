@@ -8,7 +8,9 @@ const Page = require("../models/Page");
 const Question = require("../models/Question");
 const QuestionSection = require("../models/QuestionSection");
 const Tariff = require("../models/Tariff");
-const Ban = require("../models/Ban");
+const PartitionMenu = require("../models/PartitionMenu");
+const ItemMenu = require("../models/ItemMenu");
+const Settings = require("../models/Setting");
 const UserController = require("../controllers/UserController");
 
 AdminBro.registerAdapter(AdminBroMongoose);
@@ -19,6 +21,12 @@ const adminBro = new AdminBro({
     logo: "/media/mini-logo.svg",
     softwareBrothers: false,
   },
+  assets: {
+    // styles: ["//cdn.quilljs.com/1.3.6/quill.snow.css"],
+    scripts: [
+      "https://cdn.tiny.cloud/1/pg49i8cci2njau4s6gvqwnw3bruos1whjze9ty8lnlnbg1ft/tinymce/5/tinymce.min.js",
+    ],
+  },
   // dashboard: {
   //   handler: async () => {},
   //   component: AdminBro.bundle("../adminComponents/dashboard"),
@@ -27,6 +35,10 @@ const adminBro = new AdminBro({
     articlesStats: {
       label: "Статистика пользователей",
       component: AdminBro.bundle("../adminComponents/articlesStats.jsx"),
+    },
+    sendNotification: {
+      label: "Отправка Уведомлений",
+      component: AdminBro.bundle("../adminComponents/notificationComonent.jsx"),
     },
     tariffsStats: {
       label: "Статистика тарифов",
@@ -42,6 +54,27 @@ const adminBro = new AdminBro({
     },
   },
   resources: [
+    {
+      resource: Settings,
+      options: {
+        actions: {
+          new: {
+            isVisible: true,
+          },
+          edit: {
+            isVisible: true,
+          },
+        },
+        properties: {
+          _id: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          key: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+        },
+      },
+    },
     {
       resource: User,
       options: {
@@ -112,6 +145,18 @@ const adminBro = new AdminBro({
             handler: async (request, response, context) => {
               UserController.cancelBanRequest(context.record.params._id);
               context.record.params.isBan = false;
+              return {
+                record: context.record.toJSON(context.record),
+              };
+            },
+          },
+          sendNotify: {
+            actionType: "record",
+            isVisible: true,
+            component: AdminBro.bundle(
+              "../adminComponents/notificationComonent"
+            ),
+            handler: async (request, response, context) => {
               return {
                 record: context.record.toJSON(context.record),
               };
@@ -365,7 +410,9 @@ const adminBro = new AdminBro({
           },
           content: {
             isVisible: { list: false, filter: false, show: false, edit: true },
-            type: "richtext",
+            components: {
+              edit: AdminBro.bundle("../adminComponents/textEditor"),
+            },
           },
           createdAt: {
             isVisible: { list: false, filter: false, show: false, edit: false },
@@ -402,7 +449,9 @@ const adminBro = new AdminBro({
           },
           content: {
             isVisible: { list: false, filter: false, show: true, edit: true },
-            type: "richtext",
+            components: {
+              edit: AdminBro.bundle("../adminComponents/textEditor"),
+            },
           },
           buff: {
             isVisible: { list: false, filter: false, show: false, edit: false },
@@ -508,13 +557,77 @@ const adminBro = new AdminBro({
         },
       },
     },
+    {
+      resource: PartitionMenu,
+      options: {
+        actions: {
+          delete: {
+            isVisible: true,
+          },
+          new: {
+            isVisible: true,
+          },
+          edit: {
+            isVisible: true,
+          },
+        },
+        properties: {
+          priority: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+            type: "number",
+          },
+          createdAt: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          _id: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+        },
+      },
+    },
+    {
+      resource: ItemMenu,
+      options: {
+        actions: {
+          delete: {
+            isVisible: true,
+          },
+          new: {
+            isVisible: true,
+          },
+          edit: {
+            isVisible: true,
+          },
+        },
+        properties: {
+          name: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+            type: "number",
+          },
+          name: {
+            isVisible: { list: true, filter: true, show: true, edit: true },
+            type: "number",
+          },
+          _id: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          createdAt: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+        },
+      },
+    },
   ],
   locale: {
     translations: {
       actions: {
         new: "Создать",
+        show: "Смотреть",
+        edit: "Изменить",
+        delete: "Удалить",
         userBan: "Заблокировать",
         userUnBan: "Снять блокировку",
+        sendNotify: "Написать уведомление",
       },
       dashboard: "Рабочий стол",
       buttons: {
@@ -532,8 +645,6 @@ const adminBro = new AdminBro({
           actions: {
             passportModeration: "Пасспорт прошел модерацию",
             passportModerationFail: "Пасспорт не прошел модерацию",
-            show: "Смотреть",
-            edit: "Изменить",
           },
           properties: {
             email: "Почта",
@@ -550,11 +661,6 @@ const adminBro = new AdminBro({
           },
         },
         Page: {
-          actions: {
-            show: "Смотреть",
-            edit: "Изменить",
-            delete: "Удалить",
-          },
           properties: {
             title: "Заголовок",
             slug: "URL",
@@ -562,23 +668,28 @@ const adminBro = new AdminBro({
           },
         },
         Question: {
-          actions: {
-            show: "Смотреть",
-            edit: "Изменить",
-            delete: "Удалить",
-          },
           properties: {
             title: "Заголовок",
             slug: "URL",
             content: "Контент",
           },
         },
-        QuestionSection: {
-          actions: {
-            show: "Смотреть",
-            edit: "Изменить",
-            delete: "Удалить",
+        PartitionMenu: {
+          properties: {
+            name: "Название",
+            link: "Ссылка раздела(необязательно)",
+            priority: "Приоритет",
           },
+        },
+        ItemMenu: {
+          properties: {
+            name: "Название",
+            partition: "Раздел",
+            link: "Ссылка",
+            onlyNoAuth: "Видно только неавторизованным",
+          },
+        },
+        QuestionSection: {
           properties: {
             title: "Заголовок",
             type: "Тип",
@@ -588,11 +699,6 @@ const adminBro = new AdminBro({
           },
         },
         Tariff: {
-          actions: {
-            show: "Смотреть",
-            edit: "Изменить",
-            delete: "Удалить",
-          },
           properties: {
             name: "Название",
             duration: "Длительность в днях",
@@ -602,16 +708,23 @@ const adminBro = new AdminBro({
             isDemo: "Демо?",
           },
         },
+        Settings: {
+          properties: { name: "Название", key: "Ключ", value: "Значение" },
+        },
       },
       labels: {
         User: "Пользователи",
         Page: "Страницы",
         Tariff: "Тарифы",
+        Settings: "Настройки сайта",
         Question: "Вопросы",
         QuestionSection: "Разделы вопросов",
+        ItemMenu: "Пункты меню",
+        PartitionMenu: "Разделы меню",
         articlesStats: "Статистика Заказов/Предложений",
         usersStats: "Статистика пользователей",
         tariffsStats: "Статистика тарифов",
+        sendNotification: "Отправка уведомлений",
         exelUsers: "Выгрузка пользоватлей",
         dashboard: "Панель",
         pages: "Отчеты",

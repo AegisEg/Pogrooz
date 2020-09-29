@@ -142,7 +142,7 @@ class Cargo extends React.Component {
                   <span>2</span>
                 </div>
 
-                <p className="cargo-step-label">Создайте заказ</p>
+                <p className="cargo-step-label">Получите предложения</p>
               </div>
               <div className="cargo-step">
                 <div className="cargo-step-number">
@@ -157,8 +157,7 @@ class Cargo extends React.Component {
                 <div className="cargo-step-number">
                   <span>4</span>
                 </div>
-
-                <p className="cargo-step-label">Создайте заказ</p>
+                <p className="cargo-step-label">Оставьте отзыв исполнителю</p>
               </div>
 
               <div style={{ textAlign: "center" }}>

@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import api from "../../config/api";
 // Elemnts
 import Input from "../../Elements/Input";
-import questions from "../../config/questions";
 
 class FAQ extends React.Component {
   state = {
@@ -119,9 +118,9 @@ class FAQ extends React.Component {
                           view && (
                             <li key={question.id}>
                               <Link
-                                to={`${this.props.type ? "/lk" : ""}/questions/${
-                                  section.slug
-                                }`}
+                                to={`${
+                                  this.props.type ? "/lk" : ""
+                                }/questions/${section.slug}#${question._id}`}
                               >
                                 {question.title}
                               </Link>
