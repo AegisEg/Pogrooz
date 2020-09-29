@@ -36,6 +36,7 @@ class ArticlePage extends React.Component {
           }
           if (data.article) {
             let url = this.props.location.search;
+
             let params = queryString.parse(url);
             if (Object.prototype.hasOwnProperty.call(params, "executors")) {
               document.getElementById("request-header").scrollIntoView({

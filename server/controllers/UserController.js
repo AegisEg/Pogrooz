@@ -344,6 +344,28 @@ module.exports = {
       console.log(error);
     }
   },
+  sendNotify: async (req, res, next) => {
+    const { commentNotify, userType, userId } = req.body;
+    try {
+      let users;
+      if (userId) {
+        let user = await User.findById(userId);
+        if (user) users = [user];
+      } else if (userType) {
+        let filter = {};
+        if (userType === "carrier") filter.type = "carrier";
+        if (userType === "cargo") filter.type = "cargo";
+        users = await User.find(filter);
+      }
+      if (!users || !users.length) return res.status(422).json({ error: true });
+      users.map((item) => {
+        createNotify(item, { commentNotify }, "SYSTEM_NOTIFY", "system");
+      });
+      return res.json({ error: false });
+    } catch (error) {
+      console.log(error);
+    }
+  },
   cancelBanRequest: async (userId) => {
     try {
       let ban = await Ban.findOne({

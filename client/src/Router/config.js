@@ -234,6 +234,7 @@ const routes = [
     exact: true,
     type: "private",
     title: "Мои тариф",
+    role: "carrier",
     component: () => <TarifLk />,
   },
   {
@@ -250,7 +251,7 @@ const routes = [
     title: "Мои заказы",
     typeArticle: "order",
     statusArticle: [1, 2, 3, 4, 5, 6, 7],
-    // role: "cargo",
+    role: "cargo",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -260,7 +261,7 @@ const routes = [
     title: "Открытые заказы",
     typeArticle: "order",
     statusArticle: [1, 2],
-    // role: "cargo",
+    role: "cargo",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -270,7 +271,7 @@ const routes = [
     title: "Заказы в работе",
     typeArticle: "order",
     statusArticle: [3, 4],
-    // role: "cargo",
+    role: "cargo",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -280,7 +281,7 @@ const routes = [
     typeArticle: "order",
     statusArticle: [5, 6],
     title: "Закрытые заказы",
-    // role: "cargo",
+    role: "cargo",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -288,7 +289,7 @@ const routes = [
     exact: true,
     type: "private",
     title: "Настройка автоплатежа",
-    // role: "cargo",
+    role: "carrier",
     component: (props) => <AutoPay {...props} />,
   },
   {
@@ -298,7 +299,7 @@ const routes = [
     typeArticle: "order",
     statusArticle: [7],
     title: "Корзина",
-    // role: "carrier",
+    role: "cargo",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -307,7 +308,6 @@ const routes = [
     type: "common",
     title: "Заказ #0000",
     forseTitle: true,
-    // role: "carrier",
     component: (props) => <ArticlePage type="order" {...props} />,
   },
   {
@@ -316,7 +316,7 @@ const routes = [
     type: "private",
     title: "Редактирование заказа",
     forseTitle: true,
-    // role: "carrier",
+    role: "cargo",
     component: (props) => <NewOrder {...props} />,
   },
   {
@@ -325,7 +325,6 @@ const routes = [
     type: "common",
     title: "Предложение #0000",
     forseTitle: true,
-    // role: "carrier",
     component: (props) => <ArticlePage type="offer" {...props} />,
   },
   {
@@ -334,7 +333,7 @@ const routes = [
     type: "private",
     title: "Редактирование предложения",
     forseTitle: true,
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <NewOffer {...props} />,
   },
   {
@@ -342,7 +341,7 @@ const routes = [
     exact: true,
     type: "private",
     title: "Новый заказ",
-    // role: "carrier",
+    role: "cargo",
     component: (props) => <NewOrder {...props} />,
   },
   {
@@ -352,7 +351,7 @@ const routes = [
     typeArticle: "order",
     statusArticle: [3, 4, 5, 6],
     title: "Взятые заказы",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <TakingArticles {...props} />,
   },
   {
@@ -362,7 +361,7 @@ const routes = [
     typeArticle: "offer",
     statusArticle: [1, 2, 3, 4, 5, 6, 7],
     title: "Мои предложения",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -372,7 +371,7 @@ const routes = [
     typeArticle: "offer",
     statusArticle: [1, 2],
     title: "Открытые предложения",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -382,7 +381,7 @@ const routes = [
     typeArticle: "offer",
     statusArticle: [3, 4],
     title: "Предложения в работе",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -392,7 +391,7 @@ const routes = [
     typeArticle: "offer",
     statusArticle: [5, 6],
     title: "Закрытые предложения",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -402,7 +401,7 @@ const routes = [
     typeArticle: "offer",
     statusArticle: [7],
     title: "Корзина",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <MyArticles {...props} />,
   },
   {
@@ -412,7 +411,7 @@ const routes = [
     typeArticle: "offer",
     statusArticle: [3, 4, 5, 6],
     title: "Взятые предложения",
-    // role: "carrier",
+    role: "cargo",
     component: (props) => <TakingArticles {...props} />,
   },
   {
@@ -420,7 +419,7 @@ const routes = [
     exact: true,
     type: "private",
     title: "Новое предложение",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <NewOffer {...props} />,
   },
   {
@@ -428,7 +427,7 @@ const routes = [
     exact: true,
     type: "private",
     title: "Новый шаблон авто",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <CreateTemplateAuto {...props} />,
   },
   {
@@ -436,7 +435,7 @@ const routes = [
     exact: true,
     type: "private",
     title: "Редактирование шаблона Авто",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <CreateTemplateAuto {...props} />,
   },
   {
@@ -444,7 +443,7 @@ const routes = [
     exact: true,
     type: "private",
     title: "Мои шалоны авто",
-    // role: "carrier",
+    role: "carrier",
     component: (props) => <MyTemplateAuto {...props} />,
   },
   {
@@ -452,7 +451,6 @@ const routes = [
     exact: true,
     type: "public",
     title: "Профиль пользователя",
-    // role: "carrier",
     component: (props) => <User {...props} />,
   },
   {
@@ -460,7 +458,6 @@ const routes = [
     exact: true,
     type: "private",
     title: "Отзывы",
-    // role: "carrier",
     component: (props) => <Reviwes {...props} />,
   },
   {
@@ -468,7 +465,6 @@ const routes = [
     exact: true,
     type: "private",
     title: "Техподдержка",
-    // role: "carrier",
     component: (props) => <Support {...props} />,
   },
   {
@@ -476,7 +472,7 @@ const routes = [
     exact: true,
     type: "private",
     title: "Отслеживание",
-    // role: "carrier",
+    role: "cargo",
     component: (props) => <GeoDetect {...props} />,
   },
 ];

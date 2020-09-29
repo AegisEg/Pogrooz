@@ -19,4 +19,5 @@ router.post("/save-settings", verifyToken, UserController.notificationSettings);
 router.post("/getSettings", verifyToken, UserController.getSettings);
 router.post("/userBan", adminVerifi, UserController.userBan);
 router.post("/modarationFail", adminVerifi, UserController.modarationFail);
+router.post("/sendNotify", adminVerifi, UserController.sendNotify);
 module.exports = router;

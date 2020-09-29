@@ -9,4 +9,5 @@ const PageController = require("../controllers/PageController");
 router.post("/", PageController.page);
 router.post("/questions", PageController.questions);
 router.post("/question", PageController.question);
+router.post("/getSettings", PageController.getSettings);
 module.exports = router;

@@ -5,8 +5,6 @@ import Avatar from "../../Elements/Avatar";
 //IMGS
 import ImgActiveStar from "../../img/active-star.png";
 import { Link } from "react-router-dom";
-import api from "../../config/api";
-import { toast } from "react-toastify";
 import { connect } from "react-redux";
 import * as myArticlesActions from "../../redux/actions/myarticles";
 import { bindActionCreators } from "redux";

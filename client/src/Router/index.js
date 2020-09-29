@@ -20,7 +20,7 @@ import * as userActions from "../redux/actions/user";
 import * as myArticlesActions from "../redux/actions/myarticles";
 import { bindActionCreators } from "redux";
 import configApi from "../config/api";
-import { isThisQuarter } from "date-fns/esm";
+import * as settingsActions from "../redux/actions/settings";
 
 export function setTitle(path, routeArray) {
   var pageTitle;
@@ -79,14 +79,20 @@ class AppRouter extends React.Component {
               this.props.userActions.startLocationSent(
                 this.props.user.apiToken
               );
-            this.setState({ isRender: true });
+            this.props.settingsActions.getSettings().then(() => {
+              this.setState({ isRender: true });
+            });
           }
         )
         .catch(() => {
-          this.setState({ isRender: true });
+          this.props.settingsActions.getSettings().then(() => {
+            this.setState({ isRender: true });
+          });
         });
     } else {
-      this.setState({ isRender: true });
+      this.props.settingsActions.getSettings().then(() => {
+        this.setState({ isRender: true });
+      });
     }
   }
   componentDidUpdate(b) {
@@ -292,6 +298,7 @@ function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(userActions, dispatch),
     myArticlesActions: bindActionCreators(myArticlesActions, dispatch),
+    settingsActions: bindActionCreators(settingsActions, dispatch),
   };
 }
 

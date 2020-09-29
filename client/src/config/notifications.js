@@ -174,4 +174,10 @@ export default [
       <>Пасспорт не прошел модерацию по причине: {info.commentFail}.</>
     ),
   },
+  {
+    id: 11,
+    code: "SYSTEM_NOTIFY",
+    text: (info) => <>Уведомление от адмнистратора: {info.commentNotify}.</>,
+  },
+  ,
 ];

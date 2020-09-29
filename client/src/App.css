@@ -868,6 +868,7 @@ header ~ div {
 .footer_list ul li a:hover {
   text-decoration: underline;
 }
+
 .header-navigation ul li a.active {
   color: #ad2dff;
 }
@@ -1278,8 +1279,8 @@ textarea {
 .social_link img {
   margin: 10px 7px;
 }
-.footer_list {
-  height: fit-content;
+.footer_list > div {
+  min-width: 50%;
 }
 
 .footer_list ul {
@@ -1929,12 +1930,12 @@ a.mail {
 }
 .height-animation-item-enter.height-animation-item-enter-active {
   opacity: 1;
-  max-height: 300px;
+  max-height: 300000px;
   transition: all 0.5s;
 }
 .height-animation-item-leave {
   opacity: 1;
-  max-height: 300px;
+  max-height: 300000px;
 }
 .height-animation-item-leave.height-animation-item-leave-active {
   opacity: 0;
@@ -5970,6 +5971,7 @@ label {
 .static-page .content {
   font-size: 16px;
   line-height: 19px;
+  padding-bottom: 50px;
 }
 .user-avatar-image-block {
   position: relative;
