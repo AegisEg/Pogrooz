@@ -61,7 +61,7 @@ class Login extends React.Component {
           if (data.user.needSendLocation)
             this.props.userActions.startLocationSent(data.token);
           if (data.user.type == "carrier")
-            this.props.history.push("/my-orders-open");
+            this.props.history.push("/taken-orders");
           else this.props.history.push("/taken-offers");
         }
 
