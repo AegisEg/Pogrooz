@@ -37,7 +37,6 @@ class Tariffs extends React.Component {
               window.location.href = formUrl;
             } else {
               this.setState({ isFetching: false });
-              this.props.history.push("/");
             }
           }
         });
@@ -159,9 +158,11 @@ class Tariffs extends React.Component {
                                   "Активировать"}
                                 {this.props.user.isAuth &&
                                   item.isDemo &&
-                                  !this.props.user.tariff.isDemo &&
+                                  (!this.props.user.tariff ||
+                                    !this.props.user.tariff.isDemo) &&
                                   "Использован"}
                                 {this.props.user.isAuth &&
+                                  this.props.user.tariff &&
                                   this.props.user.tariff.isDemo &&
                                   item.isDemo &&
                                   "Активен"}
