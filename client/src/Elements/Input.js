@@ -41,6 +41,7 @@ class Input extends React.Component {
             inputExtraProps={{
               name: "phone",
             }}
+            specialLabel={false}
             country={"ru"}
             disableDropdown={false}
             style={this.props.style}
