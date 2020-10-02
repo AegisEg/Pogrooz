@@ -21,6 +21,7 @@ import * as myArticlesActions from "../redux/actions/myarticles";
 import { bindActionCreators } from "redux";
 import configApi from "../config/api";
 import * as settingsActions from "../redux/actions/settings";
+import { Widget } from "react-jivosite";
 
 export function setTitle(path, routeArray) {
   var pageTitle;
@@ -107,7 +108,7 @@ class AppRouter extends React.Component {
     return (
       this.state.isRender && (
         <>
-          {" "}
+          <Widget id="DO77oIGITe" />
           {this.props.user.needSendLocation &&
             !this.props.user.geolocationsError && (
               <div className="geo-active">

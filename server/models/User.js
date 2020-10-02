@@ -123,13 +123,19 @@ UserSchema.pre("findOneAndUpdate", async function(next) {
     sendNotification,
     modarationSuccess,
   } = require("../controllers/SocketController");
+  const mail = require("../config/mail");
+  const { sendMail } = require("../controllers/MailController");
   if (!docToUpdate.isPassportVerified && docDoUpdate.isPassportVerified) {
     let notification = new Notification();
     notification.user = docToUpdate._id;
     notification.info = {};
-    notification.code = "ARTICLE_PASSPORT_MODERATION";
+    notification.code = "PASSPORT_MODERATION";
     notification.type = "system";
     await notification.save();
+    let mailTemplate = mail.find((item) => item.code === notification.code);
+    if (mailTemplate) {
+      sendMail(docToUpdate.email, notification, mailTemplate);
+    }
     sendNotification({
       userId: docToUpdate._id,
       notification,

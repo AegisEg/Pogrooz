@@ -23,7 +23,7 @@ class TariffStatus extends React.Component {
           className="header-profile tariff-pop text-center f-12"
         >
           <span className="notTariff">
-            <Warning /> Профиль заблокирован администратором
+            <Warning /> Профиль заблокирован
           </span>
         </div>
       );

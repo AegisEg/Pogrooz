@@ -22,6 +22,7 @@
     "react-dadata": "^2.6.0",
     "react-dom": "^16.13.1",
     "react-input-mask": "^3.0.0-alpha.2",
+    "react-jivosite": "^1.0.0",
     "react-modal": "^3.11.2",
     "react-paginate": "^6.3.2",
     "react-phone-input-2": "^2.13.7",

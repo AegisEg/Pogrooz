@@ -71,6 +71,30 @@ class Profile extends React.Component {
     this.setState(state);
   }
   saveUser = () => {
+    if (!this.state.email) {
+      toast.error("Email не может быть пустым", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return 0;
+    }
+    if (!this.state.firstName) {
+      toast.error("Имя не может быть пустым", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return 0;
+    }
+    if (!this.state.middleName) {
+      toast.error("Отчество не может быть пустым", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return 0;
+    }
+    if (!this.state.lastName) {
+      toast.error("Фамилия не может быть пустым", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return 0;
+    }
     let userChanges = {
       name: {
         first: this.state.firstName,

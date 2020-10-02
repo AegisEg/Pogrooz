@@ -14,6 +14,8 @@ const {
   readMessageDialog,
   sendNotification,
 } = require("./SocketController");
+const mail = require("../config/mail");
+let { sendMail } = require("../controllers/MailController");
 let count = 20;
 module.exports = {
   getAll: async (req, res, next) => {
@@ -492,6 +494,11 @@ async function createNotify(user, info, code, type) {
     notification.code = code;
     notification.type = type;
     await notification.save();
+    let mailTemplate = mail.find((item) => item.code === notification.code);
+    if (mailTemplate) {
+      user = await User.findById(user);
+      sendMail(user.email, notification, mailTemplate);
+    }
     sendNotification({ userId: user._id, notification });
     resolve();
   });

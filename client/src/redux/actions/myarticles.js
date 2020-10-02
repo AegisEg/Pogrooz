@@ -405,7 +405,7 @@ export const editMyArticle = (article, editingId, apiToken) => (dispatch) => {
               if (objStatus.articles.find((item) => item._id == article._id));
               dispatch({
                 type: ARTICLES_MY_UPDATE,
-                payload: { article },
+                payload: { article, status },
               });
               resolve({ error: false });
             } else resolve(data);

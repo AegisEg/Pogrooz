@@ -19,6 +19,7 @@ const {
   sendNotification,
   setDelivered,
   setLocationSoket,
+  updateStatusArticle,
 } = require("./SocketController");
 const Article = require("../models/Article");
 const Request = require("../models/Request");
@@ -28,6 +29,8 @@ const Review = require("../models/Review");
 const { isNeedLocation } = require("../controllers/AuthController");
 const { Error } = require("mongoose");
 let { randomString } = require("../controllers/FileController");
+const mail = require("../config/mail");
+let { sendMail } = require("../controllers/MailController");
 let count = 6;
 let reviewsCount = 10;
 module.exports = {
@@ -696,6 +699,11 @@ module.exports = {
             type: "Point",
             coordinates: [article.from.data.geo_lat, article.from.data.geo_lon],
           };
+        else
+          newArticle.fromLocation = {
+            type: "Point",
+            coordinates: [0, 0],
+          };
         if (!article.to)
           return res.status(422).json({ error: true, errorType: "to" });
         newArticle.to = article.to;
@@ -703,6 +711,11 @@ module.exports = {
           newArticle.toLocation = {
             type: "Point",
             coordinates: [article.to.data.geo_lat, article.to.data.geo_lon],
+          };
+        else
+          newArticle.toLocation = {
+            type: "Point",
+            coordinates: [0, 0],
           };
         if (article.startDate.date) {
           article.startDate.date = new Date(article.startDate.date);
@@ -746,15 +759,21 @@ module.exports = {
             }
           }
         }
+        let job;
+        if (newArticle.status === 2) {
+          const agenda = require("../agenta/agenta");
+          let dateExecute;
+          if (newArticle.startDate.date)
+            dateExecute = new Date(newArticle.startDate.date).addDays(1);
+          if (!newArticle.startDate.date)
+            dateExecute = new Date(newArticle.updatedAt).addDays(30);
+          job = await agenda.schedule(dateExecute, "articleUnpublish", {
+            articleId: newArticle._id,
+          });
+        }
+        if (job) newArticle.jobId = job.attrs._id;
         await newArticle.save();
-        // if (newArticle.status === 2) {
-        //   let CronJob = require("cron").CronJob;
-        //   if(newArticle.startDate.date)
-        //   let job = new CronJob(newArticle.expiriesAt, () => {
-        //     donTariff({ userId: user._id });
-        //   });
-        //   job.start();
-        // }
+
         createMyArticle({
           userId: user._id,
           socketId,
@@ -903,6 +922,22 @@ module.exports = {
         if (article.startDate && article.startDate.timeTo) {
           editArticle.startDate.timeTo = new Date(article.startDate.timeTo);
         } else editArticle.startDate.timeTo = null;
+        editArticle.updatedAt = new Date();
+        let job;
+        if (editArticle.status === 2) {
+          const agenda = require("../agenta/agenta");
+          if (editArticle.jobId)
+            await agenda.cancel({ _id: editArticle.jobId });
+          let dateExecute;
+          if (editArticle.startDate.date)
+            dateExecute = new Date(editArticle.startDate.date).addDays(1);
+          if (!editArticle.startDate.date)
+            dateExecute = new Date(editArticle.updatedAt).addDays(30);
+          job = await agenda.schedule(dateExecute, "articleUnpublish", {
+            articleId: editArticle._id,
+          });
+        }
+        if (job) editArticle.jobId = job.attrs._id;
         await editArticle.save();
         editMyArticle({
           userId: user._id,
@@ -997,6 +1032,20 @@ module.exports = {
       if (article && compareId(user._id, article.author._id)) {
         if (article.status === 1) {
           article.status = 2;
+          let job;
+          //Задача на перенос в черновик
+          const agenda = require("../agenta/agenta");
+          if (article.jobId) await agenda.cancel({ _id: article.jobId });
+          let dateExecute;
+          if (article.startDate.date)
+            dateExecute = new Date(article.startDate.date).addDays(1);
+          if (!article.startDate.date)
+            dateExecute = new Date(article.updatedAt).addDays(30);
+          job = await agenda.schedule(dateExecute, "articleUnpublish", {
+            articleId: article._id,
+          });
+
+          article.jobId = job.attrs._id;
           await article.save();
           updateStatusMyArticle({
             userId: user._id,
@@ -1007,6 +1056,7 @@ module.exports = {
           return res.json({ error: false });
         }
       }
+
       return res.status(422).json({
         error: true,
         errors: [
@@ -1283,6 +1333,8 @@ module.exports = {
       if (article && compareId(user._id, article.author._id)) {
         let lastStatus = article.status;
         if (lastStatus === 2 || lastStatus === 7) {
+          const agenda = require("../agenta/agenta");
+          if (article.jobId) await agenda.cancel({ _id: article.jobId });
           article.status = 1;
           await article.save();
           updateStatusMyArticle({
@@ -1921,10 +1973,11 @@ module.exports = {
         let article = await Article.findOne({
           _id: articleId,
           $or: [{ author: deliveredUser }, { executors: deliveredUser }],
+          delivered: { $ne: deliveredUser },
         });
         if (article) {
           article.delivered.push(deliveredUser);
-          article.save();
+          await article.save();
           setDelivered({
             article,
             user: deliveredUser,
@@ -1940,8 +1993,8 @@ module.exports = {
         error: true,
         errors: [
           {
-            param: "notRole",
-            msg: "Невозможно оставить отзыв",
+            param: "notDelivery",
+            msg: "Невозможно сделать пометку доставлено",
           },
         ],
       });
@@ -2080,6 +2133,51 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  articleUnpulish: async (articleId) => {
+    let article = await Article.findById(articleId).populate([
+      {
+        path: "author",
+      },
+      {
+        path: "executors",
+      },
+      {
+        path: "reviews",
+        populate: [{ path: "user" }, { path: "author" }],
+      },
+      {
+        path: "requests",
+        populate: {
+          path: "author",
+        },
+      },
+    ]);
+    if (article.status === 2) {
+      let compareDate;
+      if (article.startDate.date)
+        compareDate = new Date(article.startDate.date).addDays(1);
+      if (!article.startDate.date)
+        compareDate = new Date(article.updatedAt).addDays(30);
+      if (compareDate < new Date()) {
+        article.status = 1;
+        updateStatusArticle({
+          userId: article.author._id,
+          lastStatus: 2,
+          article,
+        });
+        await article.save();
+        createNotify(
+          article.author._id,
+          {
+            articleId: article.articleId,
+            articleType: article.type,
+          },
+          "ARTICLE_UNPUBLISH",
+          article.type
+        );
+      }
+    }
+  },
 };
 
 Date.prototype.addDays = function(days) {
@@ -2099,6 +2197,11 @@ async function createNotify(user, info, code, type) {
     notification.code = code;
     notification.type = type;
     await notification.save();
+    let mailTemplate = mail.find((item) => item.code === notification.code);
+    if (mailTemplate) {
+      user = await User.findById(user);
+      sendMail(user.email, notification, mailTemplate);
+    }
     sendNotification({ userId: user._id, notification });
     resolve();
   });

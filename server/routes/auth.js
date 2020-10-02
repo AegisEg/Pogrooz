@@ -75,6 +75,7 @@ router.post(
   AuthController.reset
 );
 router.post("/smsSend", AuthController.smsSend);
+router.post("/compareCode", AuthController.compareCode);
 router.post("/uniquePhone", AuthController.uniquePhone);
 
 module.exports = router;

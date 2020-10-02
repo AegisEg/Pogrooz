@@ -83,6 +83,7 @@ const adminBro = new AdminBro({
           "name.last",
           "type",
           "isPassportVerified",
+          "isPassportUploaded",
           "isBan",
           "isTariff",
         ],

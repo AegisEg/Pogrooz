@@ -718,6 +718,9 @@ input:-ms-input-placeholder {
 .notification-item.unreadble .action-read {
   cursor: pointer;
 }
+.notification-item .text-notification {
+  word-break: break-all;
+}
 .notification-item.unreadble .text-notification {
   font-weight: bold;
 }
@@ -1101,6 +1104,12 @@ textarea {
 .rating-head img {
   margin-left: 4px;
   vertical-align: auto;
+}
+.pop-block-item {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .pop-block-item:not(.nohref):hover {
   color: #9509ef;
@@ -6035,4 +6044,8 @@ label {
   margin-left: 18px;
   width: 20px;
   height: 28px;
+}
+.verified-field .input-error-label {
+  width: calc(100% - 48px);
+  padding-left: 0px;
 }

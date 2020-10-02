@@ -18,10 +18,12 @@ const {
   modarationFail,
 } = require("./SocketController");
 const bcrypt = require("bcryptjs");
-const agenda = require("../agenta/agenta");
+// const agenda = require("../agenta/agenta");
 const NUM_ROUNDS = 12;
-const { randomString } = require("../controllers/FileController");
+const { randomString } = require("./FileController");
 const { InfoForLogin } = require("./AuthController");
+const mail = require("../config/mail");
+let { sendMail } = require("../controllers/MailController");
 
 module.exports = {
   // Get user data
@@ -157,89 +159,97 @@ module.exports = {
     let { userChange } = req.body;
     userChange = JSON.parse(userChange);
     try {
-      let emailExist = await User.find({
-        email: userChange.email,
-        _id: { $ne: user._id },
-      });
-      if (!emailExist || !emailExist.length) {
-        if (userChange.name) user.name = userChange.name;
-        if (req.files && req.files["avatar"]) {
-          if (req.files["avatar"].size / 1000 <= 10000) {
-            let fileName = randomString(24);
-            let filePath =
-              "./uploads/" +
-              user._id +
-              "/" +
-              fileName +
-              "." +
-              req.files["avatar"].name.split(".").pop();
-            req.files["avatar"].mv(filePath, function(err) {
-              if (err) return res.status(500).send(err);
-            });
-            user.avatar = {
-              path:
-                process.env.API_URL +
-                "/media/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["avatar"].name.split(".").pop(),
-              name: req.files["avatar"].name,
-              size: req.files["avatar"].size,
-            };
-          } else {
-            let err = {};
-            err.param = `file`;
-            err.msg = `max_size`;
-            return res.status(401).json({ error: true, errors: [err] });
-          }
-        }
-        if (req.files && req.files["passportPhoto"]) {
-          if (req.files["passportPhoto"].size / 1000 <= 10000) {
-            let fileName = randomString(24);
-            let filePath =
-              "./uploads/" +
-              user._id +
-              "/" +
-              fileName +
-              "." +
-              req.files["passportPhoto"].name.split(".").pop();
-            req.files["passportPhoto"].mv(filePath, function(err) {
-              if (err) return res.status(500).send(err);
-            });
-            user.passportPhoto = {
-              path:
-                process.env.API_URL +
-                "/media/" +
-                user._id +
-                "/" +
-                fileName +
-                "." +
-                req.files["passportPhoto"].name.split(".").pop(),
-              name: req.files["passportPhoto"].name,
-              size: req.files["passportPhoto"].size,
-            };
-            user.isPassportUploaded = true;
-          } else {
-            let err = {};
-            err.param = `file`;
-            err.msg = `max_size`;
-            return res.status(401).json({ error: true, errors: [err] });
-          }
-        }
-        if (userChange.contract) user.contract = userChange.contract;
-        if (userChange.address) user.address = userChange.address;
-        if (userChange.country) user.country = userChange.country;
-        if (userChange.phone) user.phone = userChange.phone;
-        user.save();
-
-        return res.json({ user });
+      if (userChange.email) {
+        let emailExist = await User.findOne({
+          email: userChange.email,
+          _id: { $ne: user._id },
+        });
+        if (emailExist)
+          return res.status(401).json({
+            error: true,
+            errors: [{ param: "email", msg: "Email уже занят" }],
+          });
       } else
         return res.status(401).json({
           error: true,
-          errors: [{ param: "email", msg: "Already exist" }],
+          errors: [{ param: "email", msg: "Email не может быть пустым" }],
         });
+      if (user.email !== userChange.email) user.email = userChange.email;
+      if (userChange.name)
+        //Проверка почты
+        user.name = userChange.name;
+      if (req.files && req.files["avatar"]) {
+        if (req.files["avatar"].size / 1000 <= 10000) {
+          let fileName = randomString(24);
+          let filePath =
+            "./uploads/" +
+            user._id +
+            "/" +
+            fileName +
+            "." +
+            req.files["avatar"].name.split(".").pop();
+          req.files["avatar"].mv(filePath, function(err) {
+            if (err) return res.status(500).send(err);
+          });
+          user.avatar = {
+            path:
+              process.env.API_URL +
+              "/media/" +
+              user._id +
+              "/" +
+              fileName +
+              "." +
+              req.files["avatar"].name.split(".").pop(),
+            name: req.files["avatar"].name,
+            size: req.files["avatar"].size,
+          };
+        } else {
+          let err = {};
+          err.param = `file`;
+          err.msg = `max_size`;
+          return res.status(401).json({ error: true, errors: [err] });
+        }
+      }
+      if (req.files && req.files["passportPhoto"]) {
+        if (req.files["passportPhoto"].size / 1000 <= 10000) {
+          let fileName = randomString(24);
+          let filePath =
+            "./uploads/" +
+            user._id +
+            "/" +
+            fileName +
+            "." +
+            req.files["passportPhoto"].name.split(".").pop();
+          req.files["passportPhoto"].mv(filePath, function(err) {
+            if (err) return res.status(500).send(err);
+          });
+          user.passportPhoto = {
+            path:
+              process.env.API_URL +
+              "/media/" +
+              user._id +
+              "/" +
+              fileName +
+              "." +
+              req.files["passportPhoto"].name.split(".").pop(),
+            name: req.files["passportPhoto"].name,
+            size: req.files["passportPhoto"].size,
+          };
+          user.isPassportUploaded = true;
+        } else {
+          let err = {};
+          err.param = `file`;
+          err.msg = `max_size`;
+          return res.status(401).json({ error: true, errors: [err] });
+        }
+      }
+      if (userChange.contract) user.contract = userChange.contract;
+      if (userChange.address) user.address = userChange.address;
+      if (userChange.country) user.country = userChange.country;
+      if (userChange.phone) user.phone = userChange.phone;
+
+      user.save();
+      return res.json({ user });
     } catch (e) {
       return next(new Error(e));
     }
@@ -347,19 +357,35 @@ module.exports = {
   sendNotify: async (req, res, next) => {
     const { commentNotify, userType, userId } = req.body;
     try {
-      let users;
+      let users,
+        typeSender,
+        userName = false;
       if (userId) {
         let user = await User.findById(userId);
         if (user) users = [user];
+        typeSender = "user";
+        userName = user.name.last + " " + user.name.first;
       } else if (userType) {
         let filter = {};
-        if (userType === "carrier") filter.type = "carrier";
-        if (userType === "cargo") filter.type = "cargo";
+        if (userType === "carrier") {
+          filter.type = "carrier";
+          typeSender = "carrier";
+        }
+        if (userType === "cargo") {
+          filter.type = "cargo";
+          typeSender = "cargo";
+        }
+        if (userType === "all") typeSender = "all";
         users = await User.find(filter);
       }
       if (!users || !users.length) return res.status(422).json({ error: true });
       users.map((item) => {
-        createNotify(item, { commentNotify }, "SYSTEM_NOTIFY", "system");
+        createNotify(
+          item,
+          { commentNotify, typeSender, userName },
+          "SYSTEM_NOTIFY",
+          "system"
+        );
       });
       return res.json({ error: false });
     } catch (error) {
@@ -498,6 +524,11 @@ async function createNotify(user, info, code, type) {
     notification.code = code;
     notification.type = type;
     await notification.save();
+    let mailTemplate = mail.find((item) => item.code === notification.code);
+    if (mailTemplate) {
+      user = await User.findById(user);
+      sendMail(user.email, notification, mailTemplate);
+    }
     sendNotification({ userId: user._id, notification });
     resolve();
   });

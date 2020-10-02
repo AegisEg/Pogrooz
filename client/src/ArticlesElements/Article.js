@@ -60,6 +60,16 @@ class Article extends React.Component {
                   }}
                 />
                 <div className="ml-2 f-12">Черновик</div>
+
+                {this.props.article.startDate &&
+                  this.props.article.startDate.date &&
+                  new Date(this.props.article.startDate.date).getTime() +
+                    1000 * 60 * 60 * 24 <
+                    new Date().getTime() && (
+                    <div className="ml-2 f-12" style={{ color: "red" }}>
+                      Просрочено
+                    </div>
+                  )}
               </div>
             </>
           )}

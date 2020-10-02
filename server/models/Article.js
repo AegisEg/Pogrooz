@@ -55,6 +55,7 @@ const ArticleSchema = new Schema({
   },
   updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
+  jobId: { type: mongoose.Schema.Types.ObjectId },
   buff: Buffer,
 });
 ArticleSchema.index({ fromLocation: "2dsphere" });

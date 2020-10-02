@@ -105,7 +105,9 @@ class Header extends React.Component {
                   this.setState({ showModal: true });
                 }}
               >
-                <p className="header-feedback-number">8 800 000 00 00</p>
+                <p className="header-feedback-number">
+                  {this.props.settings.phone}
+                </p>
                 <p className="header-feedback-label">
                   Заказать обратный звонок
                 </p>
@@ -341,6 +343,7 @@ const mapStateToProps = (state) => {
     user: state.user,
     dialogs: state.dialogs,
     notifications: state.notifications,
+    settings: state.settings.settings,
   };
 };
 

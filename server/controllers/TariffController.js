@@ -2,7 +2,7 @@ const Tariff = require("../models/Tariff");
 const Payment = require("../models/Payment");
 const { setTariff } = require("../controllers/SocketController");
 const User = require("../models/User");
-const agenda = require("../agenta/agenta");
+// const agenda = require("../agenta/agenta");
 
 module.exports = {
   getTariffs: async (req, res, next) => {

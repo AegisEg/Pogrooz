@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Article = require("../models/Article");
 const Payment = require("../models/Payment");
+const Notification = require("../models/Notification");
 const excel = require("exceljs");
 const months = [
   "Январь",
@@ -36,6 +37,13 @@ module.exports = {
             namelast: "$name.last",
             namefirst: "$name.first",
             namemiddle: "$name.middle",
+            userType: {
+              $cond: {
+                if: { $eq: ["$type", "cargo"] },
+                then: "Грузовладелец",
+                else: "Перевозчик",
+              },
+            },
           },
         },
       ]);
@@ -45,7 +53,8 @@ module.exports = {
         { header: "Имя", key: "namefirst", width: 30 },
         { header: "Отчество", key: "namemiddle", width: 30 },
         { header: "Телефон", key: "phone", width: 40 },
-        { header: "Тип Пользователя", key: "type", width: 30 },
+        { header: "Тип Пользователя", key: "userType", width: 30 },
+        { header: "Адрес", key: "address", width: 30 },
         { header: "E-mail", key: "email", width: 30, outlineLevel: 1 },
       ];
       worksheet.addRows(users);
@@ -327,6 +336,52 @@ module.exports = {
         };
       });
       return res.json(articles);
+    } catch (e) {}
+  },
+  getNotifications: async (req, res, next) => {
+    try {
+      let notificationsOther = await Notification.aggregate([
+        {
+          $match: {
+            code: "SYSTEM_NOTIFY",
+            "info.typeSender": { $ne: "user" },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              commentNotify: "$info.commentNotify",
+              typeSender: "$info.typeSender",
+            },
+            createdAt: { $first: "$createdAt" },
+          },
+        },
+      ]);
+      let notificationsUser = await Notification.aggregate([
+        {
+          $match: {
+            code: "SYSTEM_NOTIFY",
+            "info.typeSender": "user",
+          },
+        },
+        {
+          $project: {
+            _id: {
+              commentNotify: "$info.commentNotify",
+              typeSender: "$info.typeSender",
+            },
+            userName: "$info.userName",
+            createdAt: "$createdAt",
+          },
+        },
+      ]);
+      console.log(notificationsOther);
+      let notifications = [...notificationsUser, ...notificationsOther]
+        .sort((a, b) => {
+          return a.createdAt - b.createdAt;
+        })
+        .slice(0, 20);
+      return res.json(notifications);
     } catch (e) {}
   },
 };

@@ -133,7 +133,7 @@ export default [
   },
   {
     id: 8,
-    code: "ARTICLE_PASSPORT_MODERATION",
+    code: "PASSPORT_MODERATION",
     text: (info) => <>Фото паспотра прошло модерацию</>,
   },
   {
@@ -158,7 +158,7 @@ export default [
       <>
         Грузовладелец <Link to={`/user/${info.author}`}>{info.authorFIO}</Link>{" "}
         предложиил вам участе в{" "}
-        <Link to={`/order/${info.articleId}`}>заказу №{info.articleId}</Link>
+        <Link to={`/order/${info.articleId}`}>заказе №{info.articleId}</Link>
       </>
     ),
   },
@@ -168,16 +168,28 @@ export default [
     text: (info) => <>Вы заблокированы по причине: {info.commentBan}.</>,
   },
   {
-    id: 11,
+    id: 12,
     code: "PASSPORT_MODERATION_FAIL",
     text: (info) => (
       <>Пасспорт не прошел модерацию по причине: {info.commentFail}.</>
     ),
   },
   {
-    id: 11,
+    id: 13,
     code: "SYSTEM_NOTIFY",
     text: (info) => <>Уведомление от адмнистратора: {info.commentNotify}.</>,
   },
-  ,
+  {
+    id: 14,
+    code: "ARTICLE_UNPUBLISH",
+    text: (info) => (
+      <>
+        <Link to={`${info.articleType}/${info.articleId}`}>
+          {info.articleType === "offer" ? "Предложение" : "Заказ"} №
+          {info.articleId}
+        </Link>{" "}
+        перенесен в статус Черновик по причине просрочки
+      </>
+    ),
+  },
 ];

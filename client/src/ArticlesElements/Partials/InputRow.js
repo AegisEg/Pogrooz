@@ -77,10 +77,9 @@ class InputRow extends React.Component {
     users = users.filter(
       (item) => !delivered.find((itemX) => item._id === itemX)
     );
-
     if (
       !this.state.notDelivered ||
-      this.state.notDelivered.length > users.length
+      this.state.notDelivered.length != users.length
     )
       this.setState({ notDelivered: users });
   };
@@ -575,6 +574,17 @@ class InputRow extends React.Component {
       label: "Опубликовать",
       status: [1],
       role: 1,
+      condition: (options) => {
+        return (
+          !options.article.startDate ||
+          !options.article.startDate.date ||
+          (options.article.startDate &&
+            options.article.startDate.date &&
+            new Date(options.article.startDate.date).getTime() +
+              1000 * 60 * 60 * 24 >
+              new Date().getTime())
+        );
+      },
       img: YellowAngle,
       isButton: true,
       ButtonType: "fill",
@@ -687,7 +697,7 @@ class InputRow extends React.Component {
           `/edit-${this.props.article.type}/${this.props.article.articleId}`
         );
       },
-      status: [2],
+      status: [2, 1],
       isButton: true,
       ButtonType: "fill",
     },

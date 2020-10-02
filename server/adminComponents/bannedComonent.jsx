@@ -30,8 +30,8 @@ const BanAndTariff = (props) => {
         }}
         value={commentBan || ""}
         onChange={(e) => {
-          if (e.target.value.length < 50) setCommentBan(e.target.value);
-          else alert("Максимум 50 символов");
+          if (e.target.value.length < 500) setCommentBan(e.target.value);
+          else alert("Максимум 500 символов");
         }}
       />
       <Label paddingTop={"50px"} htmlFor="duration">

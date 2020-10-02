@@ -142,6 +142,13 @@ function updateStatusMyArticle({
       .to(`user.${userId}`)
       .emit("updateStatusMyArticle", { lastStatus, article, isTaking });
 }
+function updateStatusArticle({ userId, lastStatus, article }) {
+  io.to(`user.${userId}`).emit("updateStatusMyArticle", {
+    lastStatus,
+    article,
+    isTaking: false,
+  });
+}
 function deleteTaking({ userId, socketId, lastStatus, articleID }) {
   if (io.sockets.connected[socketId])
     io.sockets.connected[socketId]
@@ -348,4 +355,5 @@ module.exports = {
   cancelBan,
   modarationSuccess,
   modarationFail,
+  updateStatusArticle,
 };

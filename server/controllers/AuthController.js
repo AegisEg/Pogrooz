@@ -8,15 +8,14 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
 const User = require("../models/User");
 const Article = require("../models/Article");
 const Notification = require("../models/Notification");
 const Payment = require("../models/Payment");
 const Dialog = require("../models/Dialog");
-const Tariff = require("../models/Tariff");
+var smsc = require("./SmsController");
 const { setDemoTariff } = require("../controllers/TariffController");
-// const { default: Dialog } = require("../../client/src/Partials/Chat/Dialog");
 const NUM_ROUNDS = 12;
 module.exports = {
   // Register method
@@ -85,28 +84,26 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  compareCode: async (req, res, next) => {
+    let { code, codeHash } = req.body;
+    let compare = await bcrypt.compare(code, codeHash);
+    return res.json(compare);
+  },
   smsSend: async (req, res, next) => {
     let { phone } = req.body;
     try {
       let code = String(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
       let codeHash = await bcrypt.hash(code, NUM_ROUNDS);
       let error = false;
-      await fetch(`https://smscentre.com/sys/send.php`, {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          login: "Pogrooz",
-          psw: "Hanbikov",
+      await smsc.send_sms(
+        {
           phones: phone,
-          mes: code,
-        }),
-      }).then((data) => {
-        console.log(data);
-      });
-
+          mes: "Код подтверждения номера телефона: " + code,
+        },
+        function(data, raw, err, code) {
+          if (err) error = true;
+        }
+      );
       return res.json({ error: error, code: codeHash });
     } catch (e) {
       console.log(e);
@@ -316,13 +313,8 @@ async function isNeedLocation(userId) {
         isNeed: 1,
       },
     },
-    {
-      $group: {
-        _id: null,
-        count: { $sum: 1 },
-      },
-    },
   ]);
+  console.log(needSendLocation1);
   needSendLocation2 = await Article.aggregate([
     {
       $match: {
@@ -346,24 +338,10 @@ async function isNeedLocation(userId) {
         isNeed: 1,
       },
     },
-    {
-      $group: {
-        _id: null,
-        count: { $sum: 1 },
-      },
-    },
   ]);
-
-  needSendLocation1 =
-    (needSendLocation1 &&
-      !!needSendLocation1.length &&
-      needSendLocation1[0].count) ||
-    0;
-  needSendLocation2 =
-    (needSendLocation2 &&
-      !!needSendLocation2.length &&
-      needSendLocation2[0].count) ||
-    0;
+  console.log(needSendLocation2);
+  needSendLocation1 = needSendLocation1.length;
+  needSendLocation2 = needSendLocation2.length;
   needSendLocation = needSendLocation1 + needSendLocation2;
   return !!needSendLocation;
 }
