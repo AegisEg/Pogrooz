@@ -13,7 +13,7 @@ import messages from "../img/chat.svg";
 import car from "../img/car.svg";
 import raiting from "../img/raiting.svg";
 import gear from "../img/gear.svg";
-import notifications from "../img/notifications.png";
+import notifications from "../img/notifications.svg";
 import chatOrder from "../img/chat-order.png";
 import chatUser from "../img/chatUser.svg";
 import security from "../img/security.svg";
