@@ -1,13 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 // Pages
-import Main from "../Pages/Public/Main";
 import FAQ from "../Pages/Public/FAQ";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import Forgot from "../Pages/Auth/Forgot";
 import Reset from "../Pages/Auth/Reset";
-import About from "../Pages/Public/About";
 import Cargo from "../Pages/Public/Cargo";
 import SearchPage from "../Pages/Public/SearchPage";
 import TarifPage from "../Pages/Public/TarifPage";
@@ -35,7 +33,62 @@ import GeoDetect from "../Pages/User/GeoDetect";
 import Page from "../Pages/Page";
 import Questions from "../Pages/Questions";
 import LoginByToken from "../Pages/Auth/LoginByToken";
+import Preloader from "../Elements/Preloader";
+
+const About = React.lazy(() => import("../Pages/Public/About"));
+const Main = React.lazy(() => import("../Pages/Public/Main"));
 const routes = [
+  {
+    path: "/",
+    exact: true,
+    type: "public",
+    title: "Поисковик попутных перевозок для ваших грузов",
+    component: () => (
+      <Suspense fallback={<Preloader />}>
+        <Main />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/faq",
+    exact: true,
+    type: "public",
+    title: "FAQ",
+    component: () => <FAQ />,
+  },
+  {
+    path: "/about",
+    exact: true,
+    type: "public",
+    title: "О нас",
+    component: () => (
+      <Suspense fallback={<div>Загрузка...</div>}>
+        <About />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/cargo",
+    exact: true,
+    type: "public",
+    title: "Грузовладельцам",
+    component: () => <Cargo />,
+  },
+  {
+    path: "/carrier",
+    exact: true,
+    type: "public",
+    title: "Перевозчикам",
+    component: () => <Carrier />,
+  },
+  {
+    path: "/questions/:slug",
+    exact: true,
+    type: "public",
+    title: "Вопрос",
+    forseTitle: true,
+    component: () => <Questions />,
+  },
   //AUTH ROUTE
   {
     path: "/login",
@@ -84,34 +137,6 @@ const routes = [
     component: () => <Page />,
   },
   {
-    path: "/",
-    exact: true,
-    type: "public",
-    title: "Поисковик попутных перевозок для ваших грузов",
-    component: () => <Main />,
-  },
-  {
-    path: "/faq",
-    exact: true,
-    type: "public",
-    title: "FAQ",
-    component: () => <FAQ />,
-  },
-  {
-    path: "/about",
-    exact: true,
-    type: "public",
-    title: "О нас",
-    component: () => <About />,
-  },
-  {
-    path: "/cargo",
-    exact: true,
-    type: "public",
-    title: "Грузовладельцам",
-    component: () => <Cargo />,
-  },
-  {
     path: "/search",
     exact: true,
     type: "public",
@@ -132,21 +157,7 @@ const routes = [
     title: "Приложение в разработке",
     component: () => <Application />,
   },
-  {
-    path: "/carrier",
-    exact: true,
-    type: "public",
-    title: "Перевозчикам",
-    component: () => <Carrier />,
-  },
-  {
-    path: "/questions/:slug",
-    exact: true,
-    type: "public",
-    title: "Вопрос",
-    forseTitle: true,
-    component: () => <Questions />,
-  },
+
   //PUBLIC ROUTE END
   //PRIVATE ROUTE
   {
