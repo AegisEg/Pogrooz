@@ -1,5 +1,5 @@
 import React from "react";
-import LoadGif from "../img/load.gif";
+import { ReactComponent as LoadGif } from "../img/Loading.svg";
 import { CSSTransitionGroup } from "react-transition-group";
 class LoadingFixed extends React.Component {
   render() {
@@ -14,12 +14,10 @@ class LoadingFixed extends React.Component {
           }}
         >
           <div className="LoadGif fixed">
-            <img
-              src={LoadGif}
+            <LoadGif
               style={{
                 display: this.props.isLoading ? "block" : "none",
               }}
-              alt="LoadGif"
             />
           </div>
         </CSSTransitionGroup>
