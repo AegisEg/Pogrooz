@@ -6,13 +6,9 @@ critical.generate({
   inline: true,
   extract: true,
   minify: true,
-  /* iPhone 6 dimensions, use whatever you like*/
-  width: 375,
-  height: 565,
+ 
   target: {
-    css: "critical.css",
-    html: "index-critical.html",
-    uncritical: "uncritical.css",
+    html: "index.html",
   },
   /* Ensure that bundled JS file is called */
   penthouse: {

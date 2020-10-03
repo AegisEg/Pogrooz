@@ -10,11 +10,9 @@
     "@material-ui/pickers": "^3.2.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
-    "babel-loader": "^8.1.0",
     "date-fns": "^2.13.0",
     "emoji-mart": "^3.0.0",
     "express": "^4.17.1",
-    "material-ui": "^0.20.2",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-burger-menu": "^2.6.13",
@@ -22,7 +20,6 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dadata": "^2.6.0",
     "react-dom": "^16.13.1",
-    "react-input-mask": "^3.0.0-alpha.2",
     "react-jivosite": "^1.0.0",
     "react-modal": "^3.11.2",
     "react-paginate": "^6.3.2",
@@ -67,6 +64,7 @@
     "critical": "^2.0.4",
     "css-loader": "^4.3.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "html-critical-webpack-plugin": "^2.1.0",
     "terser": "^3.14.1",
     "uglifyjs-webpack-plugin": "^2.2.0"
   }
