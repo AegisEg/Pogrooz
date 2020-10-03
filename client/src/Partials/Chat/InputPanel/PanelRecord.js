@@ -4,7 +4,7 @@ import AudioVoice from "../AudioVoice";
 import { ReactComponent as ResetRecord } from "../../../img/ResetRecord.svg";
 import { ReactComponent as StopRecord } from "../../../img/stopRecord.svg";
 import { ReactComponent as Send } from "../../../img/send.svg";
-import LoadGif from "../../../img/load.gif";
+import { ReactComponent as LoadGif } from "../../../img/Loading.svg";
 import { renderCanvas } from "../../../controllers/FunctionsController";
 // Internet Explorer 6-11
 const isIE = /*@cc_on!@*/ false || !!document.documentMode;
@@ -183,7 +183,7 @@ class PanelRecord extends React.Component {
             }}
           />
         )}
-        {this.state.isSending && <img src={LoadGif} alt="microphone" />}
+        {this.state.isSending && <LoadGif></LoadGif>}
       </>
     );
   }

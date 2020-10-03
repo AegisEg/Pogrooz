@@ -1,13 +1,12 @@
 import React from "react";
-
+import Loading from "../Elements/Loading";
 class Preloader extends React.Component {
+  componentDidMount() {}
+  componentWillUnmount() {}
   render() {
     return (
-      <div class="preloader">
-        <div class="preloader__row">
-          <div class="preloader__item"></div>
-          <div class="preloader__item"></div>
-        </div>
+      <div>
+        <Loading isLoading={true}></Loading>
       </div>
     );
   }

@@ -1959,7 +1959,7 @@ a.mail {
 .LoadGif:not(.fixed) {
   position: absolute;
 }
-.LoadGif img {
+.LoadGif svg {
   width: 150px;
   margin: auto;
 }
@@ -1970,8 +1970,11 @@ a.mail {
   right: 30px;
   width: 50px;
 }
-.LoadGif.fixed img {
+.LoadGif.fixed svg {
   width: 50px;
+}
+.public-page > div:first-child {
+  min-height: calc(100vh - 200px);
 }
 /*Animation Height Item*/
 .loading-animation-item-enter {

@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import * as dialogsActions from "../../redux/actions/dialogs";
 import { bindActionCreators } from "redux";
 import ArrowDown from "../../img/arrowDownperple.svg";
-import LoadGif from "../../img/load.gif";
+import { ReactComponent as LoadGif } from "../../img/Loading.svg";
 import { getAudioBufferData } from "../../controllers/FunctionsController";
 import documentSvg from "../../img/document.svg";
 import musicSvg from "../../img/music.svg";
@@ -520,12 +520,7 @@ class Dialog extends React.Component {
               className="dialog scroll"
               autoHide
             >
-              <img
-                src={LoadGif}
-                id="load-message-gif"
-                className="load-message"
-                alt=""
-              />
+              <LoadGif id="load-message-gif" className="load-message"></LoadGif>
 
               {!!this.props.dialog.messages.length &&
                 this.props.dialog.messages.map((message, index, messages) => {
