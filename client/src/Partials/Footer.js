@@ -31,7 +31,6 @@ class Footer extends React.Component {
     return tempLink.hostname === window.location.hostname;
   }
   render() {
-    console.log(this.props.settings);
     return (
       <footer className="footer  py-4">
         <div className="container-fluid">

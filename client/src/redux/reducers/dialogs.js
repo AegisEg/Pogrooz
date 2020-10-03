@@ -387,7 +387,6 @@ const dialogs = (state = INITIAL_STATE, action) => {
           ...state.dialogsALL,
           dialogs: state.dialogsALL.dialogs.map((dialog) => {
             if (action.payload.dialogId === dialog._id) {
-              console.log(dialog);
               return {
                 ...dialog,
                 messages: dialog.messages.map((message) =>

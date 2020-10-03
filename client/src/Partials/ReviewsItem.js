@@ -11,7 +11,6 @@ import ImgActiveStar from "../img/active-star.png";
 class ReviewItem extends React.Component {
   state = { isEdit: false, comment: "", reting: 0 };
   componentDidMount() {
-    console.log();
     this.setState({
       comment: this.props.review.comment,
       rating: this.props.review.rating,

@@ -189,12 +189,7 @@ class Messages extends React.Component {
     if (this.props.tab == "user") dialogs = this.props.dialogs.dialogsUser;
     if (this.props.tab == "order") dialogs = this.props.dialogs.dialogsOrder;
     if (this.props.tab == "all") dialogs = this.props.dialogs.dialogsALL;
-    for (let i = 0; i < dialogs.dialogs.length; i++)
-      for (let y = i + 1; y < dialogs.dialogs.length; y++) {
-        if (dialogs.dialogs[i]._id === dialogs.dialogs[y]._id) {
-          console.log("DUPLICATE" + dialogs.dialogs[i].user.name.first);
-        }
-      }
+
     return (
       <div className="article-page">
         <div className="container-fluid">

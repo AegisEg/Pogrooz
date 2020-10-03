@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 
 // Pages
 import Main from "../Pages/Public/Main";
@@ -13,6 +13,7 @@ import SearchPage from "../Pages/Public/SearchPage";
 import TarifPage from "../Pages/Public/TarifPage";
 import Application from "../Pages/Public/Application";
 import Carrier from "../Pages/Public/Carrier";
+import Profile from "../Pages/User/Profile";
 import MyArticles from "../Pages/User/MyArticles";
 import TakingArticles from "../Pages/User/TakingArticles";
 import CreateTemplateAuto from "../Pages/User/CreatePart/CreateTemplateAuto";
@@ -21,7 +22,7 @@ import User from "../Pages/Public/User";
 import ArticlePage from "../Pages/User/ArticlePage";
 import Notifications from "../Pages/User/Notifications/Notifications";
 import NotificationsSettings from "../Pages/User/Notifications/NotificationsSettings";
-
+import NewOffer from "../Pages/User/NewOffer";
 import NewOrder from "../Pages/User/NewOrder";
 import Reviwes from "../Pages/User/Reviwes";
 import Support from "../Pages/User/Support";
@@ -34,9 +35,6 @@ import GeoDetect from "../Pages/User/GeoDetect";
 import Page from "../Pages/Page";
 import Questions from "../Pages/Questions";
 import LoginByToken from "../Pages/Auth/LoginByToken";
-
-const Profile = React.lazy(() => import("../Pages/User/Profile"));
-const NewOffer = React.lazy(() => import("../Pages/User/NewOffer"));
 const routes = [
   //AUTH ROUTE
   {

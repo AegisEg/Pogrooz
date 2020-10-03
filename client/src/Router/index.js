@@ -23,6 +23,7 @@ import configApi from "../config/api";
 import * as settingsActions from "../redux/actions/settings";
 import { Widget } from "react-jivosite";
 import Preloader from "../Elements/Preloader";
+
 export function setTitle(path, routeArray) {
   var pageTitle;
   for (var i = 0; i < routeArray.length; i++) {
@@ -123,64 +124,68 @@ class AppRouter extends React.Component {
                 <div>Ошибка передачи геоданных</div>
               </div>
             )}
-          <Switch>
+
+          <Suspense fallback={<Preloader />}>
+            <Switch>
               {routes.map((route, index) => {
-                if (route.type === "auth")
-                  return (
-                    <this.AuthRoute
-                      key={index}
-                      path={route.path}
-                      exact={route.exact}
-                    >
-                      <route.component title={route.title} />
-                    </this.AuthRoute>
-                  );
-                if (route.type === "common")
-                  return (
-                    <this.CommonRoute
-                      key={index}
-                      path={route.path}
-                      exact={route.exact}
-                    >
-                      <route.component title={route.title} />
-                    </this.CommonRoute>
-                  );
-                if (route.type === "public")
-                  return (
-                    <this.PublicRoute
-                      key={index}
-                      path={route.path}
-                      exact={route.exact}
-                    >
-                      <route.component title={route.title} />
-                    </this.PublicRoute>
-                  );
+                switch (route.type) {
+                  case "auth":
+                    return (
+                      <this.AuthRoute
+                        key={index}
+                        path={route.path}
+                        exact={route.exact}
+                      >
+                        <route.component title={route.title} />
+                      </this.AuthRoute>
+                    );
+                  case "common":
+                    return (
+                      <this.CommonRoute
+                        key={index}
+                        path={route.path}
+                        exact={route.exact}
+                      >
+                        <route.component title={route.title} />
+                      </this.CommonRoute>
+                    );
+                  case "public":
+                    return (
+                      <this.PublicRoute
+                        key={index}
+                        path={route.path}
+                        exact={route.exact}
+                      >
+                        <route.component title={route.title} />
+                      </this.PublicRoute>
+                    );
+                  case "private":
+                    return (
+                      <this.PrivateRoute
+                        key={index}
+                        path={route.path}
+                        role={route.role}
+                        exact={route.exact}
+                        isChat={route.lkHeight}
+                      >
+                        <route.component
+                          title={route.title}
+                          statusArticle={route.statusArticle}
+                          typeArticle={route.typeArticle}
+                          tab={route.tab}
+                        />
+                      </this.PrivateRoute>
+                    );
+
+                  default:
+                    return false;
+                }
               })}
-            <Suspense fallback={<Preloader />}>
-              {routes.map((route, index) => {
-                if (route.type === "private")
-                  return (
-                    <this.PrivateRoute
-                      key={index}
-                      path={route.path}
-                      role={route.role}
-                      exact={route.exact}
-                      isChat={route.lkHeight}
-                    >
-                      <route.component
-                        title={route.title}
-                        statusArticle={route.statusArticle}
-                        typeArticle={route.typeArticle}
-                        tab={route.tab}
-                      />
-                    </this.PrivateRoute>
-                  );
-              })}
-            </Suspense>
-            <this.PublicRoute>
-              <NoMatch />
-            </this.PublicRoute>
-          </Switch>
+              <this.PublicRoute>
+                <NoMatch />
+              </this.PublicRoute>
+            </Switch>
+          </Suspense>
           <Header />
         </>
       )
