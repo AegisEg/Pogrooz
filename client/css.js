@@ -5,10 +5,11 @@ critical.generate({
   src: "index.html",
   inline: true,
   extract: true,
-  minify: true,
- 
+  minify: true, 
   target: {
+    css: "critical.css",
     html: "index.html",
+    uncritical: "uncritical.css",
   },
   /* Ensure that bundled JS file is called */
   penthouse: {
