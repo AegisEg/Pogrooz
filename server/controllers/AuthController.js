@@ -93,6 +93,7 @@ module.exports = {
     let { phone } = req.body;
     try {
       let code = String(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
+      console.log(code);
       let codeHash = await bcrypt.hash(code, NUM_ROUNDS);
       let error = false;
       await smsc.send_sms(
