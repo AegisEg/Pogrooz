@@ -58,6 +58,7 @@ router.post(
 );
 router.post("/setLocation", verifyToken, ArticleController.setLocation);
 router.post("/getGeoArticles", verifyToken, ArticleController.getGeoArticles);
+router.post("/requestGeolocation", verifyToken, ArticleController.requestGeolocation);
 router.post(
   "/offerCargoOrder",
   verifyToken,

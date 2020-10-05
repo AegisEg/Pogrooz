@@ -15,7 +15,6 @@ module.exports = {
         pass: "googlenexusX&",
       },
     });
-    console.log(notification);
     await transporter.sendMail({
       from: '"Pogrooz" <neostar1996@mail.ru>',
       to: `${email}`,

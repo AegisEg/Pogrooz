@@ -149,7 +149,7 @@ export default [
       },
       {
         name: "Сообщения пользователей",
-        to: "/messages",
+        to: "/messages-users",
         icon: chatUser,
       },
     ],
@@ -201,7 +201,7 @@ export default [
     name: `Шаблон договора 
     между Перевозчиком 
     и Грузовладельцем`,
-    to: "/dowload",
+    to: "/page/dowload-order",
     icon: download,
     className: "download-order",
   },

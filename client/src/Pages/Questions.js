@@ -8,7 +8,6 @@ import NoMatch from "./NoMatch";
 import { setForceTitle } from "../functions/functions";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import queryString from "query-string";
 const scrollToAnswer = (ref) => {
   ref.current.scrollIntoView({
     behavior: "smooth",

@@ -380,23 +380,32 @@ module.exports = {
       await dialog.save();
       let toUser = await User.findById(userId);
       if (isOrder) {
-        if (
+        createNotify(
+          { _id: userId },
+          {
+            articleType: dialog.orderId.type,
+            articleId: dialog.orderId.articleId,
+          },
+          "SEND_NEW_MESSAGE_BY_ORDER",
+          "system",
           (dialog.orderId.type === "offer" &&
             toUser.notificationSettings.offer_new_message.push) ||
-          (dialog.orderId.type === "order" &&
-            toUser.notificationSettings.order_new_message.push)
-        )
-          createNotify(
-            { _id: userId },
-            {
-              articleType: dialog.orderId.type,
-              articleId: dialog.orderId.articleId,
-            },
-            "SEND_NEW_MESSAGE_BY_ORDER",
-            "system"
-          );
-      } else if (toUser.notificationSettings.user_new_message.push)
-        createNotify({ _id: userId }, {}, "SEND_NEW_MESSAGE", "system");
+            (dialog.orderId.type === "order" &&
+              toUser.notificationSettings.order_new_message.push),
+          (dialog.orderId.type === "offer" &&
+            toUser.notificationSettings.offer_new_message.mail) ||
+            (dialog.orderId.type === "order" &&
+              toUser.notificationSettings.order_new_message.mail)
+        );
+      } else
+        createNotify(
+          { _id: userId },
+          {},
+          "SEND_NEW_MESSAGE",
+          "system",
+          toUser.notificationSettings.user_new_message.push,
+          toUser.notificationSettings.user_new_message.mail
+        );
       sendMessageDialog({
         userId: user._id,
         otherId: userId,
@@ -486,20 +495,32 @@ module.exports = {
     }
   },
 };
-async function createNotify(user, info, code, type) {
+async function createNotify(
+  user,
+  info,
+  code,
+  type,
+  isPush = true,
+  isMail = true
+) {
   return new Promise(async (resolve, reject) => {
     let notification = new Notification();
     notification.user = user;
     notification.info = info;
     notification.code = code;
     notification.type = type;
-    await notification.save();
-    let mailTemplate = mail.find((item) => item.code === notification.code);
-    if (mailTemplate) {
-      user = await User.findById(user);
-      sendMail(user.email, notification, mailTemplate);
+
+    if (isMail) {
+      let mailTemplate = mail.find((item) => item.code === notification.code);
+      if (mailTemplate) {
+        user = await User.findById(user);
+        sendMail(user.email, notification, mailTemplate);
+      }
     }
-    sendNotification({ userId: user._id, notification });
+    if (isPush) {
+      await notification.save();
+      sendNotification({ userId: user._id, notification });
+    }
     resolve();
   });
 }

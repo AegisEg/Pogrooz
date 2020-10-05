@@ -6,8 +6,12 @@ import { bindActionCreators } from "redux";
 import Loading from "../../Elements/Loading";
 import { CSSTransitionGroup } from "react-transition-group";
 import Select from "../../Elements/Select";
+import Button from "../../Elements/Button";
 import { Map, Placemark } from "react-yandex-maps";
+import { withRouter } from "react-router-dom";
 import geolocation from "../../img/carGeo.svg";
+import { toast } from "react-toastify";
+import api from "../../config/api";
 // Router
 
 class GeoDetect extends React.Component {
@@ -18,10 +22,18 @@ class GeoDetect extends React.Component {
     if (!this.props.articles.isGetted)
       this.props.GeoActions.geoArticlesGet(this.props.user.apiToken).then(
         () => {
-          if (!!this.props.articles.articles.length)
+          if (!!this.props.location.hash)
+            this.setState({ articleId: this.props.location.hash.slice(1) });
+          else if (!!this.props.articles.articles.length)
             this.setState({ articleId: this.props.articles.articles[0]._id });
         }
       );
+    else {
+      if (!!this.props.location.hash)
+        this.setState({ articleId: this.props.location.hash.slice(1) });
+      else if (!!this.props.articles.articles.length)
+        this.setState({ articleId: this.props.articles.articles[0]._id });
+    }
   }
   componentDidUpdate(b) {
     if (
@@ -30,6 +42,24 @@ class GeoDetect extends React.Component {
     )
       this.setState({ articleId: this.props.articles.articles[0]._id });
   }
+  sendRequestLocation = () => {
+    fetch(`${api.urlApi}/api/article/requestGeolocation`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.props.user.apiToken}`,
+      },
+      body: JSON.stringify({
+        articleId: this.state.articleId,
+      }),
+    })
+      .then((response) => response.json())
+      .then(({ error }) => {
+        if (!error) toast.success("Запрос местоположения отправлен");
+        if (error) toast.error("Ошибка запроса");
+      });
+  };
   render() {
     let article = this.props.articles.articles.find(
       (item) => item._id === this.state.articleId
@@ -85,6 +115,21 @@ class GeoDetect extends React.Component {
                     Заказов/предложений в пути пока нет
                   </div>
                 )}
+                {article &&
+                  article.lastCarrierLocation &&
+                  new Date(article.lastCarrierLocation.date).getTime() +
+                    1000 * 60 * 60 * 3 <
+                    new Date() && (
+                    <div className="text-center mt-4">
+                      Перевозчик давно не обновлял свое местоположение
+                      <div>
+                        <Button type="fill" onClick={this.sendRequestLocation}>
+                          Запросить местоположение
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
                 {article && (
                   <Map
                     instanceRef={(ref) => {
@@ -117,7 +162,8 @@ class GeoDetect extends React.Component {
                         iconCaption: "Начальная точка",
                         balloonContentHeader: "Начальная точка",
                         balloonContentBody: article.from.value,
-                      }}я
+                      }}
+                      я
                       geometry={article.fromLocation.coordinates}
                     />
                     {article.lastCarrierLocation &&
@@ -173,4 +219,7 @@ function mapDispatchToProps(dispatch) {
     GeoActions: bindActionCreators(GeoActions, dispatch),
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(GeoDetect);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(GeoDetect));

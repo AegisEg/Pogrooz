@@ -192,4 +192,19 @@ export default [
       </>
     ),
   },
+  {
+    id: 14,
+    code: "ARTICLE_REQUEST_GEOLOCATION",
+    text: (info) => (
+      <>
+        По{" "}
+        <Link to={`${info.articleType}/${info.articleId}`}>
+          {info.articleType === "offer" ? "предложению" : "заказу"} №
+          {info.articleId}
+        </Link>{" "}
+        {info.userType === "cargo" ? "грузовладелец" : "перевозчик"}{" "}
+        {info.userFio} послал запрос на предоставлене местоположеня.
+      </>
+    ),
+  },
 ];

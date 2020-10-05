@@ -766,7 +766,7 @@ module.exports = {
           if (newArticle.startDate.date)
             dateExecute = new Date(newArticle.startDate.date).addDays(1);
           if (!newArticle.startDate.date)
-            dateExecute = new Date(newArticle.updatedAt).addDays(30);
+            dateExecute = new Date(newArticle.updatedAt).addDays(7);
           job = await agenda.schedule(dateExecute, "articleUnpublish", {
             articleId: newArticle._id,
           });
@@ -932,7 +932,7 @@ module.exports = {
           if (editArticle.startDate.date)
             dateExecute = new Date(editArticle.startDate.date).addDays(1);
           if (!editArticle.startDate.date)
-            dateExecute = new Date(editArticle.updatedAt).addDays(30);
+            dateExecute = new Date(editArticle.updatedAt).addDays(7);
           job = await agenda.schedule(dateExecute, "articleUnpublish", {
             articleId: editArticle._id,
           });
@@ -1040,7 +1040,7 @@ module.exports = {
           if (article.startDate.date)
             dateExecute = new Date(article.startDate.date).addDays(1);
           if (!article.startDate.date)
-            dateExecute = new Date(article.updatedAt).addDays(30);
+            dateExecute = new Date(article.updatedAt).addDays(7);
           job = await agenda.schedule(dateExecute, "articleUnpublish", {
             articleId: article._id,
           });
@@ -1112,22 +1112,25 @@ module.exports = {
               article,
               isTaking: true,
             });
-            if (
+
+            createNotify(
+              item,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                articleStatus: article.status,
+              },
+              "ARTICLE_CHANGE_STATUS",
+              article.type,
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.push) ||
-              (article.type === "order" &&
-                item.notificationSettings.order_status.push)
-            )
-              createNotify(
-                item,
-                {
-                  articleType: article.type,
-                  articleId: article.articleId,
-                  articleStatus: article.status,
-                },
-                "ARTICLE_CHANGE_STATUS",
-                article.type
-              );
+                (article.type === "order" &&
+                  item.notificationSettings.order_status.push),
+              (article.type === "offer" &&
+                item.notificationSettings.offer_status.mail) ||
+                (article.type === "order" &&
+                  item.notificationSettings.order_status.mail)
+            );
           });
           updateStatusMyArticle({
             userId: article.author._id,
@@ -1188,22 +1191,24 @@ module.exports = {
               article,
               isTaking: true,
             });
-            if (
+            createNotify(
+              item,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                articleStatus: article.status,
+              },
+              "ARTICLE_CHANGE_STATUS",
+              article.type,
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.push) ||
-              (article.type === "order" &&
-                item.notificationSettings.order_status.push)
-            )
-              createNotify(
-                item,
-                {
-                  articleType: article.type,
-                  articleId: article.articleId,
-                  articleStatus: article.status,
-                },
-                "ARTICLE_CHANGE_STATUS",
-                article.type
-              );
+                (article.type === "order" &&
+                  item.notificationSettings.order_status.push),
+              (article.type === "offer" &&
+                item.notificationSettings.offer_status.mail) ||
+                (article.type === "order" &&
+                  item.notificationSettings.order_status.mail)
+            );
           });
           updateStatusMyArticle({
             userId: article.author._id,
@@ -1265,22 +1270,25 @@ module.exports = {
               article,
               isTaking: true,
             });
-            if (
+
+            createNotify(
+              item,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                articleStatus: article.status,
+              },
+              "ARTICLE_CHANGE_STATUS",
+              article.type,
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.push) ||
-              (article.type === "order" &&
-                item.notificationSettings.order_status.push)
-            )
-              createNotify(
-                item,
-                {
-                  articleType: article.type,
-                  articleId: article.articleId,
-                  articleStatus: article.status,
-                },
-                "ARTICLE_CHANGE_STATUS",
-                article.type
-              );
+                (article.type === "order" &&
+                  item.notificationSettings.order_status.push),
+              (article.type === "offer" &&
+                item.notificationSettings.offer_status.mail) ||
+                (article.type === "order" &&
+                  item.notificationSettings.order_status.mail)
+            );
           });
           updateStatusMyArticle({
             userId: article.author._id,
@@ -1454,22 +1462,24 @@ module.exports = {
             article,
           });
           article.executors.map((item) => {
-            if (
+            createNotify(
+              item,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                articleStatus: article.status,
+              },
+              "ARTICLE_CHANGE_STATUS",
+              article.type,
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.push) ||
-              (article.type === "order" &&
-                item.notificationSettings.order_status.push)
-            )
-              createNotify(
-                item,
-                {
-                  articleType: article.type,
-                  articleId: article.articleId,
-                  articleStatus: article.status,
-                },
-                "ARTICLE_CHANGE_STATUS",
-                article.type
-              );
+                (article.type === "order" &&
+                  item.notificationSettings.order_status.push),
+              (article.type === "offer" &&
+                item.notificationSettings.offer_status.mail) ||
+                (article.type === "order" &&
+                  item.notificationSettings.order_status.mail)
+            );
           });
           return res.json({ error: false });
         }
@@ -1500,7 +1510,8 @@ module.exports = {
         let canRequest =
           !compareId(user._id, article.author._id) &&
           article.type === canType &&
-          !article.requests.find((item) => item.author === user._id);
+          !article.requests.find((item) => compareId(item.author, user._id));
+
         if (canRequest) {
           let newRequest = new Request();
           newRequest.author = user;
@@ -1521,29 +1532,27 @@ module.exports = {
             socketId,
           });
           let author = await User.findById(article.author);
-          if (
+          createNotify(
+            article.author,
+            { articleType: article.type, articleId: article.articleId },
+            "ARTICLE_NEW_REQUEST",
+            article.type,
             (author.type === "cargo" &&
               author.notificationSettings.order_new_request.push) ||
-            (author.type === "carrier" &&
-              author.notificationSettings.offer_new_request.push)
-          )
-            createNotify(
-              article.author,
-              { articleType: article.type, articleId: article.articleId },
-              "ARTICLE_NEW_REQUEST",
-              article.type
-            );
+              (author.type === "carrier" &&
+                author.notificationSettings.offer_new_request.push),
+            (author.type === "cargo" &&
+              author.notificationSettings.order_new_request.mail) ||
+              (author.type === "carrier" &&
+                author.notificationSettings.offer_new_request.mail)
+          );
           return res.json({ error: false, request: newRequest });
-        } else
-          return res.status(422).json({
-            error: true,
-            errors: [{ param: "typeUser", msg: "Неверный тип пользователя" }],
-          });
-      } else
-        return res.status(422).json({
-          error: true,
-          errors: [{ param: "notFound", msg: "Нет такого заказа/предложения" }],
-        });
+        }
+      }
+      return res.status(422).json({
+        error: true,
+        errors: [{ param: "notFound", msg: "Невозможно оставить заявку" }],
+      });
     } catch (e) {
       return next(new Error(e));
     }
@@ -1669,43 +1678,48 @@ module.exports = {
         if (article.type === "offer" && executor.type === "cargo") {
           article.executors.push(executor);
           await article.save();
-          console.log(executor.notificationSettings.order_you_executor.push);
-          if (
+
+          createNotify(
+            executor._id,
+            {
+              articleType: article.type,
+              articleId: article.articleId,
+            },
+            "ARTICLE_SET_EXECUTOR",
+            article.type,
             (executor.type === "cargo" &&
               executor.notificationSettings.offer_you_executor.push) ||
-            (executor.type === "carrier" &&
-              executor.notificationSettings.order_you_executor.push)
-          )
-            createNotify(
-              executor._id,
-              {
-                articleType: article.type,
-                articleId: article.articleId,
-              },
-              "ARTICLE_SET_EXECUTOR",
-              article.type
-            );
+              (executor.type === "carrier" &&
+                executor.notificationSettings.order_you_executor.push),
+            (executor.type === "cargo" &&
+              executor.notificationSettings.offer_you_executor.mail) ||
+              (executor.type === "carrier" &&
+                executor.notificationSettings.order_you_executor.mail)
+          );
         }
         if (article.type === "order" && executor.type === "carrier") {
           article.executors.push(executor);
           article.status = 3;
           await article.save();
-          if (
+
+          createNotify(
+            executor._id,
+            {
+              articleType: article.type,
+              articleId: article.articleId,
+              articleStatus: article.status,
+            },
+            "ARTICLE_CHANGE_STATUS",
+            article.type,
             (article.type === "offer" &&
               executor.notificationSettings.offer_status.push) ||
-            (article.type === "order" &&
-              executor.notificationSettings.order_status.push)
-          )
-            createNotify(
-              executor._id,
-              {
-                articleType: article.type,
-                articleId: article.articleId,
-                articleStatus: article.status,
-              },
-              "ARTICLE_CHANGE_STATUS",
-              article.type
-            );
+              (article.type === "order" &&
+                executor.notificationSettings.order_status.push),
+            (article.type === "offer" &&
+              executor.notificationSettings.offer_status.mail) ||
+              (article.type === "order" &&
+                executor.notificationSettings.order_status.mail)
+          );
           //SOKET
           createTakingArticle({
             userId: executor._id,
@@ -1801,21 +1815,23 @@ module.exports = {
           socketId,
         });
         let executorX = await User.findById(executor);
-        if (
+        createNotify(
+          executor,
+          {
+            articleType: article.type,
+            articleId: article.articleId,
+          },
+          "ARTICLE_DELETE_EXECUTOR",
+          article.type,
           (executorX.type === "cargo" &&
             executorX.notificationSettings.offer_you_executor.push) ||
-          (executorX.type === "carrier" &&
-            executorX.notificationSettings.order_you_executor.push)
-        )
-          createNotify(
-            executor,
-            {
-              articleType: article.type,
-              articleId: article.articleId,
-            },
-            "ARTICLE_DELETE_EXECUTOR",
-            article.type
-          );
+            (executorX.type === "carrier" &&
+              executorX.notificationSettings.order_you_executor.push),
+          (executorX.type === "cargo" &&
+            executorX.notificationSettings.offer_you_executor.mail) ||
+            (executorX.type === "carrier" &&
+              executorX.notificationSettings.order_you_executor.mail)
+        );
         return res.json({ error: false, article, executor });
       }
       return res.status(422).json({
@@ -1930,21 +1946,24 @@ module.exports = {
                 otherId: newReview.user._id,
                 socketId,
               });
-              if (
+
+              createNotify(
+                newReview.user._id,
+                {
+                  articleType: article.type,
+                  articleId: article.articleId,
+                },
+                "ARTICLE_SET_REVIEW",
+                article.type,
                 (article.type === "offer" &&
                   newReview.user.notificationSettings.offer_new_review.push) ||
-                (article.type === "order" &&
-                  newReview.user.notificationSettings.order_new_review.push)
-              )
-                createNotify(
-                  newReview.user._id,
-                  {
-                    articleType: article.type,
-                    articleId: article.articleId,
-                  },
-                  "ARTICLE_SET_REVIEW",
-                  article.type
-                );
+                  (article.type === "order" &&
+                    newReview.user.notificationSettings.order_new_review.push),
+                (article.type === "offer" &&
+                  newReview.user.notificationSettings.offer_new_review.mail) ||
+                  (article.type === "order" &&
+                    newReview.user.notificationSettings.order_new_review.mail)
+              );
             }
             await article.save();
             return res.json({ error: false, newReview, existReview });
@@ -2157,7 +2176,7 @@ module.exports = {
       if (article.startDate.date)
         compareDate = new Date(article.startDate.date).addDays(1);
       if (!article.startDate.date)
-        compareDate = new Date(article.updatedAt).addDays(30);
+        compareDate = new Date(article.updatedAt).addDays(7);
       if (compareDate < new Date()) {
         article.status = 1;
         updateStatusArticle({
@@ -2178,6 +2197,42 @@ module.exports = {
       }
     }
   },
+  requestGeolocation: async (req, res, next) => {
+    let { articleId } = req.body;
+    let { user } = res.locals;
+    try {
+      if (user.type === "cargo") {
+        let article = await Article.findOne({
+          _id: articleId,
+          $or: [{ author: user._id }, { executors: user._id }],
+        });
+        if (article && article.status === 4) {
+          let userTo = false;
+          if (compareId(article.author, user._id))
+            userTo = article.executors[0];
+          else userTo = article.author;
+          if (userTo)
+            createNotify(
+              userTo,
+              {
+                articleType: article.type,
+                articleId: article.articleId,
+                userFio: user.name.last + " " + user.name.first,
+                userType: user.type,
+              },
+              "ARTICLE_REQUEST_GEOLOCATION",
+              article.type
+            );
+          return res.json({ error: false });
+        }
+      }
+      return res.status(422).json({
+        error: true,
+      });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
 };
 
 Date.prototype.addDays = function(days) {
@@ -2189,20 +2244,32 @@ function compareId(id1, id2) {
   return String(id1) === String(id2);
 }
 
-async function createNotify(user, info, code, type) {
+async function createNotify(
+  user,
+  info,
+  code,
+  type,
+  isPush = true,
+  isMail = true
+) {
   return new Promise(async (resolve, reject) => {
     let notification = new Notification();
     notification.user = user;
     notification.info = info;
     notification.code = code;
     notification.type = type;
-    await notification.save();
-    let mailTemplate = mail.find((item) => item.code === notification.code);
-    if (mailTemplate) {
-      user = await User.findById(user);
-      sendMail(user.email, notification, mailTemplate);
+
+    if (isMail) {
+      let mailTemplate = mail.find((item) => item.code === notification.code);
+      if (mailTemplate) {
+        user = await User.findById(user);
+        sendMail(user.email, notification, mailTemplate);
+      }
     }
-    sendNotification({ userId: user._id, notification });
+    if (isPush) {
+      await notification.save();
+      sendNotification({ userId: user._id, notification });
+    }
     resolve();
   });
 }

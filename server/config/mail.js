@@ -199,11 +199,29 @@ module.exports = [
     code: "ARTICLE_UNPUBLISH",
     title: (info) =>
       `${info.articleType === "offer" ? "Предложение" : "Заказ"} просрочен`,
-    text: (info) => (
-      `<a href="${process.env.CLIENT_URL}/${info.articleType}/${info.articleId}">
-          ${info.articleType === "offer" ? "Предложение" : "Заказ"} № ${info.articleId}
+    text: (info) =>
+      `<a href="${process.env.CLIENT_URL}/${info.articleType}/${
+        info.articleId
+      }">
+          ${info.articleType === "offer" ? "Предложение" : "Заказ"} № ${
+        info.articleId
+      }
         </a>перенесен в статус Черновик по причине просрочки
-      `
-    ),
+      `,
+  },
+  {
+    id: 14,
+    code: "ARTICLE_REQUEST_GEOLOCATION",
+    title: (info) => "Запрос местоположения",
+    text: (info) =>
+      ` По
+      <a href="${process.env.CLIENT_URL}/${info.articleType}/${info.articleId}"
+      >
+        ${info.articleType === "offer" ? "предложению" : "заказу"} № 
+        ${info.articleId}
+      </a>      
+        ${info.userType === "cargo" ? "грузовладелец" : "перевозчик"}
+        ${info.userFio} послал запрос на предоставлене местоположеня.
+      `,
   },
 ];

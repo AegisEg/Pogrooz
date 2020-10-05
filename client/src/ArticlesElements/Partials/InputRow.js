@@ -445,6 +445,12 @@ class InputRow extends React.Component {
         );
       },
       img: GeoDetect,
+      action: () => {
+        this.props.history.push("/geo-detect#" + this.props.article._id);
+      },
+      mobileAction: () => {
+        this.props.history.push("/geo-detect#" + this.props.article._id);
+      },
       status: [4],
       isButton: true,
       className: "border-yellow",
@@ -923,7 +929,7 @@ class InputRow extends React.Component {
           />
         </>
       );
-    } else if (!this.props.onlyOpen)
+    } else if (!this.props.onlyOpen) {
       return (
         <>
           {!this.props.onMobile && (
@@ -1020,6 +1026,7 @@ class InputRow extends React.Component {
           />
         </>
       );
+    }
     return false;
   }
 }

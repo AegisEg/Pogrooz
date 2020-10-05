@@ -141,13 +141,14 @@ export const startLocationSent = (apiToken) => (dispatch) => {
           }),
         });
       },
-      () => {
+      (err) => {
+        console.log(err);
         dispatch({
           type: USER_SET_GEOLOCATION_ERROR,
           payload: { error: true },
         });
       },
-      { timeout: 10000, maximumAge: 10000, enableHighAccuracy: true }
+      {  maximumAge: 10000, enableHighAccuracy: true }
     );
     dispatch({ type: USER_SET_LOCATION_ID, payload: { id } });
   } else
