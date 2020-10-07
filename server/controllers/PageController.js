@@ -57,18 +57,20 @@ module.exports = {
           },
         },
         { $unwind: "$partition" },
-        {
-          $sort: {
-            priority: 1,
-          },
-        },
+
         {
           $group: {
             _id: {
               name: "$partition.name",
+              priority: "$partition.priority",
             },
             partition: { $first: "$partition" },
             items: { $push: "$$ROOT" },
+          },
+        },
+        {
+          $sort: {
+            "_id.priority": 1,
           },
         },
       ]);
