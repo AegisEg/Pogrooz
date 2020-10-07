@@ -5977,9 +5977,31 @@ label {
 }
 .static-page h1.title {
   font-size: 24px;
+  font-weight: normal;
   line-height: 28px;
   color: #171717;
   margin: 45px 0 30px 0;
+}
+.static-page h2 {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #171717;
+}
+.static-page h3 {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  color: #171717;
+}
+.static-page a {
+  font-size: 16px;
+  color: #171717;
+  text-decoration: underline;
+}
+.static-page p {
+  font-size: 14px;
+  color: #6C6C6C;
 }
 .static-page .content {
   font-size: 16px;

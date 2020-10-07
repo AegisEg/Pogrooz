@@ -7,7 +7,7 @@ class EditorText extends React.Component {
       selector: "#editor",
       plugins:
         "advlist autolink lists code link image charmap print preview hr anchor pagebreak",
-      toolbar_mode: "floating",
+      toolbar_mode: "floating numlist bullist",
       setup: (ed) => {
         ed.on("change", (e) => {
           this.props.onChange(this.props.property.name, ed.getContent());
