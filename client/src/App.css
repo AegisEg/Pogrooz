@@ -5975,7 +5975,7 @@ label {
 .static-page {
   min-height: 53vh;
 }
-.static-page h1.title {
+.static-page h1 {
   font-size: 24px;
   font-weight: normal;
   line-height: 28px;
