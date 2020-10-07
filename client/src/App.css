@@ -5975,6 +5975,30 @@ label {
 .static-page {
   min-height: 53vh;
 }
+.static-page ul {
+  color: #6c6c6c;
+}
+.static-page ol {
+  list-style: none;
+  counter-reset: li;
+}
+.static-page ol li::before {
+  content: counter(li);
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #6c6c6c;
+}
+.static-page ol li {
+  counter-increment: li;
+}
+.static-page ol {
+  color: #6c6c6c;
+}
 .static-page h1 {
   font-size: 24px;
   font-weight: normal;
@@ -6001,7 +6025,7 @@ label {
 }
 .static-page p {
   font-size: 14px;
-  color: #6C6C6C;
+  color: #6c6c6c;
 }
 .static-page .content {
   font-size: 16px;
