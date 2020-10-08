@@ -5,7 +5,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../../Elements/Button";
 import Input from "../../Elements/Input";
+import Loading from "../../Elements/Loading";
+import LoadingFixed from "../../Elements/LoadingFixed";
 import CheckBoxSwitcher from "../../Elements/CheckBoxSwitcher";
+import api from "../../config/api";
 import { connect } from "react-redux";
 class InputCartName extends React.Component {
   render() {
@@ -53,6 +56,54 @@ class InputCart extends React.Component {
           <span className="underline four"></span> */}
         </div>
       </>
+    );
+  }
+}
+class Card extends React.Component {
+  render() {
+    return (
+      <div className="card active">
+        <div className="row mx-0">
+          <div className="col-7 f-20">4276 **** **** ****</div>
+          <div className="col-5 text-right">
+            <span className="left-angle white f-12 mr-0">Активна</span>
+          </div>
+          <div
+            className="col-7 f-18"
+            style={{
+              marginTop: "33px",
+            }}
+          >
+            CARDHOLDER NAME
+          </div>
+          <div
+            className="col-5 text-right f-18"
+            style={{
+              marginTop: "33px",
+            }}
+          >
+            22/19
+          </div>
+          <div
+            className="col"
+            style={{
+              marginTop: "17px",
+            }}
+          >
+            <div className="card-hidden"></div>
+          </div>
+          <div
+            className="col-12 text-right"
+            style={{
+              marginTop: "17px",
+            }}
+          >
+            <Button type="empty" paddingVertical="7px" className="border-none">
+              <span className="f-12">Редактировать</span>
+            </Button>
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -155,7 +206,50 @@ class FormNewCart extends React.Component {
 class AutoPay extends React.Component {
   state = {
     enableAutoPay: false,
-    formShow: true,
+    isFetching: true,
+    cards: false,
+  };
+
+  componentDidMount() {
+    this.setState({ isFetching: true }, () => {
+      fetch(`${api.urlApi}/api/tariffs/getMyAutoPayments`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.apiToken}`,
+        },
+      })
+        .then((response) => response.json())
+        .then(({ cards, error }) => {
+          if (cards) {
+            this.setState({ cards, isFetching: false });
+          }
+        });
+    });
+  }
+  addNew = (e) => {
+    e.preventDefault();
+    this.setState({ isFetching: true }, () => {
+      fetch(`${api.urlApi}/api/tariffs/addNewCard`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.apiToken}`,
+        },
+      })
+        .then((response) => response.json())
+        .then(({ response, error }) => {
+          if (!error) {
+            if (response.formUrl) {
+              window.location.href = response.formUrl;
+            } else {
+              this.setState({ isFetching: false });
+            }
+          }
+        });
+    });
   };
   render() {
     return (
@@ -198,127 +292,21 @@ class AutoPay extends React.Component {
           </div>
           <h3 className="f-16 font-weight-normal">Привязанные карты</h3>
           <div className="row card-list">
-            <div className="card active">
-              <div className="row mx-0">
-                <div className="col-7 f-20">4276 **** **** ****</div>
-                <div className="col-5 text-right">
-                  <span className="left-angle white f-12 mr-0">Активна</span>
-                </div>
-                <div
-                  className="col-7 f-18"
-                  style={{
-                    marginTop: "33px",
-                  }}
-                >
-                  CARDHOLDER NAME
-                </div>
-                <div
-                  className="col-5 text-right f-18"
-                  style={{
-                    marginTop: "33px",
-                  }}
-                >
-                  22/19
-                </div>
-                <div
-                  className="col"
-                  style={{
-                    marginTop: "17px",
-                  }}
-                >
-                  <div className="card-hidden"></div>
-                </div>
-                <div
-                  className="col-12 text-right"
-                  style={{
-                    marginTop: "17px",
-                  }}
-                >
-                  <Button
-                    type="empty"
-                    paddingVertical="7px"
-                    className="border-none"
-                  >
-                    <span className="f-12">Редактировать</span>
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <div className="card ">
-              <div className="row mx-0">
-                <div className="col-7 f-20">4276 **** **** ****</div>
-                <div className="col-5 text-right">
-                  <span
-                    className=" f-12 mr-0"
-                    style={{
-                      color: "#B9B9B9",
-                    }}
-                  >
-                    Не активна
-                  </span>
-                </div>
-                <div
-                  className="col-7 f-18"
-                  style={{
-                    marginTop: "33px",
-                  }}
-                >
-                  CARDHOLDER NAME
-                </div>
-                <div
-                  className="col-5 text-right f-18"
-                  style={{
-                    marginTop: "33px",
-                  }}
-                >
-                  22/19
-                </div>
-                <div
-                  className="col"
-                  style={{
-                    marginTop: "17px",
-                  }}
-                >
-                  <div className="card-hidden"></div>
-                </div>
-                <div
-                  className="col-12 text-right"
-                  style={{
-                    marginTop: "17px",
-                  }}
-                >
-                  <Button
-                    type="empty"
-                    paddingVertical="7px"
-                    className="border-none bg-gray mr-2"
-                  >
-                    <span className="f-12">Редактировать</span>
-                  </Button>
-                  <Button
-                    type="fill "
-                    paddingVertical="7px"
-                    className="border-none"
-                  >
-                    <span className="f-12">Активировать</span>
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {this.state.formShow && <FormNewCart />}
-            {!this.state.formShow && (
-              <Link
-                to="/"
-                onClick={(e) => {
-                  e.preventDefault();
-                  this.setState({
-                    formShow: true,
-                  });
-                }}
-                className="href add-new"
-              >
-                + добавить карту
-              </Link>
+            <Loading
+              isLoading={this.state.isFetching && !this.state.cards}
+            ></Loading>
+            <LoadingFixed
+              isLoading={this.state.isFetching && this.state.cards}
+            ></LoadingFixed>
+            {this.state.cards && (
+              <>
+                {this.state.cards.map((item, index) => (
+                  <Card kay={index} card={item} />
+                ))}
+                <Link to="/" onClick={this.addNew} className="href sadd-new">
+                  + добавить карту
+                </Link>
+              </>
             )}
           </div>
         </div>

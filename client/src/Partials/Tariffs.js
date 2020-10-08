@@ -31,10 +31,10 @@ class Tariffs extends React.Component {
         }),
       })
         .then((response) => response.json())
-        .then(({ error, formUrl }) => {
+        .then(({ response, error }) => {
           if (!error) {
-            if (formUrl) {
-              window.location.href = formUrl;
+            if (response.formUrl) {
+              window.location.href = response.formUrl;
             } else {
               this.setState({ isFetching: false });
             }

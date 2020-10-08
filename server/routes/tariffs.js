@@ -10,15 +10,11 @@ const TariffController = require("../controllers/TariffController");
 const BanCheck = require("../middleware/BanCheck");
 router.post("/", TariffController.getTariffs);
 router.post("/buy", verifyToken, BanCheck, TariffController.buy);
+router.get("/check-order", TariffController.check);
 router.post("/payments", verifyToken, TariffController.payments);
-module.exports = router;
+//AutoPay
+router.post("/getMyAutoPayments", verifyToken, TariffController.getMyAutoPayments);
+router.post("/addNewCard", verifyToken, BanCheck, TariffController.addNewCard);
+router.get("/checkCard", TariffController.checkCard);
 
-// const router = require("express").Router();
-// const verifyToken = require("../middleware/verifyToken");
-// const TariffController = require("../controllers/TariffController");
-// const BanCheck = require("../middleware/BanCheck");
-// router.post("/", TariffController.getTariffs);
-// router.post("/buy", verifyToken, BanCheck, TariffController.buy);
-// router.get("/check-order", TariffController.check);
-// router.post("/payments", verifyToken, TariffController.payments);
-// module.exports = router;
+module.exports = router;

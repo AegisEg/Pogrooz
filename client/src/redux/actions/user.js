@@ -142,7 +142,6 @@ export const startLocationSent = (apiToken) => (dispatch) => {
         });
       },
       (err) => {
-        console.log(err);
         dispatch({
           type: USER_SET_GEOLOCATION_ERROR,
           payload: { error: true },

@@ -375,7 +375,6 @@ module.exports = {
           },
         },
       ]);
-      console.log(notificationsOther);
       let notifications = [...notificationsUser, ...notificationsOther]
         .sort((a, b) => {
           return a.createdAt - b.createdAt;

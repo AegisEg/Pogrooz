@@ -103,6 +103,7 @@ const UserSchema = new Schema({
       push: { type: Boolean, default: true },
     },
   },
+  sberBankClientId: { type: String, select: false },
   isVerified: { type: Boolean, select: false },
   isPassportVerified: { type: Boolean, default: false, select: true },
   isPassportUploaded: { type: Boolean, default: false, select: true },

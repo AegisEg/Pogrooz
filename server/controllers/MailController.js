@@ -59,7 +59,5 @@ module.exports = {
                 </p>
             </div>`,
     });
-
-    console.log(result);
   },
 };
