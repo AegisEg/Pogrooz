@@ -11,6 +11,7 @@ import {
   USER_SET_MODERATION_SUCCESS,
   USER_SET_MODERATION_FAIL,
   USER_SET_NEED_LOCATION,
+  USER_TOOGLE_AUTOPAY,
 } from "../constants";
 
 const INITIAL_STATE = {
@@ -27,6 +28,8 @@ const user = (state = INITIAL_STATE, action) => {
         isAuth: true,
       };
     }
+    case USER_TOOGLE_AUTOPAY:
+      return { ...state, isEnableAutoPay: action.payload.isEnableAutoPay };
     case USER_LOGOUT:
       return { isAuth: false };
     case USER_EDIT:

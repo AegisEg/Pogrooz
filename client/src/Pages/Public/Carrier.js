@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 // Elements
 import Button from "../../Elements/Button";
 import Tariffs from "../../Partials/Tariffs";
+import FaqRow from "../../Partials/FaqRow";
 import Filter from "../../Elements/Filter";
 
 // Images
@@ -16,8 +17,6 @@ import ImgHistory from "../../img/history.svg";
 import ImgPhone from "../../img/phone.svg";
 import Imgtamplate from "../../img/tamplate.svg";
 import payIco from "../../img/pay-ico.svg";
-
-import questions from "../../config/questions";
 
 class Carrier extends React.Component {
   state = {
@@ -218,17 +217,19 @@ class Carrier extends React.Component {
                   </div>
                 </div>
                 <div className="px-2 pl-custom mx-auto mx-md-0 mt-3">
-                  <Button
-                    type="fill"
-                    margin={"0 0 0 auto"}
-                    paddingHorizontal={"25px"}
-                    paddingVertical={"5px"}
-                    className="f-17"
-                  >
-                    Попробовать
-                    <br />
-                    БЕСПЛАТНО
-                  </Button>
+                  <Link to="/register">
+                    <Button
+                      type="fill"
+                      margin={"0 0 0 auto"}
+                      paddingHorizontal={"25px"}
+                      paddingVertical={"5px"}
+                      className="f-17"
+                    >
+                      Попробовать
+                      <br />
+                      БЕСПЛАТНО
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -244,43 +245,9 @@ class Carrier extends React.Component {
             </div>
           </div>
         </div>
-        <div className="faq-questions">
-          <hr />
-          <div className="container-fluid">
-            <div className="row">
-              {questions.map((question) => {
-                if (
-                  question.questions.filter((item) => {
-                    return item.type === "carrier" || item.type === "all";
-                  }).length
-                )
-                  return (
-                    <div
-                      className="faq-question col-12 col-sm-6 col-md-4 col-lg-3"
-                      key={question.id}
-                    >
-                      <h4>{question.title}</h4>
-                      <ul>
-                        {question.questions
-                          .filter((item) => {
-                            return (
-                              item.type === "carrier" || item.type === "all"
-                            );
-                          })
-                          .map((question) => {
-                            return (
-                              <li key={question.id}>
-                                <Link to="/">{question.title}</Link>
-                              </li>
-                            );
-                          })}
-                      </ul>
-                    </div>
-                  );
-                else return <></>;
-              })}
-            </div>
-          </div>
+        <hr />
+        <div className="container-fluid ">
+          <FaqRow q="" type="carrier" />
         </div>
       </div>
     );

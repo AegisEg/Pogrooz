@@ -70,7 +70,7 @@ class Questions extends React.Component {
   render() {
     return (
       <>
-        <div className="static-page">
+        <div className="about-page">
           <Loading isLoading={this.state.isFetching} />
           <CSSTransitionGroup
             transitionName="height-animation-item"
@@ -81,52 +81,50 @@ class Questions extends React.Component {
             }}
           >
             {!this.state.isFetching && !this.state.notFound && (
-              <div className="about-page">
-                <div className="container-fluid">
-                  <a
-                    className="href hover left-angle  angle-go d-block"
-                    style={{
-                      maxWidth: "50px",
-                    }}
-                    onClick={() => {
-                      if (this.props.user.isAuth)
-                        this.props.history.push("/support");
-                      else this.props.history.push("/faq");
-                    }}
-                  >
-                    Назад
-                  </a>
-                  <h1>{this.state.partial.title}</h1>
-                  <ul>
-                    {this.state.partial.questions.map((question, index) => {
-                      return (
-                        <li key={index}>
-                          <Link
-                            to={""}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              scrollToAnswer(question.ref);
-                            }}
-                          >
-                            {question.title} »
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+              <div className="container-fluid">
+                <a
+                  className="href hover left-angle  angle-go d-block"
+                  style={{
+                    maxWidth: "50px",
+                  }}
+                  onClick={() => {
+                    if (this.props.user.isAuth)
+                      this.props.history.push("/support");
+                    else this.props.history.push("/faq");
+                  }}
+                >
+                  Назад
+                </a>
+                <h1>{this.state.partial.title}</h1>
+                <ul className="head-list">
                   {this.state.partial.questions.map((question, index) => {
                     return (
-                      <div id={question._id} key={index}>
-                        <h3 ref={question.ref}>{question.title}</h3>
-                        <div
-                          className="content"
-                          dangerouslySetInnerHTML={{ __html: question.content }}
-                        ></div>
-                        <hr></hr>
-                      </div>
+                      <li key={index}>
+                        <Link
+                          to={""}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            scrollToAnswer(question.ref);
+                          }}
+                        >
+                          {question.title} »
+                        </Link>
+                      </li>
                     );
                   })}
-                </div>
+                </ul>
+                {this.state.partial.questions.map((question, index) => {
+                  return (
+                    <div id={question._id} key={index}>
+                      <h2 ref={question.ref}>{question.title}</h2>
+                      <div
+                        className="content"
+                        dangerouslySetInnerHTML={{ __html: question.content }}
+                      ></div>
+                      <hr></hr>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </CSSTransitionGroup>

@@ -2421,16 +2421,23 @@ a.href.hover:hover {
   padding: 0;
   margin-bottom: 45px;
 }
-.about-page ul li {
+.about-page ul.head-list li {
   list-style: none;
   line-height: 20px;
 }
-.about-page ul li a {
+.about-page ul.head-list li a {
   font-size: 16px;
   color: #9509ef;
 }
-.about-page h3 {
+.about-page h2 {
   font-size: 16px;
+  color: #171717;
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.about-page h3 {
+  font-size: 14px;
   color: #171717;
   font-weight: normal;
   margin: 0;
@@ -2442,7 +2449,7 @@ a.href.hover:hover {
   font-weight: normal;
   margin: 0;
 }
-.about-page p {
+.about-page p,.about-page ul {
   font-size: 14px;
   color: #6c6c6c;
   font-weight: normal;
@@ -4091,7 +4098,6 @@ table {
   margin-right: -8px !important;
   padding: 20px 0;
   position: relative;
-  width: max-content !important;
   max-width: 100% !important;
 }
 .card.active > .row {
@@ -5975,8 +5981,10 @@ label {
 .static-page {
   min-height: 53vh;
 }
-.static-page ul {
+.static-page ul,
+.about-page ul:not(.head-list) {
   color: #6c6c6c;
+  list-style:inside;
 }
 .static-page ol {
   list-style: none;

@@ -16,6 +16,7 @@ router.post("/get-online", verifyToken, UserController.getOnline);
 router.post("/user-edit", verifyToken, UserController.profileEdit);
 router.post("/password-change", verifyToken, UserController.passChange);
 router.post("/save-settings", verifyToken, UserController.notificationSettings);
+router.post("/toogleAutoPay", verifyToken, UserController.toogleAutoPay);
 router.post("/getSettings", verifyToken, UserController.getSettings);
 router.post("/userBan", adminVerifi, UserController.userBan);
 router.post("/modarationFail", adminVerifi, UserController.modarationFail);

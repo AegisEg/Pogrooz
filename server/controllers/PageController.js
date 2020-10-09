@@ -94,7 +94,7 @@ module.exports = {
       });
       return res.json({ items, settings: settingsNew });
     } catch (e) {
-      console.log(e);
+      return next(new Error(e));
     }
   },
 };

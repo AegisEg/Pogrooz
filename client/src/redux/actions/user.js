@@ -8,6 +8,7 @@ import {
   DIALOGS_SET_NOREAD,
   USER_SET_GEOLOCATION_ERROR,
   USER_SET_LOCATION_ID,
+  USER_TOOGLE_AUTOPAY,
 } from "../constants";
 import store from "../store";
 import api from "../../config/api";
@@ -94,6 +95,29 @@ export const userEdit = (userChange, apiToken) => (dispatch) => {
       });
   });
 };
+export const toogleAutoPay = (apiToken) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${api.urlApi}/api/user/toogleAutoPay`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+    })
+      .then((response) => response.json())
+      .then(({ isEnableAutoPay, error }) => {
+        if (!error) {
+          dispatch({
+            type: USER_TOOGLE_AUTOPAY,
+            payload: { isEnableAutoPay },
+          });
+        }
+        resolve();
+      });
+  });
+};
+
 export const passChange = (passObj, apiToken) => (dispatch) => {
   return new Promise((resolve, reject) => {
     fetch(`${api.urlApi}/api/user/password-change`, {
@@ -147,7 +171,7 @@ export const startLocationSent = (apiToken) => (dispatch) => {
           payload: { error: true },
         });
       },
-      {  maximumAge: 10000, enableHighAccuracy: true }
+      { maximumAge: 10000, enableHighAccuracy: true }
     );
     dispatch({ type: USER_SET_LOCATION_ID, payload: { id } });
   } else

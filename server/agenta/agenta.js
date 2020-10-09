@@ -5,6 +5,7 @@ const User = require("../models/User");
 const { donTariff, cancelBan } = require("../controllers/SocketController");
 const { cancelBanUser } = require("../controllers/UserController");
 const { articleUnpulish } = require("../controllers/ArticleController");
+const { autoPayment } = require("../controllers/TariffController");
 const agenda = new Agenda().mongo(mongoose.connection, "jobs");
 agenda.define("setTarrifCancel", async (job) => {
   let userId = job.attrs.data.userId;
@@ -14,8 +15,17 @@ agenda.define("setTarrifCancel", async (job) => {
     expiriesAt: { $gte: Date.now() },
   }).sort({ expiriesAt: -1 });
   if (!tarrif) {
-    donTariff({ userId: userId });
-    await User.findOneAndUpdate({ _id: userId }, { $set: { isTariff: false } });
+    let autopay = false;
+    let user = await User.findById(userId).select("bindingIdCard");
+    if (user.isEnableAutoPay && user.bindingIdCard) {
+      autopay = autoPayment(user);
+    }
+    //Если автоплатеж не включен
+    if (!autopay) {
+      donTariff({ userId: userId });
+      user.isTariff = false;
+      await user.save();
+    }
   }
   await agenda.cancel({ _id: job.attrs._id });
 });

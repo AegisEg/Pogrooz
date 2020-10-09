@@ -3,10 +3,17 @@ const Payment = require("../models/Payment");
 const { setTariff } = require("../controllers/SocketController");
 const User = require("../models/User");
 const request = require("request");
+const ip = require("ip");
 const orderLink = "https://3dsec.sberbank.ru/payment/rest/registerPreAuth.do";
 const statusLink = "https://3dsec.sberbank.ru/payment/rest/getOrderStatus.do";
 const finishLink = "https://3dsec.sberbank.ru/payment/rest/deposit.do";
-
+const statusLinkAuto =
+  "https://3dsec.sberbank.ru/payment/rest/getOrderStatusExtended.do";
+const getBindings = "https://3dsec.sberbank.ru/payment/rest/getBindings.do";
+const unBindCard = "https://3dsec.sberbank.ru/payment/rest/unBindCard.do";
+const paymentOrderBinding =
+  "https://3dsec.sberbank.ru/payment/rest/paymentOrderBinding.do";
+const reverseDo = "https://3dsec.sberbank.ru/payment/rest/reverse.do";
 module.exports = {
   getTariffs: async (req, res, next) => {
     try {
@@ -41,11 +48,146 @@ module.exports = {
   getMyAutoPayments: async (req, res, next) => {
     let { user } = res.locals;
     try {
-      user = User.findById(user._id).select("sberBankClientId");
-      if (user.sberBankClientId) {
-      } else return res.json({ cards: [] });
+      let params = {};
+      user = await User.findById(user._id).select("bindingIdCard");
+      params.clientId = user._id;
+      params.userName = process.env.SB_USERNAME;
+      params.password = process.env.SB_PASSWORD;
+      let response = await sendRequest(getBindings, "GET", params);
+      return res.json({
+        cards: response.bindings,
+        bindingIdCard: user.bindingIdCard,
+      });
     } catch (e) {
-      console.log(e);
+      return next(new Error(e));
+    }
+  },
+  autoPayment: async (user, bindingId) => {
+    try {
+      let tariff = await Tariff.findOne({ duration: 30 });
+      if (user.type === "carrier" && tariff) {
+        let lastPaymentExpiriesAt = await Payment.findOne(
+          {
+            userId: user._id,
+            status: "success",
+            expiriesAt: { $gte: Date.now() },
+          },
+          "expiriesAt",
+          { sort: { expiriesAt: -1 } }
+        );
+        const payment = new Payment();
+        if (lastPaymentExpiriesAt)
+          lastPaymentExpiriesAt = lastPaymentExpiriesAt.expiriesAt.getTime();
+        else lastPaymentExpiriesAt = Date.now();
+        payment.userId = user._id;
+        payment.tariff = tariff;
+        payment.startedAt = lastPaymentExpiriesAt;
+        payment.expiriesAt =
+          lastPaymentExpiriesAt + Number(tariff.duration) * 1000 * 60 * 60 * 24;
+        payment.updatedAt = Date.now();
+        let params = {};
+        params.userName = process.env.SB_USERNAME;
+        params.password = process.env.SB_PASSWORD;
+        params.clientId = user._id;
+        //Тут параметры url для красоты
+        params.returnUrl = `${process.env.API_URL}`;
+        params.failUrl = `${process.env.CLIENT_URL}`;
+        params.features = "AUTO_PAYMENT";
+        params.orderNumber = payment._id;
+        params.bindingId = user.bindingIdCard;
+        let price =
+          tariff.price -
+          (!!tariff.discount ? tariff.price * tariff.discount * 0.01 : 0);
+        params.amount = price * 100; // *Умножение на 100 так как стоимость указывается в копейках
+        //Создание заказа
+        let response = await sendRequest(orderLink, "POST", params);
+        if (!response.errorCode) {
+          payment.orderId = response.orderId;
+          await payment.save();
+          params = {};
+          params.userName = process.env.SB_USERNAME;
+          params.password = process.env.SB_PASSWORD;
+          params.mdOrder = payment.orderId;
+          params.bindingId = bindingId;
+          params.ip = ip.address();
+          //Запрос на оплату по автоплатежу
+          response = await sendRequest(paymentOrderBinding, "POST", params);
+          if (!response.errorCode) {
+            payment.status = "hold";
+            await payment.save();
+            params = {};
+            params.userName = process.env.SB_USERNAME;
+            params.password = process.env.SB_PASSWORD;
+            params.orderId = payment.orderId;
+            params.amount = price * 100; // *Умножение на 100 так как стоимость указывается в копейках
+            //Списание оплаты
+            response = await sendRequest(finishLink, "POST", params);
+            if (response.errorCode === "0") {
+              payment.status = "success";
+              payment.expiriesAt =
+                Date.now() + payment.tariff.duration * 1000 * 60 * 60 * 24;
+              payment.updatedAt = Date.now();
+              payment.startedAt = Date.now();
+              await payment.save();
+              const agenda = require("../agenta/agenta");
+              let job = await agenda.schedule(
+                payment.expiriesAt,
+                "setTarrifCancel",
+                {
+                  userId: payment.userId,
+                }
+              );
+              await User.findOneAndUpdate(
+                { _id: payment.userId },
+                { $set: { isTariff: true } }
+              );
+              setTariff({
+                userId: payment.userId,
+                tariff: payment.tariff,
+                expiriesAt: payment.expiriesAt,
+              });
+              return true;
+            } else return false;
+          } else return false;
+        } else return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  },
+  removeCard: async (req, res, next) => {
+    let { user } = res.locals;
+    let { bindingId } = req.body;
+    try {
+      let params = {};
+      params.userName = process.env.SB_USERNAME;
+      params.password = process.env.SB_PASSWORD;
+      params.bindingId = bindingId;
+      let response = await sendRequest(unBindCard, "GET", params);
+
+      if (response.errorCode === "0") {
+        await User.findOneAndUpdate(
+          {
+            _id: user._id,
+            bindingIdCard: bindingId,
+          },
+          { $set: { bindingIdCard: false } }
+        );
+        return res.json({ error: false });
+      } else return res.json({ error: true });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
+  bindCard: async (req, res, next) => {
+    const { bindingId } = req.body;
+    let { user } = res.locals;
+    try {
+      user.bindingIdCard = bindingId;
+      await user.save();
+      return res.json({ error: false });
+    } catch (e) {
+      return next(new Error(e));
     }
   },
   buy: async (req, res, next) => {
@@ -119,7 +261,6 @@ module.exports = {
   },
   check: async (req, res, next) => {
     const { orderId, from } = req.query;
-
     try {
       let payment = await Payment.findOne({ orderId }).populate("tariff");
 
@@ -135,8 +276,10 @@ module.exports = {
         payment.updateAt = Date.now();
         await payment.save();
         let price =
-          tariff.price -
-          (!!tariff.discount ? tariff.price * tariff.discount * 0.01 : 0);
+          payment.tariff.price -
+          (!!payment.tariff.discount
+            ? payment.tariff.price * payment.tariff.discount * 0.01
+            : 0);
         params.amount = price * 100; // *Умножение на 100 так как стоимость указывается в копейках
 
         let response = await sendRequest(finishLink, "GET", params);
@@ -148,7 +291,6 @@ module.exports = {
           payment.updatedAt = Date.now();
           payment.startedAt = Date.now();
           await payment.save();
-
           const agenda = require("../agenta/agenta");
           let job = await agenda.schedule(
             payment.expiriesAt,
@@ -209,24 +351,46 @@ module.exports = {
   },
   addNewCard: async (req, res, next) => {
     const { user } = res.locals;
-    let payment = new Payment();
-    payment.userId = user._id;
-    payment.updatedAt = Date.now();
     let params = {};
     params.userName = process.env.SB_USERNAME;
     params.password = process.env.SB_PASSWORD;
-    params.orderNumber = payment._id;
+    params.clientId = user._id;
+    params.orderNumber = randomInteger(0, 1000000);
     params.amount = 1; // *Умножение на 100 так как стоимость указывается в копейках
     params.returnUrl = `${process.env.API_URL}/api/tariffs/checkCard`;
     params.failUrl = `${process.env.CLIENT_URL}`;
     let response = await sendRequest(orderLink, "GET", params);
-    if (response.orderId) {
-      payment.orderId = response.orderId;
-    }
-    await payment.save();
     return res.json({ response });
   },
-  checkCard: async (req, res, next) => {},
+  checkCard: async (req, res, next) => {
+    const { orderId } = req.query;
+    try {
+      let params = {};
+      params.userName = process.env.SB_USERNAME;
+      params.password = process.env.SB_PASSWORD;
+      params.orderId = orderId;
+      params.amount = 1;
+      let response = await sendRequest(statusLinkAuto, "GET", params);
+      if (response.orderStatus === 1) {
+        response = await sendRequest(reverseDo, "GET", params);
+        res.writeHead(301, {
+          Location: `${
+            process.env.CLIENT_URL
+          }/autopay?paySuccess=success&uuid=${randomInteger(0, 1000000)}`,
+        });
+      } else {
+        res.writeHead(301, {
+          Location: `${
+            process.env.CLIENT_URL
+          }/autopay?paySuccess=false&uuid=${randomInteger(0, 1000000)}`,
+        });
+      }
+
+      return res.end();
+    } catch (error) {
+      return next(new Error(error));
+    }
+  },
 };
 function sendRequest(url, method, params) {
   return new Promise((resolve) => {
@@ -237,10 +401,14 @@ function sendRequest(url, method, params) {
     }
 
     if (params) link = link.substr(0, link.length - 1);
-
-    request(link, function(err, res, body) {
-      resolve(JSON.parse(body.toString()));
-    });
+    if (method === "POST")
+      request.post(link, function(err, res, body) {
+        resolve(JSON.parse(body.toString()));
+      });
+    else
+      request(link, function(err, res, body) {
+        resolve(JSON.parse(body.toString()));
+      });
   });
 }
 function randomInteger(min, max) {

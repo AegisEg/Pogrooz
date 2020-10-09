@@ -80,7 +80,6 @@ module.exports = {
       if (newUser.type === "carrier") setDemoTariff(newUser._id);
       return res.json({ token, user: newUser });
     } catch (e) {
-      console.log(e);
       return next(new Error(e));
     }
   },
@@ -106,7 +105,6 @@ module.exports = {
       );
       return res.json({ error: error, code: codeHash });
     } catch (e) {
-      console.log(e);
       return next(new Error(e));
     }
   },
@@ -229,7 +227,6 @@ module.exports = {
         return res.status(409).json({ error: true, errors: [err] });
       }
     } catch (e) {
-      console.log(e);
       return next(new Error(e));
     }
   },

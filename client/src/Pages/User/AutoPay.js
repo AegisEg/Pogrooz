@@ -4,70 +4,31 @@ import React from "react";
 // Router
 import { Link } from "react-router-dom";
 import Button from "../../Elements/Button";
-import Input from "../../Elements/Input";
 import Loading from "../../Elements/Loading";
 import LoadingFixed from "../../Elements/LoadingFixed";
 import CheckBoxSwitcher from "../../Elements/CheckBoxSwitcher";
 import api from "../../config/api";
 import { connect } from "react-redux";
-class InputCartName extends React.Component {
-  render() {
-    return (
-      <div className="position-relative input-name-cart">
-        <input
-          type="text"
-          value={this.props.value}
-          onChange={(e) => {
-            let value = e.target.value.toUpperCase();
-            if (/[a-zA-Z]+/gi.test(value) || value.length === 0)
-              this.props.onChange(value);
-          }}
-        />
-      </div>
-    );
-  }
-}
-class InputCart extends React.Component {
-  render() {
-    return (
-      <>
-        <div className="position-relative input-cart-wrapper">
-          <input
-            type="tel"
-            value={this.props.value}
-            className="input-cart"
-            onChange={(e) => {
-              let value = e.target.value;
-              if (value.length === 0) this.props.onChange("");
-              else if (value.length <= 22) {
-                if (/^[0-9]+$/.test(value.replace(/\s+/g, "")))
-                  this.props.onChange(
-                    value
-                      .replace(/\s+/g, "")
-                      .match(/.{1,4}/g)
-                      .join("  ")
-                  );
-              }
-            }}
-          />
-          {/* <span className="underline one"></span>
-          <span className="underline two"></span>
-          <span className="underline three"></span>
-          <span className="underline four"></span> */}
-        </div>
-      </>
-    );
-  }
-}
+import { toast } from "react-toastify";
+import { bindActionCreators } from "redux";
+import { CSSTransitionGroup } from "react-transition-group";
+import * as userActions from "../../redux/actions/user";
 class Card extends React.Component {
   render() {
     return (
-      <div className="card active">
+      <div className={`card ${this.props.active ? "active" : ""}`}>
         <div className="row mx-0">
-          <div className="col-7 f-20">4276 **** **** ****</div>
-          <div className="col-5 text-right">
-            <span className="left-angle white f-12 mr-0">Активна</span>
-          </div>
+          <div className="col-7 f-20">{this.props.card.maskedPan}</div>
+          {this.props.active && (
+            <div className="col-5 text-right">
+              <span className="left-angle white f-12 mr-0">Активна</span>
+            </div>
+          )}
+          {!this.props.active && (
+            <div className="col-5 f-12 text-right">
+              <span style={{ color: "#B9B9B9" }}>Не активна</span>
+            </div>
+          )}
           <div
             className="col-7 f-18"
             style={{
@@ -82,7 +43,8 @@ class Card extends React.Component {
               marginTop: "33px",
             }}
           >
-            22/19
+            {this.props.card.expiryDate.slice(4, 6)}/
+            {this.props.card.expiryDate.slice(2, 4)}
           </div>
           <div
             className="col"
@@ -96,107 +58,31 @@ class Card extends React.Component {
             className="col-12 text-right"
             style={{
               marginTop: "17px",
-            }}
-          >
-            <Button type="empty" paddingVertical="7px" className="border-none">
-              <span className="f-12">Редактировать</span>
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-class FormNewCart extends React.Component {
-  state = {
-    cartNumber: "",
-    nameCart: "",
-  };
-
-  render() {
-    return (
-      <div className="card form">
-        <div className="row mx-0  align-items-start">
-          <div className="col-8 row mx-0">
-            <div
-              className="f-12"
-              style={{
-                color: "#B9B9B9",
-              }}
-            >
-              Номер карты
-            </div>
-            <InputCart
-              onChange={(val) => {
-                this.setState({ cartNumber: val });
-              }}
-              value={this.state.cartNumber}
-            />
-            <InputCartName
-              onChange={(val) => {
-                this.setState({ nameCart: val });
-              }}
-              value={this.state.nameCart}
-            />
-          </div>
-
-          <div
-            className="col-4 text-right f-18"
-            style={{
-              alignSelf: "flex-end",
-            }}
-          >
-            <div
-              className="f-12 text-left"
-              style={{
-                color: "#B9B9B9",
-                marginBottom: "5px",
-              }}
-            >
-              Срок
-              <br /> действия
-            </div>
-            <div className="row expires">
-              <div className="col-6">
-                <Input
-                  type="number"
-                  className="not-border px-0"
-                  value={this.state.month}
-                />
-              </div>
-              <div className="col-6">
-                <Input
-                  type="number"
-                  className="not-border px-0"
-                  value={this.state.month}
-                />
-              </div>
-            </div>
-          </div>
-          <div
-            className="col"
-            style={{
-              marginTop: "12px",
-            }}
-          >
-            <div className="card-hidden"></div>
-          </div>
-          <div
-            className="col-12 text-right"
-            style={{
-              marginTop: "17px",
+              height: "38px",
             }}
           >
             <Button
               type="empty"
               paddingVertical="7px"
-              className="border-none bg-gray mr-2"
+              className="border-none"
+              onClick={() => {
+                this.props.removeCard(this.props.card.bindingId);
+              }}
             >
-              <span className="f-12">Редактировать</span>
+              <span className="f-12">Удалить</span>
             </Button>
-            <Button type="fill " paddingVertical="7px" className="border-none">
-              <span className="f-12">Активировать</span>
-            </Button>
+            {!this.props.active && (
+              <Button
+                type="fill"
+                paddingVertical="7px"
+                className="border-none"
+                onClick={() => {
+                  this.props.activateCard(this.props.card.bindingId);
+                }}
+              >
+                <span className="f-12">Активировать</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -207,6 +93,7 @@ class AutoPay extends React.Component {
   state = {
     enableAutoPay: false,
     isFetching: true,
+    bindingIdCard: false,
     cards: false,
   };
 
@@ -221,13 +108,34 @@ class AutoPay extends React.Component {
         },
       })
         .then((response) => response.json())
-        .then(({ cards, error }) => {
-          if (cards) {
-            this.setState({ cards, isFetching: false });
-          }
+        .then(({ cards, bindingIdCard, error }) => {
+          this.setState({ cards, bindingIdCard, isFetching: false });
         });
     });
   }
+  activateCard = (bindingId) => {
+    this.setState({ isFetching: true }, () => {
+      fetch(`${api.urlApi}/api/tariffs/bindCard`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.apiToken}`,
+        },
+        body: JSON.stringify({
+          bindingId: bindingId,
+        }),
+      })
+        .then((response) => response.json())
+        .then(({ errorCode }) => {
+          if (!errorCode) {
+            toast.success("Карта успешно активированна");
+            this.setState({ bindingIdCard: bindingId });
+          } else toast.error("Карта не активирована");
+          this.setState({ isFetching: false });
+        });
+    });
+  };
   addNew = (e) => {
     e.preventDefault();
     this.setState({ isFetching: true }, () => {
@@ -251,6 +159,34 @@ class AutoPay extends React.Component {
         });
     });
   };
+  removeCard = (bindingId) => {
+    this.setState({ isFetching: true }, () => {
+      fetch(`${api.urlApi}/api/tariffs/removeCard`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.apiToken}`,
+        },
+        body: JSON.stringify({
+          bindingId: bindingId,
+        }),
+      })
+        .then((response) => response.json())
+        .then(({ error }) => {
+          let state = {};
+          if (!error) {
+            toast.success("Карта успешно удалена");
+            if (this.state.bindingIdCard === bindingId)
+              state.bindingIdCard = false;
+            state.cards = this.state.cards.filter(
+              (item) => item.bindingId !== bindingId
+            );
+          } else toast.error("Карта не удалена");
+          this.setState({ isFetching: false, ...state });
+        });
+    });
+  };
   render() {
     return (
       <div className="standart-page">
@@ -269,21 +205,23 @@ class AutoPay extends React.Component {
               <div
                 className="mr-4 f-14"
                 style={{
-                  color: this.state.enableAutoPay ? "#B9B9B9" : "",
+                  color: this.props.user.isEnableAutoPay ? "#B9B9B9" : "",
                 }}
               >
-                Включить
+                Вы ключить
               </div>
               <CheckBoxSwitcher
-                val={this.state.enableAutoPay}
+                val={this.props.user.isEnableAutoPay}
                 onChange={() => {
-                  this.setState({ enableAutoPay: !this.state.enableAutoPay });
+                  this.props.userActions.toogleAutoPay(
+                    this.props.user.apiToken
+                  );
                 }}
               />
               <div
                 className="ml-4 f-14"
                 style={{
-                  color: !this.state.enableAutoPay ? "#B9B9B9" : "",
+                  color: !this.props.user.isEnableAutoPay ? "#B9B9B9" : "",
                 }}
               >
                 Включить
@@ -298,16 +236,33 @@ class AutoPay extends React.Component {
             <LoadingFixed
               isLoading={this.state.isFetching && this.state.cards}
             ></LoadingFixed>
-            {this.state.cards && (
-              <>
-                {this.state.cards.map((item, index) => (
-                  <Card kay={index} card={item} />
-                ))}
-                <Link to="/" onClick={this.addNew} className="href sadd-new">
-                  + добавить карту
-                </Link>
-              </>
-            )}
+            <CSSTransitionGroup
+              transitionName="height-animation-item"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={1}
+              style={{
+                display: "contents",
+              }}
+            >
+              {this.state.cards && this.props.user.isEnableAutoPay && (
+                <>
+                  {this.state.cards.map((item, index) => (
+                    <Card
+                      kay={index}
+                      active={item.bindingId === this.state.bindingIdCard}
+                      card={item}
+                      removeCard={this.removeCard}
+                      activateCard={this.activateCard}
+                    />
+                  ))}
+                  <div className="col-12  mt-3 text-center">
+                    <Link to="/" onClick={this.addNew} className="href">
+                      + добавить карту
+                    </Link>
+                  </div>
+                </>
+              )}
+            </CSSTransitionGroup>
           </div>
         </div>
       </div>
@@ -319,5 +274,9 @@ const mapStateToProps = (state) => {
     user: state.user,
   };
 };
-
-export default connect(mapStateToProps)(AutoPay);
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(userActions, dispatch),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AutoPay);

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../../Elements/Button";
-
+import FaqRow from "../../Partials/FaqRow";
 // Images
 import ImgFree from "../../img/free.svg";
 import ImgLk from "../../img/lk.svg";
@@ -15,8 +15,6 @@ import ImgGeo from "../../img/geo.svg";
 import ImgPhone from "../../img/phone.svg";
 import ImgBigStar from "../../img/big-star.svg";
 import Filter from "../../Elements/Filter";
-
-import questions from "../../config/questions";
 
 class Cargo extends React.Component {
   state = {
@@ -179,37 +177,7 @@ class Cargo extends React.Component {
         </div>
 
         <div className="container-fluid ">
-          <div className="faq-questions row">
-            {questions.map((question) => {
-              if (
-                question.questions.filter((item) => {
-                  return item.type === "cargo" || item.type === "all";
-                }).length
-              )
-                return (
-                  <div
-                    className="faq-question col-12 col-sm-6 col-md-4 col-lg-3"
-                    key={question.id}
-                  >
-                    <h4>{question.title}</h4>
-                    <ul>
-                      {question.questions
-                        .filter((item) => {
-                          return item.type === "cargo" || item.type === "all";
-                        })
-                        .map((question) => {
-                          return (
-                            <li key={question.id}>
-                              <Link to="/">{question.title}</Link>
-                            </li>
-                          );
-                        })}
-                    </ul>
-                  </div>
-                );
-              else return <></>;
-            })}
-          </div>
+          <FaqRow q="" type="cargo" />
         </div>
       </div>
     );

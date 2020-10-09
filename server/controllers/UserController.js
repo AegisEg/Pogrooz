@@ -351,7 +351,17 @@ module.exports = {
       }
       return res.json({ error: true });
     } catch (error) {
-      console.log(error);
+      return next(new Error(e));
+    }
+  },
+  toogleAutoPay: async (req, res, next) => {
+    let { user } = res.locals;
+    try {
+      user.isEnableAutoPay = !user.isEnableAutoPay;
+      await user.save();
+      return res.json({ isEnableAutoPay: user.isEnableAutoPay });
+    } catch (e) {
+      return next(new Error(e));
     }
   },
   sendNotify: async (req, res, next) => {
@@ -405,7 +415,7 @@ module.exports = {
         if (user.banJobId) await agenda.cancel({ _id: user.banJobId });
       }
     } catch (e) {
-      console.log(e);
+      return next(new Error(e));
     }
   },
   cancelBanUser: cancelBanUser,
