@@ -231,6 +231,7 @@ module.exports = {
             params.userName = process.env.SB_USERNAME;
             params.password = process.env.SB_PASSWORD;
             params.orderNumber = payment._id;
+            params.clientId = user._id;
             let price =
               tariff.price -
               (!!tariff.discount ? tariff.price * tariff.discount * 0.01 : 0);
