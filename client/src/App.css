@@ -2449,7 +2449,8 @@ a.href.hover:hover {
   font-weight: normal;
   margin: 0;
 }
-.about-page p,.about-page ul {
+.about-page p,
+.about-page ul {
   font-size: 14px;
   color: #6c6c6c;
   font-weight: normal;
@@ -5984,7 +5985,7 @@ label {
 .static-page ul,
 .about-page ul:not(.head-list) {
   color: #6c6c6c;
-  list-style:inside;
+  list-style: inside;
 }
 .static-page ol {
   list-style: none;
@@ -6106,4 +6107,14 @@ label {
 .verified-field .input-error-label {
   width: calc(100% - 48px);
   padding-left: 0px;
+}
+.isDemoUsed.tariff-wrapper .tariff {
+  background-color: #f7f7f7;
+}
+.isDemoUsed.tariff-wrapper .button-fill::before{
+  display: none;
+}
+.isDemoUsed.tariff-wrapper .button-fill{
+  background-color: #EEEEEE!important;
+  border: none;
 }

@@ -375,12 +375,13 @@ async function InfoForLogin(user) {
     user: user,
     isRead: false,
   }).sort({ createdAt: -1 });
-
+  let oneweekago = new Date(new Date() - 7 * 24 * 60 * 60 * 1000);
   let notificationCounts = await Notification.aggregate([
     {
       $match: {
         user: user._id,
         isRead: false,
+        createdAt: { $gte: oneweekago },
       },
     },
     {

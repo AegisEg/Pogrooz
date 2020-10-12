@@ -151,7 +151,7 @@ class AutoPay extends React.Component {
         .then(({ response, error }) => {
           if (!error) {
             if (response.formUrl) {
-              window.location.href = response.formUrl;
+              window.open(response.formUrl);
             } else {
               this.setState({ isFetching: false });
             }
@@ -208,7 +208,7 @@ class AutoPay extends React.Component {
                   color: this.props.user.isEnableAutoPay ? "#B9B9B9" : "",
                 }}
               >
-                Вы ключить
+                Выключить
               </div>
               <CheckBoxSwitcher
                 val={this.props.user.isEnableAutoPay}
@@ -259,6 +259,11 @@ class AutoPay extends React.Component {
                     <Link to="/" onClick={this.addNew} className="href">
                       + добавить карту
                     </Link>
+                  </div>
+                  <div className="col-12  mt-3  f-12 text-left">
+                    Если у Вас привязано более 1 карты: чтобы сменить карту для
+                    автоплатежа нажмите на кнопку Активировать на неактивной
+                    карте.
                   </div>
                 </>
               )}

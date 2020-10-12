@@ -29,10 +29,11 @@ class Support extends React.Component {
         <div className="container-fluid">
           <h2 className="title">Мои тариф</h2>
           <div className="row align-items-center">
-            <p className="f-14 mt-2 d-inline-block px-3">
+            <p className="f-14 mt-2 px-3">
               {!this.props.user.expiriesTariffAt && !tariff && (
                 <>
-                  <Warning /> Профиль скрыт
+                  <Warning />{" "}
+                  <span style={{ color: "#DD2828" }}>Профиль скрыт</span>
                 </>
               )}
 
@@ -42,7 +43,7 @@ class Support extends React.Component {
                   new Date()
                 ) <= 3 && (
                   <>
-                    <span>
+                    <span style={{ color: "#DD2828" }}>
                       {tariff.name} {tariff.isDemo ? "активен" : "оплачен"} до{" "}
                       {new Date(this.props.user.expiriesTariffAt).toDateR()}
                     </span>
@@ -60,7 +61,7 @@ class Support extends React.Component {
                     </span>
                   </>
                 )}
-            </p>
+            </p>{" "}
             <div className="col mt-2">
               <Button
                 type="fill"
@@ -75,6 +76,14 @@ class Support extends React.Component {
                 Пополнить
               </Button>
             </div>
+            {!this.props.user.expiriesTariffAt && !tariff && (
+              <p className="col-12 f-14 mt-2">
+                Оплатите тариф PRO для активации профиля.
+                <br />
+                Ваш профиль и предложения скрыты.{" "}
+                <b>Вы не можете брать заказы</b>.
+              </p>
+            )}
           </div>
 
           <PayHistoryTable user={this.props.user} />

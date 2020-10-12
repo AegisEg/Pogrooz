@@ -1,9 +1,15 @@
 const Tariff = require("../models/Tariff");
 const Payment = require("../models/Payment");
-const { setTariff } = require("../controllers/SocketController");
+const Notification = require("../models/Notification");
+const {
+  setTariff,
+  sendNotification,
+} = require("../controllers/SocketController");
+let { sendMail } = require("../controllers/MailController");
 const User = require("../models/User");
 const request = require("request");
 const ip = require("ip");
+const mail = require("../config/mail");
 const orderLink = "https://3dsec.sberbank.ru/payment/rest/registerPreAuth.do";
 const statusLink = "https://3dsec.sberbank.ru/payment/rest/getOrderStatus.do";
 const finishLink = "https://3dsec.sberbank.ru/payment/rest/deposit.do";
@@ -14,6 +20,7 @@ const unBindCard = "https://3dsec.sberbank.ru/payment/rest/unBindCard.do";
 const paymentOrderBinding =
   "https://3dsec.sberbank.ru/payment/rest/paymentOrderBinding.do";
 const reverseDo = "https://3dsec.sberbank.ru/payment/rest/reverse.do";
+
 module.exports = {
   getTariffs: async (req, res, next) => {
     try {
@@ -62,6 +69,9 @@ module.exports = {
       return next(new Error(e));
     }
   },
+  sendNotifyTariffCanсel: (userId, tariffName) => {
+    createNotify(userId, { tariffName: tariffName }, "TARIFF_WILL_CANCEL","system");
+  },
   autoPayment: async (user, bindingId) => {
     try {
       let tariff = await Tariff.findOne({ duration: 30 });
@@ -88,12 +98,12 @@ module.exports = {
         let params = {};
         params.userName = process.env.SB_USERNAME;
         params.password = process.env.SB_PASSWORD;
-        params.clientId = user._id;
+        params.clientId = String(user._id);
         //Тут параметры url для красоты
         params.returnUrl = `${process.env.API_URL}`;
         params.failUrl = `${process.env.CLIENT_URL}`;
         params.features = "AUTO_PAYMENT";
-        params.orderNumber = payment._id;
+        params.orderNumber = String(payment._id);
         params.bindingId = user.bindingIdCard;
         let price =
           tariff.price -
@@ -108,7 +118,7 @@ module.exports = {
           params.userName = process.env.SB_USERNAME;
           params.password = process.env.SB_PASSWORD;
           params.mdOrder = payment.orderId;
-          params.bindingId = bindingId;
+          params.bindingId = user.bindingIdCard;
           params.ip = ip.address();
           //Запрос на оплату по автоплатежу
           response = await sendRequest(paymentOrderBinding, "POST", params);
@@ -137,6 +147,14 @@ module.exports = {
                   userId: payment.userId,
                 }
               );
+              let jobTwo = await agenda.schedule(
+                new Date(payment.expiriesAt).getTime() -
+                  1000 * 60 * 60 * 24 * 3,
+                "setTarrifCancelNotify",
+                {
+                  userId: payment.userId,
+                }
+              );
               await User.findOneAndUpdate(
                 { _id: payment.userId },
                 { $set: { isTariff: true } }
@@ -146,10 +164,23 @@ module.exports = {
                 tariff: payment.tariff,
                 expiriesAt: payment.expiriesAt,
               });
+              createNotify(
+                payment.userId,
+                { tariffName: payment.tariff.name },
+                "AUTOPAYMENT_SUCCESS",
+                "system"
+              );
               return true;
-            } else return false;
-          } else return false;
-        } else return false;
+            }
+          }
+        }
+        createNotify(
+          payment.userId,
+          { tariffName: payment.tariff.name },
+          "AUTOPAYMENT_ERROR",
+          "system"
+        );
+        return false;
       }
     } catch (e) {
       return false;
@@ -300,6 +331,13 @@ module.exports = {
               userId: payment.userId,
             }
           );
+          let jobTwo = await agenda.schedule(
+            new Date(payment.expiriesAt).getTime() - 1000 * 60 * 60 * 24 * 3,
+            "setTarrifCancelNotify",
+            {
+              userId: payment.userId,
+            }
+          );
           await User.findOneAndUpdate(
             { _id: payment.userId },
             { $set: { isTariff: true } }
@@ -349,6 +387,13 @@ module.exports = {
     let job = await agenda.schedule(payment.expiriesAt, "setTarrifCancel", {
       userId,
     });
+    let jobTwo = await agenda.schedule(
+      new Date(payment.expiriesAt).getTime() - 1000 * 60 * 60 * 24 * 3,
+      "setTarrifCancelNotify",
+      {
+        userId: payment.userId,
+      }
+    );
   },
   addNewCard: async (req, res, next) => {
     const { user } = res.locals;
@@ -361,6 +406,7 @@ module.exports = {
     params.returnUrl = `${process.env.API_URL}/api/tariffs/checkCard`;
     params.failUrl = `${process.env.CLIENT_URL}`;
     let response = await sendRequest(orderLink, "GET", params);
+
     return res.json({ response });
   },
   checkCard: async (req, res, next) => {
@@ -373,6 +419,9 @@ module.exports = {
       params.amount = 1;
       let response = await sendRequest(statusLinkAuto, "GET", params);
       if (response.orderStatus === 1) {
+        await User.findByIdAndUpdate(response.bindingInfo.clientId, {
+          $set: { bindingIdCard: response.bindingInfo.bindingId },
+        });
         response = await sendRequest(reverseDo, "GET", params);
         res.writeHead(301, {
           Location: `${
@@ -415,4 +464,33 @@ function sendRequest(url, method, params) {
 function randomInteger(min, max) {
   let rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
+}
+async function createNotify(
+  user,
+  info,
+  code,
+  type,
+  isPush = true,
+  isMail = true
+) {
+  return new Promise(async (resolve, reject) => {
+    let notification = new Notification();
+    notification.user = user;
+    notification.info = info;
+    notification.code = code;
+    notification.type = type;
+
+    if (isMail) {
+      let mailTemplate = mail.find((item) => item.code === notification.code);
+      if (mailTemplate) {
+        user = await User.findById(user);
+        sendMail(user.email, notification, mailTemplate);
+      }
+    }
+    if (isPush) {
+      await notification.save();
+      sendNotification({ userId: user._id, notification });
+    }
+    resolve();
+  });
 }

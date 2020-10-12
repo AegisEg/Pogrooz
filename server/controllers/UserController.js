@@ -28,6 +28,7 @@ let { sendMail } = require("../controllers/MailController");
 module.exports = {
   // Get user data
   user: async (req, res, next) => {
+    console.log(new Date());
     const { userId } = res.locals;
     // try {
     // Get this account as JSON
@@ -68,6 +69,7 @@ module.exports = {
   },
   get: async (req, res, next) => {
     const { userId } = req.body;
+
     try {
       if (!!userId && userId.match(/^[0-9a-fA-F]{24}$/)) {
         // Get this account as JSON

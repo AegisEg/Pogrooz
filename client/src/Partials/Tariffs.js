@@ -34,7 +34,7 @@ class Tariffs extends React.Component {
         .then(({ response, error }) => {
           if (!error) {
             if (response.formUrl) {
-              window.location.href = response.formUrl;
+              window.open(response.formUrl);
             } else {
               this.setState({ isFetching: false });
             }
@@ -90,7 +90,14 @@ class Tariffs extends React.Component {
                         duration = prettyDate(item.duration / 30);
                       }
                       return (
-                        <div key={index} className="tariff-wrapper">
+                        <div
+                          key={index}
+                          className={`tariff-wrapper ${
+                            this.props.user.isAuth && item.isDemo
+                              ? "isDemoUsed"
+                              : ""
+                          }`}
+                        >
                           <div
                             className={`tariff ${
                               !!item.discount ? `yellow` : ``
@@ -139,11 +146,7 @@ class Tariffs extends React.Component {
                                 type={`${item.discount ? `empty` : `fill`}  `}
                                 className={`${
                                   item.discount ? `yellow-after` : ``
-                                } ${
-                                  this.props.user.isAuth && item.isDemo
-                                    ? "disable"
-                                    : ""
-                                }`}
+                                } `}
                                 onClick={() => {
                                   if (!this.props.user.isAuth)
                                     this.props.history.push("/register");
@@ -151,7 +154,7 @@ class Tariffs extends React.Component {
                                     this.bayTariff(item);
                                   }
                                 }}
-                                paddingVertical="3px"
+                                paddingVertical="4px"
                               >
                                 {!this.props.user.isAuth &&
                                   item.isDemo &&

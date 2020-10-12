@@ -11,6 +11,7 @@ module.exports = {
   getAll: async (req, res, next) => {
     const { user } = res.locals;
     let { type, offset } = req.body;
+    
     try {
       let oneweekago = new Date() - 7 * 24 * 60 * 60 * 1000;
       let filter = {

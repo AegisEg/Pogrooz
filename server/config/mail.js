@@ -224,4 +224,24 @@ module.exports = [
         ${info.userFio} послал запрос на предоставлене местоположеня.
       `,
   },
+  {
+    id: 15,
+    code: "AUTOPAYMENT_SUCCESS",
+    title: (info) => "Совершен автоплатеж",
+    text: (info) =>
+      `Тариф ${info.tariffName} успешно оплачен с помощью автоплатежа.`,
+  },
+  {
+    id: 16,
+    code: "AUTOPAYMENT_ERROR",
+    title: (info) => "Неудачный автоплатеж",
+    text: (info) =>
+      `Тариф ${info.tariffName} не удалось оплатить с помощью автоплатежа.`,
+  },
+  {
+    id: 17,
+    code: "TARIFF_WILL_CANCEL",
+    title: (info) => "Тариф скоро закончиться",
+    text: (info) => `Тариф ${info.tariffName} закончиться через 2 дня.`,
+  },
 ];
