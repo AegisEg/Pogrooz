@@ -98,15 +98,13 @@ async function mailTemplateFunc(title, content, settingsNew) {
               #bodymyemail a{
                   color:#9509EF;
                   text-decoration: underline!important;
-              }
-              
-              #bodymyemail              
+              }          
 
           </style>
           <table id="bodymyemail" width="867px" cellspacing="0" cellpadding="0">
               <tr align="center" bgcolor="#F7F7F7" >
                   <td colspan="2" style="padding: 20px 0 20px 0">
-                      <img src="http://localhost:8000/media/mail/logo.svg" alt="">
+                      <img src="${process.env.API_URL}/media/mail/logo.svg" alt="">
                   </td>
               </tr>
               <tr>
@@ -119,12 +117,12 @@ async function mailTemplateFunc(title, content, settingsNew) {
                   <td style="padding: 30px 0 30px 0;vertical-align: top;">
                       <h2 style="font-size: 18px;">Поисковик попутных перевозок для ваших грузов</h2>
                       <div>
-                          <img src="http://localhost:8000/media/mail/buttonOne.svg" alt="">
-                          <img src="http://localhost:8000/media/mail/buttonOne.svg" alt="">
+                          <img src="${process.env.API_URL}/media/mail/buttonOne.svg" alt="">
+                          <img src="${process.env.API_URL}/media/mail/buttonOne.svg" alt="">
                       </div>
                   </td>
                   <td align="right" style="padding: 30px 0 30px 0;">
-                      <img src="http://localhost:8000/media/mail/1%201.png" alt="">
+                      <img src="${process.env.API_URL}/media/mail/1%201.png" alt="">
                   </td>
               </tr>
               <tr bgcolor="#4F4F4F"  style="vertical-align: middle; ">
@@ -134,13 +132,13 @@ async function mailTemplateFunc(title, content, settingsNew) {
                   </td>
                   <td align="right" style="padding: 10px 0 10px 0;">
                       <a class="img" href="${settingsNew.vk}">
-                          <img src="http://localhost:8000/media/mail/vk.svg" alt="">
+                          <img src="${process.env.API_URL}/media/mail/vk.svg" alt="">
                       </a>
                       <a class="img" href="${settingsNew.facebook}">
-                          <img src="http://localhost:8000/media/mail/facebook.svg" alt="">
+                          <img src="${process.env.API_URL}/media/mail/facebook.svg" alt="">
                       </a>
                       <a class="img" href="${settingsNew.instagram}">
-                          <img src="http://localhost:8000/media/mail/insta.svg" alt="">
+                          <img src="${process.env.API_URL}/media/mail/insta.svg" alt="">
                       </a>
                   </td>
               </tr>            
