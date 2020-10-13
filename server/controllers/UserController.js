@@ -28,7 +28,6 @@ let { sendMail } = require("../controllers/MailController");
 module.exports = {
   // Get user data
   user: async (req, res, next) => {
-    console.log(new Date());
     const { userId } = res.locals;
     // try {
     // Get this account as JSON
