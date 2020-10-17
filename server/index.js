@@ -56,7 +56,8 @@ app
       createParentPath: true,
     })
   )
-  .use(morgan("dev"))
+  .use(morgan("dev"))  
+  .use(require("prerender-node"))
   // Enable routes
   .use("/auth", authRoutes)
   .use("/api/article", articleRoutes)
@@ -117,5 +118,5 @@ async function startServer() {
 //   }
 // }
 // // Run the async function to start our server
-// else 
+// else
 startServer();
