@@ -123,7 +123,7 @@ class Login extends React.Component {
                 }}
                 text="Запомнить меня"
               ></CheckBox>
-              <div className="d-block" style={{ marginLeft: "35px" }}>
+              <div className="d-block" style={{ marginLeft: "28px" }}>
                 <Link to="/forgot" className="href f-12">
                   Забыли пароль?
                 </Link>

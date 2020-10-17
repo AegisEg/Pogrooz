@@ -32,7 +32,7 @@ class Footer extends React.Component {
   }
   render() {
     return (
-      <footer className="footer  py-4">
+      <footer className="footer глаза  py-4">
         <div className="container-fluid">
           <div className="row ">
             <div className="d-none d-md-block col-2 text-left">
@@ -210,7 +210,8 @@ class Footer extends React.Component {
             </div>
             <div className="col-12 text-640-center text-md-left my-4">
               <span className="postscript">
-                © {this.props.settings.settings.copyright}
+                © 2017 - {new Date().getFullYear()}{" "}
+                {this.props.settings.settings.copyright}
               </span>
             </div>
           </div>

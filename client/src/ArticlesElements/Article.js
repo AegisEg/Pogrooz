@@ -22,6 +22,7 @@ import basket from "../img/basket.png";
 import { Link } from "react-router-dom";
 //Configs
 import CargoTypeList from "../config/baseInfo/cargoTypesList";
+import unitCargo from "../config/baseInfo/unitCargo";
 import {
   extraParams,
   paymentParams,
@@ -152,6 +153,17 @@ class Article extends React.Component {
       );
     }
   };
+  formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   updateDimensions = () => {
     if (window.innerWidth <= 992) this.setState({ onMobile: true });
     else this.setState({ onMobile: false });
@@ -169,7 +181,65 @@ class Article extends React.Component {
         className={`article-block ${
           !this.props.notLink && this.state.isHoverHref ? "hover" : ""
         }`}
+        itemScope={true}
+        itemtype="https://schema.org/Article"
       >
+        {/* "Микроразметка" */}
+        <link
+          itemprop="mainEntityOfPage"
+          href={
+            window.location.origin + "/order/" + this.props.article.articleId
+          }
+        />
+        <meta
+          itemprop="headline name"
+          content={
+            (this.props.article.type === "offer" ? "Предложение" : "Заказ") +
+            " №" +
+            this.props.article.articleId
+          }
+        ></meta>
+        <meta
+          itemprop="description"
+          content={`${
+            this.props.article.type === "offer"
+              ? "Поиск водителя на перевозку"
+              : "Поиск груза для перевозки"
+          } № ${this.props.article.articleId}: От ${
+            this.props.article.from.value
+          }  до  ${this.props.article.to.value}`}
+        ></meta>
+        <meta
+          itemprop="author"
+          content={`${this.props.article.author.name.last} ${this.props.article.author.name.first} ${this.props.article.author.name.middle}`}
+        ></meta>
+        <meta
+          itemprop="datePublished"
+          datetime={this.formatDate(this.props.article.createdAt)}
+          content={this.formatDate(this.props.article.createdAt)}
+        ></meta>
+        <meta
+          itemprop="dateModified"
+          datetime={this.formatDate(this.props.article.updatedAt)}
+          content={this.formatDate(this.props.article.updatedAt)}
+        ></meta>
+        <div
+          itemprop="publisher"
+          itemScope
+          itemtype="https://schema.org/Organization"
+        >
+          <div
+            itemprop="logo"
+            itemScope
+            itemtype="https://schema.org/ImageObject"
+          >
+            <meta itemprop="url image" content="images/logo.png" />
+          </div>
+          <meta itemprop="name" content="название сайта"></meta>
+          <meta itemprop="telephone" content=""></meta>
+          <meta itemprop="address" content="Россия"></meta>
+        </div>
+        {/* "Микроразметка" */}
         <div className="container-fluid">
           {!this.state.onMobile ? (
             <>
@@ -194,6 +264,13 @@ class Article extends React.Component {
                               <div>
                                 <b>{type.name}</b>
                               </div>
+                              {this.props.article.car.property &&
+                                this.props.article.car.typesCar.length === 1 &&
+                                this.props.article.car.property !== "false" && (
+                                  <div>
+                                    Свойство: {this.props.article.car.property}
+                                  </div>
+                                )}
                               {this.props.article.car.info &&
                                 this.props.article.car.info.find(
                                   (itemX) => itemX.carId === item
@@ -225,6 +302,7 @@ class Article extends React.Component {
                         }
                       )}
                     {this.props.article.car.property &&
+                      this.props.article.car.typesCar.length > 1 &&
                       this.props.article.car.property !== "false" && (
                         <div>Свойство: {this.props.article.car.property}</div>
                       )}
@@ -361,7 +439,17 @@ class Article extends React.Component {
                     {this.props.article.cargoStandartData && (
                       <div className="property-cargo">
                         {this.props.article.cargoStandartData.weight && (
-                          <>{this.props.article.cargoStandartData.weight}кг/</>
+                          <>
+                            {this.props.article.cargoStandartData.weight}
+                            {
+                              unitCargo.find(
+                                (item) =>
+                                  item.value ===
+                                  this.props.article.cargoStandartData.unit
+                              ).shortLabel
+                            }
+                            /
+                          </>
                         )}
                         {this.props.article.cargoStandartData.length &&
                           this.props.article.cargoStandartData.width &&
@@ -377,8 +465,8 @@ class Article extends React.Component {
                           )}
                         {this.props.article.cargoStandartData.count && (
                           <div>
-                            {this.props.article.cargoStandartData.count}
-                            шт
+                            {this.props.article.cargoStandartData.count}&nbsp;
+                            места
                           </div>
                         )}
                       </div>
@@ -654,7 +742,7 @@ class Article extends React.Component {
                       {this.props.article.car.contractInfo &&
                         !!this.props.article.car.contractInfo.length && (
                           <span className="property-user">
-                            <Dogovor />
+                            <Dogovor /> &nbsp;
                             {this.props.article.car.contractInfo.map(
                               (item, index, items) => {
                                 let string = contractParams.find(
@@ -675,15 +763,14 @@ class Article extends React.Component {
                       {this.props.article.car.paymentInfo &&
                         !!this.props.article.car.paymentInfo.length && (
                           <span className="property-user">
-                            <PayIco />
-                            Оплата{" "}
+                            <PayIco /> &nbsp; Оплата&nbsp;
                             {this.props.article.car.paymentInfo.map(
                               (item, index, items) => {
                                 return (
                                   paymentParams.find(
                                     (itemX) => itemX.id === item.id
                                   ).label +
-                                  (items.length - 1 === index ? "." : ",")
+                                  (items.length - 1 === index ? "." : ", ")
                                 );
                               }
                             )}
@@ -692,9 +779,24 @@ class Article extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-12 col-sm content">
+                <div className="col-12 col-sm row content">
                   <div>
                     <b>Комментарий:</b> {this.props.article.comment}
+                    {this.props.article.cargoStandartData &&
+                      this.props.article.cargoStandartData.length &&
+                      this.props.article.cargoStandartData.width &&
+                      this.props.article.cargoStandartData.height && (
+                        <span className="d-block">
+                          <b>
+                            Параметры:&nbsp;
+                            {this.props.article.cargoStandartData.length}
+                            &nbsp;x&nbsp;
+                            {this.props.article.cargoStandartData.width}
+                            &nbsp;x&nbsp;
+                            {this.props.article.cargoStandartData.height}
+                          </b>
+                        </span>
+                      )}
                     {this.props.article.cargoTypes.map((item, index) => {
                       return (
                         this.props.article.cargoData.find(

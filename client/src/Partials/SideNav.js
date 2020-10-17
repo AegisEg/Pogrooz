@@ -9,6 +9,7 @@ import sidebarOpen from "../img/sidebarOpen.png";
 import sidebarAngleOpen from "../img/sidebarAngleOpen.png";
 // Images END
 import menu from "../config/sideMenu";
+import download from "../img/sideMenu/download.svg";
 // Redux
 import { connect } from "react-redux";
 import * as userActions from "../redux/actions/user";
@@ -104,7 +105,9 @@ class SideNav extends React.Component {
       >
         <Scrollbars
           autoHide
-          renderTrackVertical={(props) => <div className="d-none track-vertical" />}
+          renderTrackVertical={(props) => (
+            <div className="d-none track-vertical" />
+          )}
         >
           {menu.map((item, index) => {
             if (
@@ -122,6 +125,13 @@ class SideNav extends React.Component {
                 />
               );
           })}
+          <MenuItem
+            to={this.props.settings.settings.dogovor}
+            icon={download}
+            className="download-order"
+            name={"Шаблон договора между Перевозчиком и Грузовладельцем"}
+            childlist={false}
+          />
         </Scrollbars>
         <span
           className="toogle-sideBar"
@@ -143,6 +153,7 @@ class SideNav extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    settings: state.settings,
   };
 };
 

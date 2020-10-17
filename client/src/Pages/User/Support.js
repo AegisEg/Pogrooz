@@ -22,7 +22,14 @@ class Support extends React.Component {
           </p>
           <p className="f-14 mt-4">
             Также вы можете написать нашим специалистам в&nbsp;
-            <Link to="/" className="href">
+            <Link
+              to="/"
+              onClick={(e) => {
+                e.preventDefault();
+                window.jivo_api.open();
+              }}
+              className="href"
+            >
               online чат
             </Link>
             .

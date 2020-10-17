@@ -4,7 +4,6 @@ import ruble from "../img/sideMenu/ruble.svg";
 import working from "../img/sideMenu/working.svg";
 import completed from "../img/sideMenu/completed.svg";
 import trash from "../img/sideMenu/trash.svg";
-import download from "../img/sideMenu/download.svg";
 import profile from "../img/sideMenu/profile.svg";
 import myOrders from "../img/sideMenu/my-orders.svg";
 import acceptedOrders from "../img/sideMenu/accepted-orders.svg";
@@ -43,7 +42,7 @@ export default [
   },
   {
     name: "Мои предложения",
-    icon: myOrders,
+    icon: acceptedOrders,
     to: "/my-offers",
     onlyMobile: true,
     role: "carrier",
@@ -195,13 +194,5 @@ export default [
     name: "Техподдержка",
     to: "/support",
     icon: chat,
-  },
-  {
-    name: `Шаблон договора 
-    между Перевозчиком 
-    и Грузовладельцем`,
-    to: "/page/dowload-order",
-    icon: download,
-    className: "download-order",
   },
 ];

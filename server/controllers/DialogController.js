@@ -251,7 +251,7 @@ module.exports = {
       })
         .populate("lastMessage")
         .populate("orderId");
-      let isOrder = !!dialog.orderId;
+      let orderId = dialog.orderId;
       const dialogId = String(dialog._id);
       if (
         !/\S/.test(text) &&
@@ -379,7 +379,7 @@ module.exports = {
 
       await dialog.save();
       let toUser = await User.findById(userId);
-      if (isOrder) {
+      if (orderId) {
         createNotify(
           { _id: userId },
           {
@@ -411,7 +411,7 @@ module.exports = {
         otherId: userId,
         socketId,
         message,
-        isOrder,
+        orderId,
         countNoread: dialog.noRead,
       });
 

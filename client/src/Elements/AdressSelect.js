@@ -16,6 +16,7 @@ class AdressSelect extends React.Component {
           token={configApi.daDataToken}
           inputProps={{
             onKeyDown: this.props.onInput,
+            placeholder:this.props.placeholder,
             onClick: (e) => {
               let el = e.target;
               el.selectionStart = el.selectionEnd = el.value.length;
@@ -25,7 +26,7 @@ class AdressSelect extends React.Component {
           }}
           count={10}
           className={`${this.props.className}`}
-          placeholder={this.props.placeholder}
+         
           defaultQuery={this.props.value}
           onChange={this.props.onChange}
           filterFromBound={this.props.filterFromBound}

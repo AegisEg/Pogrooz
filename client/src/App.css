@@ -823,7 +823,12 @@ header ~ div {
 .register-form > .tabs {
   margin-bottom: 10px;
 }
-.register-form > *:not(.tabs) {
+.register-form .tab {
+  margin-right: 0;
+  margin-left: 28px;
+}
+.register-form > *:not(.tabs),
+.wrapper-animation > *:not(.tabs) {
   margin-bottom: 15px;
   margin-top: 0;
 }
@@ -1238,6 +1243,9 @@ textarea {
     padding: 0 15px 0;
     display: flex;
   }
+}
+.notifications .pop-block-item:hover a {
+  color: #9509ef;
 }
 .fast-access-btn.notifications.not-empty img {
   filter: invert(10%) sepia(99%) saturate(1250%) hue-rotate(338deg)
@@ -1761,6 +1769,7 @@ a.mail {
 }
 .filter {
   position: relative;
+  padding-bottom: 10px;
 }
 .filter .select * {
   font-size: 16px;
@@ -1805,14 +1814,19 @@ a.mail {
     flex: 0 0 17%;
     max-width: 17%;
   }
+}
+@media (min-width: 992px) {
   .avatar-img-wrapper {
     max-width: 150px !important;
     min-width: 150px !important;
   }
 }
-.go-to-pro {
+.link-unhover {
   text-decoration: underline;
   color: #171717;
+}
+.link-unhover:hover {
+  text-decoration: none;
 }
 @media (min-width: 640px) and (max-width: 773px) {
   .main-cities-item {
@@ -1934,23 +1948,26 @@ a.mail {
   transition: all 0.5s;
 }
 /*Animation Height Item*/
+.height-animation-item {
+  overflow: hidden;
+}
 .height-animation-item-enter {
   opacity: 0;
   max-height: 0;
 }
 .height-animation-item-enter.height-animation-item-enter-active {
   opacity: 1;
-  max-height: 300000px;
   transition: all 0.5s;
+  max-height: 3000px;
 }
 .height-animation-item-leave {
   opacity: 1;
-  max-height: 300000px;
+  max-height: 3000px;
 }
 .height-animation-item-leave.height-animation-item-leave-active {
   opacity: 0;
   max-height: 0;
-  transition: all 0 5s;
+  transition: all 0.5s;
 }
 .LoadGif {
   z-index: 1;
@@ -2420,6 +2437,9 @@ a.href.hover:hover {
   margin: 0;
   padding: 0;
   margin-bottom: 45px;
+}
+.about-page ul.head-list {
+  margin-bottom: 40px;
 }
 .about-page ul.head-list li {
   list-style: none;
@@ -4790,7 +4810,7 @@ table {
 .user-column-2 .input-action {
   margin: 10px 15px;
 }
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .user-column-2 {
     text-align: center;
     justify-content: center;
@@ -6111,10 +6131,10 @@ label {
 .isDemoUsed.tariff-wrapper .tariff {
   background-color: #f7f7f7;
 }
-.isDemoUsed.tariff-wrapper .button-fill::before{
+.isDemoUsed.tariff-wrapper .button-fill::before {
   display: none;
 }
-.isDemoUsed.tariff-wrapper .button-fill{
-  background-color: #EEEEEE!important;
+.isDemoUsed.tariff-wrapper .button-fill {
+  background-color: #eeeeee !important;
   border: none;
 }

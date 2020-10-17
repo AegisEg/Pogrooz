@@ -5,11 +5,11 @@ import configApi from "../../config/api";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 // Elements
+import { CSSTransitionGroup } from "react-transition-group";
 import Button from "../../Elements/Button";
 import InputPhone from "../../Elements/InputPhone";
 // Router
 import { Link } from "react-router-dom";
-import countryList from "../../config/countryList";
 
 class Register extends React.Component {
   state = {
@@ -64,15 +64,15 @@ class Register extends React.Component {
   }
 
   render() {
-    let selectCountry = countryList.filter((item) => item.value !== 1);
+    // let selectCountry = countryList.filter((item) => item.value !== 1);
     return (
       <div className="register-page">
         <h1 className="register-title">Регистрация</h1>
         <div className="register-form col-12 col-sm-9 col-md-6 col-lg-5 col-xl-4 mx-auto">
-          <div className="row tabs ">
+          <div className="row tabs justify-content-between">
             <div
-              className={`tab f-16 col-6 ${
-                this.state.type === "carrier" ? "active" : ""
+              className={`tab f-16 left-angle ${
+                this.state.type === "carrier" ? "active " : "gray"
               }`}
               onClick={() => {
                 this.setState({ type: "carrier" });
@@ -81,8 +81,8 @@ class Register extends React.Component {
               Я Перевозчик
             </div>
             <div
-              className={`tab f-16 col-6 text-right ${
-                this.state.type === "cargo" ? "active" : ""
+              className={`tab f-16 left-angle ${
+                this.state.type === "cargo" ? "active" : "gray"
               }`}
               onClick={() => {
                 this.setState({ type: "cargo" });
@@ -91,7 +91,7 @@ class Register extends React.Component {
               Я Владелец груза
             </div>
           </div>
-          <div className="row">
+          {/* <div className="row">
             <div className="col-12 col-sm-6 d-flex  align-items-center">
               Страна:
               <span
@@ -105,7 +105,7 @@ class Register extends React.Component {
                 Россия
               </span>
             </div>
-            {/* <div className="col-12 col-sm-6">
+            <div className="col-12 col-sm-6">
               <Select
                 options={selectCountry}
                 placeholder="Другая"
@@ -119,13 +119,13 @@ class Register extends React.Component {
                   ) || null
                 }
               />
-            </div> */}
-          </div>
+            </div>
+          </div> */}
           <InputPhone
             error={this.state.errors.find((value) => value.param === "phone")}
             value={this.state.phone}
             isVerified={this.state.isVerified}
-            phone={this.state.phone}
+            phone={this.state.phone}            
             setVerified={(val) => {
               this.setState({ isVerified: val });
             }}
@@ -134,104 +134,117 @@ class Register extends React.Component {
             }}
             placeholder="+7 (_ _ _) _ _ _ - _ _ - _ _"
           />
-          <div className="row">
-            <div className="col-12">
-              <Input
-                type="text"
-                error={this.state.errors.find(
-                  (value) => value.param === "email"
-                )}
-                value={this.state.email}
-                onChange={(e) => {
-                  this.setState({ email: e.target.value });
-                }}
-                className="col-12"
-                placeholder="Email"
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
-              <Input
-                type="text"
-                error={this.state.errors.find(
-                  (value) => value.param === "lastName"
-                )}
-                value={this.state.lastName}
-                onChange={(e) => {
-                  this.setState({ lastName: e.target.value });
-                }}
-                className="col-12"
-                placeholder="Фамилия"
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12 col-sm-6 mb-custom">
-              <Input
-                type="text"
-                error={this.state.errors.find(
-                  (value) => value.param === "firstName"
-                )}
-                value={this.state.firstName}
-                onChange={(e) => {
-                  this.setState({ firstName: e.target.value });
-                }}
-                placeholder="Имя"
-              />
-            </div>
-            <div className="col-12 col-sm-6">
-              <Input
-                type="text"
-                error={this.state.errors.find(
-                  (value) => value.param === "middleName"
-                )}
-                value={this.state.middleName}
-                onChange={(e) => {
-                  this.setState({ middleName: e.target.value });
-                }}
-                placeholder="Отчество"
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
-              <Input
-                type="password"
-                style={{ paddingRight: 50 }}
-                error={this.state.errors.find(
-                  (value) => value.param === "password"
-                )}
-                value={this.state.password}
-                onChange={(e) => {
-                  this.setState({ password: e.target.value });
-                }}
-                className="isHover"
-                placeholder="Пароль"
-              />
-            </div>
-          </div>
-          <p className="text-right f-12">
-            Регистрируясь, Вы соглашаетесь с&nbsp;
-            <Link to="/" className="href f-12">
-              политикой конфиденциальности и соглашением об обработке
-              персональных данных
-            </Link>
-            .
-          </p>
-          <div className="text-right">
-            <Button
-              type="fill"
-              margin={"0 0 0 auto"}
-              paddingHorizontal={"15px"}
-              paddingVertical={"8px"}
-              onClick={() => {
-                this.register();
-              }}
-            >
-              Регистрация
-            </Button>
-          </div>
+          <CSSTransitionGroup
+            transitionName="height-animation-item"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={1}
+            className="wrapper-animation"
+            style={{
+              display: "contents",
+            }}
+          >
+            {this.state.isVerified === "success" && (
+              <>
+                <div className="row">
+                  <div className="col-12">
+                    <Input
+                      type="text"
+                      error={this.state.errors.find(
+                        (value) => value.param === "email"
+                      )}
+                      value={this.state.email}
+                      onChange={(e) => {
+                        this.setState({ email: e.target.value });
+                      }}
+                      className="col-12"
+                      placeholder="Email"
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <Input
+                      type="text"
+                      error={this.state.errors.find(
+                        (value) => value.param === "lastName"
+                      )}
+                      value={this.state.lastName}
+                      onChange={(e) => {
+                        this.setState({ lastName: e.target.value });
+                      }}
+                      className="col-12"
+                      placeholder="Фамилия"
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12 col-sm-6 mb-custom">
+                    <Input
+                      type="text"
+                      error={this.state.errors.find(
+                        (value) => value.param === "firstName"
+                      )}
+                      value={this.state.firstName}
+                      onChange={(e) => {
+                        this.setState({ firstName: e.target.value });
+                      }}
+                      placeholder="Имя"
+                    />
+                  </div>
+                  <div className="col-12 col-sm-6">
+                    <Input
+                      type="text"
+                      error={this.state.errors.find(
+                        (value) => value.param === "middleName"
+                      )}
+                      value={this.state.middleName}
+                      onChange={(e) => {
+                        this.setState({ middleName: e.target.value });
+                      }}
+                      placeholder="Отчество"
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-12">
+                    <Input
+                      type="password"
+                      style={{ paddingRight: 50 }}
+                      error={this.state.errors.find(
+                        (value) => value.param === "password"
+                      )}
+                      value={this.state.password}
+                      onChange={(e) => {
+                        this.setState({ password: e.target.value });
+                      }}
+                      className="isHover"
+                      placeholder="Пароль"
+                    />
+                  </div>
+                </div>
+                <p className="text-right f-12">
+                  Регистрируясь, Вы соглашаетесь с&nbsp;
+                  <Link to="/" className="href f-12">
+                    политикой конфиденциальности и соглашением об обработке
+                    персональных данных .
+                  </Link>
+                </p>
+                <div className="text-right">
+                  <Button
+                    type="fill"
+                    margin={"0 0 0 auto"}
+                    paddingHorizontal={"15px"}
+                    paddingVertical={"8px"}
+                    onClick={() => {
+                      this.register();
+                    }}
+                  >
+                    Регистрация
+                  </Button>
+                </div>
+              </>
+            )}
+          </CSSTransitionGroup>
         </div>
       </div>
     );

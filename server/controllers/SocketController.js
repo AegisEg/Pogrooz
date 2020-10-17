@@ -52,7 +52,7 @@ function sendMessageDialog({
   socketId,
   otherId,
   message,
-  isOrder,
+  orderId,
   countNoread,
 }) {
   if (userId != otherId) {
@@ -62,7 +62,7 @@ function sendMessageDialog({
         .emit("sendMessageDialog", {
           message,
           otherId: userId,
-          isOrder,
+          orderId,
           countNoread,
           isMy: false,
         });
@@ -72,7 +72,7 @@ function sendMessageDialog({
         .emit("sendMessageDialog", {
           message,
           otherId,
-          isOrder,
+          orderId,
           countNoread,
           isMy: true,
         });
@@ -319,7 +319,12 @@ function deleteRequestSoket({ article, requestId, userId, otherId, socketId }) {
 function sendNotification({ userId, notification }) {
   io.to(`user.${userId}`).emit("sendNotification", notification);
 }
-
+function readNotificationAll({ socketId, userId }) {
+  if (io.sockets.connected[socketId])
+    io.sockets.connected[socketId]
+      .to(`user.${userId}`)
+      .emit("readNotificationAll", {});
+}
 function readNotification({ socketId, userId, id, type }) {
   if (io.sockets.connected[socketId])
     io.sockets.connected[socketId]
@@ -356,4 +361,5 @@ module.exports = {
   modarationSuccess,
   modarationFail,
   updateStatusArticle,
+  readNotificationAll,
 };

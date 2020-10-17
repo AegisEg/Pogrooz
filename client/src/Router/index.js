@@ -1,6 +1,7 @@
 // App
 import React, { Suspense } from "react";
 import { withCookies } from "react-cookie";
+import { jivoSite } from "../controllers/FunctionsController";
 import SocketController from "../controllers/SocketController";
 import Header from "../Partials/Header";
 
@@ -21,7 +22,6 @@ import * as myArticlesActions from "../redux/actions/myarticles";
 import { bindActionCreators } from "redux";
 import configApi from "../config/api";
 import * as settingsActions from "../redux/actions/settings";
-import { Widget } from "react-jivosite";
 import Preloader from "../Elements/Preloader";
 
 export function setTitle(path, routeArray) {
@@ -96,6 +96,7 @@ class AppRouter extends React.Component {
         this.setState({ isRender: true });
       });
     }
+    jivoSite();
   }
   componentDidUpdate(b) {
     if (this.props.user.needSendLocation && !b.user.needSendLocation) {
@@ -109,7 +110,6 @@ class AppRouter extends React.Component {
     return (
       this.state.isRender && (
         <>
-          <Widget id="DO77oIGITe" />
           {this.props.user.needSendLocation &&
             !this.props.user.geolocationsError && (
               <div className="geo-active">

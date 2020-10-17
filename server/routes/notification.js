@@ -10,4 +10,5 @@ const NotificationController = require("../controllers/NotificationController");
 // Get the user for this user
 router.post("/get-all", verifyToken, NotificationController.getAll);
 router.post("/read", verifyToken, NotificationController.read);
+router.post("/read-all", verifyToken, NotificationController.readAll);
 module.exports = router;

@@ -52,6 +52,7 @@ import {
   NOTIFICATIONS_ALL_READ,
   NOTIFICATIONS_ALL_ADD,
   NOTIFICATIONS_NOREAD_ADD,
+  NOTIFICATIONS_READ_ALL,
   ARTICLE_MY_UPDATE_STATUS,
   ARTICLE_TAKING_UPDATE_STATUS,
   DIALOGSALL_ADD_MESSAGE,
@@ -154,13 +155,14 @@ export default {
 
     socket.on(
       "sendMessageDialog",
-      ({ message, otherId, isOrder, countNoread, isMy }) => {
-        let dialogs = isOrder
+      ({ message, otherId, orderId, countNoread, isMy }) => {
+        let dialogs = orderId
           ? store.getState().dialogs.dialogsOrder
           : store.getState().dialogs.dialogsUser;
+        if (!dialogs.isGetted) dialogs = store.getState().dialogs.dialogsALL;
         if (dialogs.dialogs.find((x) => x._id === message.dialogId)) {
           store.dispatch({
-            type: isOrder ? DIALOGSORDER_SET_TYPER : DIALOGS_SET_TYPER,
+            type: orderId ? DIALOGSORDER_SET_TYPER : DIALOGS_SET_TYPER,
             payload: { userId: message.user._id, typing: false },
           });
 
@@ -169,7 +171,7 @@ export default {
             noReadCount = true;
           }
           store.dispatch({
-            type: isOrder ? DIALOGSORDER_ADD_MESSAGE : DIALOGS_ADD_MESSAGE,
+            type: orderId ? DIALOGSORDER_ADD_MESSAGE : DIALOGS_ADD_MESSAGE,
             payload: {
               message,
               dialogId: message.dialogId,
@@ -196,6 +198,7 @@ export default {
                 _id: message.dialogId,
                 users: [store.getState().user, user],
                 user: user,
+                orderId,
                 isGetted: false,
                 canLoad: true,
                 typing: false,
@@ -203,20 +206,22 @@ export default {
                 messages: [],
               };
               store.dispatch({
-                type: isOrder ? DIALOGSORDER_ADD : DIALOGS_ADD,
+                type: orderId ? DIALOGSORDER_ADD : DIALOGS_ADD,
                 payload: { dialog, isAddCount: !isMy && countNoread },
               });
+
               let noReadCount = false;
-              if (!isMy && !countNoread) {
+              if (!isMy && countNoread === 1) {
                 noReadCount = true;
               }
+
               if (
                 store
                   .getState()
                   .dialogs.dialogsALL.dialogs.find(
                     (x) => x._id === message.dialogId
                   )
-              )
+              ) {
                 store.dispatch({
                   type: DIALOGSALL_ADD_MESSAGE,
                   payload: {
@@ -226,10 +231,10 @@ export default {
                     noReadCount,
                   },
                 });
-              else
+              } else
                 store.dispatch({
                   type: DIALOGSALL_ADD,
-                  payload: { dialog, isAddCount: !isMy && countNoread },
+                  payload: { dialog, isAddCount: noReadCount },
                 });
             });
         }
@@ -538,6 +543,11 @@ export default {
       store.dispatch({
         type: NOTIFICATIONS_ALL_READ,
         payload: id,
+      });
+    });
+    socket.on("readNotificationAll", ({}) => {
+      store.dispatch({
+        type: NOTIFICATIONS_READ_ALL,
       });
     });
   },

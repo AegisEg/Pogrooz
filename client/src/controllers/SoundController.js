@@ -38,6 +38,7 @@ setInterval(() => {
 
 export const playNewMessage = () => {
   newMessageSound.currentTime = 0;
+  newMessageSound.volume = 0.1;
   let promise = newMessageSound.play();
 
   if (promise !== undefined) {
@@ -51,6 +52,7 @@ export const playNewMessage = () => {
 
 export const playBeep = () => {
   beep.currentTime = 0;
+  beep.volume = 0.1;
   let promise = beep.play();
 
   if (promise !== undefined) {

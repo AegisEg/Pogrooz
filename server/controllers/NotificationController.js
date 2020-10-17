@@ -5,13 +5,13 @@
 "use strict";
 
 const Notification = require("../models/Notification");
-const { readNotification } = require("./SocketController");
+const { readNotification,readNotificationAll } = require("./SocketController");
 
 module.exports = {
   getAll: async (req, res, next) => {
     const { user } = res.locals;
     let { type, offset } = req.body;
-    
+
     try {
       let oneweekago = new Date() - 7 * 24 * 60 * 60 * 1000;
       let filter = {
@@ -38,7 +38,17 @@ module.exports = {
       return next(new Error(e));
     }
   },
-
+  readAll: async (req, res, next) => {
+    const { user } = res.locals;
+    const { socketId } = req.body;
+    try {
+      await Notification.updateMany({ user: user._id }, { isRead: true });
+      readNotificationAll({ socketId, userId: user._id });
+      return res.json({ error: false });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
   read: async (req, res, next) => {
     const { user } = res.locals;
     const { id, socketId } = req.body;

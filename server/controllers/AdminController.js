@@ -70,7 +70,7 @@ const adminBro = new AdminBro({
             isVisible: { list: false, filter: false, show: false, edit: false },
           },
           key: {
-            isVisible: { list: false, filter: false, show: false, edit: false },
+            isVisible: { list: false, filter: false, show: false, edit: true },
           },
         },
       },

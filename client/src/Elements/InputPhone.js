@@ -113,6 +113,7 @@ class InputPhone extends React.Component {
               inputClass={`col input-text ${this.props.className} ${
                 this.props.error ? "input-error" : ""
               }`}
+              specialLabel={false}
               placeholder={this.props.placeholder}
               value={this.props.value}
               onChange={(val) => {

@@ -21,6 +21,7 @@ import {
   NOTIFICATIONS_TARRIFS_SET_NO_READ,
   NOTIFICATIONS_NOREAD_GET,
   NOTIFICATIONS_NOREAD_ADD,
+  NOTIFICATIONS_READ_ALL,
   //Load
   NOTIFICATIONS_ALL_LOAD,
   NOTIFICATIONS_OFFERS_LOAD,
@@ -76,6 +77,35 @@ const INITIAL_STATE = {
 
 const notifications = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case NOTIFICATIONS_READ_ALL: {
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          notifications: state.all.notifications.map((item) => ({
+            ...item,
+            isRead: true,
+          })),
+          noRead: 0,
+        },
+        offer: {
+          ...state.offer,
+          noRead: 0,
+        },
+        order: {
+          ...state.order,
+          noRead: 0,
+        },
+        system: {
+          ...state.system,
+          noRead: 0,
+        },
+        tariff: {
+          ...state.tariff,
+          noRead: 0,
+        },
+      };
+    }
     case NOTIFICATIONS_SET_COUNT: {
       return {
         ...state,

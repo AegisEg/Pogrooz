@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Loading from "../Elements/Loading";
+import { connect } from "react-redux";
 import api from "../config/api";
+
 class FaqRow extends React.Component {
   state = {
     sections: [],
@@ -99,9 +101,11 @@ class FaqRow extends React.Component {
                         view && (
                           <li key={question.id}>
                             <Link
-                              to={`${this.props.type ? "/lk" : ""}/questions/${
-                                section.slug
-                              }#${question._id}`}
+                              to={`${
+                                this.props.user.isAuth && this.props.type
+                                  ? "/lk"
+                                  : ""
+                              }/questions/${section.slug}#${question._id}`}
                             >
                               {question.title}
                             </Link>
@@ -118,4 +122,9 @@ class FaqRow extends React.Component {
     );
   }
 }
-export default FaqRow;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+export default connect(mapStateToProps)(FaqRow);

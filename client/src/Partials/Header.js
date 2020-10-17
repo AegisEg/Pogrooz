@@ -20,6 +20,7 @@ import MobileMenu from "./MobileMenu";
 // Redux
 import { connect } from "react-redux";
 import * as userActions from "../redux/actions/user";
+import * as notificationActions from "../redux/actions/notification";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import menu from "../config/sideMenu";
@@ -178,7 +179,18 @@ class Header extends React.Component {
                     {!this.props.notifications.all.onlyNoread.length && (
                       <div className="pop-block-item text-center">Пусто</div>
                     )}
-                    <div className="pop-block-additionally">Скрыть</div>
+                    {!!this.props.notifications.all.onlyNoread.length && (
+                      <div
+                        className="pop-block-additionally"
+                        onClick={() => {
+                          this.props.notificationActions.notificationsReadAll(
+                            this.props.user.apiToken
+                          );
+                        }}
+                      >
+                        Прочитано
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -350,6 +362,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(userActions, dispatch),
+    notificationActions: bindActionCreators(notificationActions, dispatch),
   };
 }
 

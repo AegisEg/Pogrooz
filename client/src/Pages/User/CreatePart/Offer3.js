@@ -94,8 +94,12 @@ class OfferCreate3 extends React.Component {
       !cargoListPossible.find((item) => !item.isPro)
     )
       isPro = true;
+    let resetStandartData = true;
+    if (!!cargoListPossible.find((item) => item.isStandart))
+      resetStandartData = false;
     this.setState({
       cargoListPossible: cargoListPossible,
+      cargoStandartData: resetStandartData ? {} : this.state.cargoStandartData,
       cargoTypes: newCurentCargoType,
       cargoData: [],
       isPro: isPro,

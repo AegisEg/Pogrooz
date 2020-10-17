@@ -255,27 +255,22 @@ class User extends React.Component {
               <>
                 <div className="container-fluid">
                   <div className="row">
-                    <div className="col-12 col-md avatar-img-wrapper text-center">
+                    <div className="col-12 col-lg avatar-img-wrapper text-center">
                       <img
                         src={(user.avatar && user.avatar.path) || avatar}
                         className="avatar-img"
                         alt=""
                       />
                     </div>
-                    <div
-                      className="col row px-0 mx-0"
-                      style={{
-                        maxWidth: "800px",
-                      }}
-                    >
+                    <div className="col row px-0 mx-0">
                       <div
-                        className="mx-0 col-12 col-md-8 row"
+                        className="mx-0 col-12 col-lg-6 row"
                         style={{
                           fontSize: "24px",
                         }}
                       >
                         <div
-                          className="col-12 text-center text-md-left"
+                          className="col-12 text-center text-lg-left"
                           style={{
                             lineHeight: 1,
                           }}
@@ -283,7 +278,7 @@ class User extends React.Component {
                           {user.name.last} {user.name.first} {user.name.middle}
                         </div>
                         <div
-                          className="col-12 col-sm-6 mt-2 mt-md-0 text-center text-md-left"
+                          className="col-12 col-sm-6 mt-2 mt-md-0 text-center text-lg-left"
                           style={{
                             fontSize: "18px",
                           }}
@@ -296,7 +291,7 @@ class User extends React.Component {
                             {user.contract &&
                               (user.contract.id == 2 ||
                                 user.contract.id == 3) &&
-                              user.contract.data.value}
+                              user.contract.data.data.name.short}
                             {user.contract &&
                               user.contract.id == 1 &&
                               "Физ. лицо"}
@@ -306,7 +301,7 @@ class User extends React.Component {
                           </div>
                         </div>
                         <div
-                          className="col-12 col-sm-6 text-center mt-2 mt-md-0 text-md-left"
+                          className="col-12 col-sm-6 text-center mt-2 mt-md-0 text-lg-left"
                           style={{
                             fontSize: "18px",
                           }}
@@ -353,7 +348,7 @@ class User extends React.Component {
                             )}
                         </div>
                       </div>
-                      <div className="col-md-4 col-12 user-column-2">
+                      <div className="col-lg-6 col-12 user-column-2">
                         <span className="f-14 col-12">
                           Рейтинг: &nbsp;
                           <span className="d-inline-block">

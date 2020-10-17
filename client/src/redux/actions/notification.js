@@ -19,12 +19,35 @@ import {
   NOTIFICATIONS_ORDERS_LOADING,
   NOTIFICATIONS_SYSTEM_LOADING,
   NOTIFICATIONS_TARRIFS_LOADING,
+  NOTIFICATIONS_READ_ALL,
 } from "../constants";
 
 import api from "../../config/api";
 import store from "../store";
 import SocketController from "../../controllers/SocketController";
-
+export const notificationsReadAll = (apiToken) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${api.urlApi}/api/notification/read-all`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiToken}`,
+      },
+      body: JSON.stringify({
+        socketId: SocketController.getSocketId(),
+      }),
+    })
+      .then((response) => response.json())
+      .then(({ error }) => {
+        if (!error)
+          dispatch({
+            type: NOTIFICATIONS_READ_ALL,
+          });
+        resolve();
+      });
+  });
+};
 export const notificationsGet = (type, apiToken) => (dispatch) => {
   return new Promise((resolve, reject) => {
     fetch(`${api.urlApi}/api/notification/get-all`, {
