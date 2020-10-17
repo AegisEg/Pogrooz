@@ -126,7 +126,7 @@ class SideNav extends React.Component {
               );
           })}
           <MenuItem
-            to={this.props.settings.settings.dogovor}
+            to={this.props.settings.settings.dogovor || "/"}
             icon={download}
             className="download-order"
             name={"Шаблон договора между Перевозчиком и Грузовладельцем"}
