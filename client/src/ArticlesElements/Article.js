@@ -18,6 +18,7 @@ import { ReactComponent as Geolocation } from "../img/geolocation.svg";
 import { ReactComponent as GeolocationYellow } from "../img/geolocationYellow.svg";
 import { ReactComponent as Otmena } from "../img/otmena.svg";
 import basket from "../img/basket.png";
+import logo from "../img/logo.svg";
 // Router
 import { Link } from "react-router-dom";
 //Configs
@@ -182,17 +183,26 @@ class Article extends React.Component {
           !this.props.notLink && this.state.isHoverHref ? "hover" : ""
         }`}
         itemScope={true}
-        itemtype="https://schema.org/Article"
+        itemType="https://schema.org/Article"
       >
         {/* "Микроразметка" */}
         <link
-          itemprop="mainEntityOfPage"
+          itemProp="mainEntityOfPage"
+          itemScope
           href={
             window.location.origin + "/order/" + this.props.article.articleId
           }
         />
+        <link
+          itemProp="image"
+          href={
+            (!!this.props.article.car.photo &&
+              this.props.article.car.photo.path) ||
+            "https://pogrooz.ru" + logo
+          }
+        ></link>
         <meta
-          itemprop="headline name"
+          itemProp="headline name"
           content={
             (this.props.article.type === "offer" ? "Предложение" : "Заказ") +
             " №" +
@@ -200,7 +210,7 @@ class Article extends React.Component {
           }
         ></meta>
         <meta
-          itemprop="description"
+          itemProp="description"
           content={`${
             this.props.article.type === "offer"
               ? "Поиск водителя на перевозку"
@@ -210,34 +220,33 @@ class Article extends React.Component {
           }  до  ${this.props.article.to.value}`}
         ></meta>
         <meta
-          itemprop="author"
+          itemProp="author"
           content={`${this.props.article.author.name.last} ${this.props.article.author.name.first} ${this.props.article.author.name.middle}`}
         ></meta>
         <meta
-          itemprop="datePublished"
-          datetime={this.formatDate(this.props.article.createdAt)}
+          itemProp="datePublished"
+          dateTime={this.formatDate(this.props.article.createdAt)}
           content={this.formatDate(this.props.article.createdAt)}
         ></meta>
         <meta
-          itemprop="dateModified"
-          datetime={this.formatDate(this.props.article.updatedAt)}
+          itemProp="dateModified"
+          dateTime={this.formatDate(this.props.article.updatedAt)}
           content={this.formatDate(this.props.article.updatedAt)}
         ></meta>
         <div
-          itemprop="publisher"
+          itemProp="publisher"
           itemScope
-          itemtype="https://schema.org/Organization"
+          itemType="https://schema.org/Organization"
         >
           <div
-            itemprop="logo"
             itemScope
-            itemtype="https://schema.org/ImageObject"
+            itemProp="logo"
+            itemType="https://schema.org/ImageObject"
           >
-            <meta itemprop="url image" content="images/logo.png" />
+            <link itemProp="url image" href={"https://pogrooz.ru" + logo} />
           </div>
-          <meta itemprop="name" content="название сайта"></meta>
-          <meta itemprop="telephone" content=""></meta>
-          <meta itemprop="address" content="Россия"></meta>
+          <meta itemProp="name" content="Pogrooz.ru"></meta>
+          <meta itemProp="telephone" content={this.props.settings.phone}></meta>
         </div>
         {/* "Микроразметка" */}
         <div className="container-fluid">
@@ -937,6 +946,7 @@ class Article extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    settings: state.settings.settings,
   };
 };
 

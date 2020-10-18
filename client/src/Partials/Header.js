@@ -4,9 +4,9 @@ import FeedbackModal from "../Modal/FeedbackModal";
 import { withCookies } from "react-cookie";
 import { withRouter } from "react-router-dom";
 //IMG
-import logo from "../logo.svg";
-import minilogo from "../img/logoMobile.svg";
-import smallminilogo from "../img/mini-logo.svg";
+import { ReactComponent as Logo } from "../img/logo.svg";
+import { ReactComponent as Minilogo } from "../img/logoMobile.svg";
+import { ReactComponent as Smallminilogo } from "../img/mini-logo.svg";
 import notificationsFill from "../img/notifications-fill.png";
 import { ReactComponent as Support } from "../img/support.svg";
 import ImgActiveStar from "../img/active-star.png";
@@ -74,7 +74,7 @@ class Header extends React.Component {
         <div className="header-content d-flex">
           <div className="header-logo d-none d-md-flex align-items-center">
             <Link to="/">
-              <img src={logo} className="header-logo-img" alt="Pogrooz" />
+              <Logo className="header-logo-img"></Logo>
             </Link>
           </div>
           <div className="header-logo d-flex d-md-none">
@@ -84,15 +84,11 @@ class Header extends React.Component {
                 this.props.user.isAuth ? "d-none d-sm-block" : ""
               }`}
             >
-              <img src={minilogo} className="header-logo-img" alt="Pogrooz" />
+              <Minilogo className="header-logo-img"></Minilogo>
             </Link>
             {this.props.user.isAuth && (
               <Link to="/" className="m-auto d-block d-sm-none">
-                <img
-                  src={smallminilogo}
-                  className="header-logo-img"
-                  alt="Pogrooz"
-                />
+                <Smallminilogo className="header-logo-img"></Smallminilogo>
               </Link>
             )}
           </div>
