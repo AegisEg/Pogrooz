@@ -57,7 +57,6 @@ app
     })
   )
   .use(morgan("dev"))  
-  .use(require("prerender-node"))
   // Enable routes
   .use("/auth", authRoutes)
   .use("/api/article", articleRoutes)
