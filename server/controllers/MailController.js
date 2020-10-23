@@ -5,8 +5,83 @@
 "use strict";
 const nodemailer = require("nodemailer");
 const Setting = require("../models/Setting");
+const smtp = "smtp.mail.ru",
+  username = "neostar1996@mail.ru",
+  password = "googlenexusX&";
 module.exports = {
+  sendMailCall: async (req, res, next) => {
+    let { phone, name } = req.body;
+    let settingsNew = await settings();
+    let transporter = nodemailer.createTransport({
+      host: smtp,
+      port: 465,
+      secure: true,
+      auth: {
+        user: username,
+        pass: password,
+      },
+    });
+    await transporter.sendMail({
+      from: '"Pogrooz" <neostar1996@mail.ru>',
+      to: `neostar1996@mail.ru`,
+      subject: "Заказ звонка",
+      html: await mailTemplateFunc(
+        `Гость портала ${name} простит ему перезвонить по номеру ${phone}`,
+        "Заказ звонка",
+        settingsNew
+      ),
+    });
+    return res.json({ error: false });
+  },
+  sendMailSimple: async (title, content, email) => {
+    let settingsNew = await settings();
+
+    let transporter = nodemailer.createTransport({
+      host: smtp,
+      port: 465,
+      secure: true,
+      auth: {
+        user: username,
+        pass: password,
+      },
+    });
+    await transporter.sendMail({
+      from: '"Pogrooz" <neostar1996@mail.ru>',
+      to: email,
+      subject: title,
+      html: await mailTemplateFunc(content, title, settingsNew),
+    });
+    return true;
+  },
   sendMail: async (email, notification, mailTemplate) => {
+    try {
+      let settingsNew = await settings();
+      let transporter = nodemailer.createTransport({
+        host: smtp,
+        port: 465,
+        secure: true,
+        auth: {
+          user: username,
+          pass: password,
+        },
+      });
+      await transporter.sendMail({
+        from: '"Pogrooz" <neostar1996@mail.ru>',
+        to: `${email}`,
+        subject: mailTemplate.title(notification.info),
+        html: await mailTemplateFunc(
+          mailTemplate.text(notification.info),
+          mailTemplate.title(notification.info),
+          settingsNew
+        ),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  },
+};
+async function settings() {
+  try {
     let settings = await Setting.aggregate([
       {
         $replaceRoot: {
@@ -25,61 +100,12 @@ module.exports = {
     settings.map((item) => {
       settingsNew = { ...settingsNew, ...item };
     });
-    let transporter = nodemailer.createTransport({
-      host: "smtp.mail.ru",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "neostar1996@mail.ru",
-        pass: "googlenexusX&",
-      },
-    });
-    await transporter.sendMail({
-      from: '"Pogrooz" <neostar1996@mail.ru>',
-      to: `${email}`,
-      subject: mailTemplate.title(notification.info),
-      html: await mailTemplateFunc(
-        mailTemplate.text(notification.info),
-        mailTemplate.title(notification.info),
-        settingsNew
-      ),
-    });
-  },
-
-  sendMailToSupport: async (message, email, user) => {
-    let transporter = nodemailer.createTransport({
-      host: "smtp.timeweb.ru",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "support@hevachat.com",
-        pass: "H2Uh9ekj",
-      },
-    });
-
-    let result = await transporter.sendMail({
-      from: '"Hevachat" <support@hevachat.com>',
-      to: `support@hevachat.com`,
-      subject: `Message from ${user._id}`,
-      // text: "",
-      html: `<div>
-                <h1>Пользователь</h1>
-                <p>
-                    id: ${user._id}<br/>
-                    Имя: ${user.name.first}<br/>
-                    Фамилия: ${user.name.last}<br/>
-                    Почта для ответа: <a href="mailto:${email}">${email}</a>
-                </p>
-
-                <h1>Сообщение</h1>
-                <p>
-                    ${message}
-                </p>
-            </div>`,
-    });
-  },
-};
-async function mailTemplateFunc(title, content, settingsNew) {
+    return settingsNew;
+  } catch (e) {
+    console.log(e);
+  }
+}
+async function mailTemplateFunc(content, title, settingsNew) {
   return `
   
           <style>
@@ -103,8 +129,8 @@ async function mailTemplateFunc(title, content, settingsNew) {
               </tr>
               <tr>
                   <td colspan="2" style="padding: 30px 60px 30px 60px;">
-                      <h1 align="center" style="padding: 0 0 0px 0; margin:0 0 30px 0; font-size: 20px;">Заголовок</h1>
-                      <p style="font-size: 14px;">Попутные грузоперевозки с PoGrooz – это шаг в будущее удобных грузоперевозок. Здесь Вы легко и быстро можете найти Заказ или Предложение на перевозку груза. <a href="asdasd">asdasd</a></p>
+                      <h1 align="center" style="padding: 0 0 0px 0; margin:0 0 30px 0; font-size: 20px;">${title}</h1>
+                      <p style="font-size: 14px;">${content}</p>
                   </td>
               </tr>
               <tr bgcolor="#F9F8F8">

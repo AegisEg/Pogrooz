@@ -1,40 +1,6 @@
 import React, { lazy } from "react";
-
-// Pages
-import Main from "../Pages/Public/Main";
-import FAQ from "../Pages/Public/FAQ";
-import Login from "../Pages/Auth/Login";
-import Register from "../Pages/Auth/Register";
-import Forgot from "../Pages/Auth/Forgot";
-import Reset from "../Pages/Auth/Reset";
-import About from "../Pages/Public/About";
-import Cargo from "../Pages/Public/Cargo";
-import SearchPage from "../Pages/Public/SearchPage";
-import TarifPage from "../Pages/Public/TarifPage";
-import Application from "../Pages/Public/Application";
-import Carrier from "../Pages/Public/Carrier";
-import Profile from "../Pages/User/Profile";
-import MyArticles from "../Pages/User/MyArticles";
-import TakingArticles from "../Pages/User/TakingArticles";
-import CreateTemplateAuto from "../Pages/User/CreatePart/CreateTemplateAuto";
-import MyTemplateAuto from "../Pages/User/MyTemplateCar";
-import User from "../Pages/Public/User";
-import ArticlePage from "../Pages/User/ArticlePage";
-import Notifications from "../Pages/User/Notifications/Notifications";
-import NotificationsSettings from "../Pages/User/Notifications/NotificationsSettings";
-import NewOffer from "../Pages/User/NewOffer";
-import NewOrder from "../Pages/User/NewOrder";
-import Reviwes from "../Pages/User/Reviwes";
-import Support from "../Pages/User/Support";
-import TarifLk from "../Pages/User/TarifLk";
-import AutoPay from "../Pages/User/AutoPay";
-import Messages from "../Pages/User/Messages/Messages";
-import Dialog from "../Pages/User/Messages/Dialog";
-import DialogOrder from "../Pages/User/Messages/DialogOrder";
-import GeoDetect from "../Pages/User/GeoDetect";
-import Page from "../Pages/Page";
-import Questions from "../Pages/Questions";
-import LoginByToken from "../Pages/Auth/LoginByToken";
+const PublicComponents = React.lazy(() => import("./PublicComponents"));
+const PrivateComponents = React.lazy(() => import("./PrivateComponents"));
 const routes = [
   //AUTH ROUTE
   {
@@ -42,28 +8,21 @@ const routes = [
     exact: true,
     type: "auth",
     title: "Авторизация",
-    component: () => <Login />,
-  },
-  {
-    path: "/loginbytoken/:token",
-    exact: true,
-    type: "auth",
-    title: "Авторизация",
-    component: () => <LoginByToken />,
+    component: () => <PublicComponents name="Login" />,
   },
   {
     path: "/register",
     exact: true,
     type: "auth",
     title: "Регистрация",
-    component: () => <Register />,
+    component: () => <PublicComponents name="Register" />,
   },
   {
     path: "/forgot",
     exact: true,
     type: "auth",
     title: "Забыли пароль",
-    component: () => <Forgot />,
+    component: () => <PublicComponents name="Forgot" />,
   },
   {
     path: "/reset/:token",
@@ -71,7 +30,7 @@ const routes = [
     exact: true,
     type: "auth",
     title: "Восстановление пароля",
-    component: () => <Reset />,
+    component: () => <PublicComponents name="Reset" />,
   },
   //AUTH ROUTE END
   //PUBLIC ROUTE
@@ -81,71 +40,61 @@ const routes = [
     type: "public",
     title: "Страница",
     forseTitle: true,
-    component: () => <Page />,
+    component: () => <PrivateComponents name="Page" />,
   },
   {
     path: "/",
     exact: true,
     type: "public",
-    title: "Поисковик попутных перевозок для ваших грузов",
-    component: () => <Main />,
+    component: () => <PublicComponents name="Main" />,
   },
   {
     path: "/faq",
     exact: true,
     type: "public",
-    title: "FAQ",
-    component: () => <FAQ />,
-  },
-  {
-    path: "/about",
-    exact: true,
-    type: "public",
-    title: "О нас",
-    component: () => <About />,
+    component: () => <PublicComponents name="FAQ" />,
   },
   {
     path: "/cargo",
     exact: true,
     type: "public",
-    title: "Грузовладельцам",
-    component: () => <Cargo />,
+    component: () => <PublicComponents name="Cargo" />,
   },
   {
-    path: "/search",
+    path: "/search-offer",
     exact: true,
     type: "public",
-    title: "Поиск",
-    component: () => <SearchPage />,
+    component: () => <PublicComponents name="SearchPage" type="offer" />,
+  },
+  {
+    path: "/search-order",
+    exact: true,
+    type: "public",
+    component: () => <PublicComponents name="SearchPage" type="order" />,
   },
   {
     path: "/tariffs",
     exact: true,
     type: "public",
-    title: "Тарифы",
-    component: () => <TarifPage />,
+    component: () => <PublicComponents name="TarifPage" />,
   },
   {
     path: "/download-app",
     exact: true,
     type: "public",
-    title: "Приложение в разработке",
-    component: () => <Application />,
+    component: () => <PublicComponents name="Application" />,
   },
   {
     path: "/carrier",
     exact: true,
     type: "public",
-    title: "Перевозчикам",
-    component: () => <Carrier />,
+    component: () => <PublicComponents name="Carrier" />,
   },
   {
     path: "/questions/:slug",
     exact: true,
     type: "public",
-    title: "Вопрос",
-    forseTitle: true,
-    component: () => <Questions />,
+    component: () => <PrivateComponents name="Questions" />,
   },
   //PUBLIC ROUTE END
   //PRIVATE ROUTE
@@ -154,14 +103,14 @@ const routes = [
     exact: true,
     type: "private",
     title: "Безопасность",
-    component: () => <Profile step={2} />,
+    component: () => <PrivateComponents name="Profile" step={2} />,
   },
   {
     path: "/profile/info",
     exact: true,
     type: "private",
     title: "Личная информация",
-    component: () => <Profile step={1} />,
+    component: () => <PrivateComponents name="Profile" step={1} />,
   },
   {
     path: "/lk/questions/:slug",
@@ -169,14 +118,14 @@ const routes = [
     type: "private",
     title: "Вопрос",
     forseTitle: true,
-    component: () => <Questions isPrivate={true} />,
+    component: () => <PrivateComponents name="Questions" isPrivate={true} />,
   },
   {
     path: "/notifications",
     exact: true,
     type: "private",
     title: "Уведомления",
-    component: () => <Notifications />,
+    component: () => <PrivateComponents name="Notifications" />,
   },
   {
     path: "/messages-by-order",
@@ -184,7 +133,7 @@ const routes = [
     type: "private",
     tab: "order",
     title: "Сообщения по заказам, предложениям",
-    component: (props) => <Messages {...props} />,
+    component: (props) => <PrivateComponents name="Messages" {...props} />,
   },
   {
     path: "/messages",
@@ -192,7 +141,7 @@ const routes = [
     type: "private",
     tab: "all",
     title: "Сообщения",
-    component: (props) => <Messages {...props} />,
+    component: (props) => <PrivateComponents name="Messages" {...props} />,
   },
   {
     path: "/messages-users",
@@ -200,7 +149,7 @@ const routes = [
     type: "private",
     tab: "user",
     title: "Сообщения пользователей",
-    component: (props) => <Messages {...props} />,
+    component: (props) => <PrivateComponents name="Messages" {...props} />,
   },
   {
     path: "/dialog/:id",
@@ -209,7 +158,7 @@ const routes = [
     lkHeight: true,
     dialogType: 2,
     title: "Сообщения пользователей",
-    component: (props) => <Dialog {...props} />,
+    component: (props) => <PrivateComponents name="Dialog" {...props} />,
   },
   {
     path: "/dialog-order/:order/:id",
@@ -218,7 +167,7 @@ const routes = [
     lkHeight: true,
     dialogType: 2,
     title: "Сообщения пользователей",
-    component: (props) => <DialogOrder {...props} />,
+    component: (props) => <PrivateComponents name="DialogOrder" {...props} />,
   },
   {
     path: "/dialog-order/:id",
@@ -227,7 +176,7 @@ const routes = [
     lkHeight: true,
     dialogType: 1,
     title: "Сообщения пользователей",
-    component: (props) => <Dialog {...props} />,
+    component: (props) => <PrivateComponents name="Dialog" {...props} />,
   },
   {
     path: "/mytarif",
@@ -235,14 +184,14 @@ const routes = [
     type: "private",
     title: "Мои тариф",
     role: "carrier",
-    component: () => <TarifLk />,
+    component: () => <PrivateComponents name="TarifLk" />,
   },
   {
     path: "/notifications-settings",
     exact: true,
     type: "private",
     title: "Настройки уведомлений",
-    component: () => <NotificationsSettings />,
+    component: () => <PrivateComponents name="NotificationsSettings" />,
   },
   {
     path: "/my-orders",
@@ -252,7 +201,7 @@ const routes = [
     typeArticle: "order",
     statusArticle: [1, 2, 3, 4, 5, 6, 7],
     role: "cargo",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/my-orders-open",
@@ -262,7 +211,7 @@ const routes = [
     typeArticle: "order",
     statusArticle: [1, 2],
     role: "cargo",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/my-orders-working",
@@ -272,7 +221,7 @@ const routes = [
     typeArticle: "order",
     statusArticle: [3, 4],
     role: "cargo",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/my-orders-completed",
@@ -282,7 +231,7 @@ const routes = [
     statusArticle: [5, 6],
     title: "Закрытые заказы",
     role: "cargo",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/autopay",
@@ -290,7 +239,7 @@ const routes = [
     type: "private",
     title: "Настройка автоплатежа",
     role: "carrier",
-    component: (props) => <AutoPay {...props} />,
+    component: (props) => <PrivateComponents name="AutoPay" {...props} />,
   },
   {
     path: "/my-orders-deleted",
@@ -300,7 +249,7 @@ const routes = [
     statusArticle: [7],
     title: "Корзина",
     role: "cargo",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/order/:id",
@@ -308,7 +257,9 @@ const routes = [
     type: "common",
     title: "Заказ #0000",
     forseTitle: true,
-    component: (props) => <ArticlePage type="order" {...props} />,
+    component: (props) => (
+      <PrivateComponents name="ArticlePage" type="order" {...props} />
+    ),
   },
   {
     path: "/edit-order/:id",
@@ -317,7 +268,7 @@ const routes = [
     title: "Редактирование заказа",
     forseTitle: true,
     role: "cargo",
-    component: (props) => <NewOrder {...props} />,
+    component: (props) => <PrivateComponents name="NewOrder" {...props} />,
   },
   {
     path: "/offer/:id",
@@ -325,7 +276,9 @@ const routes = [
     type: "common",
     title: "Предложение #0000",
     forseTitle: true,
-    component: (props) => <ArticlePage type="offer" {...props} />,
+    component: (props) => (
+      <PrivateComponents name="ArticlePage" type="offer" {...props} />
+    ),
   },
   {
     path: "/edit-offer/:id",
@@ -334,7 +287,7 @@ const routes = [
     title: "Редактирование предложения",
     forseTitle: true,
     role: "carrier",
-    component: (props) => <NewOffer {...props} />,
+    component: (props) => <PrivateComponents name="NewOffer" {...props} />,
   },
   {
     path: "/order-create",
@@ -342,7 +295,7 @@ const routes = [
     type: "private",
     title: "Новый заказ",
     role: "cargo",
-    component: (props) => <NewOrder {...props} />,
+    component: (props) => <PrivateComponents name="NewOrder" {...props} />,
   },
   {
     path: "/taken-orders",
@@ -352,7 +305,9 @@ const routes = [
     statusArticle: [3, 4, 5, 6],
     title: "Взятые заказы",
     role: "carrier",
-    component: (props) => <TakingArticles {...props} />,
+    component: (props) => (
+      <PrivateComponents name="TakingArticles" {...props} />
+    ),
   },
   {
     path: "/my-offers",
@@ -362,7 +317,7 @@ const routes = [
     statusArticle: [1, 2, 3, 4, 5, 6, 7],
     title: "Мои предложения",
     role: "carrier",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/my-offers-open",
@@ -372,7 +327,7 @@ const routes = [
     statusArticle: [1, 2],
     title: "Открытые предложения",
     role: "carrier",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/my-offers-working",
@@ -382,7 +337,7 @@ const routes = [
     statusArticle: [3, 4],
     title: "Предложения в работе",
     role: "carrier",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/my-offers-completed",
@@ -392,7 +347,7 @@ const routes = [
     statusArticle: [5, 6],
     title: "Закрытые предложения",
     role: "carrier",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/my-offers-deleted",
@@ -402,7 +357,7 @@ const routes = [
     statusArticle: [7],
     title: "Корзина",
     role: "carrier",
-    component: (props) => <MyArticles {...props} />,
+    component: (props) => <PrivateComponents name="MyArticles" {...props} />,
   },
   {
     path: "/taken-offers",
@@ -412,7 +367,9 @@ const routes = [
     statusArticle: [3, 4, 5, 6],
     title: "Взятые предложения",
     role: "cargo",
-    component: (props) => <TakingArticles {...props} />,
+    component: (props) => (
+      <PrivateComponents name="TakingArticles" {...props} />
+    ),
   },
   {
     path: "/offer-create",
@@ -420,7 +377,7 @@ const routes = [
     type: "private",
     title: "Новое предложение",
     role: "carrier",
-    component: (props) => <NewOffer {...props} />,
+    component: (props) => <PrivateComponents name="NewOffer" {...props} />,
   },
   {
     path: "/create-template-auto",
@@ -428,7 +385,9 @@ const routes = [
     type: "private",
     title: "Новый шаблон авто",
     role: "carrier",
-    component: (props) => <CreateTemplateAuto {...props} />,
+    component: (props) => (
+      <PrivateComponents name="CreateTemplateAuto" {...props} />
+    ),
   },
   {
     path: "/edit-template-auto/:id",
@@ -436,7 +395,9 @@ const routes = [
     type: "private",
     title: "Редактирование шаблона Авто",
     role: "carrier",
-    component: (props) => <CreateTemplateAuto {...props} />,
+    component: (props) => (
+      <PrivateComponents name="CreateTemplateAuto" {...props} />
+    ),
   },
   {
     path: "/mytemplate-auto",
@@ -444,28 +405,30 @@ const routes = [
     type: "private",
     title: "Мои шалоны авто",
     role: "carrier",
-    component: (props) => <MyTemplateAuto {...props} />,
+    component: (props) => (
+      <PrivateComponents name="MyTemplateAuto" {...props} />
+    ),
   },
   {
     path: "/user/:id",
     exact: true,
     type: "public",
     title: "Профиль пользователя",
-    component: (props) => <User {...props} />,
+    component: (props) => <PrivateComponents name="User" {...props} />,
   },
   {
     path: "/reviews",
     exact: true,
     type: "private",
     title: "Отзывы",
-    component: (props) => <Reviwes {...props} />,
+    component: (props) => <PrivateComponents name="Reviwes" {...props} />,
   },
   {
     path: "/support",
     exact: true,
     type: "private",
     title: "Техподдержка",
-    component: (props) => <Support {...props} />,
+    component: (props) => <PrivateComponents name="Support" {...props} />,
   },
   {
     path: "/geo-detect",
@@ -473,7 +436,7 @@ const routes = [
     type: "private",
     title: "Отслеживание",
     role: "cargo",
-    component: (props) => <GeoDetect {...props} />,
+    component: (props) => <PrivateComponents name="GeoDetect" {...props} />,
   },
 ];
 

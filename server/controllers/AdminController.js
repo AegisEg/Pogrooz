@@ -21,6 +21,10 @@ const adminBro = new AdminBro({
     logo: "/media/mini-logo.svg",
     softwareBrothers: false,
   },
+  dashboard: {
+    handler: async () => {},
+    component: AdminBro.bundle("../adminComponents/dashboard.jsx"),
+  },
   assets: {
     // styles: ["//cdn.quilljs.com/1.3.6/quill.snow.css"],
     scripts: [
@@ -99,6 +103,7 @@ const adminBro = new AdminBro({
           },
           passportModeration: {
             actionType: "record",
+            icon: "VisualRecognition",
             isVisible: (context) =>
               !context.record.params.isPassportVerified &&
               context.record.params.isPassportUploaded,
@@ -116,6 +121,7 @@ const adminBro = new AdminBro({
           },
           passportModerationFail: {
             actionType: "record",
+            icon: "NoImage",
             isVisible: (context) =>
               !context.record.params.isPassportVerified &&
               context.record.params.isPassportUploaded,
@@ -128,6 +134,7 @@ const adminBro = new AdminBro({
           },
           userBan: {
             actionType: "record",
+            icon: "Power",
             isVisible: (context) =>
               !context.record.params.isBan &&
               (context.record.params.type === "cargo" ||
@@ -141,6 +148,7 @@ const adminBro = new AdminBro({
           },
           userUnBan: {
             actionType: "record",
+            icon: "PlayOutlineFilled",
             isVisible: (context) => context.record.params.isBan,
             component: false,
             handler: async (request, response, context) => {
@@ -153,6 +161,7 @@ const adminBro = new AdminBro({
           },
           sendNotify: {
             actionType: "record",
+            icon: "Account",
             isVisible: true,
             component: AdminBro.bundle(
               "../adminComponents/notificationComonent"
@@ -329,6 +338,12 @@ const adminBro = new AdminBro({
             isVisible: { list: false, filter: false, show: false, edit: false },
           },
           contract: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          bindingIdCard: {
+            isVisible: { list: false, filter: false, show: false, edit: false },
+          },
+          isEnableAutoPay: {
             isVisible: { list: false, filter: false, show: false, edit: false },
           },
           "contract.id": {
@@ -629,6 +644,7 @@ const adminBro = new AdminBro({
         userBan: "Заблокировать",
         userUnBan: "Снять блокировку",
         sendNotify: "Написать уведомление",
+        list: "Список",
       },
       dashboard: "Рабочий стол",
       buttons: {
@@ -713,7 +729,12 @@ const adminBro = new AdminBro({
           properties: { name: "Название", key: "Ключ", value: "Значение" },
         },
       },
+      messages: {
+        loginWelcome: "Добро пожаловать",
+      },
       labels: {
+        loginWelcome: "Админка Pogrooz.ru",
+        filters: "Фильтер",
         User: "Пользователи",
         Page: "Страницы",
         Tariff: "Тарифы",

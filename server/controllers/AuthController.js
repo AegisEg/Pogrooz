@@ -15,7 +15,8 @@ const Notification = require("../models/Notification");
 const Payment = require("../models/Payment");
 const Dialog = require("../models/Dialog");
 var smsc = require("./SmsController");
-const { setDemoTariff } = require("../controllers/TariffController");
+const { setDemoTariff } = require("./TariffController");
+const { sendMailSimple } = require("./MailController");
 const NUM_ROUNDS = 12;
 module.exports = {
   // Register method
@@ -205,7 +206,13 @@ module.exports = {
           existingUserEmail.resetPasswordToken = resetPasswordToken;
           existingUserEmail.resetPasswordExpires = resetPasswordExpires;
           existingUserEmail.save();
-          //Отправка на почту письма
+          await sendMailSimple(
+            "Сброс пароля Pogrooz.ru",
+            `<a href="${
+              process.env.CLIENT_URL
+            }/reset/${resetPasswordToken}">Ссылка на сброс пароля</a>`,
+            email
+          );
           return res.json({
             status: "sended",
             email: email,
@@ -216,7 +223,7 @@ module.exports = {
           return res.json({
             status: "waiting",
             email: email,
-            time: existingUserEmail.user.resetPasswordExpires - Date.now(),
+            time: existingUserEmail.resetPasswordExpires - Date.now(),
           });
         }
       } else {
@@ -236,6 +243,12 @@ module.exports = {
     const { password, token } = req.body;
 
     const errors = validationResult(req);
+    if (!/(?:[а-яёa-z]\d|\d[в-яёa-z])/i.test(password) || password.length < 8) {
+      let err = {};
+      err.param = `password`;
+      err.msg = `Пароль должен содержать не менее 8-ми цифр и букв `;
+      return res.status(409).json({ error: true, errors: [err] });
+    }
     if (!errors.isEmpty()) {
       return res.status(422).json({ error: true, errors: errors.array() });
     }
@@ -252,6 +265,11 @@ module.exports = {
         existingUserEmail.resetPasswordExpires = 0;
         existingUserEmail.save();
         //Сообщение о сбросе пароля
+        await sendMailSimple(
+          "Сброс пароля Pogrooz.ru",
+          `Пароль в Pogrooz.ru изменен успешно`,
+          existingUserEmail.email
+        );
         return res.json({
           status: "success",
         });

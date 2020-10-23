@@ -5,6 +5,7 @@ const User = require("../models/User");
 const { donTariff } = require("../controllers/SocketController");
 const { cancelBanUser } = require("../controllers/UserController");
 const { articleUnpulish } = require("../controllers/ArticleController");
+const { sitemap } = require("../controllers/PageController");
 const {
   autoPayment,
   sendNotifyTariffCanсel,
@@ -61,11 +62,13 @@ agenda.define("setTarrifCancelNotify", async (job) => {
   }
   await agenda.cancel({ _id: job.attrs._id });
 });
-
 agenda.define("setBanCancel", async (job) => {
   let userId = job.attrs.data.userId;
   let createdAt = job.attrs.data.banCreatedAt;
   cancelBanUser(userId, createdAt);
   await agenda.cancel({ _id: job.attrs._id });
+});
+agenda.define("sitemapGenerage", async (job) => {
+  sitemap();
 });
 module.exports = agenda;

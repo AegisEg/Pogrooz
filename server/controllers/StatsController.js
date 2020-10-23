@@ -285,6 +285,66 @@ module.exports = {
       return res.json({ tariffs, sums });
     } catch (e) {}
   },
+  getTariffsDate: async (req, res, next) => {
+    let { month, year } = req.body;
+    try {
+      let tariffs = await Payment.aggregate([
+        {
+          $match: {
+            tariff: { $ne: null },
+            status: "success",
+          },
+        },
+        {
+          $addFields: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+          },
+        },
+        {
+          $match: {
+            month: month,
+            year: year,
+          },
+        },
+        {
+          $lookup: {
+            from: "tariffs",
+            localField: "tariff",
+            foreignField: "_id",
+            as: "tariff",
+          },
+        },
+        {
+          $unwind: "$tariff",
+        },
+        {
+          $group: {
+            _id: {
+              tariff: "$tariff._id",
+            },
+            tariff: { $first: "$tariff" },
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $project: {
+            _id: "$tariff.name",
+            duration: "$tariff.duration",
+            count: "$count",
+          },
+        },
+      ]);
+
+      tariffs = tariffs.map((item) => {
+        return {
+          name: item._id + " " + item.duration,
+          Пользователи: item.count || 0,
+        };
+      });
+      return res.json({ tariffs });
+    } catch (e) {}
+  },
   getCreatedArticles: async (req, res, next) => {
     let { year } = req.body;
     try {

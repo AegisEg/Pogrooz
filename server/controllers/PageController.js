@@ -5,11 +5,23 @@
 "use strict";
 
 const Page = require("../models/Page");
-
+var fs = require("fs");
 const QuestionSection = require("../models/QuestionSection");
 const ItemMenu = require("../models/ItemMenu");
 const Setting = require("../models/Setting");
-
+const User = require("../models/User");
+const Article = require("../models/Article");
+const staticUrl = [
+  "",
+  "about",
+  "cargo",
+  "carrier",
+  "download-app",
+  "faq",
+  "search-offer",
+  "search-order",
+  "tariffs",
+];
 module.exports = {
   page: async (req, res, next) => {
     let { slug } = req.body;
@@ -20,6 +32,61 @@ module.exports = {
     } catch (e) {
       return next(new Error(e));
     }
+  },
+
+  sitemap: async () => {
+    let xml_content = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ];
+    //StaticUrls
+    //Main
+    staticUrl.map((item) => {
+      xml_content = [
+        ...xml_content,
+        "  <url>",
+        `    <loc>${process.env.CLIENT_URL}/${item}</loc>`,
+        "  </url>",
+      ];
+    });
+    //Разделы Faq
+    let questionSection = await QuestionSection.find();
+    questionSection.map((item) => {
+      xml_content = [
+        ...xml_content,
+        "  <url>",
+        `    <loc>${process.env.CLIENT_URL}/questions/${item.slug}</loc>`,
+        "  </url>",
+      ];
+    });
+    //Пользователи
+    let users = await User.find();
+    users.map((item) => {
+      xml_content = [
+        ...xml_content,
+        "  <url>",
+        `    <loc>${process.env.CLIENT_URL}/user/${item._id}</loc>`,
+        "  </url>",
+      ];
+    });
+    //Пользователи
+    let articles = await Article.find({ status: 2 });
+    articles.map((item) => {
+      xml_content = [
+        ...xml_content,
+        "  <url>",
+        `    <loc>${process.env.CLIENT_URL}/${item.type}/${
+          item.articleId
+        }</loc>`,
+        "  </url>",
+      ];
+    });
+    xml_content = [...xml_content, "</urlset>"];
+    fs.writeFile(
+      "../client/build/sitemap.xml",
+      xml_content.join("\n"),
+      function(error) {}
+    );
   },
   questions: async (req, res, next) => {
     let { type } = req.body;

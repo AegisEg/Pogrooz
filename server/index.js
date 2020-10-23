@@ -41,10 +41,12 @@ const notification = require("./routes/notification");
 const page = require("./routes/page");
 const tariffs = require("./routes/tariffs");
 const stats = require("./routes/stats");
+const PageController = require("./controllers/PageController");
 // Use Express as our web server
 const app = express();
 
 app
+  .get("/sitemap.xml", PageController.sitemap)
   .use("/admin", formidableMiddleware(), adminPanel)
   // Parse JSON
   .use(bodyParser.json())
@@ -56,7 +58,7 @@ app
       createParentPath: true,
     })
   )
-  .use(morgan("dev"))  
+  .use(morgan("dev"))
   // Enable routes
   .use("/auth", authRoutes)
   .use("/api/article", articleRoutes)
@@ -108,6 +110,7 @@ async function startServer() {
     https.listen(8080);
   }
   agenda.start();
+  agenda.every("1 days", "sitemapGenerage");
 }
 
 //ADMIN

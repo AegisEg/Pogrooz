@@ -43,10 +43,9 @@ module.exports = {
     let sort = { createdAt: -1 };
     // let timeFrom = false;
     // let timeTo = false;
-    if (filter.allStatus) {
-      filter.status = { $in: filter.allStatus };
-      delete filter.allStatus;
-    }
+
+    filter.status = 2;
+
     try {
       if (filter.type) match.type = filter.type;
       if (filter.status) match.status = filter.status;
@@ -1039,8 +1038,7 @@ module.exports = {
           let dateExecute;
           if (article.startDate.date)
             dateExecute = new Date(article.startDate.date).addDays(1);
-          if (!article.startDate.date)
-            dateExecute = new Date(article.updatedAt).addDays(7);
+          if (!article.startDate.date) dateExecute = new Date().addDays(7);
           job = await agenda.schedule(dateExecute, "articleUnpublish", {
             articleId: article._id,
           });
