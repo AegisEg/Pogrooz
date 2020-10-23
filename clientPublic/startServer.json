@@ -1,5 +1,0 @@
-{
-  "name": "Pogrooz-client",
-  "script": "serve build -l 80",
-  "args": ""
-}
