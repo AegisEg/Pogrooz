@@ -1,7 +1,6 @@
 import React, { lazy } from "react";
 const PublicComponents = React.lazy(() => import("./PublicComponents"));
 const PrivateComponents = React.lazy(() => import("./PrivateComponents"));
-const Main = React.lazy(() => import("../Pages/Public/Main"));
 const routes = [
   //AUTH ROUTE
   {
@@ -47,7 +46,7 @@ const routes = [
     path: "/",
     exact: true,
     type: "public",
-    component: () => <Main name="Main" />,
+    component: () => <PublicComponents name="Main" />,
   },
   {
     path: "/faq",

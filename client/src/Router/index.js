@@ -125,7 +125,38 @@ class AppRouter extends React.Component {
               </div>
             )}
 
-          <Suspense fallback={<Preloader />}>
+          <Suspense
+            fallback={
+              <div id="preloader" class="background preloader">
+                <div class="loader loader-left"></div>
+                <div class="loader loader-right"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                  <defs>
+                    <filter id="goo">
+                      <fegaussianblur
+                        in="SourceGraphic"
+                        stddeviation="15"
+                        result="blur"
+                        color-interpolation-filters="sRGB"
+                      ></fegaussianblur>
+                      <fecolormatrix
+                        in="blur"
+                        mode="matrix"
+                        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -7"
+                        result="goo"
+                        color-interpolation-filters="sRGB"
+                      ></fecolormatrix>
+                      <feblend
+                        in="SourceGraphic"
+                        in2="goo"
+                        color-interpolation-filters="sRGB"
+                      ></feblend>
+                    </filter>
+                  </defs>
+                </svg>
+              </div>
+            }
+          >
             <Switch>
               {routes.map((route, index) => {
                 switch (route.type) {
