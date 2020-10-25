@@ -33,7 +33,6 @@ class Message extends React.Component {
   render() {
     let isHistoryDate = true;
     let moreHour = false;
-    console.log(this.props.prevMessage);
     if (!!this.props.prevMessage) {
       let date1 = new Date(this.props.message.createdAt);
       let date2 = new Date(this.props.prevMessage.createdAt);

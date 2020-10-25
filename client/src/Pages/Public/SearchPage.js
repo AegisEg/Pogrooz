@@ -12,8 +12,12 @@ class SearchPage extends React.Component {
     if (this.props.location.search) {
       getParams = queryString.parse(this.props.location.search);
       this.defaultStateF = getParams.params;
+      this.defaultCity = getParams.city;
     }
-  } 
+  }
+  state = {
+    city: false,
+  };
   render() {
     return (
       <div className="search-page">
@@ -22,11 +26,17 @@ class SearchPage extends React.Component {
             keyMeta={
               this.props.type === "offer" ? "offerSearch" : "orderSearch"
             }
-            options={{}}
+            options={{
+              city: this.state.city,
+            }}
           />
         )}
         <ArticlesFilter
           defaultStateF={this.defaultStateF}
+          cityChange={(city) => {
+            this.setState({ city });
+          }}
+          city={this.defaultCity}
           ref={this.filter}
           type={this.props.type}
         />

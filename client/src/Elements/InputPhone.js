@@ -120,13 +120,7 @@ class InputPhone extends React.Component {
               onChange={(val) => {
                 if (!this.state.isSend) {
                   if (val.length < this.props.value.length)
-                    this.setState({ isUnique: false, isUniqueCanDo: true });
-                  console.log(
-                    val != this.props.value,
-                    val.length === 11,
-                    !this.state.isUnique,
-                    this.state.isUniqueCanDo
-                  );
+                    this.setState({ isUnique: false, isUniqueCanDo: true });                  
                   if (val != this.props.value && val.length === 11) {
                     this.setState({ isFetching: true }, () => {
                       fetch(`${api.urlApi}/auth/uniquePhone`, {

@@ -14,6 +14,7 @@ import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import routes from "./config";
 import NoMatch from "../Pages/NoMatch";
+import CookieNotifications from "../Partials/cookieNotifications";
 import { ReactComponent as Gps } from "../img/geoPoint.svg";
 import { ReactComponent as Error } from "../img/error-red.svg";
 // Redux
@@ -23,7 +24,6 @@ import * as myArticlesActions from "../redux/actions/myarticles";
 import { bindActionCreators } from "redux";
 import configApi from "../config/api";
 import * as settingsActions from "../redux/actions/settings";
-import Preloader from "../Elements/Preloader";
 
 export function setTitle(path, routeArray) {
   let pageTitle;
@@ -38,7 +38,7 @@ export function setTitle(path, routeArray) {
 class AppRouter extends React.Component {
   state = {
     isRender: false,
-    isPublic: false,
+    isCookieNotify: true,
   };
   componentDidMount() {
     this.props.history.listen(() => {
@@ -47,6 +47,7 @@ class AppRouter extends React.Component {
     setTitle(this.props.history.location.pathname, routes);
 
     const { cookies } = this.props;
+    let isCookienotifyX = cookies.get("cookienotify");
     let apiToken = cookies.get("apiToken");
 
     if (apiToken) {
@@ -83,18 +84,21 @@ class AppRouter extends React.Component {
                 this.props.user.apiToken
               );
             this.props.settingsActions.getSettings().then(() => {
-              this.setState({ isRender: true });
+              this.setState({
+                isRender: true,
+                isCookieNotify: !isCookienotifyX,
+              });
             });
           }
         )
         .catch(() => {
           this.props.settingsActions.getSettings().then(() => {
-            this.setState({ isRender: true });
+            this.setState({ isRender: true, isCookieNotify: !isCookienotifyX });
           });
         });
     } else {
       this.props.settingsActions.getSettings().then(() => {
-        this.setState({ isRender: true });
+        this.setState({ isRender: true, isCookieNotify: !isCookienotifyX });
       });
     }
     jivoSite();
@@ -111,6 +115,17 @@ class AppRouter extends React.Component {
     return (
       this.state.isRender && (
         <>
+          <CookieNotifications
+            isVisible={this.state.isCookieNotify}
+            close={() => {
+              const { cookies } = this.props;
+              cookies.set("cookienotify", true, {
+                path: "/",
+                maxAge: 60 * 60 * 24 * 10,
+              });
+              this.setState({ isCookieNotify: false });
+            }}
+          ></CookieNotifications>
           {this.props.user.needSendLocation &&
             !this.props.user.geolocationsError && (
               <div className="geo-active">

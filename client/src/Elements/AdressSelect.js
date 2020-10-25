@@ -9,6 +9,7 @@ class AdressSelect extends React.Component {
     this.ref.setInputValue(this.props.value);
   }
   render() {
+    console.log(this.props);
     return (
       <div className="adress-select">
         <AddressSuggestions
@@ -16,7 +17,7 @@ class AdressSelect extends React.Component {
           token={configApi.daDataToken}
           inputProps={{
             onKeyDown: this.props.onInput,
-            placeholder:this.props.placeholder,
+            placeholder: this.props.placeholder,
             onClick: (e) => {
               let el = e.target;
               el.selectionStart = el.selectionEnd = el.value.length;
@@ -26,8 +27,7 @@ class AdressSelect extends React.Component {
           }}
           count={10}
           className={`${this.props.className}`}
-         
-          defaultQuery={this.props.value}
+          defaultQuery={this.props.defaultCity}
           onChange={this.props.onChange}
           filterFromBound={this.props.filterFromBound}
           filterToBound={this.props.filterToBound}

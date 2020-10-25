@@ -1,5 +1,6 @@
 // App
 import React from "react";
+import { Link } from "react-router-dom";
 var cities = [
   "Казань",
   "Волгоград",
@@ -92,7 +93,13 @@ class Cities extends React.Component {
                 <div key={i} className="main-cities-item">
                   <ul>
                     {item.map((item1, i) => {
-                      return <li key={i}>{item1}</li>;
+                      return (
+                        <li key={i}>
+                          <Link to={"/search-offer?city=" + item1}>
+                            {item1}
+                          </Link>
+                        </li>
+                      );
                     })}
                   </ul>
                 </div>

@@ -18,7 +18,6 @@ const DropdownIndicator = (props) => {
 };
 const colourStyles = {
   placeholder: (base, state) => {
-    console.log(state);
     return {
       color: "#909090",
       display:

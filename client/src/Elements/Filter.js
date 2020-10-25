@@ -148,6 +148,7 @@ class Filter extends React.Component {
               >
                 <AdressSelect
                   placeholder="Откуда"
+                  defaultCity={this.props.defaultCity}
                   onChange={(val) => {
                     if (val)
                       val.coordinates = [val.data.geo_lat, val.data.geo_lon];

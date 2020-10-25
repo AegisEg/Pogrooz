@@ -9,6 +9,7 @@ class ArticlesFilter extends React.Component {
   }
   state = {
     type: this.props.type ? this.props.type : "offer",
+    status: 2,
     carType: false,
     property: false,
     carProperty: [],
@@ -28,6 +29,16 @@ class ArticlesFilter extends React.Component {
     budget: false,
     rating: false,
   };
+  componentDidUpdate(p, s) {
+    let cityPast =
+      s.from.data &&
+      (s.from.data.region_with_type || s.from.data.city_with_type);
+    let cityNew =
+      this.state.from.data &&
+      (this.state.from.data.region_with_type ||
+        this.state.from.data.city_with_type);
+    if (cityPast !== cityNew) this.props.cityChange(cityNew);
+  }
   componentDidMount() {
     if (this.props.onlyType) this.setState({ type: this.props.onlyType });
     if (this.props.defaultStateF)
@@ -61,6 +72,7 @@ class ArticlesFilter extends React.Component {
           onChange={(state) => {
             this.setState({ ...state });
           }}
+          defaultCity={this.props.city}
           onlyType={this.props.onlyType}
           onResetFilter={() => {
             this.setState({

@@ -1954,6 +1954,20 @@ a.mail {
   max-height: 0;
   transition: all 0.5s;
 }
+.cookie-animation-item-enter {
+  transform: translate(-220px, 0px);
+}
+.cookie-animation-item-enter.cookie-animation-item-enter-active {
+  transform: translate(0, 0px);
+  transition: all 0.5s;
+}
+.cookie-animation-item-leave {
+  transform: translate(0, 0px);
+}
+.cookie-animation-item-leave.cookie-animation-item-leave-active {
+  transform: translate(-220px, 0px);
+  transition: all 0.5s;
+}
 /*Animation Height Item*/
 .height-animation-item {
   overflow: hidden;
@@ -6160,7 +6174,7 @@ label {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.name-organization:hover~.full-name {
+.name-organization:hover ~ .full-name {
   opacity: 1;
   z-index: 1;
 }
@@ -6179,4 +6193,23 @@ label {
   border-radius: 10px;
   padding: 10px 15px;
   overflow: hidden;
+}
+.cookie-notification {
+  position: fixed !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 220px !important;
+  background-color: #fff;
+  height: 75px;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  border-top-right-radius: 28px;
+  padding: 10px 15px;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.13) 3px 2px 15px;
+}
+.cookie-notification .button-fill span {
+  line-height: 14px;
 }

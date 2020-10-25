@@ -387,7 +387,6 @@ module.exports = {
         })
           .limit(1)
           .sort({ createdAt: -1 });
-        console.log(lastNotificationMessage.length);
         if (!lastNotificationMessage.length) {
           if (orderId) {
             createNotify(
