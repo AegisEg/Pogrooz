@@ -25,7 +25,7 @@ class SettingsFiled extends React.Component {
             <CheckBox
               id={`${this.props.keyField}-push`}
               name={`${this.props.keyField}-push`}
-              text="Push-уведомления"
+              text="Включен звук на сайте"
               onChange={() => {
                 this.props.onChange("push", !this.props.valuePush);
               }}

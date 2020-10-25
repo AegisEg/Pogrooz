@@ -5,7 +5,7 @@ import { CSSTransitionGroup } from "react-transition-group";
 import Loading from "../Elements/Loading";
 import { withRouter } from "react-router-dom";
 import NoMatch from "./NoMatch";
-import { setForceTitle } from "../functions/functions";
+import Meta from "../Elements/Meta";
 
 class Page extends React.Component {
   state = {
@@ -13,6 +13,11 @@ class Page extends React.Component {
     notFound: false,
     isFetching: true,
   };
+  stripHtml(html) {
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  }
   componentDidMount() {
     fetch(`${api.urlApi}/api/page`, {
       method: "post",
@@ -38,7 +43,6 @@ class Page extends React.Component {
             isFetching: false,
             page: page,
           });
-          setForceTitle(page.title);
         }
       });
   }
@@ -57,6 +61,15 @@ class Page extends React.Component {
           >
             {!this.state.isFetching && !this.state.notFound && (
               <div className="container-fluid">
+                <Meta
+                  keyMeta="page"
+                  options={{
+                    title: this.state.page.title,
+                    content:
+                      this.stripHtml(this.state.page.content).slice(0, 150) +
+                      "...",
+                  }}
+                ></Meta>
                 <h1 className="title">{this.state.page.title}</h1>
                 <div
                   className="content"

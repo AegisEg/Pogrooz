@@ -505,7 +505,7 @@ export default {
     );
     /*ARTICLES SOKETS*/
     /*NOTIFICATIONS SOKETS*/
-    socket.on("sendNotification", (notification) => {
+    socket.on("sendNotification", ({ notification, isPushSong }) => {
       if (store.getState().notifications[notification.type].isGetted) {
         store.dispatch({
           type: dipathType(notification.type, "add"),
@@ -532,7 +532,7 @@ export default {
           });
         }
       }
-      playBeep();
+      if (isPushSong) playBeep();
     });
 
     socket.on("readNotification", ({ id, type }) => {

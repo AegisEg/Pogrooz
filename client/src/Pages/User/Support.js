@@ -17,8 +17,8 @@ class Support extends React.Component {
           <h2 className="title">Техподдержка</h2>
           <p className="f-14">
             Если у Вас есть вопросы и предложения, можете позвонить нам по
-            телефону +7 (927) 000 - 00 - 00 или написать на почту
-            info@pogrooz.ru.
+            телефону {this.props.settings.phone} или написать на почту &nbsp;
+            {this.props.settings.email}.
           </p>
           <p className="f-14 mt-4">
             Также вы можете написать нашим специалистам в&nbsp;
@@ -43,6 +43,7 @@ class Support extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    settings: state.settings.settings,
   };
 };
 

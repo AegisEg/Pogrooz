@@ -41,10 +41,12 @@ class Dialog extends React.Component {
             </div>
             <div className="col f-14 dialog-content">
               <div className="head">
-                <div className="f-14 dialog-user-name">
-                  {this.props.dialog.user.name.last}{" "}
-                  {this.props.dialog.user.name.first}
-                </div>
+                <Link to={`/user/${this.props.dialog.user._id}`}>
+                  <div className="f-14 dialog-user-name">
+                    {this.props.dialog.user.name.last}{" "}
+                    {this.props.dialog.user.name.first}
+                  </div>
+                </Link>
                 <div
                   className="f-14"
                   style={{

@@ -95,13 +95,7 @@ class Support extends React.Component {
             дней в неделю.
           </p>
           <span className="mb-4 mt-2 d-block">
-            <Link
-              to="/autopay"
-              className="f-14 href-hover"
-              style={{
-                color: "#000",
-              }}
-            >
+            <Link to="/autopay" className="f-14 href">
               Настройка автоплатежа
             </Link>
           </span>

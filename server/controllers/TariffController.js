@@ -70,7 +70,12 @@ module.exports = {
     }
   },
   sendNotifyTariffCanсel: (userId, tariffName) => {
-    createNotify(userId, { tariffName: tariffName }, "TARIFF_WILL_CANCEL","system");
+    createNotify(
+      userId,
+      { tariffName: tariffName },
+      "TARIFF_WILL_CANCEL",
+      "system"
+    );
   },
   autoPayment: async (user, bindingId) => {
     try {
@@ -470,7 +475,7 @@ async function createNotify(
   info,
   code,
   type,
-  isPush = true,
+  isPushSong = true,
   isMail = true
 ) {
   return new Promise(async (resolve, reject) => {
@@ -487,10 +492,10 @@ async function createNotify(
         sendMail(user.email, notification, mailTemplate);
       }
     }
-    if (isPush) {
-      await notification.save();
-      sendNotification({ userId: user._id, notification });
-    }
+
+    await notification.save();
+    sendNotification({ userId: user._id, notification, isPushSong });
+
     resolve();
   });
 }

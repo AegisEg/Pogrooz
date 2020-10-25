@@ -117,12 +117,12 @@ class TariffStatus extends React.Component {
             )}
           {tariff &&
             this.diffDates(new Date(this.props.expiriesAt), new Date()) > 3 && (
-              <>
+              <Link to="/mytarif">
                 <span>
                   {tariff.name} {tariff.isDemo ? "активен" : "оплачен"} до{" "}
                   {new Date(this.props.expiriesAt).toDateR()}
                 </span>
-              </>
+              </Link>
             )}
         </div>
       );

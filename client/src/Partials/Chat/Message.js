@@ -21,7 +21,9 @@ class Message extends React.Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     if (
-      JSON.stringify(nextProps.message) === JSON.stringify(this.props.message)
+      JSON.stringify(nextProps.message) ===
+        JSON.stringify(this.props.message) &&
+      this.props.countAll === nextProps.countAll
     ) {
       return false;
     }
@@ -31,9 +33,11 @@ class Message extends React.Component {
   render() {
     let isHistoryDate = true;
     let moreHour = false;
+    console.log(this.props.prevMessage);
     if (!!this.props.prevMessage) {
       let date1 = new Date(this.props.message.createdAt);
       let date2 = new Date(this.props.prevMessage.createdAt);
+
       if (
         date1.getFullYear() === date2.getFullYear() &&
         date1.getMonth() === date2.getMonth() &&

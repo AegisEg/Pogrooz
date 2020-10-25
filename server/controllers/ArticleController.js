@@ -44,8 +44,6 @@ module.exports = {
     // let timeFrom = false;
     // let timeTo = false;
 
-    filter.status = 2;
-
     try {
       if (filter.type) match.type = filter.type;
       if (filter.status) match.status = filter.status;
@@ -2247,7 +2245,7 @@ async function createNotify(
   info,
   code,
   type,
-  isPush = true,
+  isPushSong = true,
   isMail = true
 ) {
   return new Promise(async (resolve, reject) => {
@@ -2264,10 +2262,8 @@ async function createNotify(
         sendMail(user.email, notification, mailTemplate);
       }
     }
-    if (isPush) {
-      await notification.save();
-      sendNotification({ userId: user._id, notification });
-    }
+    await notification.save();
+    sendNotification({ userId: user._id, notification, isPushSong });
     resolve();
   });
 }

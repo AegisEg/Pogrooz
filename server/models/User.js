@@ -141,6 +141,7 @@ UserSchema.pre("findOneAndUpdate", async function(next) {
     sendNotification({
       userId: docToUpdate._id,
       notification,
+      isPushSong: true,
     });
     modarationSuccess({ userId: docToUpdate._id });
   }

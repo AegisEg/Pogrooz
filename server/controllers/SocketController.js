@@ -316,8 +316,11 @@ function deleteRequestSoket({ article, requestId, userId, otherId, socketId }) {
     });
 }
 // Notifications
-function sendNotification({ userId, notification }) {
-  io.to(`user.${userId}`).emit("sendNotification", notification);
+function sendNotification({ userId, notification, isPushSong }) {
+  io.to(`user.${userId}`).emit("sendNotification", {
+    notification,
+    isPushSong,
+  });
 }
 function readNotificationAll({ socketId, userId }) {
   if (io.sockets.connected[socketId])

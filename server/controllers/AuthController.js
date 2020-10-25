@@ -389,17 +389,19 @@ async function InfoForLogin(user) {
       },
     },
   ]);
+
+  let onemonth = new Date(new Date() - 30 * 24 * 60 * 60 * 1000);
   let onlyNoRead = await Notification.find({
     user: user,
     isRead: false,
+    createdAt: { $gte: onemonth },
   }).sort({ createdAt: -1 });
-  let oneweekago = new Date(new Date() - 7 * 24 * 60 * 60 * 1000);
   let notificationCounts = await Notification.aggregate([
     {
       $match: {
         user: user._id,
         isRead: false,
-        createdAt: { $gte: oneweekago },
+        createdAt: { $gte: onemonth },
       },
     },
     {

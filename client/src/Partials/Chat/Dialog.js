@@ -72,8 +72,8 @@ class Dialog extends React.Component {
     this.setState({
       scrollTop: scroll,
     });
-    document.getElementById("load-message-gif").style.top =
-      this.messagesBlock.getScrollTop() + "px";
+    // document.getElementById("load-message-gif").style.top =
+    //   this.messagesBlock.getScrollTop() + "px";
 
     if (
       this.messagesBlock.getScrollTop() + this.messagesBlock.getClientHeight() <
@@ -531,6 +531,7 @@ class Dialog extends React.Component {
                     <Message
                       key={message._id}
                       index={index}
+                      countAll={messages.length}
                       scrollingMessage={this.state.setCordMessageScroll}
                       user={this.props.user}
                       scrollTo={(top) => {

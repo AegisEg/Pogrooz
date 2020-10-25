@@ -379,33 +379,45 @@ module.exports = {
 
       await dialog.save();
       let toUser = await User.findById(userId);
-      if (orderId) {
-        createNotify(
-          { _id: userId },
-          {
-            articleType: dialog.orderId.type,
-            articleId: dialog.orderId.articleId,
-          },
-          "SEND_NEW_MESSAGE_BY_ORDER",
-          "system",
-          (dialog.orderId.type === "offer" &&
-            toUser.notificationSettings.offer_new_message.push) ||
-            (dialog.orderId.type === "order" &&
-              toUser.notificationSettings.order_new_message.push),
-          (dialog.orderId.type === "offer" &&
-            toUser.notificationSettings.offer_new_message.mail) ||
-            (dialog.orderId.type === "order" &&
-              toUser.notificationSettings.order_new_message.mail)
-        );
-      } else
-        createNotify(
-          { _id: userId },
-          {},
-          "SEND_NEW_MESSAGE",
-          "system",
-          toUser.notificationSettings.user_new_message.push,
-          toUser.notificationSettings.user_new_message.mail
-        );
+      if (!toUser.online) {
+        let lastNotificationMessage = await Notification.find({
+          code: "SEND_NEW_MESSAGE",
+          user: toUser._id,
+          createdAt: { $gte: Date.now() - 1000 * 60 * 60 * 3 },
+        })
+          .limit(1)
+          .sort({ createdAt: -1 });
+        console.log(lastNotificationMessage.length);
+        if (!lastNotificationMessage.length) {
+          if (orderId) {
+            createNotify(
+              { _id: userId },
+              {
+                articleType: dialog.orderId.type,
+                articleId: dialog.orderId.articleId,
+              },
+              "SEND_NEW_MESSAGE_BY_ORDER",
+              "system",
+              (dialog.orderId.type === "offer" &&
+                toUser.notificationSettings.offer_new_message.push) ||
+                (dialog.orderId.type === "order" &&
+                  toUser.notificationSettings.order_new_message.push),
+              (dialog.orderId.type === "offer" &&
+                toUser.notificationSettings.offer_new_message.mail) ||
+                (dialog.orderId.type === "order" &&
+                  toUser.notificationSettings.order_new_message.mail)
+            );
+          } else
+            createNotify(
+              { _id: userId },
+              {},
+              "SEND_NEW_MESSAGE",
+              "system",
+              toUser.notificationSettings.user_new_message.push,
+              toUser.notificationSettings.user_new_message.mail
+            );
+        }
+      }
       sendMessageDialog({
         userId: user._id,
         otherId: userId,
@@ -414,7 +426,6 @@ module.exports = {
         orderId,
         countNoread: dialog.noRead,
       });
-
       return res.json(message);
     } catch (e) {
       return next(new Error(e));
@@ -500,7 +511,7 @@ async function createNotify(
   info,
   code,
   type,
-  isPush = true,
+  isPushSong = true,
   isMail = true
 ) {
   return new Promise(async (resolve, reject) => {
@@ -517,10 +528,10 @@ async function createNotify(
         sendMail(user.email, notification, mailTemplate);
       }
     }
-    if (isPush) {
-      await notification.save();
-      sendNotification({ userId: user._id, notification });
-    }
+
+    await notification.save();
+    sendNotification({ userId: user._id, notification, isPushSong });
+
     resolve();
   });
 }

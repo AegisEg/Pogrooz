@@ -13,10 +13,10 @@ module.exports = {
     let { type, offset } = req.body;
 
     try {
-      let oneweekago = new Date() - 7 * 24 * 60 * 60 * 1000;
+      let onemonth = new Date() - 30 * 24 * 60 * 60 * 1000;
       let filter = {
         user: user._id,
-        createdAt: { $gte: oneweekago },
+        createdAt: { $gte: onemonth },
       };
       if (type !== "all") filter.type = type;
       let notifications;
@@ -24,6 +24,7 @@ module.exports = {
         notifications = await Notification.find(filter)
           .sort({
             createdAt: "DESC",
+            
           })
           .skip(offset)
           .limit(10);

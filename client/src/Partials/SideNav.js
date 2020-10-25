@@ -64,7 +64,7 @@ class MenuItem1 extends React.Component {
       );
     } else
       return (
-        <NavLink to={this.props.to} activeClassName="active">
+        <NavLink to={this.props.to}>
           <div className={`side-nav-item ${this.props.className}`}>
             <img src={this.props.icon} alt={this.props.name} />
             <span>{this.props.name}</span>

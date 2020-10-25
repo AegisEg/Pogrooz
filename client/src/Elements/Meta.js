@@ -4,11 +4,13 @@ import metaX from "../config/meta";
 import { Helmet } from "react-helmet";
 class orgSelect extends React.Component {
   render() {
-    let meta = metaX.find((item) => item.key === this.props.keyMeta);
-
+    let meta = this.props.keyMeta
+      ? metaX.find((item) => item.key === this.props.keyMeta)
+      : metaX.find((item) => item.key === "main");
     return (
       <Helmet>
         <title>{meta.title(this.props.options)}</title>
+        <meta name="robots" content="index,follow"></meta>
         <meta name="title" content={meta.title(this.props.options)} />
         <meta
           name="description"

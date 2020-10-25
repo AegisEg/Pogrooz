@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 
 // Elements
 import Button from "../../Elements/Button";
+import Meta from "../../Elements/Meta";
 
 // Main elements
 import Questions from "../../MainElements/Questions";
@@ -25,6 +26,7 @@ class Main extends React.Component {
   render() {
     return (
       <div className="main-page">
+        <Meta />
         <div className="main-preview row">
           <div className="container-fluid">
             <div className="row px-0 col-12">
@@ -43,7 +45,9 @@ class Main extends React.Component {
                 </p>
 
                 <div className="main-preview-register">
-                  <Link to={this.props.user.isAuth?"/search-offer":"/register"}>
+                  <Link
+                    to={this.props.user.isAuth ? "/search-offer" : "/register"}
+                  >
                     <Button
                       type="fill"
                       margin={"0 5% 0 0"}
@@ -61,7 +65,9 @@ class Main extends React.Component {
                       </div>
                     </Button>
                   </Link>
-                  <Link to={this.props.user.isAuth?"/search-offer":"/register"}>
+                  <Link
+                    to={this.props.user.isAuth ? "/search-offer" : "/register"}
+                  >
                     <Button
                       type="empty"
                       paddingVertical={"15px"}
@@ -153,7 +159,9 @@ class Main extends React.Component {
                   <br></br>Выбираете наиболее комфортное предложение. <br></br>
                   Никаких звонков.
                 </p>
-                <Link to={this.props.user.isAuth?"/search-offer":"/register"}>
+                <Link
+                  to={this.props.user.isAuth ? "/search-offer" : "/register"}
+                >
                   <Button
                     type="fill"
                     paddingVertical={"8px"}
@@ -180,7 +188,9 @@ class Main extends React.Component {
                   <br></br>Выбираете наиболее комфортное предложение. <br></br>
                   Никаких звонков.
                 </p>
-                <Link to={this.props.user.isAuth?"/search-offer":"/register"}>
+                <Link
+                  to={this.props.user.isAuth ? "/search-offer" : "/register"}
+                >
                   <Button
                     type="fill"
                     paddingVertical={"8px"}

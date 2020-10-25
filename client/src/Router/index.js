@@ -4,6 +4,7 @@ import { withCookies } from "react-cookie";
 import { jivoSite } from "../controllers/FunctionsController";
 import SocketController from "../controllers/SocketController";
 import Header from "../Partials/Header";
+import { Helmet } from "react-helmet";
 
 import SideNav from "../Partials/SideNav";
 import Footer from "../Partials/Footer";
@@ -127,29 +128,29 @@ class AppRouter extends React.Component {
 
           <Suspense
             fallback={
-              <div id="preloader" class="background preloader">
-                <div class="loader loader-left"></div>
-                <div class="loader loader-right"></div>
+              <div id="preloader" className="background preloader">
+                <div className="loader loader-left"></div>
+                <div className="loader loader-right"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
                   <defs>
                     <filter id="goo">
                       <fegaussianblur
                         in="SourceGraphic"
-                        stddeviation="15"
+                        stdDeviation="15"
                         result="blur"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                       ></fegaussianblur>
                       <fecolormatrix
                         in="blur"
                         mode="matrix"
                         values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -7"
                         result="goo"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                       ></fecolormatrix>
                       <feblend
                         in="SourceGraphic"
                         in2="goo"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                       ></feblend>
                     </filter>
                   </defs>
@@ -231,6 +232,9 @@ class AppRouter extends React.Component {
           this.props.user.isAuth ? (
             !role || this.props.user.type === role ? (
               <>
+                <Helmet>
+                  <meta name="robots" content="noindex, nofollow" />
+                </Helmet>
                 <div className="row mx-0">
                   <SideNav />
                   <div className="content col">

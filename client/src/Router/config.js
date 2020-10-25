@@ -38,8 +38,6 @@ const routes = [
     path: "/page/:slug",
     exact: true,
     type: "public",
-    title: "Страница",
-    forseTitle: true,
     component: () => <PrivateComponents name="Page" />,
   },
   {

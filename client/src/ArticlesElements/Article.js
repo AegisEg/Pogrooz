@@ -299,7 +299,7 @@ class Article extends React.Component {
                                       name = "Тентовый";
                                     if (itemY[0] === "typeGazel")
                                       name = "Тип Газели";
-                                    if (name) {
+                                    if (name && itemY[1]) {
                                       return (
                                         <div key={index}>
                                           {name}: {itemY[1]}

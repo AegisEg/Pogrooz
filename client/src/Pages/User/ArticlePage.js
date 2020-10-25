@@ -77,7 +77,9 @@ class ArticlePage extends React.Component {
                     start: this.props.myarticles.currentArticle.from.value,
                     tags: this.props.myarticles.currentArticle.car.additionally,
                     finish: this.props.myarticles.currentArticle.to.value,
-                    date: this.props.myarticles.currentArticle.startDate.date,
+                    date:
+                      this.props.myarticles.currentArticle.startDate &&
+                      this.props.myarticles.currentArticle.startDate.date,
                     comment: this.props.myarticles.currentArticle.comment,
                   }}
                 />

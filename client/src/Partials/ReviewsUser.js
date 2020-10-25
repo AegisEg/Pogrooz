@@ -76,7 +76,7 @@ class ReviewsUser extends React.Component {
         {!this.state.reviews.length && (
           <div className="text-center py-3">Записей не найдено</div>
         )}
-        {!!this.state.reviews.length && (
+        {!!this.state.reviews.length && this.state.pageCount > 1 && (
           <Pagination
             currentPage={this.state.currentPage}
             pageCount={this.state.pageCount - 1}

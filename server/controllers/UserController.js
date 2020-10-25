@@ -540,7 +540,7 @@ async function createNotify(user, info, code, type) {
       user = await User.findById(user);
       sendMail(user.email, notification, mailTemplate);
     }
-    sendNotification({ userId: user._id, notification });
+    sendNotification({ userId: user._id, notification, isPushSong: true });
     resolve();
   });
 }

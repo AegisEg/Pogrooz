@@ -10,6 +10,7 @@ import Button from "../../Elements/Button";
 import InputPhone from "../../Elements/InputPhone";
 // Router
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class Register extends React.Component {
   state = {
@@ -227,9 +228,18 @@ class Register extends React.Component {
                 </div>
                 <p className="text-right f-12">
                   Регистрируясь, Вы соглашаетесь с&nbsp;
-                  <Link to="/" className="href f-12">
-                    политикой конфиденциальности и соглашением об обработке
-                    персональных данных .
+                  <Link
+                    to={this.props.settings.politicsPage}
+                    className="href f-12"
+                  >
+                    политикой конфиденциальности
+                  </Link>{" "}
+                  и{" "}
+                  <Link
+                    to={this.props.settings.agreementPage}
+                    className="href f-12"
+                  >
+                    соглашением об обработке персональных данных .
                   </Link>
                 </p>
                 <div className="text-right">
@@ -254,4 +264,9 @@ class Register extends React.Component {
   }
 }
 
-export default withRouter(Register);
+const mapStateToProps = (state) => {
+  return {
+    settings: state.settings.settings,
+  };
+};
+export default connect(mapStateToProps)(withRouter(Register));

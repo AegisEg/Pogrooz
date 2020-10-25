@@ -707,6 +707,9 @@ input:-ms-input-placeholder {
   padding-bottom: 12px;
   font-size: 14px;
 }
+.notification-item a {
+  color: #ad2dff;
+}
 .notification-item .border-top {
   border-top: 1px solid #dddddd;
   width: 100%;
@@ -927,8 +930,9 @@ header ~ div {
   position: relative;
   z-index: 1;
 }
-.tariff-pop span {
+.tariff-pop a span {
   line-height: 14px;
+  display: block;
   color: #171717;
 }
 .tariff-pop .pop-block {
@@ -1859,7 +1863,7 @@ a.mail {
 @media screen and (max-width: 1024px) {
   .main-cities {
     text-align: center;
-    padding: 0 15px 40px 15px !important;
+    padding: 25px 15px 40px 15px !important;
   }
 }
 @media screen and (max-width: 576px) {
@@ -4296,7 +4300,7 @@ table {
 }
 @media (min-width: 552px) {
   .dialog .with-article {
-    max-width: 90px;
+    max-width: 120px;
   }
   .messages-block .avatar-message {
     max-width: 76px;
@@ -4728,8 +4732,9 @@ table {
   height: max-content;
 }
 .dialog-wrap .load-message {
-  position: absolute;
+  position: fixed;
   right: 20px;
+  top: 100px;
   opacity: 0;
   pointer-events: none;
   width: 50px;
@@ -6147,4 +6152,31 @@ label {
 .isDemoUsed.tariff-wrapper .button-fill {
   background-color: #eeeeee !important;
   border: none;
+}
+.name-organization {
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.name-organization:hover~.full-name {
+  opacity: 1;
+  z-index: 1;
+}
+.full-name {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  background: #fff;
+  opacity: 0;
+  z-index: -1;
+  transition: all 0.3s;
+  z-index: 3;
+  border: 1px solid rgb(221, 221, 221);
+  box-shadow: rgba(0, 0, 0, 0.13) 3px 2px 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 10px 15px;
+  overflow: hidden;
 }

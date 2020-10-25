@@ -180,9 +180,9 @@ class Profile extends React.Component {
         <div className="profile-page container-fluid">
           <h2 className="title">Личная информация</h2>
           <div>
-            <a href={`/user/${this.props.user._id}`}>
+            <Link className="href" to={`/user/${this.props.user._id}`}>
               Как вас видят пользователи
-            </a>
+            </Link>
           </div>
           <div className="row profile-input-fixed">
             <div className="col-12 col-sm">

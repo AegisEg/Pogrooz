@@ -79,6 +79,7 @@ class User extends React.Component {
   }
   renderTabs() {
     let type = this.state.user.type === "cargo" ? "order" : "offer";
+
     return (
       <div className="tab_groups mt-3">
         <span
@@ -112,7 +113,7 @@ class User extends React.Component {
                 currentTab: 1,
                 filter: {
                   type: type,
-                  status: 2,
+                  
                   author: this.state.user._id,
                 },
               });
@@ -133,7 +134,7 @@ class User extends React.Component {
               this.onChengeArticles({
                 currentTab: 2,
                 filter: {
-                  type: type === "offer" ? "order" : type,
+                  type: type === "offer" ? "order" : "offer",
                   status: {
                     $in: [4, 5, 6],
                   },
@@ -302,11 +303,11 @@ class User extends React.Component {
                             fontSize: "18px",
                           }}
                         >
-                          <div itemprop="jobTitle">
+                          <div itemProp="jobTitle">
                             {user.type === "carrier" && <>Перевозчик</>}
                             {user.type === "cargo" && <>Грузовладелец</>}
                           </div>
-                          <div>
+                          <div className="name-organization">
                             {user.contract &&
                               (user.contract.id == 2 ||
                                 user.contract.id == 3) &&
@@ -318,6 +319,13 @@ class User extends React.Component {
                               user.contract.id == 4 &&
                               "Самозанятый"}
                           </div>
+                          {user.contract &&
+                            (user.contract.id == 2 ||
+                              user.contract.id == 3) && (
+                              <div className="full-name">
+                                {user.contract.data.data.name.short}
+                              </div>
+                            )}
                         </div>
                         <div
                           className="col-12 col-sm-6 text-center mt-2 mt-md-0 text-lg-left"

@@ -336,13 +336,27 @@ class OfferCreate1 extends React.Component {
                         <CheckBox
                           id="awning1"
                           name="awning"
-                          value={currentInfo.awning === "Жесткий борт" || ""}
+                          value={
+                            (currentInfo &&
+                              currentInfo.awning === "Жесткий борт") ||
+                            ""
+                          }
                           onChange={() => {
-                            this.onChangeCarData(
-                              currentCarType.id,
-                              "awning",
-                              "Жесткий борт"
-                            );
+                            if (
+                              currentInfo &&
+                              currentInfo.awning === "Жесткий борт"
+                            )
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "awning",
+                                false
+                              );
+                            else
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "awning",
+                                "Жесткий борт"
+                              );
                           }}
                           text={"Жесткий борт"}
                         />
@@ -356,14 +370,26 @@ class OfferCreate1 extends React.Component {
                           id="awning2"
                           name="awning"
                           value={
-                            currentInfo.awning === "Съемная верхняя балка" || ""
+                            (currentInfo &&
+                              currentInfo.awning === "Съемная верхняя балка") ||
+                            ""
                           }
                           onChange={() => {
-                            this.onChangeCarData(
-                              currentCarType.id,
-                              "awning",
-                              "Съемная верхняя балка"
-                            );
+                            if (
+                              currentInfo &&
+                              currentInfo.awning === "Съемная верхняя балка"
+                            )
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "awning",
+                                false
+                              );
+                            else
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "awning",
+                                "Съемная верхняя балка"
+                              );
                           }}
                           text={"Съемная верхняя балка"}
                         />
@@ -383,11 +409,21 @@ class OfferCreate1 extends React.Component {
                             ""
                           }
                           onChange={() => {
-                            this.onChangeCarData(
-                              currentCarType.id,
-                              "awning",
-                              "Съемная боковая стойка"
-                            );
+                            if (
+                              currentInfo &&
+                              currentInfo.awning === "Съемная боковая стойка"
+                            )
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "awning",
+                                false
+                              );
+                            else
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "awning",
+                                "Съемная боковая стойка"
+                              );
                           }}
                           text={"Съемная боковая стойка"}
                         />
@@ -410,11 +446,18 @@ class OfferCreate1 extends React.Component {
                             ""
                           }
                           onChange={() => {
-                            this.onChangeCarData(
-                              currentCarType.id,
-                              "typeGazel",
-                              "Цельнометаллическая"
-                            );
+                            if (currentInfo.typeGazel === "Цельнометаллическая")
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "typeGazel",
+                                false
+                              );
+                            else
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "typeGazel",
+                                "Цельнометаллическая"
+                              );
                           }}
                           text={"Цельнометаллическая"}
                         />
@@ -429,11 +472,18 @@ class OfferCreate1 extends React.Component {
                           name="typeGazel"
                           value={currentInfo.typeGazel === "С тентом" || ""}
                           onChange={() => {
-                            this.onChangeCarData(
-                              currentCarType.id,
-                              "typeGazel",
-                              "С тентом"
-                            );
+                            if (currentInfo.typeGazel === "С тентом")
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "typeGazel",
+                                false
+                              );
+                            else
+                              this.onChangeCarData(
+                                currentCarType.id,
+                                "typeGazel",
+                                "С тентом"
+                              );
                           }}
                           text={"С тентом"}
                         />

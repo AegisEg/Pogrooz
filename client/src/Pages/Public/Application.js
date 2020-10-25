@@ -1,10 +1,12 @@
 // App
 import React from "react";
 import appsImg from "../../img/application.png";
+import Meta from "../../Elements/Meta";
 class Application extends React.Component {
   render() {
     return (
       <div className="application-page standart-page">
+        <Meta />
         <div className="container-fluid">
           <h1>Скачать приложение</h1>
           <div className="application-div">
