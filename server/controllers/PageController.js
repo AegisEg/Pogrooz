@@ -69,6 +69,15 @@ module.exports = {
         "  </url>",
       ];
     });
+    let pages = await Page.find();
+    pages.map((item) => {
+      xml_content = [
+        ...xml_content,
+        "  <url>",
+        `    <loc>${process.env.CLIENT_URL}/page/${item.slug}</loc>`,
+        "  </url>",
+      ];
+    });
     //Пользователи
     let articles = await Article.find({ status: 2 });
     articles.map((item) => {
