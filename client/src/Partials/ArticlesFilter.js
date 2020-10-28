@@ -32,11 +32,11 @@ class ArticlesFilter extends React.Component {
   componentDidUpdate(p, s) {
     let cityPast =
       s.from.data &&
-      (s.from.data.region_with_type || s.from.data.city_with_type);
+      (s.from.data.city_with_type || s.from.data.region_with_type);
     let cityNew =
       this.state.from.data &&
-      (this.state.from.data.region_with_type ||
-        this.state.from.data.city_with_type);
+      (this.state.from.data.city_with_type ||
+        this.state.from.data.region_with_type);
     if (cityPast !== cityNew) this.props.cityChange(cityNew);
   }
   componentDidMount() {
