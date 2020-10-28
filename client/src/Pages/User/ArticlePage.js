@@ -17,6 +17,7 @@ import NoMatch from "../NoMatch.js";
 import { withLastLocation } from "react-router-last-location";
 import Loading from "../../Elements/Loading";
 import Meta from "../../Elements/Meta";
+import CargoTypeList from "../../config/baseInfo/cargoTypesList";
 import { CSSTransitionGroup } from "react-transition-group";
 class ArticlePage extends React.Component {
   state = {
@@ -46,8 +47,8 @@ class ArticlePage extends React.Component {
             }
             setForceTitle(
               (data.article.type === "offer" ? "Предложение" : "Заказ") +
-                " №" +
-                data.article.articleId
+              " №" +
+              data.article.articleId
             );
             this.setState({
               isFetching: false,
@@ -77,9 +78,11 @@ class ArticlePage extends React.Component {
                     start: this.props.myarticles.currentArticle.from.value,
                     tags: this.props.myarticles.currentArticle.car.additionally,
                     finish: this.props.myarticles.currentArticle.to.value,
-                    date:
-                      this.props.myarticles.currentArticle.startDate &&
-                      this.props.myarticles.currentArticle.startDate.date,
+                    cargoTypes:
+                      this.props.myarticles.currentArticle.cargoTypes.map((item, index, all) => {
+                        return CargoTypeList.find((itemX) => itemX.id == item)
+                          .name + index > 1 ? ", " : "" + index === all.length ? "." : "";
+                      }),
                     comment: this.props.myarticles.currentArticle.comment,
                   }}
                 />
