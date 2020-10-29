@@ -14,6 +14,7 @@ import {
   paymentParams,
 } from "../../../config/baseInfo/carParams";
 import carTypesList from "../../../config/baseInfo/carTypesList";
+import { ReactComponent as CloseSVG } from "../../../img/close.svg";
 
 //Configs
 class OfferCreate1 extends React.Component {
@@ -239,12 +240,15 @@ class OfferCreate1 extends React.Component {
                     }}
                   >
                     {this.state.openTemplate
-                      ? "Закрыть выбор шаблонов"
+                      ? <>
+                        <CloseSVG fill="#9509ef" className="mr-1"></CloseSVG>
+                      Закрыть выбор шаблонов</>
                       : "Выбрать из шаблона Авто"}
                   </a>
                   {this.state.openTemplate && (
                     <Select
                       placeholder="Шаблоны машины"
+                      className="mt-3"
                       options={this.props.carTemplates.map((item) => {
                         return {
                           value: item,
@@ -254,9 +258,9 @@ class OfferCreate1 extends React.Component {
                       value={
                         this.state.currentTemplate
                           ? {
-                              value: this.state.currentTemplate,
-                              label: this.state.currentTemplate.car.name,
-                            }
+                            value: this.state.currentTemplate,
+                            label: this.state.currentTemplate.car.name,
+                          }
                           : null
                       }
                       onChange={(val) => {
@@ -286,9 +290,9 @@ class OfferCreate1 extends React.Component {
                   value={
                     currentCarType
                       ? {
-                          value: currentCarType.id,
-                          label: currentCarType.name,
-                        }
+                        value: currentCarType.id,
+                        label: currentCarType.name,
+                      }
                       : null
                   }
                   onChange={(val) => {
@@ -405,7 +409,7 @@ class OfferCreate1 extends React.Component {
                           value={
                             (currentInfo &&
                               currentInfo.awning ===
-                                "Съемная боковая стойка") ||
+                              "Съемная боковая стойка") ||
                             ""
                           }
                           onChange={() => {
@@ -592,9 +596,8 @@ class OfferCreate1 extends React.Component {
                 hidden
               />
               <div
-                className={`inputPhoto ${
-                  !this.state.car.photo ? "unload" : ""
-                } `}
+                className={`inputPhoto ${!this.state.car.photo ? "unload" : ""
+                  } `}
               >
                 <div
                   className="placeholder"
@@ -807,7 +810,7 @@ class OfferCreate1 extends React.Component {
                                   {...itemField.props}
                                   value={
                                     this.state.car.paymentInfo[
-                                      itemField.props.name
+                                    itemField.props.name
                                     ]
                                   }
                                   onChange={(e) => {

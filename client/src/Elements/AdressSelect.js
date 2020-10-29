@@ -9,7 +9,6 @@ class AdressSelect extends React.Component {
     this.ref.setInputValue(this.props.value);
   }
   render() {
-    console.log(this.props);
     return (
       <div className="adress-select">
         <AddressSuggestions

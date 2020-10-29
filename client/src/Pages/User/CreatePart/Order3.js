@@ -36,7 +36,7 @@ class OrderCreate3 extends React.Component {
       if (
         JSON.stringify(prevTypes) !== JSON.stringify(currentTypes) ||
         JSON.stringify(prevProps.cargoData) !==
-          JSON.stringify(this.props.cargoData)
+        JSON.stringify(this.props.cargoData)
       ) {
         //Получение позможных относителдьно машины грузов
         this.updateTypes();
@@ -63,9 +63,12 @@ class OrderCreate3 extends React.Component {
       //Получение позможных относителдьно машины грузов
       let newCurentCarType = this.state.car.typesCar
         ? this.state.car.typesCar.filter((item) => {
-            return carListPossible.find((itemX) => itemX.id === item);
-          })
+          return carListPossible.find((itemX) => itemX.id === item);
+        })
         : [];
+      if (!newCurentCarType.length && carListPossible.length === 1) {
+        newCurentCarType = [carListPossible[0].id]
+      }
       let isPro = this.state.isPro;
       if (
         newCurentCarType.find((item) => item.isPro) ||
@@ -109,11 +112,11 @@ class OrderCreate3 extends React.Component {
       let isPro =
         this.props.car.typesCar && !!this.props.car.typesCar.length
           ? !!carTypesList.find((item) => {
-              return (
-                item.isPro &&
-                this.props.car.typesCar.find((itemX) => item.id === itemX)
-              );
-            })
+            return (
+              item.isPro &&
+              this.props.car.typesCar.find((itemX) => item.id === itemX)
+            );
+          })
           : false;
       newState = {
         ...newState,
@@ -232,8 +235,8 @@ class OrderCreate3 extends React.Component {
     let currentCarTypes =
       this.state.car.typesCar && !!this.state.car.typesCar.length
         ? carTypesList.filter((item) => {
-            return this.state.car.typesCar.find((itemX) => item.id === itemX);
-          })
+          return this.state.car.typesCar.find((itemX) => item.id === itemX);
+        })
         : false;
     let carInfo = this.state.car.info || [];
 
@@ -805,7 +808,7 @@ class OrderCreate3 extends React.Component {
                                   {...itemField.props}
                                   value={
                                     this.state.car.paymentInfo[
-                                      itemField.props.name
+                                    itemField.props.name
                                     ]
                                   }
                                   onChange={(e) => {

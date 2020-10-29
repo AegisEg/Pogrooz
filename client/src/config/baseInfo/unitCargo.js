@@ -1,7 +1,7 @@
 export default [
   {
     label: "Килограммы",
-    shortLabel:"кг.",
+    shortLabel:"кг",
     value: 1,
     fieldsLabel: {
       length: "Длинна",

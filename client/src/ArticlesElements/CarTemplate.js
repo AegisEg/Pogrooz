@@ -178,7 +178,7 @@ class CarTemplate extends React.Component {
             {this.props.template.car.contractInfo &&
               !!this.props.template.car.contractInfo.length && (
                 <span className="property-user f-12">
-                  <Dogovor /> &nbsp;
+                  <Dogovor />&nbsp;
                   {this.props.template.car.contractInfo.map(
                     (item, index, items) => {
                       let string = contractParams.find(
@@ -195,7 +195,7 @@ class CarTemplate extends React.Component {
             {this.props.template.car.paymentInfo &&
               !!this.props.template.car.paymentInfo.length && (
                 <span className="property-user  f-12">
-                  <PayIco /> &nbsp; Оплата&nbsp;
+                  <PayIco />&nbsp;Оплата&nbsp;
                   {this.props.template.car.paymentInfo.map(
                     (item, index, items) => {
                       return (

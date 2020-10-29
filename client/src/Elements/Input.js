@@ -45,9 +45,8 @@ class Input extends React.Component {
             country={"ru"}
             disableDropdown={false}
             style={this.props.style}
-            inputClass={`col input-text ${this.props.className} ${
-              this.props.error ? "input-error" : ""
-            }`}
+            inputClass={`col input-text ${this.props.className} ${this.props.error ? "input-error" : ""
+              }`}
             placeholder={this.props.placeholder}
             onChange={(val) => {
               this.props.onChange(val);
@@ -146,7 +145,7 @@ class Input extends React.Component {
               value={this.props.value}
               placeholder={this.props.placeholder}
               minDate={this.props.minDate}
-              onChange={this.props.onChange ? this.props.onChange : () => {}}
+              onChange={this.props.onChange ? this.props.onChange : () => { }}
             />
           </MuiPickersUtilsProvider>
           {this.props.error && (
@@ -177,12 +176,18 @@ class Input extends React.Component {
             min={this.props.min}
             max={this.props.max}
             style={this.props.style}
-            className={`col input-${this.props.type} ${this.props.className} ${
-              this.props.error ? "input-error" : ""
-            }`}
+            className={`col input-${this.props.type} ${this.props.className} ${this.props.error ? "input-error" : ""
+              }`}
             placeholder={this.props.placeholder}
             onPaste={(e) => {
               e.preventDefault();
+            }}
+            onBlur={(val) => {
+              let value = parseInt(val.target.value) || 0;
+              if (this.props.min && value < this.props.min) {
+                val.target.value = 1;
+                this.props.onChange(val);
+              }
             }}
             onChange={(val) => {
               if (this.props.type === "number") {

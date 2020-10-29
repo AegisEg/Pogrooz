@@ -5,6 +5,7 @@ class EditorText extends React.Component {
     tinymce.remove();
     tinymce.init({
       selector: "#editor",
+      height:"800px",
       plugins:
         "advlist autolink lists code link image charmap print preview hr anchor pagebreak",
       toolbar: "undo redo | styleselect | bold italic | link image numlist bullist floating",
@@ -18,7 +19,7 @@ class EditorText extends React.Component {
   render() {
     return (
       <>
-        <textarea id="editor" value={this.props.record.params.content} />
+        <textarea id="editor"  value={this.props.record.params.content} />
       </>
     );
   }

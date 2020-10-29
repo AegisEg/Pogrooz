@@ -67,6 +67,26 @@ class OfferCreate3 extends React.Component {
         this.updateTypes();
       }
     }
+    let currentCargoTypes = cargoTypesList.filter((item) => {
+      return !!this.state.cargoTypes.find((itemX) => {
+        return itemX === item.id;
+      });
+    });
+    if (!((currentCargoTypes.find((item) => item.isStandart) ||
+      (this.state.cargoData.find((itemX) => itemX.typeID === 4) &&
+        this.state.cargoData.find((itemX) => itemX.typeID === 4)[
+        "type"
+        ] === "Обычные") ||
+      (this.state.cargoData.find((itemX) => itemX.typeID === 13) &&
+        this.state.cargoData.find((itemX) => itemX.typeID === 13)[
+        "type"
+        ] === "Обычные") ||
+      (this.state.cargoData.find((itemX) => itemX.typeID === 3) &&
+        this.state.cargoData.find((itemX) => itemX.typeID === 3)[
+        "type"
+        ] === "Обычные"))) && Object.keys(this.state.cargoStandartData).length !== 0 && this.state.cargoStandartData.constructor === Object)
+      this.setState({ cargoStandartData: {} })
+
   }
   updateTypes() {
     let cargoListPossible = [];
@@ -85,9 +105,14 @@ class OfferCreate3 extends React.Component {
     });
 
     //Получение позможных относителдьно машины грузов
+
     let newCurentCargoType = this.state.cargoTypes.filter((item) => {
       return cargoListPossible.find((itemX) => itemX.id === item);
     });
+    if (cargoListPossible.length === 1 && !newCurentCargoType.length) {
+      newCurentCargoType = [cargoListPossible[0].id]
+    }
+    console.log(newCurentCargoType)
     let isPro = false;
     if (
       newCurentCargoType.find((item) => item.isPro) ||
@@ -159,6 +184,7 @@ class OfferCreate3 extends React.Component {
         cargoTypes: [...this.state.cargoTypes, item.id],
       });
     }
+
   };
   onChangeTypesByMore = (val) => {
     if (val)
@@ -262,22 +288,22 @@ class OfferCreate3 extends React.Component {
             {(currentCargoTypes.find((item) => item.isStandart) ||
               (this.state.cargoData.find((itemX) => itemX.typeID === 4) &&
                 this.state.cargoData.find((itemX) => itemX.typeID === 4)[
-                  "type"
+                "type"
                 ] === "Обычные") ||
               (this.state.cargoData.find((itemX) => itemX.typeID === 13) &&
                 this.state.cargoData.find((itemX) => itemX.typeID === 13)[
-                  "type"
+                "type"
                 ] === "Обычные") ||
               (this.state.cargoData.find((itemX) => itemX.typeID === 3) &&
                 this.state.cargoData.find((itemX) => itemX.typeID === 3)[
-                  "type"
+                "type"
                 ] === "Обычные")) && (
-              <StandartParams
-                cargoStandartData={this.state.cargoStandartData}
-                needCube={false}
-                onChangeCargoStandartData={this.onChangeCargoStandartData}
-              />
-            )}
+                <StandartParams
+                  cargoStandartData={this.state.cargoStandartData}
+                  needCube={false}
+                  onChangeCargoStandartData={this.onChangeCargoStandartData}
+                />
+              )}
             {!!currentCargoTypes.length &&
               currentCargoTypes.map((item, index) => {
                 if (item.fields)

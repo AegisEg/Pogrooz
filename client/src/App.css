@@ -1791,6 +1791,9 @@ a.mail {
   padding-right: 15px;
   padding-left: 15px;
 }
+.main-cities .main-cities-item a{
+  color: #171717;
+}
 .main-cities-item:nth-child(3) {
   margin-left: auto;
 }

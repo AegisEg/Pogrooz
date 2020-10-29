@@ -23,14 +23,14 @@ class StandartParams extends React.Component {
             options={unut}
             value={
               this.props.cargoStandartData &&
-              this.props.cargoStandartData["unit"]
+                this.props.cargoStandartData["unit"]
                 ? {
-                    value: this.props.cargoStandartData["unit"],
-                    label: unut.find(
-                      (itemX) =>
-                        itemX.value === this.props.cargoStandartData["unit"]
-                    ).label,
-                  }
+                  value: this.props.cargoStandartData["unit"],
+                  label: unut.find(
+                    (itemX) =>
+                      itemX.value === this.props.cargoStandartData["unit"]
+                  ).label,
+                }
                 : ""
             }
             onChange={(val) => {
@@ -104,22 +104,6 @@ class StandartParams extends React.Component {
                 }}
                 placeholder="Высота"
               />
-              <span
-                className="filter-input-title"
-                style={{
-                  minWidth: "90px",
-                }}
-              >
-                &nbsp;&nbsp;=&nbsp;
-                <div className="valumeCalculate">
-                  {this.props.cargoStandartData["length"] *
-                    this.props.cargoStandartData["width"] *
-                    this.props.cargoStandartData["height"] *
-                    (this.props.cargoStandartData["count"] || 1) || ""}
-                  &nbsp;
-                </div>
-                м<sup>3</sup>
-              </span>
             </div>
             <div
               className="row col mx-0"
@@ -136,10 +120,11 @@ class StandartParams extends React.Component {
               </span>
               <Input
                 type="number"
-                min="0"
+                min="1"
                 style={{
                   width: "79px",
                 }}
+
                 placeholder="0"
                 value={this.props.cargoStandartData["count"] || ""}
                 onChange={(e) => {
@@ -173,6 +158,33 @@ class StandartParams extends React.Component {
                     (this.props.cargoStandartData["count"] || 1) || ""}
                 </div>
                 кг
+              </span>
+            </div>
+            <div
+              className="row col mx-0"
+              style={{
+                maxWidth: "250px",
+                minWidth: "176px",
+                alignItems: "center",
+              }}
+            >
+              <span className="filter-input-title">
+                Общий<br></br>объем
+              </span>
+              <span className="d-inline-block ml-4">
+                =
+                <div
+                  className="valumeCalculate"
+                  style={{
+                    maxWidth: "40px",
+                  }}
+                >
+                  {this.props.cargoStandartData["length"] *
+                    this.props.cargoStandartData["width"] *
+                    this.props.cargoStandartData["height"] *
+                    (this.props.cargoStandartData["count"] || 1) || ""}
+                </div>
+                м<sup>3</sup>
               </span>
             </div>
           </>

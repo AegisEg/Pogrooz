@@ -80,8 +80,7 @@ class ArticlePage extends React.Component {
                     finish: this.props.myarticles.currentArticle.to.value,
                     cargoTypes:
                       this.props.myarticles.currentArticle.cargoTypes.map((item, index, all) => {
-                        return CargoTypeList.find((itemX) => itemX.id == item)
-                          .name + index > 1 ? ", " : "" + index === all.length ? "." : "";
+                        return CargoTypeList.find((itemX) => itemX.id == item).name + (index > 1 ? ", " : "") + (index === all.length ? "." : "");
                       }),
                     comment: this.props.myarticles.currentArticle.comment,
                   }}
