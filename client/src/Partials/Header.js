@@ -80,9 +80,8 @@ class Header extends React.Component {
           <div className="header-logo d-flex d-md-none">
             <Link
               to="/"
-              className={`m-auto ${
-                this.props.user.isAuth ? "d-none d-sm-block" : ""
-              }`}
+              className={`m-auto ${this.props.user.isAuth ? "d-none d-sm-block" : ""
+                }`}
             >
               <Minilogo className="header-logo-img"></Minilogo>
             </Link>
@@ -140,9 +139,8 @@ class Header extends React.Component {
           {this.props.user.isAuth && (
             <div className="header-fast-access">
               <div
-                className={`fast-access-btn  notifications ${
-                  !!this.props.notifications.all.noRead && "not-empty"
-                }`}
+                className={`fast-access-btn  notifications ${!!this.props.notifications.all.noRead && "not-empty"
+                  }`}
                 onMouseEnter={() => {
                   this.showNotificationsPop();
                 }}
@@ -154,7 +152,11 @@ class Header extends React.Component {
                   <img src={notificationsFill} alt="Уведомления" />
                   {!!this.props.notifications.all.noRead && (
                     <div className="action-counter">
-                      <span>{this.props.notifications.all.noRead}</span>
+                      <span>
+                        {this.props.notifications.all.noRead >= 10 && 10}
+                        {this.props.notifications.all.noRead < 10 && this.props.notifications.all.noRead}
+                      </span>
+                      {this.props.notifications.all.noRead >= 10 && <span className="plus">+</span>}
                     </div>
                   )}
                 </Link>
@@ -194,9 +196,8 @@ class Header extends React.Component {
                 )}
               </div>
               <div
-                className={`fast-access-btn messages ${
-                  !!this.props.dialogs.dialogsALL.noReadCount && "not-empty"
-                }`}
+                className={`fast-access-btn messages ${!!this.props.dialogs.dialogsALL.noReadCount && "not-empty"
+                  }`}
               >
                 <Link to="/messages">
                   <Support />
@@ -213,11 +214,10 @@ class Header extends React.Component {
           {this.props.user.isAuth && (
             <div className="header-additionals d-md-block d-none">
               <Link
-                to={`/${
-                  this.props.user.type === "cargo"
-                    ? "order-create"
-                    : "offer-create"
-                }`}
+                to={`/${this.props.user.type === "cargo"
+                  ? "order-create"
+                  : "offer-create"
+                  }`}
                 className="register"
               >
                 <Button

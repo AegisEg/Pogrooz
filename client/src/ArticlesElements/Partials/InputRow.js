@@ -412,7 +412,7 @@ class InputRow extends React.Component {
           return (
             options.article.delivered &&
             options.article.delivered.length ===
-              options.article.executors.length
+            options.article.executors.length
           );
         if (this.role == 1)
           return (
@@ -473,9 +473,8 @@ class InputRow extends React.Component {
       },
       content: () => (
         <span
-          className={`reviews-pop input-action ${
-            this.state.isOpenReviewsShow ? "open" : ""
-          }`}
+          className={`reviews-pop input-action ${this.state.isOpenReviewsShow ? "open" : ""
+            }`}
         >
           <span className="d-flex" onClick={this.showReviewsShow}>
             <Reviews />
@@ -587,8 +586,8 @@ class InputRow extends React.Component {
           (options.article.startDate &&
             options.article.startDate.date &&
             new Date(options.article.startDate.date).getTime() +
-              1000 * 60 * 60 * 24 >
-              new Date().getTime())
+            1000 * 60 * 60 * 24 >
+            new Date().getTime())
         );
       },
       img: YellowAngle,
@@ -775,7 +774,7 @@ class InputRow extends React.Component {
                           className="profile-menu-item"
                           key={index}
                           onClick={
-                            item.mobileAction ? item.mobileAction : () => {}
+                            item.mobileAction ? item.mobileAction : () => { }
                           }
                         >
                           <item.img></item.img>
@@ -791,7 +790,9 @@ class InputRow extends React.Component {
                   this.ReviewsForm = ref;
                 }}
                 isOpen={this.state.isOpenReviewsShow}
-                reviews={this.props.article.reviews}
+                reviews={this.props.article.reviews.filter(
+                  (item) => item.user._id === this.props.user._id
+                )}
                 onMobile={this.props.onMobile}
               />
               <ReviewsFormModal
@@ -826,9 +827,8 @@ class InputRow extends React.Component {
                     <Button
                       key={index}
                       type={item.ButtonType}
-                      className={`input-action ${
-                        item.className ? item.className : ""
-                      }`}
+                      className={`input-action ${item.className ? item.className : ""
+                        }`}
                       onClick={item.action}
                     >
                       {item.label}
@@ -851,8 +851,8 @@ class InputRow extends React.Component {
               {!this.props.articleOpen ? (
                 <>Подробнее</>
               ) : (
-                <>Скрыть подробности</>
-              )}
+                  <>Скрыть подробности</>
+                )}
               <img
                 className="ml-2"
                 src={ArrowDown}
@@ -867,7 +867,7 @@ class InputRow extends React.Component {
               this.CancelsModal = ref;
             }}
             onDeleteExecutor={(executor) => {
-              this.setState({ isFetching: true }, () => {});
+              this.setState({ isFetching: true }, () => { });
             }}
             article={this.props.article}
             users={this.props.article.executors}
@@ -941,8 +941,8 @@ class InputRow extends React.Component {
               {!this.props.articleOpen ? (
                 <>Подробнее</>
               ) : (
-                <>Скрыть подробности</>
-              )}
+                  <>Скрыть подробности</>
+                )}
               <img
                 className="ml-2"
                 src={ArrowDown}
@@ -991,16 +991,15 @@ class InputRow extends React.Component {
               </Link>
               <Button
                 type="fill"
-                className={`get-article ${
-                  !this.props.user.isAuth ||
-                  (this.props.user.isAuth &&
-                    this.props.user.type === "cargo" &&
-                    this.props.article.type === "offer") ||
-                  (this.props.user.type === "carrier" &&
-                    this.props.article.type === "order")
+                className={`get-article ${!this.props.user.isAuth ||
+                    (this.props.user.isAuth &&
+                      this.props.user.type === "cargo" &&
+                      this.props.article.type === "offer") ||
+                    (this.props.user.type === "carrier" &&
+                      this.props.article.type === "order")
                     ? ""
                     : "disable"
-                }`}
+                  }`}
                 paddingVertical={"8px"}
                 paddingHorizontal={"35px"}
                 fontSize={"14px"}

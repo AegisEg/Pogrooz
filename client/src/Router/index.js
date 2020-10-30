@@ -5,7 +5,7 @@ import { jivoSite } from "../controllers/FunctionsController";
 import SocketController from "../controllers/SocketController";
 import Header from "../Partials/Header";
 import { Helmet } from "react-helmet";
-
+import { Link } from "react-router-dom";
 import SideNav from "../Partials/SideNav";
 import Footer from "../Partials/Footer";
 
@@ -137,7 +137,7 @@ class AppRouter extends React.Component {
             this.props.user.geolocationsError && (
               <div className="geo-active">
                 <Error />
-                <div>Ошибка передачи геоданных</div>
+                <div>Включите геолокацию в браузере. <Link>Как включить?</Link></div>
               </div>
             )}
 
@@ -261,15 +261,15 @@ class AppRouter extends React.Component {
                 </div>
               </>
             ) : (
-              <NoMatch />
-            )
+                <NoMatch />
+              )
           ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-              }}
-            />
-          )
+              <Redirect
+                to={{
+                  pathname: "/login",
+                }}
+              />
+            )
         }
       />
     );
@@ -287,12 +287,12 @@ class AppRouter extends React.Component {
                 <Footer />
               </>
             ) : (
-              <Redirect
-                to={{
-                  pathname: "/",
-                }}
-              />
-            )
+                <Redirect
+                  to={{
+                    pathname: "/",
+                  }}
+                />
+              )
           }
         />
       </div>
@@ -329,13 +329,13 @@ class AppRouter extends React.Component {
               </div>
             </>
           ) : (
-            <>
-              <div className="page-common">
-                {children}
-                <Footer />
-              </div>
-            </>
-          )
+              <>
+                <div className="page-common">
+                  {children}
+                  <Footer />
+                </div>
+              </>
+            )
         }
       />
     );

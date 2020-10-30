@@ -89,6 +89,7 @@ class ReviewItem extends React.Component {
                 style={{
                   height: "164px",
                 }}
+                maxLength="1500"
                 value={this.state.comment}
                 onChange={(e) => {
                   this.setState({ comment: e.target.value });

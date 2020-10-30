@@ -538,6 +538,8 @@ class Article extends React.Component {
                               ).toLocaleTimeString([], {
                                 hour: "2-digit",
                                 minute: "2-digit",
+
+
                               })}{" "}
                             </>
                           )}
@@ -614,12 +616,12 @@ class Article extends React.Component {
                         onClick={() => {
                           this.setState({
                             dataFancybox: {
-                              images: [{ path: this.props.article.car.photo }],
+                              images: [{ path: this.props.article.car.photo.path }],
                               index: 0,
                             },
                           });
                         }}
-                        src={this.props.article.car.photo}
+                        src={this.props.article.car.photo.path}
                         alt=""
                       />
                     )}
@@ -642,7 +644,7 @@ class Article extends React.Component {
                       </div>
                     )}
                   </div>
-                  <div className="col-12 col-sm-4 pr-0 pr-sm-2">
+                  <div className="col-12 col-sm-4 pr-sm-2">
                     <h3 className="title-column">Куда</h3>
                     <span>{this.props.article.to.value}</span>
                     {this.props.onlyOpen && (
@@ -672,65 +674,68 @@ class Article extends React.Component {
                   </div>
                   <div className="col-6 col-sm ">
                     <h3 className="title-column">Параметры</h3>
-                    {this.props.article.cargoStandartData.weight && (
-                      <>
-                        {this.props.article.cargoStandartData.weight * this.props.article.cargoStandartData.count}
-                        {
-                          unitCargo.find(
-                            (item) =>
-                              item.value ===
-                              this.props.article.cargoStandartData.unit
-                          ).shortLabel
-                        }
+                    {!this.props.article.cargoStandartData && <span>Не заданы</span>}
+                    {this.props.article.cargoStandartData && <>
+                      {this.props.article.cargoStandartData.weight && (
+                        <>
+                          {this.props.article.cargoStandartData.weight * this.props.article.cargoStandartData.count}
+                          {
+                            unitCargo.find(
+                              (item) =>
+                                item.value ===
+                                this.props.article.cargoStandartData.unit
+                            ).shortLabel
+                          }
                             /
                           </>
-                    )}
-                    {this.props.article.cargoStandartData.length &&
-                      this.props.article.cargoStandartData.width &&
-                      this.props.article.cargoStandartData.height && (
-                        <>
-                          {this.props.article.cargoStandartData.length *
-                            this.props.article.cargoStandartData.width *
-                            this.props.article.cargoStandartData.count *
-                            this.props.article.cargoStandartData.height}
-                          <span>
-                            м<sup>3</sup>
-                          </span>
-                        </>
                       )}
-                    {this.props.article.cargoStandartData.count && (
-                      <div>
-                        {this.props.article.cargoStandartData.count}&nbsp;
+                      {this.props.article.cargoStandartData.length &&
+                        this.props.article.cargoStandartData.width &&
+                        this.props.article.cargoStandartData.height && (
+                          <>
+                            {this.props.article.cargoStandartData.length *
+                              this.props.article.cargoStandartData.width *
+                              this.props.article.cargoStandartData.count *
+                              this.props.article.cargoStandartData.height}
+                            <span>
+                              м<sup>3</sup>
+                            </span>
+                          </>
+                        )}
+                      {this.props.article.cargoStandartData.count && (
+                        <div>
+                          {this.props.article.cargoStandartData.count}&nbsp;
                             мест(а)
-                      </div>
-                    )}
-                    <span>(</span>
-                    {this.props.article.cargoStandartData.weight && (
-                      <>
-                        {this.props.article.cargoStandartData.weight}
-                        {
-                          unitCargo.find(
-                            (item) =>
-                              item.value ===
-                              this.props.article.cargoStandartData.unit
-                          ).shortLabel
-                        }
+                        </div>
+                      )}
+                      <span>(</span>
+                      {this.props.article.cargoStandartData.weight && (
+                        <>
+                          {this.props.article.cargoStandartData.weight}
+                          {
+                            unitCargo.find(
+                              (item) =>
+                                item.value ===
+                                this.props.article.cargoStandartData.unit
+                            ).shortLabel
+                          }
                             /
                           </>
-                    )}
-                    {this.props.article.cargoStandartData.length &&
-                      this.props.article.cargoStandartData.width &&
-                      this.props.article.cargoStandartData.height && (
-                        <>
-                          {this.props.article.cargoStandartData.length *
-                            this.props.article.cargoStandartData.width *
-                            this.props.article.cargoStandartData.height}
-                          <span>
-                            м<sup>3</sup>
-                          </span>
-                        </>
                       )}
-                    <span>)</span>
+                      {this.props.article.cargoStandartData.length &&
+                        this.props.article.cargoStandartData.width &&
+                        this.props.article.cargoStandartData.height && (
+                          <>
+                            {this.props.article.cargoStandartData.length *
+                              this.props.article.cargoStandartData.width *
+                              this.props.article.cargoStandartData.height}
+                            <span>
+                              м<sup>3</sup>
+                            </span>
+                          </>
+                        )}
+                      <span>)</span>
+                    </>}
                   </div>
                   <div className="col  pl-sm-3">
                     <h3 className="title-column">Дата</h3>
@@ -813,8 +818,8 @@ class Article extends React.Component {
                       );
                     })}
                 </div>
-                <div className="col row">
-                  <div className="col-12 col-sm user-avatar-wrapper">
+                <div className="col-12 col-sm row">
+                  <div className="d-none d-sm-block col-12 col-sm user-avatar-wrapper">
                     <Link to={`/user/${this.props.article.author._id}`}>
                       <Avatar avatar={this.props.article.author.avatar} />
                     </Link>

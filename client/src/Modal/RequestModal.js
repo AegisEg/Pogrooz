@@ -70,6 +70,7 @@ class RequestModal extends React.Component {
                 height: "100px",
               }}
               value={this.state.comment}
+              maxLength="1500"
               onChange={(e) => {
                 this.setState({ comment: e.target.value });
               }}

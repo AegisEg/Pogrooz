@@ -5,20 +5,24 @@ import { CSSTransitionGroup } from "react-transition-group";
 import AngleUp from "../../img/angle-up.png";
 import AngleDown from "../../img/angle-down.png";
 import RatingInput from "../../Elements/RatingInput";
+import { Link } from "react-router-dom"
 class ReviewItem extends React.Component {
   render() {
     return (
       <div className="review-item padding">
         <div className="f-14 mb-2 d-flex align-items-center">
-          {this.props.review.author.name.last}{" "}
-          {this.props.review.author.name.first}{" "}
-          {this.props.review.author.name.middle}
+
+          <Link to={`/user/${this.props.review.author._id}`}>
+            {this.props.review.author.name.last}{" "}
+            {this.props.review.author.name.first}{" "}
+            {this.props.review.author.name.middle}
+          </Link>
           {this.props.multiple && (
             <img
               onClick={() => {
                 this.props.open(this.props.index);
               }}
-              className="ml-2"
+              className="ml-2 angle-toogle"
               src={this.props.isOpen ? AngleUp : AngleDown}
               style={{
                 cursor: "pointer",

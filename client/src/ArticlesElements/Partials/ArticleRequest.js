@@ -142,9 +142,9 @@ class ArticleRequest extends React.Component {
             (this.props.article.status == 3 ||
               this.props.article.status == 2) &&
             myArticle && (
-              <div className="text-right col-12">
-                Выбран исполнителем
-                <Button
+              <div className="col-12 mx-0 row justify-content-between align-items-center">
+                <span>Выбран исполнителем</span>
+                <div><Button
                   type="fill"
                   paddingHorizontal="36px"
                   className="input-action"
@@ -152,37 +152,36 @@ class ArticleRequest extends React.Component {
                 >
                   Убрать из исполнителей
                 </Button>
-                {this.props.article.status == 2 && (
-                  <Link to={`/dialog/${this.props.request.author._id}`}>
-                    <Button
-                      type="empty"
-                      paddingHorizontal="29px"
-                      className="input-action mr-3"
-                    >
-                      Написать
+                  {this.props.article.type === "offer" &&
+                    this.props.article.status >= 3 &&
+                    myArticle &&
+                    isExecutor && (
+                      <Link
+                        to={`/dialog-order/${this.props.article._id}/${this.props.request.author._id}`}
+                      >
+                        <Button
+                          type="empty"
+                          paddingHorizontal="29px"
+                          className="input-action mr-3"
+                        >
+                          Написать
+                        </Button>
+                      </Link>
+                    )}
+                  {this.props.article.status == 2 && (
+                    <Link to={`/dialog/${this.props.request.author._id}`}>
+                      <Button
+                        type="empty"
+                        paddingHorizontal="29px"
+                        className="input-action mr-3"
+                      >
+                        Написать
                     </Button>
-                  </Link>
-                )}
+                    </Link>
+                  )}</div>
               </div>
             )}
-          {this.props.article.type === "offer" &&
-            this.props.article.status >= 3 &&
-            myArticle &&
-            isExecutor && (
-              <div className="text-right col-12">
-                <Link
-                  to={`/dialog-order/${this.props.article._id}/${this.props.request.author._id}`}
-                >
-                  <Button
-                    type="empty"
-                    paddingHorizontal="29px"
-                    className="input-action mr-3"
-                  >
-                    Написать
-                  </Button>
-                </Link>
-              </div>
-            )}
+
           {this.props.article.status === 2 && (
             <div className="text-right col-12">
               {myArticle && !isExecutor && (

@@ -73,6 +73,7 @@ app
   // Serve static files
   .use(express.static(path.join(__dirname, "../client")))
   .use("/media", express.static(path.join(__dirname, "./uploads")))
+  .use("/mailImg", express.static(path.join(__dirname, "./mailImg")))
   // Enable history API
   .use(historyApiFallback());
 // Error middleware
