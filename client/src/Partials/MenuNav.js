@@ -15,7 +15,7 @@ class MenuNav extends React.Component {
         href: "/search-order",
         type: "menu",
         isAuth: true,
-        userType: "cargo",
+        userType: "carrier",
         width: 0,
       },
       {
@@ -24,7 +24,7 @@ class MenuNav extends React.Component {
         href: "/search-offer",
         type: "menu",
         isAuth: true,
-        userType: "carrier",
+        userType: "cargo",
         width: 0,
       },
       {

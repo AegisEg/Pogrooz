@@ -26,6 +26,10 @@ class Input extends React.Component {
     if (this.props.type === "number") return "text";
     else return this.props.type;
   }
+  componentDidMount() {
+    if (this.props.defaultValue && !this.props.value)
+      this.props.onChange({ target: { value: this.props.defaultValue } })
+  }
   render() {
     if (this.props.type === "phone")
       return (
@@ -189,6 +193,13 @@ class Input extends React.Component {
                 this.props.onChange(val);
               }
             }}
+            onPaste={(val) => {
+              if (this.props.type === "number") {
+                val.target.value = val.target.value.replace(/\D/, "");
+              }
+              this.props.onChange(val);
+            }}
+
             onChange={(val) => {
               if (this.props.type === "number") {
                 val.target.value = val.target.value.replace(/\D/, "");

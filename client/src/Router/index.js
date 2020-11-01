@@ -137,7 +137,10 @@ class AppRouter extends React.Component {
             this.props.user.geolocationsError && (
               <div className="geo-active">
                 <Error />
-                <div>Включите геолокацию в браузере. <Link>Как включить?</Link></div>
+                <div>
+                  Включите геолокацию в браузере.{" "}
+                  <Link to={this.props.settings.geoInstruction}>Как включить?</Link>
+                </div>
               </div>
             )}
 
@@ -261,15 +264,15 @@ class AppRouter extends React.Component {
                 </div>
               </>
             ) : (
-                <NoMatch />
-              )
-          ) : (
-              <Redirect
-                to={{
-                  pathname: "/login",
-                }}
-              />
+              <NoMatch />
             )
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/login",
+              }}
+            />
+          )
         }
       />
     );
@@ -287,12 +290,12 @@ class AppRouter extends React.Component {
                 <Footer />
               </>
             ) : (
-                <Redirect
-                  to={{
-                    pathname: "/",
-                  }}
-                />
-              )
+              <Redirect
+                to={{
+                  pathname: "/",
+                }}
+              />
+            )
           }
         />
       </div>
@@ -329,13 +332,13 @@ class AppRouter extends React.Component {
               </div>
             </>
           ) : (
-              <>
-                <div className="page-common">
-                  {children}
-                  <Footer />
-                </div>
-              </>
-            )
+            <>
+              <div className="page-common">
+                {children}
+                <Footer />
+              </div>
+            </>
+          )
         }
       />
     );
@@ -345,6 +348,7 @@ class AppRouter extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    settings: state.settings.settings,
   };
 };
 

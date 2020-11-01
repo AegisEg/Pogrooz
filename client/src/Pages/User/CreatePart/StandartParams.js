@@ -124,7 +124,7 @@ class StandartParams extends React.Component {
                 style={{
                   width: "79px",
                 }}
-
+                defaultValue={1}
                 placeholder="0"
                 value={this.props.cargoStandartData["count"] || ""}
                 onChange={(e) => {
@@ -138,53 +138,67 @@ class StandartParams extends React.Component {
             <div
               className="row col mx-0"
               style={{
-                maxWidth: "250px",
-                minWidth: "150px",
+                maxWidth: "175px",
                 alignItems: "center",
               }}
             >
               <span className="filter-input-title">
                 Общий<br></br>вес
               </span>
-              <span className="d-inline-block ml-4">
-                =
+              <span className="position-relative">
+
+                <span className="d-inline-block ml-4 short-value">
+                  =&nbsp;
                 <div
-                  className="valumeCalculate"
-                  style={{
-                    maxWidth: "40px",
-                  }}
-                >
-                  {this.props.cargoStandartData["weight"] *
-                    (this.props.cargoStandartData["count"] || 1) || ""}
-                </div>
+                    className="valumeCalculate"
+                    style={{
+                      maxWidth: "40px",
+                    }}
+                  >
+                    {this.props.cargoStandartData["weight"] *
+                      (this.props.cargoStandartData["count"] || 1) || 0}
+                  </div>
                 кг
+              </span>
+                <div className="full-value">
+                  {this.props.cargoStandartData["weight"] *
+                    (this.props.cargoStandartData["count"] || 1) || 0}кг
+                </div>
               </span>
             </div>
             <div
               className="row col mx-0"
               style={{
-                maxWidth: "250px",
-                minWidth: "176px",
+                minWidth: "180px",
                 alignItems: "center",
               }}
             >
               <span className="filter-input-title">
                 Общий<br></br>объем
               </span>
-              <span className="d-inline-block ml-4">
-                =
+              <span className="position-relative">
+                <span className="d-inline-block ml-4 short-value">
+                  =&nbsp;
                 <div
-                  className="valumeCalculate"
-                  style={{
-                    maxWidth: "40px",
-                  }}
-                >
+                    className="valumeCalculate"
+                    style={{
+                      maxWidth: "40px",
+                    }}
+                  >
+                    {this.props.cargoStandartData["length"] *
+                      this.props.cargoStandartData["width"] *
+                      this.props.cargoStandartData["height"] *
+                      (this.props.cargoStandartData["count"] || 1) || 0}
+                  </div>
+                м<sup>3</sup>
+                </span>
+                <div className="full-value">
                   {this.props.cargoStandartData["length"] *
                     this.props.cargoStandartData["width"] *
                     this.props.cargoStandartData["height"] *
-                    (this.props.cargoStandartData["count"] || 1) || ""}
+                    (this.props.cargoStandartData["count"] || 1) || 0}
+                  м<sup>3</sup>
                 </div>
-                м<sup>3</sup>
               </span>
             </div>
           </>
@@ -252,22 +266,6 @@ class StandartParams extends React.Component {
                 }}
                 placeholder="Высота"
               />
-              <span
-                className="filter-input-title"
-                style={{
-                  minWidth: "90px",
-                }}
-              >
-                &nbsp;&nbsp;=&nbsp;
-                <div className="valumeCalculate">
-                  {this.props.cargoStandartData["length"] *
-                    this.props.cargoStandartData["width"] *
-                    this.props.cargoStandartData["height"] *
-                    (this.props.cargoStandartData["count"] || 1) || ""}
-                  &nbsp;
-                </div>
-                м<sup>3</sup>
-              </span>
             </div>
             <div
               className="row col mx-0"
@@ -298,26 +296,64 @@ class StandartParams extends React.Component {
             <div
               className="row col mx-0"
               style={{
-                maxWidth: "250px",
-                minWidth: "150px",
+                maxWidth: "175px",
+                alignItems: "center",
+              }}
+            >
+              <span className="filter-input-title position-relative">
+                Общий<br></br>вес
+              </span>
+              <span className="position-relative">
+                <span className="d-inline-block ml-4 short-value">
+                  =&nbsp;
+                <div
+                    className="valumeCalculate"
+                    style={{
+                      maxWidth: "40px",
+                    }}
+                  >
+                    {this.props.cargoStandartData["weight"] *
+                      (this.props.cargoStandartData["count"] || 1) || 0}
+                  </div>
+                т
+              </span>
+                <div className="full-value">
+                  {this.props.cargoStandartData["weight"] *
+                    (this.props.cargoStandartData["count"] || 1) || 0}
+                </div>
+              </span>
+            </div>
+            <div
+              className="row col mx-0"
+              style={{
+                minWidth: "180px",
                 alignItems: "center",
               }}
             >
               <span className="filter-input-title">
-                Общий<br></br>вес
+                Общий<br></br>объем
               </span>
-              <span className="d-inline-block ml-4">
-                =
+              <span className="position-relative">
+                <span className="d-inline-block ml-4 short-value">
+                  =&nbsp;
                 <div
-                  className="valumeCalculate"
-                  style={{
-                    maxWidth: "40px",
-                  }}
-                >
-                  {this.props.cargoStandartData["weight"] *
-                    (this.props.cargoStandartData["count"] || 1) || ""}
-                </div>
-                т
+                    className="valumeCalculate"
+                    style={{
+                      maxWidth: "40px",
+                    }}
+                  >
+                    {this.props.cargoStandartData["length"] *
+                      this.props.cargoStandartData["width"] *
+                      this.props.cargoStandartData["height"] *
+                      (this.props.cargoStandartData["count"] || 1) || 0}
+                  </div>
+                м<sup>3</sup>
+                </span>
+                <div className="full-value">
+                  {this.props.cargoStandartData["length"] *
+                    this.props.cargoStandartData["width"] *
+                    this.props.cargoStandartData["height"] *
+                    (this.props.cargoStandartData["count"] || 1) || 0} м<sup>3</sup></div>
               </span>
             </div>
           </>

@@ -113,7 +113,7 @@ class User extends React.Component {
                 currentTab: 1,
                 filter: {
                   type: type,
-                  
+
                   author: this.state.user._id,
                 },
               });
@@ -311,7 +311,13 @@ class User extends React.Component {
                             {user.contract &&
                               (user.contract.id == 2 ||
                                 user.contract.id == 3) &&
-                              user.contract.data.data.name.short}
+                              ((user.contract.data.data.name.short.length >
+                                20 &&
+                                user.contract.data.data.name.short.slice(
+                                  0,
+                                  20
+                                ) + "...") ||
+                                user.contract.data.data.name.short)}
                             {user.contract &&
                               user.contract.id == 1 &&
                               "Физ. лицо"}

@@ -645,7 +645,7 @@ module.exports = {
                 fileName +
                 "." +
                 req.files["cargoPhoto" + i].name.split(".").pop();
-              req.files["cargoPhoto" + i].mv(filePath, function(err) {
+              req.files["cargoPhoto" + i].mv(filePath, function (err) {
                 if (err) return res.status(500).send(err);
               });
               photos.push({
@@ -662,10 +662,7 @@ module.exports = {
               });
             }
           }
-          newArticle.cargoPhoto = [
-            ...article.cargoPhoto.filter((item) => !item.isNew),
-            ...photos,
-          ];
+          newArticle.cargoPhoto = photos;
         }
         if (
           !article.car &&
@@ -738,7 +735,7 @@ module.exports = {
                 fileName +
                 "." +
                 req.files["carPhoto"].name.split(".").pop();
-              req.files["carPhoto"].mv(filePath, function(err) {
+              req.files["carPhoto"].mv(filePath, function (err) {
                 if (err) return res.status(500).send(err);
               });
               newArticle.car.photo = {
@@ -821,7 +818,7 @@ module.exports = {
                 fileName +
                 "." +
                 req.files["cargoPhoto" + i].name.split(".").pop();
-              req.files["cargoPhoto" + i].mv(filePath, function(err) {
+              req.files["cargoPhoto" + i].mv(filePath, function (err) {
                 if (err) return res.status(500).send(err);
               });
               photos.push({
@@ -868,7 +865,7 @@ module.exports = {
                 fileName +
                 "." +
                 req.files["carPhoto"].name.split(".").pop();
-              req.files["carPhoto"].mv(filePath, function(err) {
+              req.files["carPhoto"].mv(filePath, function (err) {
                 if (err) return res.status(500).send(err);
               });
               editArticle.car.photo = {
@@ -1120,12 +1117,12 @@ module.exports = {
               article.type,
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.push) ||
-                (article.type === "order" &&
-                  item.notificationSettings.order_status.push),
+              (article.type === "order" &&
+                item.notificationSettings.order_status.push),
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.mail) ||
-                (article.type === "order" &&
-                  item.notificationSettings.order_status.mail)
+              (article.type === "order" &&
+                item.notificationSettings.order_status.mail)
             );
           });
           updateStatusMyArticle({
@@ -1198,12 +1195,12 @@ module.exports = {
               article.type,
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.push) ||
-                (article.type === "order" &&
-                  item.notificationSettings.order_status.push),
+              (article.type === "order" &&
+                item.notificationSettings.order_status.push),
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.mail) ||
-                (article.type === "order" &&
-                  item.notificationSettings.order_status.mail)
+              (article.type === "order" &&
+                item.notificationSettings.order_status.mail)
             );
           });
           updateStatusMyArticle({
@@ -1278,12 +1275,12 @@ module.exports = {
               article.type,
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.push) ||
-                (article.type === "order" &&
-                  item.notificationSettings.order_status.push),
+              (article.type === "order" &&
+                item.notificationSettings.order_status.push),
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.mail) ||
-                (article.type === "order" &&
-                  item.notificationSettings.order_status.mail)
+              (article.type === "order" &&
+                item.notificationSettings.order_status.mail)
             );
           });
           updateStatusMyArticle({
@@ -1469,12 +1466,12 @@ module.exports = {
               article.type,
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.push) ||
-                (article.type === "order" &&
-                  item.notificationSettings.order_status.push),
+              (article.type === "order" &&
+                item.notificationSettings.order_status.push),
               (article.type === "offer" &&
                 item.notificationSettings.offer_status.mail) ||
-                (article.type === "order" &&
-                  item.notificationSettings.order_status.mail)
+              (article.type === "order" &&
+                item.notificationSettings.order_status.mail)
             );
           });
           return res.json({ error: false });
@@ -1535,12 +1532,12 @@ module.exports = {
             article.type,
             (author.type === "cargo" &&
               author.notificationSettings.order_new_request.push) ||
-              (author.type === "carrier" &&
-                author.notificationSettings.offer_new_request.push),
+            (author.type === "carrier" &&
+              author.notificationSettings.offer_new_request.push),
             (author.type === "cargo" &&
               author.notificationSettings.order_new_request.mail) ||
-              (author.type === "carrier" &&
-                author.notificationSettings.offer_new_request.mail)
+            (author.type === "carrier" &&
+              author.notificationSettings.offer_new_request.mail)
           );
           return res.json({ error: false, request: newRequest });
         }
@@ -1685,12 +1682,12 @@ module.exports = {
             article.type,
             (executor.type === "cargo" &&
               executor.notificationSettings.offer_you_executor.push) ||
-              (executor.type === "carrier" &&
-                executor.notificationSettings.order_you_executor.push),
+            (executor.type === "carrier" &&
+              executor.notificationSettings.order_you_executor.push),
             (executor.type === "cargo" &&
               executor.notificationSettings.offer_you_executor.mail) ||
-              (executor.type === "carrier" &&
-                executor.notificationSettings.order_you_executor.mail)
+            (executor.type === "carrier" &&
+              executor.notificationSettings.order_you_executor.mail)
           );
         }
         if (article.type === "order" && executor.type === "carrier") {
@@ -1709,12 +1706,12 @@ module.exports = {
             article.type,
             (article.type === "offer" &&
               executor.notificationSettings.offer_status.push) ||
-              (article.type === "order" &&
-                executor.notificationSettings.order_status.push),
+            (article.type === "order" &&
+              executor.notificationSettings.order_status.push),
             (article.type === "offer" &&
               executor.notificationSettings.offer_status.mail) ||
-              (article.type === "order" &&
-                executor.notificationSettings.order_status.mail)
+            (article.type === "order" &&
+              executor.notificationSettings.order_status.mail)
           );
           //SOKET
           createTakingArticle({
@@ -1821,12 +1818,12 @@ module.exports = {
           article.type,
           (executorX.type === "cargo" &&
             executorX.notificationSettings.offer_you_executor.push) ||
-            (executorX.type === "carrier" &&
-              executorX.notificationSettings.order_you_executor.push),
+          (executorX.type === "carrier" &&
+            executorX.notificationSettings.order_you_executor.push),
           (executorX.type === "cargo" &&
             executorX.notificationSettings.offer_you_executor.mail) ||
-            (executorX.type === "carrier" &&
-              executorX.notificationSettings.order_you_executor.mail)
+          (executorX.type === "carrier" &&
+            executorX.notificationSettings.order_you_executor.mail)
         );
         return res.json({ error: false, article, executor });
       }
@@ -1906,7 +1903,7 @@ module.exports = {
             });
             let sum = allReviews
               .map((item) => item.rating)
-              .reduce(function(accumulator, current) {
+              .reduce(function (accumulator, current) {
                 return accumulator + current;
               });
             let rating = parseFloat(sum / allReviews.length).toFixed(1);
@@ -1953,12 +1950,12 @@ module.exports = {
                 article.type,
                 (article.type === "offer" &&
                   newReview.user.notificationSettings.offer_new_review.push) ||
-                  (article.type === "order" &&
-                    newReview.user.notificationSettings.order_new_review.push),
+                (article.type === "order" &&
+                  newReview.user.notificationSettings.order_new_review.push),
                 (article.type === "offer" &&
                   newReview.user.notificationSettings.offer_new_review.mail) ||
-                  (article.type === "order" &&
-                    newReview.user.notificationSettings.order_new_review.mail)
+                (article.type === "order" &&
+                  newReview.user.notificationSettings.order_new_review.mail)
               );
             }
             await article.save();
@@ -2231,7 +2228,7 @@ module.exports = {
   },
 };
 
-Date.prototype.addDays = function(days) {
+Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);
   return date;

@@ -66,8 +66,8 @@ class Article extends React.Component {
                 {this.props.article.startDate &&
                   this.props.article.startDate.date &&
                   new Date(this.props.article.startDate.date).getTime() +
-                  1000 * 60 * 60 * 24 <
-                  new Date().getTime() && (
+                    1000 * 60 * 60 * 24 <
+                    new Date().getTime() && (
                     <div className="ml-2 f-12" style={{ color: "red" }}>
                       Просрочено
                     </div>
@@ -179,8 +179,9 @@ class Article extends React.Component {
   render() {
     return (
       <div
-        className={`article-block ${!this.props.notLink && this.state.isHoverHref ? "hover" : ""
-          }`}
+        className={`article-block ${
+          !this.props.notLink && this.state.isHoverHref ? "hover" : ""
+        }`}
         itemScope={true}
         itemType="https://schema.org/Article"
       >
@@ -210,11 +211,13 @@ class Article extends React.Component {
         ></meta>
         <meta
           itemProp="description"
-          content={`${this.props.article.type === "offer"
-            ? "Поиск водителя на перевозку"
-            : "Поиск груза для перевозки"
-            } № ${this.props.article.articleId}: От ${this.props.article.from.value
-            }  до  ${this.props.article.to.value}`}
+          content={`${
+            this.props.article.type === "offer"
+              ? "Поиск водителя на перевозку"
+              : "Поиск груза для перевозки"
+          } № ${this.props.article.articleId}: От ${
+            this.props.article.from.value
+          }  до  ${this.props.article.to.value}`}
         ></meta>
         <meta
           itemProp="author"
@@ -275,9 +278,7 @@ class Article extends React.Component {
                               {this.props.article.car.property &&
                                 this.props.article.car.typesCar.length === 1 &&
                                 this.props.article.car.property !== "false" && (
-                                  <div>
-                                    {this.props.article.car.property}
-                                  </div>
+                                  <div>{this.props.article.car.property}</div>
                                 )}
                               {this.props.article.car.info &&
                                 this.props.article.car.info.find(
@@ -326,8 +327,8 @@ class Article extends React.Component {
                   >
                     {(this.state.showMore || this.props.onlyOpen) &&
                       this.props.article.car.photo && (
-                        <img
-                          className="w-100  moreinfo"
+                        <div
+                          className="w-100 car-image  moreinfo"
                           onClick={() => {
                             this.setState({
                               dataFancybox: {
@@ -338,9 +339,11 @@ class Article extends React.Component {
                               },
                             });
                           }}
-                          src={this.props.article.car.photo.path}
+                          style={{
+                            backgroundImage: `url(${this.props.article.car.photo.path})`,
+                          }}
                           alt=""
-                        />
+                        ></div>
                       )}
                   </CSSTransitionGroup>
                 </div>
@@ -365,11 +368,11 @@ class Article extends React.Component {
                           defaultState={{
                             center:
                               this.props.article.from.data.geo_lat &&
-                                this.props.article.from.data.geo_lon
+                              this.props.article.from.data.geo_lon
                                 ? [
-                                  this.props.article.from.data.geo_lat,
-                                  this.props.article.from.data.geo_lon,
-                                ]
+                                    this.props.article.from.data.geo_lat,
+                                    this.props.article.from.data.geo_lon,
+                                  ]
                                 : [55.684758, 37.738521],
                             zoom: 10,
                           }}
@@ -414,11 +417,11 @@ class Article extends React.Component {
                           defaultState={{
                             center:
                               this.props.article.to.data.geo_lat &&
-                                this.props.article.to.data.geo_lon
+                              this.props.article.to.data.geo_lon
                                 ? [
-                                  this.props.article.to.data.geo_lat,
-                                  this.props.article.to.data.geo_lon,
-                                ]
+                                    this.props.article.to.data.geo_lat,
+                                    this.props.article.to.data.geo_lon,
+                                  ]
                                 : [55.684758, 37.738521],
                             zoom: 10,
                           }}
@@ -448,7 +451,8 @@ class Article extends React.Component {
                       <div className="property-cargo">
                         {this.props.article.cargoStandartData.weight && (
                           <>
-                            {this.props.article.cargoStandartData.weight * this.props.article.cargoStandartData.count}
+                            {this.props.article.cargoStandartData.weight *
+                              this.props.article.cargoStandartData.count}
                             {
                               unitCargo.find(
                                 (item) =>
@@ -456,9 +460,14 @@ class Article extends React.Component {
                                   this.props.article.cargoStandartData.unit
                               ).shortLabel
                             }
-                            /
                           </>
                         )}
+                        {!!this.props.article.cargoStandartData.weight &&
+                          !!this.props.article.cargoStandartData.length &&
+                          !!this.props.article.cargoStandartData.width &&
+                          !!this.props.article.cargoStandartData.height && (
+                            <span>/</span>
+                          )}
                         {this.props.article.cargoStandartData.length &&
                           this.props.article.cargoStandartData.width &&
                           this.props.article.cargoStandartData.height && (
@@ -478,8 +487,14 @@ class Article extends React.Component {
                             мест(а)
                           </div>
                         )}
-                        <span>(</span>
-                        {this.props.article.cargoStandartData.weight && (
+
+                        {(!!this.props.article.cargoStandartData.weight ||
+                          (!!this.props.article.cargoStandartData.length &&
+                            !!this.props.article.cargoStandartData.width &&
+                            !!this.props.article.cargoStandartData.height)) && (
+                          <span>(</span>
+                        )}
+                        {!!this.props.article.cargoStandartData.weight && (
                           <>
                             {this.props.article.cargoStandartData.weight}
                             {
@@ -489,12 +504,17 @@ class Article extends React.Component {
                                   this.props.article.cargoStandartData.unit
                               ).shortLabel
                             }
-                            /
                           </>
                         )}
-                        {this.props.article.cargoStandartData.length &&
-                          this.props.article.cargoStandartData.width &&
-                          this.props.article.cargoStandartData.height && (
+                        {!!this.props.article.cargoStandartData.weight &&
+                          !!this.props.article.cargoStandartData.length &&
+                          !!this.props.article.cargoStandartData.width &&
+                          !!this.props.article.cargoStandartData.height && (
+                            <span>/</span>
+                          )}
+                        {!!this.props.article.cargoStandartData.length &&
+                          !!this.props.article.cargoStandartData.width &&
+                          !!this.props.article.cargoStandartData.height && (
                             <>
                               {this.props.article.cargoStandartData.length *
                                 this.props.article.cargoStandartData.width *
@@ -504,7 +524,12 @@ class Article extends React.Component {
                               </span>
                             </>
                           )}
-                        <span>)</span>
+                        {(!!this.props.article.cargoStandartData.weight ||
+                          (!!this.props.article.cargoStandartData.length &&
+                            !!this.props.article.cargoStandartData.width &&
+                            !!this.props.article.cargoStandartData.height)) && (
+                          <span>)</span>
+                        )}
                       </div>
                     )}
                     {this.props.article.cargoTypes.map((item, index) => {
@@ -538,8 +563,6 @@ class Article extends React.Component {
                               ).toLocaleTimeString([], {
                                 hour: "2-digit",
                                 minute: "2-digit",
-
-
                               })}{" "}
                             </>
                           )}
@@ -559,8 +582,8 @@ class Article extends React.Component {
                       )}
                     {(!this.props.article.startDate ||
                       !this.props.article.startDate.date) && (
-                        <>Дата не указана</>
-                      )}
+                      <>Дата не указана</>
+                    )}
                   </span>
                 </div>
                 <div className="Price-col">
@@ -605,80 +628,86 @@ class Article extends React.Component {
               </div>
             </>
           ) : (
-              <>
-                <div className="row mobile-row-article">
-                  <div className="col-12 ">
-                    <span>#{this.props.article.numberID}</span>
-                    <span className="ml-3">{this.props.article.car.name}</span>
-                    {this.props.onlyOpen && (
-                      <img
-                        className="moreinfo"
-                        onClick={() => {
-                          this.setState({
-                            dataFancybox: {
-                              images: [{ path: this.props.article.car.photo.path }],
-                              index: 0,
-                            },
-                          });
-                        }}
-                        src={this.props.article.car.photo.path}
-                        alt=""
+            <>
+              <div className="row mobile-row-article">
+                <div className="col-12 ">
+                  <span>#{this.props.article.numberID}</span>
+                  <span className="ml-3">{this.props.article.car.name}</span>
+                  {this.props.onlyOpen && (
+                    <img
+                      className="moreinfo"
+                      onClick={() => {
+                        this.setState({
+                          dataFancybox: {
+                            images: [
+                              { path: this.props.article.car.photo.path },
+                            ],
+                            index: 0,
+                          },
+                        });
+                      }}
+                      src={this.props.article.car.photo.path}
+                      alt=""
+                    />
+                  )}
+                </div>
+                <div className="col-12 col-sm-4 ">
+                  <h3 className="title-column">Откуда</h3>
+                  <span>{this.props.article.from.value}</span>
+                  {this.props.onlyOpen && (
+                    <div
+                      className="moreinfo"
+                      style={{
+                        height: "100px",
+                      }}
+                    >
+                      <Map
+                        defaultState={{ center: [55.75, 37.57], zoom: 15 }}
+                        width="100%"
+                        height="100px"
                       />
-                    )}
-                  </div>
-                  <div className="col-12 col-sm-4 ">
-                    <h3 className="title-column">Откуда</h3>
-                    <span>{this.props.article.from.value}</span>
-                    {this.props.onlyOpen && (
-                      <div
-                        className="moreinfo"
-                        style={{
-                          height: "100px",
-                        }}
-                      >
-                        <Map
-                          defaultState={{ center: [55.75, 37.57], zoom: 15 }}
-                          width="100%"
-                          height="100px"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="col-12 col-sm-4 pr-sm-2">
-                    <h3 className="title-column">Куда</h3>
-                    <span>{this.props.article.to.value}</span>
-                    {this.props.onlyOpen && (
-                      <div
-                        className="moreinfo"
-                        style={{
-                          height: "100px",
-                        }}
-                      >
-                        <Map
-                          defaultState={{ center: [55.75, 37.57], zoom: 15 }}
-                          width="100%"
-                          height="100px"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="col-6 col-sm-4  pl-sm-2">
-                    <h3 className="title-column">Груз</h3>
-                    {this.props.article.cargoTypes.map((item, index) => {
-                      return (
-                        <span key={index} className="d-block">
-                          {CargoTypeList.find((itemX) => itemX.id == item).name}
-                        </span>
-                      );
-                    })}
-                  </div>
-                  <div className="col-6 col-sm ">
-                    <h3 className="title-column">Параметры</h3>
-                    {!this.props.article.cargoStandartData && <span>Не заданы</span>}
-                    {this.props.article.cargoStandartData && <>
+                    </div>
+                  )}
+                </div>
+                <div className="col-12 col-sm-4 pr-sm-2">
+                  <h3 className="title-column">Куда</h3>
+                  <span>{this.props.article.to.value}</span>
+                  {this.props.onlyOpen && (
+                    <div
+                      className="moreinfo"
+                      style={{
+                        height: "100px",
+                      }}
+                    >
+                      <Map
+                        defaultState={{ center: [55.75, 37.57], zoom: 15 }}
+                        width="100%"
+                        height="100px"
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="col-6 col-sm-4  pl-sm-2">
+                  <h3 className="title-column">Груз</h3>
+                  {this.props.article.cargoTypes.map((item, index) => {
+                    return (
+                      <span key={index} className="d-block">
+                        {CargoTypeList.find((itemX) => itemX.id == item).name}
+                      </span>
+                    );
+                  })}
+                </div>
+                <div className="col-6 col-sm ">
+                  <h3 className="title-column">Параметры</h3>
+                  {!this.props.article.cargoStandartData && (
+                    <span>Не заданы</span>
+                  )}
+                  {this.props.article.cargoStandartData && (
+                    <>
                       {this.props.article.cargoStandartData.weight && (
                         <>
-                          {this.props.article.cargoStandartData.weight * this.props.article.cargoStandartData.count}
+                          {this.props.article.cargoStandartData.weight *
+                            this.props.article.cargoStandartData.count}
                           {
                             unitCargo.find(
                               (item) =>
@@ -686,8 +715,8 @@ class Article extends React.Component {
                                 this.props.article.cargoStandartData.unit
                             ).shortLabel
                           }
-                            /
-                          </>
+                          /
+                        </>
                       )}
                       {this.props.article.cargoStandartData.length &&
                         this.props.article.cargoStandartData.width &&
@@ -705,7 +734,7 @@ class Article extends React.Component {
                       {this.props.article.cargoStandartData.count && (
                         <div>
                           {this.props.article.cargoStandartData.count}&nbsp;
-                            мест(а)
+                          мест(а)
                         </div>
                       )}
                       <span>(</span>
@@ -719,8 +748,8 @@ class Article extends React.Component {
                                 this.props.article.cargoStandartData.unit
                             ).shortLabel
                           }
-                            /
-                          </>
+                          /
+                        </>
                       )}
                       {this.props.article.cargoStandartData.length &&
                         this.props.article.cargoStandartData.width &&
@@ -735,66 +764,67 @@ class Article extends React.Component {
                           </>
                         )}
                       <span>)</span>
-                    </>}
-                  </div>
-                  <div className="col  pl-sm-3">
-                    <h3 className="title-column">Дата</h3>
-                    <span>
-                      {this.props.article.startDate &&
-                        this.props.article.startDate.date && (
+                    </>
+                  )}
+                </div>
+                <div className="col  pl-sm-3">
+                  <h3 className="title-column">Дата</h3>
+                  <span>
+                    {this.props.article.startDate &&
+                      this.props.article.startDate.date && (
+                        <>
+                          {new Date(
+                            this.props.article.startDate.date
+                          ).toDateR()}
+                        </>
+                      )}
+                    {(!this.props.article.startDate ||
+                      !this.props.article.startDate.date) && (
+                      <>Дата не указана</>
+                    )}
+                  </span>
+                </div>
+                {this.props.article.startDate &&
+                  this.props.article.startDate.timeFrom && (
+                    <div className="col d-none d-sm-block">
+                      <h3 className="title-column">Время</h3>
+                      <span>
+                        {new Date(
+                          this.props.article.startDate.timeFrom
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                        {this.props.article.startDate.timeTo && (
                           <>
+                            до{" "}
                             {new Date(
-                              this.props.article.startDate.date
-                            ).toDateR()}
+                              this.props.article.startDate.timeTo
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
                           </>
                         )}
-                      {(!this.props.article.startDate ||
-                        !this.props.article.startDate.date) && (
-                          <>Дата не указана</>
-                        )}
-                    </span>
-                  </div>
-                  {this.props.article.startDate &&
-                    this.props.article.startDate.timeFrom && (
-                      <div className="col d-none d-sm-block">
-                        <h3 className="title-column">Время</h3>
-                        <span>
-                          {new Date(
-                            this.props.article.startDate.timeFrom
-                          ).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}{" "}
-                          {this.props.article.startDate.timeTo && (
-                            <>
-                              до{" "}
-                              {new Date(
-                                this.props.article.startDate.timeTo
-                              ).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </>
-                          )}
-                        </span>
-                      </div>
-                    )}
-                  <div className="col">
-                    <h3 className="title-column">Цена</h3>
-                    <span>{this.props.article.budget}</span>
-                  </div>
-                  <div className="col pr-0">
-                    <h3 className="title-column">Рейтинг</h3>
-                    <span>
-                      <span className="d-inline-block">
-                        {this.props.article.author.rating || 0}
-                        <img src={ImgActiveStar} alt="ImgActiveStar" />
                       </span>
-                    </span>
-                  </div>
+                    </div>
+                  )}
+                <div className="col">
+                  <h3 className="title-column">Цена</h3>
+                  <span>{this.props.article.budget}</span>
                 </div>
-              </>
-            )}
+                <div className="col pr-0">
+                  <h3 className="title-column">Рейтинг</h3>
+                  <span>
+                    <span className="d-inline-block">
+                      {this.props.article.author.rating || 0}
+                      <img src={ImgActiveStar} alt="ImgActiveStar" />
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </>
+          )}
           <CSSTransitionGroup
             transitionName="height-animation"
             transitionEnterTimeout={500}
@@ -842,7 +872,9 @@ class Article extends React.Component {
                       {this.props.article.car.contractInfo &&
                         !!this.props.article.car.contractInfo.length && (
                           <span className="property-user">
-                            <Dogovor />&nbsp;{this.props.article.car.contractInfo.map(
+                            <Dogovor />
+                            &nbsp;
+                            {this.props.article.car.contractInfo.map(
                               (item, index, items) => {
                                 let string = contractParams.find(
                                   (itemX) => itemX.id === item.id
@@ -862,7 +894,8 @@ class Article extends React.Component {
                       {this.props.article.car.paymentInfo &&
                         !!this.props.article.car.paymentInfo.length && (
                           <span className="property-user">
-                            <PayIco />&nbsp;Оплата&nbsp;
+                            <PayIco />
+                            &nbsp;Оплата&nbsp;
                             {this.props.article.car.paymentInfo.map(
                               (item, index, items) => {
                                 return (
@@ -897,10 +930,11 @@ class Article extends React.Component {
                         </span>
                       )}
                     {this.props.article.cargoTypes.map((item, index) => {
+                      let data = this.props.article.cargoData.find(
+                        (itemX) => itemX.typeID == item
+                      );
                       return (
-                        this.props.article.cargoData.find(
-                          (itemX) => itemX.typeID == item
-                        ) && (
+                        data && (
                           <span key={index} className="d-block">
                             <b>
                               {
@@ -910,25 +944,38 @@ class Article extends React.Component {
                             </b>
 
                             <div className="property-cargo">
-                              {Object.entries(
-                                this.props.article.cargoData.find(
-                                  (itemX) => itemX.typeID == item
-                                )
-                              ).map((itemY, index) => {
+                              {Object.entries(data).map((itemY, index) => {
                                 if (itemY[0] !== "typeID")
                                   return (
-                                    <div key={index}>
-                                      <span
-                                        dangerouslySetInnerHTML={{
-                                          __html: CargoTypeList.find(
-                                            (itemX) => itemX.id === item
-                                          ).fieldsLabel[itemY[0]],
-                                        }}
-                                      />
-                                      : {itemY[1]}
-                                    </div>
+                                    <>
+                                      {item !== 4 ||
+                                        (itemY[0] != "length" &&
+                                          itemY[0] != "width" &&
+                                          itemY[0] != "height" && (
+                                            <div key={index}>
+                                              <span
+                                                dangerouslySetInnerHTML={{
+                                                  __html: CargoTypeList.find(
+                                                    (itemX) => itemX.id === item
+                                                  ).fieldsLabel[itemY[0]],
+                                                }}
+                                              />
+                                              : {itemY[1]}
+                                            </div>
+                                          ))}
+                                    </>
                                   );
                               })}
+                              {item === 4 &&
+                                (!!data.length ||
+                                  !!data.width ||
+                                  !!data.height) && (
+                                  <div>
+                                    <span>Параметры</span>: :{" "}
+                                    {data.length || "*"}х{data.width || "*"}х
+                                    {data.height || "*"}
+                                  </div>
+                                )}
                             </div>
                           </span>
                         )
@@ -938,9 +985,9 @@ class Article extends React.Component {
                       <div className="imgs-content">
                         {this.props.article.cargoPhoto.map((item, index) => {
                           return (
-                            <img
+                            <div
                               key={index}
-                              src={item.path}
+                              style={{ backgroundImage: `url(${item.path})` }}
                               onClick={() => {
                                 this.setState({
                                   dataFancybox: {
@@ -949,13 +996,7 @@ class Article extends React.Component {
                                   },
                                 });
                               }}
-                              alt={index}
-                              style={{
-                                width: "75px",
-                                height: "57px",
-                                objectFit: "cover",
-                              }}
-                            />
+                            ></div>
                           );
                         })}
                       </div>
@@ -1028,7 +1069,7 @@ class Article extends React.Component {
             )}
           </CSSTransitionGroup>
         </div>
-      </div >
+      </div>
     );
   }
 }

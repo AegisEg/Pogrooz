@@ -246,19 +246,7 @@ export default [
                   }}
                   placeholder="Высота"
                 />
-                <span
-                  className="filter-input-title"
-                  style={{
-                    minWidth: "90px",
-                  }}
-                >
-                  &nbsp;&nbsp;=&nbsp;
-                  <div className="valumeCalculate">
-                    {obj["length"] * obj["width"] * obj["height"] || ""}
-                    &nbsp;
-                  </div>
-                  см<sup>3</sup>
-                </span>
+
               </div>
             </>
           )}
