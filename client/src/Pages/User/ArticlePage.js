@@ -100,7 +100,7 @@ class ArticlePage extends React.Component {
                           this.props.lastLocation.pathname
                         );
                       } else {
-                        this.props.history.push("/search");
+                        this.props.history.push("/search-offer");
                       }
                     }}
                   >

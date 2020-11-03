@@ -20,7 +20,7 @@ class FeedbackModal extends React.Component {
       toast.error("Введите номер телефона");
       return 0;
     }
-    if (!this.state.name) {
+    if (!this.state.name.trim()) {
       toast.error("Введите имя");
       return 0;
     }

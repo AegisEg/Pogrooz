@@ -35,6 +35,9 @@ const user = (state = INITIAL_STATE, action) => {
     case USER_EDIT:
       return {
         ...state,
+        contract: action.payload.user.contract
+          ? action.payload.user.contract
+          : {},
         ...action.payload.user,
       };
     case USER_SET_TARIFF:

@@ -355,20 +355,20 @@ module.exports = {
           res.writeHead(301, {
             Location: `${
               process.env.CLIENT_URL
-            }/?paySuccess=true&uuid=${randomInteger(0, 1000000)}`,
+            }/mytarif/?paySuccess=true&uuid=${randomInteger(0, 1000000)}`,
           });
         } else {
           res.writeHead(301, {
             Location: `${
               process.env.CLIENT_URL
-            }/?paySuccess=false&uuid=${randomInteger(0, 1000000)}`,
+            }/mytarif/?paySuccess=false&uuid=${randomInteger(0, 1000000)}`,
           });
         }
       } else {
         res.writeHead(301, {
           Location: `${
             process.env.CLIENT_URL
-          }/?paySuccess=false&uuid=${randomInteger(0, 1000000)}`,
+          }/mytarif/?paySuccess=false&uuid=${randomInteger(0, 1000000)}`,
         });
       }
 

@@ -70,8 +70,10 @@ class InputPhone extends React.Component {
                     });
                   else {
                     clearInterval(Interval);
-                    this.props.setVerified(false);
-                    this.refresh();
+                    if (this.props.isVerified !== "success") {
+                      this.props.setVerified(false);
+                      this.refresh();
+                    }
                   }
                 }, 1000);
               }
@@ -120,7 +122,7 @@ class InputPhone extends React.Component {
               onChange={(val) => {
                 if (!this.state.isSend) {
                   if (val.length < this.props.value.length)
-                    this.setState({ isUnique: false, isUniqueCanDo: true });                  
+                    this.setState({ isUnique: false, isUniqueCanDo: true });
                   if (val != this.props.value && val.length === 11) {
                     this.setState({ isFetching: true }, () => {
                       fetch(`${api.urlApi}/auth/uniquePhone`, {

@@ -80,8 +80,9 @@ class Header extends React.Component {
           <div className="header-logo d-flex d-md-none">
             <Link
               to="/"
-              className={`m-auto ${this.props.user.isAuth ? "d-none d-sm-block" : ""
-                }`}
+              className={`m-auto ${
+                this.props.user.isAuth ? "d-none d-sm-block" : ""
+              }`}
             >
               <Minilogo className="header-logo-img"></Minilogo>
             </Link>
@@ -139,8 +140,9 @@ class Header extends React.Component {
           {this.props.user.isAuth && (
             <div className="header-fast-access">
               <div
-                className={`fast-access-btn  notifications ${!!this.props.notifications.all.noRead && "not-empty"
-                  }`}
+                className={`fast-access-btn  notifications ${
+                  !!this.props.notifications.all.noRead && "not-empty"
+                }`}
                 onMouseEnter={() => {
                   this.showNotificationsPop();
                 }}
@@ -154,9 +156,12 @@ class Header extends React.Component {
                     <div className="action-counter">
                       <span>
                         {this.props.notifications.all.noRead >= 10 && 10}
-                        {this.props.notifications.all.noRead < 10 && this.props.notifications.all.noRead}
+                        {this.props.notifications.all.noRead < 10 &&
+                          this.props.notifications.all.noRead}
                       </span>
-                      {this.props.notifications.all.noRead >= 10 && <span className="plus">+</span>}
+                      {this.props.notifications.all.noRead >= 10 && (
+                        <span className="plus">+</span>
+                      )}
                     </div>
                   )}
                 </Link>
@@ -181,23 +186,29 @@ class Header extends React.Component {
                       <div className="pop-block-item text-center">Пусто</div>
                     )}
                     {!!this.props.notifications.all.onlyNoread.length && (
-                      <div
-                        className="pop-block-additionally"
-                        onClick={() => {
-                          this.props.notificationActions.notificationsReadAll(
-                            this.props.user.apiToken
-                          );
-                        }}
-                      >
-                        Прочитано
+                      <div className="text-center">
+                        <Button
+                          type="fill"
+                          paddingHorizontal={"10px"}
+                          paddingVertical={"4px"}
+                          className="mx-0 my-2"
+                          onClick={() => {
+                            this.props.notificationActions.notificationsReadAll(
+                              this.props.user.apiToken
+                            );
+                          }}
+                        >
+                          Прочитано
+                        </Button>
                       </div>
                     )}
                   </div>
                 )}
               </div>
               <div
-                className={`fast-access-btn messages ${!!this.props.dialogs.dialogsALL.noReadCount && "not-empty"
-                  }`}
+                className={`fast-access-btn messages ${
+                  !!this.props.dialogs.dialogsALL.noReadCount && "not-empty"
+                }`}
               >
                 <Link to="/messages">
                   <Support />
@@ -214,10 +225,11 @@ class Header extends React.Component {
           {this.props.user.isAuth && (
             <div className="header-additionals d-md-block d-none">
               <Link
-                to={`/${this.props.user.type === "cargo"
-                  ? "order-create"
-                  : "offer-create"
-                  }`}
+                to={`/${
+                  this.props.user.type === "cargo"
+                    ? "order-create"
+                    : "offer-create"
+                }`}
                 className="register"
               >
                 <Button
@@ -267,7 +279,11 @@ class Header extends React.Component {
                   }}
                 >{`${this.props.user.name.last} ${this.props.user.name.first}`}</p>
                 <p style={{ margin: 0, fontSize: 12, lineHeight: "14px" }}>
-                  Физ лицо
+                  {this.props.user.contract.id === 1 && "Физ.лицо"}
+                  {this.props.user.contract.id === 2 && "ООО"}
+                  {this.props.user.contract.id === 3 && "ИП"}
+                  {this.props.user.contract.id === 4 && "Самозанятый"}
+                  {!this.props.user.contract.id && "Не указано"}
                 </p>
                 <p style={{ margin: 0, fontSize: 12, lineHeight: "14px" }}>
                   <span

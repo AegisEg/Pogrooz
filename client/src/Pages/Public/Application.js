@@ -15,7 +15,7 @@ class Application extends React.Component {
                 <div className="row-3">
                   <div>Извините,</div>
                   <div>&nbsp;но</div>
-                  <div>&nbsp;страница</div>
+                  <div>&nbsp;приложение</div>
                 </div>
                 <img src={appsImg} alt="" />
                 <div className="row-2">

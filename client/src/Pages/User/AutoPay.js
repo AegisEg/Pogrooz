@@ -206,6 +206,13 @@ class AutoPay extends React.Component {
                 className="mr-4 f-14"
                 style={{
                   color: this.props.user.isEnableAutoPay ? "#B9B9B9" : "",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (this.props.user.isEnableAutoPay)
+                    this.props.userActions.toogleAutoPay(
+                      this.props.user.apiToken
+                    );
                 }}
               >
                 Выключить
@@ -222,6 +229,13 @@ class AutoPay extends React.Component {
                 className="ml-4 f-14"
                 style={{
                   color: !this.props.user.isEnableAutoPay ? "#B9B9B9" : "",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (!this.props.user.isEnableAutoPay)
+                    this.props.userActions.toogleAutoPay(
+                      this.props.user.apiToken
+                    );
                 }}
               >
                 Включить
@@ -248,7 +262,7 @@ class AutoPay extends React.Component {
                 <>
                   {this.state.cards.map((item, index) => (
                     <Card
-                      kay={index}
+                      key={index}
                       active={item.bindingId === this.state.bindingIdCard}
                       card={item}
                       removeCard={this.removeCard}

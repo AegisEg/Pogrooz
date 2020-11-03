@@ -97,7 +97,7 @@ class User extends React.Component {
               if (this.props.lastLocation) {
                 this.props.history.push(this.props.lastLocation.pathname);
               } else {
-                this.props.history.push("/search");
+                this.props.history.push("/search-offer");
               }
             }}
           >

@@ -125,13 +125,15 @@ class SideNav extends React.Component {
                 />
               );
           })}
-          <MenuItem
-            to={this.props.settings.settings.dogovor || "/"}
-            icon={download}
-            className="download-order"
-            name={"Шаблон договора между Перевозчиком и Грузовладельцем"}
-            childlist={false}
-          />
+          <a href={this.props.settings.settings.dogovor || "/"}>
+            <div className={`side-nav-item download-order`}>
+              <img
+                src={download}
+                alt={"Шаблон договора между Перевозчиком и Грузовладельцем"}
+              />
+              <span>Шаблон договора между Перевозчиком и Грузовладельцем</span>
+            </div>
+          </a>
         </Scrollbars>
         <span
           className="toogle-sideBar"

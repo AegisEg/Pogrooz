@@ -167,8 +167,10 @@ input::-ms-reveal, input::-ms-clear {
 .search-tabs {
   margin: 0 !important;
 }
-
-.lk-page .about-page {
+.about-page a{
+  color: #9509ef;
+}
+.lk-page .about-page  {
   border-top: none;
 }
 
@@ -2873,7 +2875,7 @@ a.href.hover:hover {
 }
 
 .about-page h2 {
-  font-size: 16px;
+  font-size: 20px;
   color: #171717;
   font-weight: normal;
   margin: 0;

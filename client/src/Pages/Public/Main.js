@@ -26,7 +26,7 @@ class Main extends React.Component {
   render() {
     return (
       <div className="main-page">
-        <Meta />
+        <Meta key={"main"} options={{}} />
         <div className="main-preview row">
           <div className="container-fluid">
             <div className="row px-0 col-12">

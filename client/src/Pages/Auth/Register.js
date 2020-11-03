@@ -3,7 +3,7 @@ import React from "react";
 import Input from "../../Elements/Input";
 import configApi from "../../config/api";
 import { toast } from "react-toastify";
-import { withRouter } from "react-router-dom";
+import { withCookies } from "react-cookie";
 // Elements
 import { CSSTransitionGroup } from "react-transition-group";
 import Button from "../../Elements/Button";
@@ -60,7 +60,7 @@ class Register extends React.Component {
             this.props.cookies.set("apiToken", data.token, {
               path: "/",
             });
-            this.props.history.push("/profile/info");
+            window.location = "/profile/info";
           }
           this.setState({ isFetching: false });
         });
@@ -269,4 +269,4 @@ const mapStateToProps = (state) => {
     settings: state.settings.settings,
   };
 };
-export default connect(mapStateToProps)(withRouter(Register));
+export default connect(mapStateToProps)(withCookies(Register));

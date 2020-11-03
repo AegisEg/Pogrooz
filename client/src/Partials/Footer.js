@@ -68,6 +68,7 @@ class Footer extends React.Component {
                           {items.map((item, index) => {
                             return (
                               <li key={index}>
+                                {item.link}
                                 {item.link && this.isExternal(item.link) && (
                                   <Link to={item.link}>{item.name}</Link>
                                 )}

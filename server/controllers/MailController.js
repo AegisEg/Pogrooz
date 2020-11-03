@@ -22,8 +22,8 @@ module.exports = {
       },
     });
     await transporter.sendMail({
-      from: '"Pogrooz" <neostar1996@mail.ru>',
-      to: `neostar1996@mail.ru`,
+      from: `"Pogrooz" <${settingsNew.email}>`,
+      to: settingsNew.email,
       subject: "Заказ звонка",
       html: await mailTemplateFunc(
         `Гость портала ${name} простит ему перезвонить по номеру ${phone}`,
@@ -124,7 +124,9 @@ async function mailTemplateFunc(content, title, settingsNew) {
           <table id="bodymyemail" style="margin:auto;" width="867px" cellspacing="0" cellpadding="0">
               <tr align="center" bgcolor="#F7F7F7" >
                   <td colspan="2" style="padding: 20px 0 20px 0">
-                    <img width="198px" src="${process.env.API_URL}/mailImg/logo.png">
+                    <img width="198px" src="${
+                      process.env.API_URL
+                    }/serverFiles/logo.png">
                   </td>
               </tr>
               <tr>
@@ -139,36 +141,46 @@ async function mailTemplateFunc(content, title, settingsNew) {
                       <div>
                       <a href="${process.env.CLIENT_URL}/cargo">
                         <img
-                          src="${process.env.API_URL}/mailImg/button1.png"
+                          src="${process.env.API_URL}/serverFiles/button1.png"
                           alt="">
                       </a>
                       <a href="${process.env.CLIENT_URL}/cargo">
                       <img
-                        src="${process.env.API_URL}/mailImg/button2.png"
+                        src="${process.env.API_URL}/serverFiles/button2.png"
                         alt="">
                     </a>
                     </div>
                   </td>
                   <td align="right" style="padding: 30px 60px 30px 0;">
-                      <img width="168px" src="${process.env.API_URL}/mailImg/main.png" alt="">
+                      <img width="168px" src="${
+                        process.env.API_URL
+                      }/serverFiles/main.png" alt="">
                   </td>
               </tr>
               <tr bgcolor="#4F4F4F"  style="vertical-align: middle; ">
                   <td style="padding:0 0 0 60px;">
-                      <div style="color:#fff; display: inline-block;">Телефон: <a href="tel:${settingsNew.phone
-    }"></a>${settingsNew.phone}</div>
-                      <div style="color:#fff;  display: inline-block;">E-mail: <a style="color:#fff;" href="mailto:${settingsNew.email
-    }">${settingsNew.email}</a></div>
+                      <div style="color:#fff; display: inline-block;">Телефон: <a href="tel:${
+                        settingsNew.phone
+                      }"></a>${settingsNew.phone}</div>
+                      <div style="color:#fff;  display: inline-block;">E-mail: <a style="color:#fff;" href="mailto:${
+                        settingsNew.email
+                      }">${settingsNew.email}</a></div>
                   </td>
                   <td align="right" style="padding: 10px 60px 10px 0;">
                       <a class="img" href="${settingsNew.vk}">
-                          <img src="${process.env.API_URL}/mailImg/vk.png" alt="">
+                          <img src="${
+                            process.env.API_URL
+                          }/serverFiles/vk.png" alt="">
                       </a>
                       <a class="img" href="${settingsNew.facebook}">
-                          <img src="${process.env.API_URL}/mailImg/facebook.png" alt="">
+                          <img src="${
+                            process.env.API_URL
+                          }/serverFiles/facebook.png" alt="">
                       </a>
                       <a class="img" href="${settingsNew.instagram}">
-                          <img src="${process.env.API_URL}/mailImg/insta.png" alt="">
+                          <img src="${
+                            process.env.API_URL
+                          }/serverFiles/insta.png" alt="">
                       </a>
                   </td>
               </tr>            

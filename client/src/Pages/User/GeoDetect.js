@@ -95,6 +95,7 @@ class GeoDetect extends React.Component {
                       articleId: val.value,
                     });
                   }}
+                  placeholder="Выбрать заказ или предложение"
                   value={
                     article && {
                       value: article._id,
@@ -145,8 +146,10 @@ class GeoDetect extends React.Component {
                     }}
                     style={{
                       marginTop: "21px",
+                      marginBottom: "21px",
                       height: "500px",
                       width: "100%",
+                      overflow: "hidden",
                     }}
                     modules={[
                       "geoObject.addon.balloon",

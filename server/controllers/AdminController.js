@@ -694,7 +694,7 @@ const adminBro = new AdminBro({
         PartitionMenu: {
           properties: {
             name: "Название",
-            link: "Ссылка раздела(необязательно)",
+            link: "Ссылка раздела(необязательно, начинать со слеша если страница внутренняя)",
             priority: "Приоритет",
           },
         },
@@ -702,7 +702,7 @@ const adminBro = new AdminBro({
           properties: {
             name: "Название",
             partition: "Раздел",
-            link: "Ссылка",
+            link: "Ссылка(начинать со слеша если страница внутренняя)",
             onlyNoAuth: "Видно только неавторизованным",
           },
         },
