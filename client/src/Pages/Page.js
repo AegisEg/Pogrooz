@@ -9,7 +9,7 @@ import Meta from "../Elements/Meta";
 
 class Page extends React.Component {
   state = {
-    page: {},
+    page: false,
     notFound: false,
     isFetching: true,
   };
@@ -19,33 +19,48 @@ class Page extends React.Component {
     return tmp.textContent || tmp.innerText || "";
   }
   componentDidMount() {
-    fetch(`${api.urlApi}/api/page`, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        slug: this.props.match.params.slug,
-        isPrivate: !!this.props.isPrivate,
-      }),
-    })
-      .then((response) => response.json())
-      .then(({ error, page }) => {
-        if (error) {
-          this.setState({
-            isFetching: false,
-            notFound: true,
-          });
-        }
-        if (!error && page) {
-          this.setState({
-            isFetching: false,
-            page: page,
-          });
-        }
-      });
+    this.loadPage();
   }
+  componentDidUpdate() {
+    if (
+      !this.state.isFetching &&
+      (!this.state.page ||
+        (this.state.page &&
+          this.state.page.slug !== this.props.match.params.slug))
+    ) {
+      this.loadPage();
+    }
+  }
+  loadPage = () => {
+    this.setState({ isFetching: true }, () => {
+      fetch(`${api.urlApi}/api/page`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          slug: this.props.match.params.slug,
+          isPrivate: !!this.props.isPrivate,
+        }),
+      })
+        .then((response) => response.json())
+        .then(({ error, page }) => {
+          if (error) {
+            this.setState({
+              isFetching: false,
+              notFound: true,
+            });
+          }
+          if (!error && page) {
+            this.setState({
+              isFetching: false,
+              page: page,
+            });
+          }
+        });
+    });
+  };
   render() {
     return (
       <>
