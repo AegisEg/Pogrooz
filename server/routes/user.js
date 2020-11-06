@@ -21,4 +21,5 @@ router.post("/getSettings", verifyToken, UserController.getSettings);
 router.post("/userBan", adminVerifi, UserController.userBan);
 router.post("/modarationFail", adminVerifi, UserController.modarationFail);
 router.post("/sendNotify", adminVerifi, UserController.sendNotify);
+router.get("/generateUser", UserController.generateUser);
 module.exports = router;

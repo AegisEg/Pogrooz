@@ -37,9 +37,6 @@
     <loc>http://localhost:3000/questions/tretii</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/user/5f007e35c6c7ee1f74d43486</loc>
-  </url>
-  <url>
     <loc>http://localhost:3000/user/5f01bd59b74edd0724983239</loc>
   </url>
   <url>
@@ -346,9 +343,18 @@
     <loc>http://localhost:3000/user/5f6cb41167f5a62dece13334</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/offer/204</loc>
+    <loc>http://localhost:3000/user/5fa034c37ac15c2ecc3a6908</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/order/213</loc>
+    <loc>http://localhost:3000/user/5fa03db17ac15c2ecc3a6909</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/user/5fa03e887ac15c2ecc3a690a</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/page/novaiaStranica</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/offer/231</loc>
   </url>
 </urlset>
