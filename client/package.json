@@ -29,7 +29,7 @@
     "react-resize-detector": "^5.0.6",
     "react-router-dom": "^5.1.2",
     "react-router-last-location": "^2.0.1",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.1",
     "react-select": "^3.1.0",
     "react-toastify": "^5.5.0",
     "react-transition-group": "^1.2.1",
@@ -61,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "async-stylesheet-webpack-plugin": "^0.4.1",
     "compression-webpack-plugin": "^4.0.1",
     "critical": "^2.0.4",
     "css-loader": "^4.3.0",
