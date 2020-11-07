@@ -51,14 +51,12 @@ class Footer extends React.Component {
                         <p>
                           <span className="text-uppercase title-ul">
                             {item.partition.link &&
-                              !pat.test(item.partition.link) &&
                               this.isExternal(item.partition.link) && (
                                 <Link to={item.partition.link}>
                                   {item.partition.name}
                                 </Link>
                               )}
                             {item.partition.link &&
-                              !pat.test(item.partition.link) &&
                               !this.isExternal(item.partition.link) && (
                                 <a href={item.partition.link}>
                                   {item.partition.name}
@@ -71,12 +69,16 @@ class Footer extends React.Component {
                           {items.map((item, index) => {
                             return (
                               <li key={index}>
-                                {item.link && this.isExternal(item.link) && (
-                                  <Link to={item.link}>{item.name}</Link>
-                                )}
-                                {item.link && !this.isExternal(item.link) && (
-                                  <a href={item.link}>{item.name}</a>
-                                )}
+                                {item.link &&
+                                  !pat.test(item.link) &&
+                                  this.isExternal(item.link) && (
+                                    <Link to={item.link}>{item.name}</Link>
+                                  )}
+                                {item.link &&
+                                  pat.test(item.link) &&
+                                  !this.isExternal(item.link) && (
+                                    <a href={item.link}>{item.name}</a>
+                                  )}
                               </li>
                             );
                           })}
