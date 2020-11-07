@@ -23,7 +23,7 @@ module.exports = {
         },
       });
       await transporter.sendMail({
-        from: `"Pogrooz" <${settingsNew.email}>`,
+        from: `"Pogrooz" <${username}>`,
         to: settingsNew.email,
         subject: "Заказ звонка",
         html: await mailTemplateFunc(
@@ -50,7 +50,7 @@ module.exports = {
         },
       });
       await transporter.sendMail({
-        from: '"Pogrooz" <neostar1996@mail.ru>',
+        from: `"Pogrooz" <${username}>`,
         to: email,
         subject: title,
         html: await mailTemplateFunc(content, title, settingsNew),
