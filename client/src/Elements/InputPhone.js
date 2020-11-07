@@ -54,7 +54,7 @@ class InputPhone extends React.Component {
             }),
           })
             .then((response) => response.json())
-            .then(({ error, code }) => {
+            .then(({ error, code, codeReal }) => {
               if (error) {
                 toast.error(
                   "Сообщение не доставлено. Свяжитесь с админстратором!"
@@ -62,6 +62,7 @@ class InputPhone extends React.Component {
                 this.props.setVerified(false);
                 this.refresh();
               } else {
+                alert(codeReal);
                 this.setState({ isFetching: false, codeHash: code });
                 let Interval = setInterval(async () => {
                   if (!!this.state.timer)
