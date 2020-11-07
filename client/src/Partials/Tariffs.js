@@ -18,7 +18,7 @@ class Tariffs extends React.Component {
     isFetching: true,
   };
   bayTariff = (tariff) => {
-    if (this.props.user.type === "offer")
+    if (this.props.user.type === "carrier")
       this.setState({ isFetching: true }, () => {
         fetch(`${api.urlApi}/api/tariffs/buy`, {
           method: "post",
@@ -157,19 +157,25 @@ class Tariffs extends React.Component {
                                 }}
                                 paddingVertical="4px"
                               >
-                                {!this.props.user.isAuth &&
+                                {(!this.props.user.isAuth ||
+                                  this.props.user.type === "cargo") &&
                                   item.isDemo &&
                                   "Активировать"}
                                 {this.props.user.isAuth &&
-                                  item.isDemo &&
-                                  (!this.props.user.tariff ||
-                                    !this.props.user.tariff.isDemo) &&
-                                  "Использован"}
-                                {this.props.user.isAuth &&
-                                  this.props.user.tariff &&
-                                  this.props.user.tariff.isDemo &&
-                                  item.isDemo &&
-                                  "Активен"}
+                                  this.props.user.type === "carrier" && (
+                                    <>
+                                      {this.props.user.isAuth &&
+                                        item.isDemo &&
+                                        (!this.props.user.tariff ||
+                                          !this.props.user.tariff.isDemo) &&
+                                        "Использован"}
+                                      {this.props.user.isAuth &&
+                                        this.props.user.tariff &&
+                                        this.props.user.tariff.isDemo &&
+                                        item.isDemo &&
+                                        "Активен"}
+                                    </>
+                                  )}
                                 {!item.isDemo && "Оплатить"}
                               </Button>
                             </div>
