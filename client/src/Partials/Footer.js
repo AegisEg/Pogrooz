@@ -17,6 +17,7 @@ import iosapphover from "../img/iosapp-hover.png";
 import googleapphover from "../img/google-hover.png";
 // Router
 import { Link } from "react-router-dom";
+let pat = /^https?:\/\//i;
 class Footer extends React.Component {
   state = {
     isHovervk: false,
@@ -50,12 +51,14 @@ class Footer extends React.Component {
                         <p>
                           <span className="text-uppercase title-ul">
                             {item.partition.link &&
+                              !pat.test(item.partition.link) &&
                               this.isExternal(item.partition.link) && (
                                 <Link to={item.partition.link}>
                                   {item.partition.name}
                                 </Link>
                               )}
                             {item.partition.link &&
+                              !pat.test(item.partition.link) &&
                               !this.isExternal(item.partition.link) && (
                                 <a href={item.partition.link}>
                                   {item.partition.name}
