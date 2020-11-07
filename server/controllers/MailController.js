@@ -5,53 +5,60 @@
 "use strict";
 const nodemailer = require("nodemailer");
 const Setting = require("../models/Setting");
-const smtp = "smtp.mail.ru",
-  username = "neostar1996@mail.ru",
-  password = "googlenexusX&";
+const smtp = "smtp.yandex.ru",
+  username = "info@pogrooz.ru",
+  password = "B2mvR0_W";
 module.exports = {
   sendMailCall: async (req, res, next) => {
     let { phone, name } = req.body;
-    let settingsNew = await settings();
-    let transporter = nodemailer.createTransport({
-      host: smtp,
-      port: 465,
-      secure: true,
-      auth: {
-        user: username,
-        pass: password,
-      },
-    });
-    await transporter.sendMail({
-      from: `"Pogrooz" <${settingsNew.email}>`,
-      to: settingsNew.email,
-      subject: "Заказ звонка",
-      html: await mailTemplateFunc(
-        `Гость портала ${name} простит ему перезвонить по номеру ${phone}`,
-        "Заказ звонка",
-        settingsNew
-      ),
-    });
-    return res.json({ error: false });
+    try {
+      let settingsNew = await settings();
+      let transporter = nodemailer.createTransport({
+        host: smtp,
+        port: 465,
+        secure: true,
+        auth: {
+          user: username,
+          pass: password,
+        },
+      });
+      await transporter.sendMail({
+        from: `"Pogrooz" <${settingsNew.email}>`,
+        to: settingsNew.email,
+        subject: "Заказ звонка",
+        html: await mailTemplateFunc(
+          `Гость портала ${name} простит ему перезвонить по номеру ${phone}`,
+          "Заказ звонка",
+          settingsNew
+        ),
+      });
+      return res.json({ error: false });
+    } catch (e) {
+      console.log(e);
+    }
   },
   sendMailSimple: async (title, content, email) => {
-    let settingsNew = await settings();
-
-    let transporter = nodemailer.createTransport({
-      host: smtp,
-      port: 465,
-      secure: true,
-      auth: {
-        user: username,
-        pass: password,
-      },
-    });
-    await transporter.sendMail({
-      from: '"Pogrooz" <neostar1996@mail.ru>',
-      to: email,
-      subject: title,
-      html: await mailTemplateFunc(content, title, settingsNew),
-    });
-    return true;
+    try {
+      let settingsNew = await settings();
+      let transporter = nodemailer.createTransport({
+        host: smtp,
+        port: 465,
+        secure: true,
+        auth: {
+          user: username,
+          pass: password,
+        },
+      });
+      await transporter.sendMail({
+        from: '"Pogrooz" <neostar1996@mail.ru>',
+        to: email,
+        subject: title,
+        html: await mailTemplateFunc(content, title, settingsNew),
+      });
+      return true;
+    } catch (e) {
+      console.log(e);
+    }
   },
   sendMail: async (email, notification, mailTemplate) => {
     try {
