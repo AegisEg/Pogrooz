@@ -29,7 +29,7 @@ class Footer extends React.Component {
   isExternal(url) {
     let tempLink = document.createElement("a");
     tempLink.href = url;
-    return tempLink.hostname === window.location.hostname;
+    return !tempLink.hostname === window.location.hostname;
   }
   render() {
     return (
@@ -51,13 +51,13 @@ class Footer extends React.Component {
                         <p>
                           <span className="text-uppercase title-ul">
                             {item.partition.link &&
-                              this.isExternal(item.partition.link) && (
+                              !this.isExternal(item.partition.link) && (
                                 <Link to={item.partition.link}>
                                   {item.partition.name}
                                 </Link>
                               )}
                             {item.partition.link &&
-                              !this.isExternal(item.partition.link) && (
+                              this.isExternal(item.partition.link) && (
                                 <a href={item.partition.link}>
                                   {item.partition.name}
                                 </a>
@@ -71,12 +71,12 @@ class Footer extends React.Component {
                               <li key={index}>
                                 {item.link &&
                                   !pat.test(item.link) &&
-                                  this.isExternal(item.link) && (
+                                  !this.isExternal(item.link) && (
                                     <Link to={item.link}>{item.name}</Link>
                                   )}
                                 {item.link &&
-                                  pat.test(item.link) &&
-                                  !this.isExternal(item.link) && (
+                                  (pat.test(item.link) ||
+                                    this.isExternal(item.link)) && (
                                     <a href={item.link}>{item.name}</a>
                                   )}
                               </li>
