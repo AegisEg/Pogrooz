@@ -86,6 +86,7 @@ const notifications = (state = INITIAL_STATE, action) => {
             ...item,
             isRead: true,
           })),
+          onlyNoread: [],
           noRead: 0,
         },
         offer: {
