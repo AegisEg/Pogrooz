@@ -36,6 +36,7 @@ class Tariffs extends React.Component {
             if (!error) {
               if (response.formUrl) {
                 window.open(response.formUrl);
+                this.setState({ isFetching: false });
               } else {
                 this.setState({ isFetching: false });
               }
