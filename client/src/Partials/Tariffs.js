@@ -18,29 +18,30 @@ class Tariffs extends React.Component {
     isFetching: true,
   };
   bayTariff = (tariff) => {
-    this.setState({ isFetching: true }, () => {
-      fetch(`${api.urlApi}/api/tariffs/buy`, {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${this.props.user.apiToken}`,
-        },
-        body: JSON.stringify({
-          tariffId: tariff._id,
-        }),
-      })
-        .then((response) => response.json())
-        .then(({ response, error }) => {
-          if (!error) {
-            if (response.formUrl) {
-              window.open(response.formUrl);
-            } else {
-              this.setState({ isFetching: false });
+    if (this.props.user.type === "offer")
+      this.setState({ isFetching: true }, () => {
+        fetch(`${api.urlApi}/api/tariffs/buy`, {
+          method: "post",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.props.user.apiToken}`,
+          },
+          body: JSON.stringify({
+            tariffId: tariff._id,
+          }),
+        })
+          .then((response) => response.json())
+          .then(({ response, error }) => {
+            if (!error) {
+              if (response.formUrl) {
+                window.open(response.formUrl);
+              } else {
+                this.setState({ isFetching: false });
+              }
             }
-          }
-        });
-    });
+          });
+      });
   };
   componentDidMount() {
     fetch(`${api.urlApi}/api/tariffs/`, {
