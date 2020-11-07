@@ -95,16 +95,15 @@ module.exports = {
       let code = String(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
       let codeHash = await bcrypt.hash(code, NUM_ROUNDS);
       let error = false;
-      // await smsc.send_sms(
-      //   {
-      //     phones: phone,
-      //     mes: "Код подтверждения номера телефона: " + code,
-      //   },
-      //   function(data, raw, err, code) {
-      //     if (err) error = true;
-      //   }
-      // );
-      console.log(code);
+      await smsc.send_sms(
+        {
+          phones: phone,
+          mes: "Код подтверждения номера телефона: " + code,
+        },
+        function(data, raw, err, code) {
+          if (err) error = true;
+        }
+      );
       return res.json({ error: error, code: codeHash });
     } catch (e) {
       return next(new Error(e));
