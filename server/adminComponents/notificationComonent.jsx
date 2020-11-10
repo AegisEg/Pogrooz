@@ -183,7 +183,14 @@ const NitificationSend = (props) => {
                   typeSender = "Перевозчикам";
                 if (item._id.typeSender === "all") typeSender = "Всем";
                 if (item._id.typeSender === "user")
-                  typeSender = "Пользователю " + item.userName;
+                  typeSender = (
+                    <a href={`/admin/resources/User/records/${item.userId}/show`}>
+                      {item.userType === "carrier"
+                        ? "Перевозчику"
+                        : "Грузовладельцу"}{" "}
+                       {item.userName}
+                    </a>
+                  );
                 return (
                   <tr key={index}>
                     <td>{item._id.commentNotify}</td>

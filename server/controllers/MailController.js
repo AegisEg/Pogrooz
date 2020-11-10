@@ -8,6 +8,9 @@ const Setting = require("../models/Setting");
 const smtp = "smtp.yandex.ru",
   username = "info@pogrooz.ru",
   password = "B2mvR0_W";
+// const smtp = "smtp.mail.ru",
+//   username = "neostar1996@mail.ru",
+//   password = "googlenexusX&";
 module.exports = {
   sendMailCall: async (req, res, next) => {
     let { phone, name } = req.body;
@@ -73,7 +76,7 @@ module.exports = {
         },
       });
       await transporter.sendMail({
-        from: '"Pogrooz" <neostar1996@mail.ru>',
+        from: `"Pogrooz" <${username}>`,
         to: `${email}`,
         subject: mailTemplate.title(notification.info),
         html: await mailTemplateFunc(
@@ -133,7 +136,7 @@ async function mailTemplateFunc(content, title, settingsNew) {
                   <td colspan="2" style="padding: 20px 0 20px 0">
                     <img width="198px" src="${
                       process.env.CLIENT_URL
-                    }/mailImgs/logo.png">
+                    }/mailImgs/logo.svg">
                   </td>
               </tr>
               <tr>

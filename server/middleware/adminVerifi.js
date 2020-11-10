@@ -19,7 +19,6 @@ module.exports = async (req, res, next) => {
       err.authFailed = true;
       return next(err);
     }
-    console.log(admin);
     return next();
   } catch (error) {
     const err = new Error("No Authorization.");

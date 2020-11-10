@@ -47,7 +47,8 @@ const BanAndTariff = (props) => {
                 userId: user._id,
               }),
             }).then(() => {
-              location.href = "/admin/resources/User";
+              location.href =
+                "/admin/resources/User/records/" + user._id + "/show";
             });
           else alert("Запоните поля");
         }}

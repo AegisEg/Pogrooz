@@ -406,7 +406,12 @@ module.exports = {
         await ban.save();
         setBan({ userId });
         if (commentBan)
-          createNotify(user, { commentBan }, "BAN_COMMENT_NOTIFY", "system");
+          createNotify(
+            user,
+            { commentBan, duration },
+            "BAN_COMMENT_NOTIFY",
+            "system"
+          );
         const agenda = require("../agenta/agenta");
         let job = await agenda.schedule(ban.expiriesAt, "setBanCancel", {
           userId: user._id,
@@ -420,7 +425,7 @@ module.exports = {
       }
       return res.json({ error: true });
     } catch (error) {
-      return next(new Error(e));
+      return next(new Error(error));
     }
   },
   toogleAutoPay: async (req, res, next) => {
@@ -591,6 +596,7 @@ async function cancelBanUser(userId, createdAt) {
       }
     }
     await Ban.deleteMany({ user: userId });
+    createNotify(user, {}, "UNBAN_NOTIFY", "system");
   } catch (error) {
     console.log(error);
   }
@@ -604,7 +610,7 @@ async function createNotify(user, info, code, type) {
     notification.type = type;
     await notification.save();
     let mailTemplate = mail.find((item) => item.code === notification.code);
-    if (mailTemplate) {
+    if (!!mailTemplate) {
       user = await User.findById(user);
       sendMail(user.email, notification, mailTemplate);
     }

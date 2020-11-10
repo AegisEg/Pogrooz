@@ -83,6 +83,7 @@ const adminBro = new AdminBro({
       resource: User,
       options: {
         listProperties: [
+          "_id",
           "name.first",
           "name.last",
           "type",
@@ -90,6 +91,7 @@ const adminBro = new AdminBro({
           "isPassportUploaded",
           "isBan",
           "isTariff",
+          "createdAt",
         ],
         actions: {
           delete: {
@@ -298,7 +300,7 @@ const adminBro = new AdminBro({
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
           createdAt: {
-            isVisible: { list: false, filter: false, show: false, edit: false },
+            isVisible: { list: true, filter: false, show: false, edit: false },
           },
           online: {
             isVisible: { list: false, filter: false, show: false, edit: false },
@@ -638,7 +640,7 @@ const adminBro = new AdminBro({
     translations: {
       actions: {
         new: "Создать",
-        show: "Смотреть",
+        show: "Смотреть профиль",
         edit: "Изменить",
         delete: "Удалить",
         userBan: "Заблокировать",
@@ -660,20 +662,21 @@ const adminBro = new AdminBro({
       resources: {
         User: {
           actions: {
-            passportModeration: "Пасспорт прошел модерацию",
-            passportModerationFail: "Пасспорт не прошел модерацию",
+            passportModeration: "Паспорт прошел модерацию",
+            passportModerationFail: "Паспорт не прошел модерацию",
           },
           properties: {
             email: "Почта",
             "name.first": "Имя",
             "name.last": "Фамилия",
             "name.middle": "Отчество",
+            createdAt:"Дата регистрации",
             phone: "Телефон",
             isBan: "Заблокирован?",
             isTariff: "Активный тариф?",
             type: "Тип пользователя",
             online: "Онлайн",
-            isPassportVerified: "Пасспорт одобрен?",
+            isPassportVerified: "Паспорт одобрен?",
             isPassportUploaded: "Паспорт загружен?",
           },
         },
@@ -694,7 +697,8 @@ const adminBro = new AdminBro({
         PartitionMenu: {
           properties: {
             name: "Название",
-            link: "Ссылка раздела(необязательно, начинать со слеша если страница внутренняя)",
+            link:
+              "Ссылка раздела(необязательно, начинать со слеша если страница внутренняя)",
             priority: "Приоритет",
           },
         },

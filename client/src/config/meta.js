@@ -8,30 +8,46 @@ export default [
       `Более сотни заказов и предложений на перевозку груза в твоем городе. На Pogrooz Вы можете найти подходящего водителя на перевозку груза. Отличные цены на грузоперевозку без посредников. Объявления от водителей напрямую: поиск по городу, области, улице, дому, весу, объему, типу груза и другим параметрам.`,
   },
   {
+    key: "dialog",
+    title: (options) => `Pogrooz | Диалог с ${options.userName}`,
+  },
+  {
+    key: "dialogOrder",
+    title: (options) =>
+      `Pogrooz | Диалог с ${options.userName} по заказу №${options.articleId}`,
+  },
+  {
     key: "orderSearch",
     title: (options) =>
-      `${options.city
-        ? `Найти заказ на перевозку груза${options.city ? " из " + options.city : ""
-        }`
-        : `Найти заказ на перевозку груза по Росcии`
+      `${
+        options.city
+          ? `Найти заказ на перевозку груза${
+              options.city ? " из " + options.city : ""
+            }`
+          : `Найти заказ на перевозку груза по Росcии`
       } | Pogrooz - Попутные перевозки`,
     descriptions: (options) =>
-      `${options.city
-        ? `Заказы на перевозку груза${options.city ? " из " + options.city : ""
-        }.`
-        : `Заказы на перевозку груза по Росcии.`
+      `${
+        options.city
+          ? `Заказы на перевозку груза${
+              options.city ? " из " + options.city : ""
+            }.`
+          : `Заказы на перевозку груза по Росcии.`
       } На Pogrooz Вы можете найти подходящий заказ на перевозку груза, выбрав предложения без посредников. Цены на грузоперевозку. Объявления от клиентов напрямую: поиск по городу, области, улице, дому, весу, объему, типу груза и другим параметрам.`,
   },
   {
     key: "offerSearch",
     title: (options) =>
-      `Найти предложение или водителя на перевозку груза ${options.city ? "из " + options.city : "по России"
+      `Найти предложение или водителя на перевозку груза ${
+        options.city ? "из " + options.city : "по России"
       } | Pogrooz - Попутные перевозки`,
     descriptions: (options) =>
-      `${options.city && options.count
-        ? `Предложения на перевозку груза ${options.city ? "из " + options.city : " по Росии"
-        }.`
-        : `Предложения на перевозку груза по Росcии`
+      `${
+        options.city && options.count
+          ? `Предложения на перевозку груза ${
+              options.city ? "из " + options.city : " по Росии"
+            }.`
+          : `Предложения на перевозку груза по Росcии`
       } На Pogrooz Вы можете найти подходящего водителя на перевозку груза, выбрав предложения без посредников. Цены на грузоперевозку. Объявления от водителей напрямую: поиск по городу, области, улице, дому, весу, объему, типу груза и другим параметрам.`,
   },
   {
@@ -39,26 +55,31 @@ export default [
     title: (options) =>
       `Заказ на перевозку груза: ${options.cargoTypes}. Из ${options.start} до ${options.finish} | Pogrooz`,
     descriptions: (options) =>
-      `Заказ на перевозку груза:из ${options.start} до ${options.finish}.  ${options.tags.map((item, index, all) => {
+      `Заказ на перевозку груза:из ${options.start} до ${
+        options.finish
+      }.  ${options.tags.map((item, index, all) => {
         return (
           extraParams.find((itemX) => item.id === itemX.id).name +
           (all.length - 1 === index ? "." : "")
         );
-      })} Самые ВЫГОДНЫЕ ЗАКАЗЫ на перевозку груза на Pogrooz. ${options.comment
+      })} Самые ВЫГОДНЫЕ ЗАКАЗЫ на перевозку груза на Pogrooz. ${
+        options.comment
       }`,
   },
   {
     key: "offer",
     title: (options) =>
-      `Предложение на перевозку груза: ${options.cargoTypes}. Из ${options.start} до ${options.finish
-      }  | Pogrooz`,
+      `Предложение на перевозку груза: ${options.cargoTypes}. Из ${options.start} до ${options.finish}  | Pogrooz`,
     descriptions: (options) =>
-      `Предложение на перевозку груза:из ${options.start} до ${options.finish}. ${options.tags.map((item, index, all) => {
+      `Предложение на перевозку груза:из ${options.start} до ${
+        options.finish
+      }. ${options.tags.map((item, index, all) => {
         return (
           extraParams.find((itemX) => item.id === itemX.id).name +
           (all.length - 1 === index ? "." : "")
         );
-      })} Самые ВЫГОДНЫЕ ПРЕДЛОЖЕНИЯ и ЛУЧШИЕ ВОДИТЕЛИ на перевозку груза на Pogrooz. ${options.comment
+      })} Самые ВЫГОДНЫЕ ПРЕДЛОЖЕНИЯ и ЛУЧШИЕ ВОДИТЕЛИ на перевозку груза на Pogrooz. ${
+        options.comment
       }`,
   },
   {
@@ -66,7 +87,8 @@ export default [
     title: (options) =>
       `Профиль пользователя ${options.fio} на сайте Pogrooz. Контакты, свежие заказы (или предложения) на перевозку, история и рейтинг пользователя.`,
     descriptions: (options) =>
-      `${options.fio}, ${options.type}, рейтинг:${options.rating}${options.address ? ", " + options.address : "."
+      `${options.fio}, ${options.type}, рейтинг:${options.rating}${
+        options.address ? ", " + options.address : "."
       }`,
   },
   {
