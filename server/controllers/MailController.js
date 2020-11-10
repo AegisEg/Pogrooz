@@ -136,7 +136,7 @@ async function mailTemplateFunc(content, title, settingsNew) {
                   <td colspan="2" style="padding: 20px 0 20px 0">
                     <img width="198px" src="${
                       process.env.CLIENT_URL
-                    }/mailImgs/logo.svg">
+                    }/mailImgs/logo.png">
                   </td>
               </tr>
               <tr>
