@@ -94,7 +94,7 @@ class OrdersListModal extends React.Component {
           >
             <Loading isLoading={this.state.isFetching}></Loading>
 
-            {!this.state.isFetching && (
+            {!this.state.isFetching && !!this.state.orders.length && (
               <div className="orders-item">
                 {this.state.orders.map((item, index) => {
                   return (
@@ -109,6 +109,9 @@ class OrdersListModal extends React.Component {
                   );
                 })}
               </div>
+            )}
+            {!this.state.isFetching && !this.state.orders.length && (
+              <div className="text-center mt-4">Нет опубликованных заказов</div>
             )}
           </Scrollbars>
         </CSSTransitionGroup>

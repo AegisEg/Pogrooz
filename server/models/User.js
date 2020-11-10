@@ -113,7 +113,7 @@ const UserSchema = new Schema({
   verifiedToken: { type: String, select: false },
   verifiedTokenExpires: { type: String, select: false },
   onlineAt: { type: Date, default: Date.now },
-  createdAt: { type: Date, default: Date.now, select: false },
+  createdAt: { type: Date, default: Date.now, select: true },
   buff: Buffer,
 });
 

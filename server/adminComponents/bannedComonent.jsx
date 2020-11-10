@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { Box, Text, useCurrentAdmin } from "admin-bro";
-import {
-  Button,
-  Input,
-  Label,
-  TextArea,
-} from "@admin-bro/design-system";
+import { Button, Input, Label, TextArea } from "@admin-bro/design-system";
 
 const BanAndTariff = (props) => {
   const [commentBan, setCommentBan] = useState(false);
@@ -35,7 +30,7 @@ const BanAndTariff = (props) => {
         }}
       />
       <Label paddingTop={"50px"} htmlFor="duration">
-        Длительсность блокировки
+        Длительсность блокировки(в днях)
       </Label>
       <Input
         id="duration"
@@ -46,8 +41,8 @@ const BanAndTariff = (props) => {
         value={duration || ""}
         onChange={(e) => {
           let val = e.target.value.replace(/\D/, "");
-          if (val <= 14) setDuration(Math.floor(val, 0));
-          else alert("Нельзя больше 14 дней");
+          if (val <= 9000) setDuration(Math.floor(val, 0));
+          else alert("Нельзя больше 9000 дней");
         }}
       />
       <Button
@@ -70,7 +65,8 @@ const BanAndTariff = (props) => {
                 userId: user._id,
               }),
             }).then(() => {
-              location.href = "/admin/resources/User";
+              location.href =
+                "/admin/resources/User/records/" + user._id + "/show";
             });
           else alert("Запоните поля");
         }}

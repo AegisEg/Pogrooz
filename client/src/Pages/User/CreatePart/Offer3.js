@@ -112,7 +112,6 @@ class OfferCreate3 extends React.Component {
     if (cargoListPossible.length === 1 && !newCurentCargoType.length) {
       newCurentCargoType = [cargoListPossible[0].id]
     }
-    console.log(newCurentCargoType)
     let isPro = false;
     if (
       newCurentCargoType.find((item) => item.isPro) ||

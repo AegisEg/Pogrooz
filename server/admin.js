@@ -20,9 +20,7 @@ async function startServer() {
   if (process.env.MODE == "development") {
     const http = require("http").createServer(app);
     http.listen(process.env.PORT, () => {
-      console.log(
-        `⚡️ HEVACHAT server started: http://localhost:${process.env.PORT}`
-      );
+      
     });
   }
 

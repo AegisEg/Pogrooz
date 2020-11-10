@@ -425,12 +425,23 @@ module.exports = {
           },
         },
         {
+          $lookup: {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        { $unwind: "$user" },
+        {
           $project: {
             _id: {
               commentNotify: "$info.commentNotify",
               typeSender: "$info.typeSender",
             },
             userName: "$info.userName",
+            userId: "$user._id",
+            userType: "$user.type",
             createdAt: "$createdAt",
           },
         },

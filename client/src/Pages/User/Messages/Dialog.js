@@ -10,6 +10,7 @@ import * as dialogsActions from "../../../redux/actions/dialogs";
 import { bindActionCreators } from "redux";
 import { OnlineDate } from "../../../controllers/TimeController";
 import ArrowDown from "../../../img/arrowDownperple.svg";
+import Meta from "../../../Elements/Meta";
 import Loading from "../../../Elements/Loading";
 class Messages extends React.Component {
   state = {
@@ -56,6 +57,12 @@ class Messages extends React.Component {
         <Loading isLoading={this.state.isFetching} />
         {dialog && !dialog.isNotFound && (
           <div className="article-page">
+            <Meta
+              keyMeta="dialog"
+              options={{
+                userName: dialog.user.name.last + " " + dialog.user.name.first,
+              }}
+            ></Meta>
             <div className="container-fluid">
               <h2 className="title">Сообщения</h2>
               <div className="chat-header mt-3">
@@ -81,8 +88,13 @@ class Messages extends React.Component {
                     Назад
                   </Link>
                   <span className="d-inline-block f-18 text-left mr-3">
-                    {dialog.user.name.last} {dialog.user.name.first}{" "}
-                    {dialog.user.name.middle}
+                    <Link
+                      to={`/user/${dialog.user._id}`}
+                      className="username-dialog"
+                    >
+                      {dialog.user.name.last} {dialog.user.name.first}{" "}
+                      {dialog.user.name.middle}
+                    </Link>
                   </span>
                   <span className="online">
                     {!dialog.user.online && (

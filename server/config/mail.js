@@ -179,14 +179,21 @@ module.exports = [
     id: 11,
     code: "BAN_COMMENT_NOTIFY",
     title: (info) => `Вы заблокированы`,
-    text: (info) => `Вы заблокированы по причине: ${info.commentBan}.`,
+    text: (info) =>
+      `Вы заблокированы на ${info.duration} дня(дней) по причине: ${info.commentBan}.`,
+  },
+  {
+    id: 11,
+    code: "UNBAN_NOTIFY",
+    title: (info) => `Ваш профиль разблокирован`,
+    text: (info) => `Ваш профиль разблокирован.`,
   },
   {
     id: 12,
     code: "PASSPORT_MODERATION_FAIL",
-    title: (info) => `Пасспорт не прошел модерацию`,
+    title: (info) => `Паспорт не прошел модерацию`,
     text: (info) =>
-      `Пасспорт не прошел модерацию по причине: ${info.commentFail}.`,
+      `Паспорт не прошел модерацию по причине: ${info.commentFail}.`,
   },
   {
     id: 13,

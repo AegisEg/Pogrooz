@@ -165,13 +165,18 @@ export default [
   {
     id: 11,
     code: "BAN_COMMENT_NOTIFY",
-    text: (info) => <>Вы заблокированы по причине: {info.commentBan}.</>,
+    text: (info) => <>Вы заблокированы на {info.duration} дня(дней) по причине: {info.commentBan}.</>,
+  },
+  {
+    id: 11,
+    code: "UNBAN_NOTIFY",
+    text: (info) => <>Ваш профиль разблокирован</>,
   },
   {
     id: 12,
     code: "PASSPORT_MODERATION_FAIL",
     text: (info) => (
-      <>Пасспорт не прошел модерацию по причине: {info.commentFail}.</>
+      <>Паспорт не прошел модерацию по причине: {info.commentFail}.</>
     ),
   },
   {

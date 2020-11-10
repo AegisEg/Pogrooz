@@ -189,7 +189,7 @@ class Header extends React.Component {
                       <div className="text-center">
                         <Button
                           type="fill"
-                          paddingHorizontal={"15px"}
+                          paddingHorizontal={"20px"}
                           paddingVertical={"4px"}
                           className="mx-0 my-2"
                           onClick={() => {
