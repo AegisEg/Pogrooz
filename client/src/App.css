@@ -7116,7 +7116,9 @@ label {
 .geo-active:hover {
   max-width: 250px;
 }
-
+.geo-active:hover div{
+  pointer-events: all;
+}
 .geo-active div {
   position: absolute;
   font-size: 14px;

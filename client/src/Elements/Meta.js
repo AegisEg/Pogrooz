@@ -7,7 +7,6 @@ class orgSelect extends React.Component {
     let meta = this.props.keyMeta
       ? metaX.find((item) => item.key === this.props.keyMeta)
       : metaX.find((item) => item.key === "main");
-    console.log(meta);
     return (
       <Helmet>
         <title>{meta.title(this.props.options)}</title>

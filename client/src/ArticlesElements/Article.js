@@ -177,6 +177,7 @@ class Article extends React.Component {
     window.removeEventListener("resize", this.updateDimensions);
   }
   render() {
+    console.log(this.props.article);
     return (
       <div
         className={`article-block ${
@@ -631,9 +632,9 @@ class Article extends React.Component {
             <>
               <div className="row mobile-row-article">
                 <div className="col-12 ">
-                  <span>#{this.props.article.numberID}</span>
+                  <span>#{this.props.article.articleId}</span>
                   <span className="ml-3">{this.props.article.car.name}</span>
-                  {this.props.onlyOpen && (
+                  {this.props.onlyOpen && this.props.article.car.photo && (
                     <img
                       className="moreinfo"
                       onClick={() => {

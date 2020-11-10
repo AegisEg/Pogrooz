@@ -18,13 +18,12 @@ class Messages extends React.Component {
   };
   componentDidMount() {
     let dialogs = this.props.dialogs.dialogsOrder;
-    if (
-      !dialogs.dialogs.find(
-        (dialog) =>
-          dialog.user._id === this.props.match.params.id &&
-          dialog.orderId._id === this.props.match.params.order
-      )
-    ) {
+    let currentDialog = dialogs.dialogs.find(
+      (dialog) =>
+        dialog.user._id === this.props.match.params.id &&
+        dialog.orderId._id === this.props.match.params.order
+    );
+    if (!currentDialog) {
       this.props.dialogsActions
         .dialogOrderGet(
           this.props.match.params.id,
@@ -39,13 +38,7 @@ class Messages extends React.Component {
         this.props.match.params.id,
         this.props.user.apiToken
       );
-      if (
-        !dialogs.dialogs.find(
-          (dialog) =>
-            dialog.user._id === this.props.match.params.id &&
-            dialog.orderId._id === this.props.match.params.order
-        ).isGetted
-      )
+      if (currentDialog.isGetted)
         this.props.dialogsActions.dialogOrderLoad(
           this.props.match.params.id,
           this.props.match.params.order,
@@ -56,7 +49,9 @@ class Messages extends React.Component {
   }
   render() {
     let dialog = this.props.dialogs.dialogsOrder.dialogs.find(
-      (dialog) => dialog.user._id === this.props.match.params.id
+      (dialog) =>
+        dialog.user._id === this.props.match.params.id &&
+        dialog.orderId._id === this.props.match.params.order
     );
     return (
       <>

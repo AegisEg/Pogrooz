@@ -380,7 +380,9 @@ const dialogs = (state = INITIAL_STATE, action) => {
               : dialog
           ),
           noReadCount: action.payload.noReadCount
-            ? state.dialogsUser.noReadCount - 1
+            ? state.dialogsUser.noReadCount - 1 > 0
+              ? state.dialogsUser.noReadCount - 1
+              : 0
             : state.dialogsUser.noReadCount,
         },
         dialogsALL: {
@@ -400,7 +402,9 @@ const dialogs = (state = INITIAL_STATE, action) => {
             } else return dialog;
           }),
           noReadCount: action.payload.noReadCount
-            ? state.dialogsALL.noReadCount - 1
+            ? state.dialogsALL.noReadCount - 1 > 0
+              ? state.dialogsALL.noReadCount - 1
+              : 0
             : state.dialogsALL.noReadCount,
         },
       };
@@ -683,7 +687,9 @@ const dialogs = (state = INITIAL_STATE, action) => {
               : dialog
           ),
           noReadCount: action.payload.noReadCount
-            ? state.dialogsOrder.noReadCount - 1
+            ? state.dialogsOrder.noReadCount - 1 > 0
+              ? state.dialogsOrder.noReadCount - 1
+              : 0
             : state.dialogsOrder.noReadCount,
         },
         dialogsALL: {
@@ -704,8 +710,10 @@ const dialogs = (state = INITIAL_STATE, action) => {
               : dialog
           ),
           noReadCount: action.payload.noReadCount
+          ? state.dialogsALL.noReadCount - 1 > 0
             ? state.dialogsALL.noReadCount - 1
-            : state.dialogsALL.noReadCount,
+            : 0
+          : state.dialogsALL.noReadCount,
         },
       };
     case DIALOGSORDER_DELETE_MESSAGE:

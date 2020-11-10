@@ -46,8 +46,7 @@ class Message extends React.Component {
       }
 
       let diffHours = Math.abs(date1 - date2) / 36e5;
-
-      if (diffHours > 1) {
+      if (diffHours > 0.01666) {
         moreHour = true;
       }
     }
@@ -186,18 +185,16 @@ class Message extends React.Component {
                   message={this.props.message.recentMessage}
                 />
               )}
-              {!this.props.message.isError &&
-                !myMessage &&
-                !this.props.isRecent && (
-                  <span
-                    className="reply-message"
-                    onClick={() => {
-                      this.props.setRecentMessage(this.props.message);
-                    }}
-                  >
-                    <Reply />
-                  </span>
-                )}
+              {!this.props.message.isError && !this.props.isRecent && (
+                <span
+                  className="reply-message"
+                  onClick={() => {
+                    this.props.setRecentMessage(this.props.message);
+                  }}
+                >
+                  <Reply />
+                </span>
+              )}
             </div>
           </div>
           {this.props.message.isError && (

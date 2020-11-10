@@ -463,19 +463,16 @@ const articles = (state = INITIAL_STATE, action) => {
           if (status === action.payload.lastStatus) {
             return {
               ...item,
-              articles: item.articles.filter(
-                (item) => item._id !== action.payload.article._id
-              ),
+              articles: item.articles.filter((item) => {
+                return item._id !== action.payload.article._id;
+              }),
               countAll: item.countAll - 1,
             };
           }
           if (status === action.payload.article.status) {
             return {
               ...item,
-              articles:
-                item.articles.length < settings.countArticleOnPage
-                  ? [...item.articles, action.payload.article]
-                  : item.articles,
+              articles: [action.payload.article, ...item.articles],
               canLoad: true,
               countAll: item.countAll + 1,
             };
@@ -504,19 +501,17 @@ const articles = (state = INITIAL_STATE, action) => {
           if (status === action.payload.lastStatus) {
             return {
               ...item,
-              articles: item.articles.filter(
-                (item) => item._id !== action.payload.article._id
-              ),
+              articles: item.articles.filter((item) => {
+                return item._id !== action.payload.article._id;
+              }),
               countAll: item.countAll - 1,
             };
           }
           if (status === action.payload.article.status) {
             return {
               ...item,
-              articles:
-                item.articles.length < settings.countArticleOnPage
-                  ? [...item.articles, action.payload.article]
-                  : item.articles,
+              articles: [...item.articles, action.payload.article],
+
               countAll: item.countAll + 1,
             };
           }
@@ -804,17 +799,28 @@ const articles = (state = INITIAL_STATE, action) => {
             return {
               ...item,
               articles: item.articles.map((item) => {
-                if (item._id === action.payload.article._id)
+                if (item._id === action.payload.article._id) {
                   return {
                     ...item,
                     executors: [...item.executors, action.payload.executor],
                   };
-                else return item;
+                } else return item;
               }),
             };
           }
           return item;
         }),
+        myAll: {
+          ...state.myAll,
+          articles: state.myAll.articles.map((item) => {
+            if (item._id === action.payload.article._id) {
+              return {
+                ...item,
+                executors: [...item.executors, action.payload.executor],
+              };
+            } else return item;
+          }),
+        },
         currentArticle:
           state.currentArticle._id === action.payload.article._id
             ? {

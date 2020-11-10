@@ -12,7 +12,7 @@ class RecentMessage extends React.Component {
       >
         <div className="recentContent">
           <div className="name">
-            {this.props.message.user.name.middle}{" "}
+            {this.props.message.user.name.last}{" "}
             {this.props.message.user.name.first}
           </div>
           <div className="message-content">

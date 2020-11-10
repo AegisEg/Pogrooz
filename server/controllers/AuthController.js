@@ -14,6 +14,7 @@ const Article = require("../models/Article");
 const Notification = require("../models/Notification");
 const Payment = require("../models/Payment");
 const Dialog = require("../models/Dialog");
+const Setting = require("../models/Setting");
 var smsc = require("./SmsController");
 const { setDemoTariff } = require("./TariffController");
 const { sendMailSimple } = require("./MailController");
@@ -75,7 +76,19 @@ module.exports = {
       newUser.type = user.type;
       newUser.password = await bcrypt.hash(user.password, 12);
       await newUser.save();
-
+      await sendMailSimple(
+        "Добро пожаловать на портал Pogrooz.ru",
+        `<div>Здравствуйте, ${newUser.name.last} ${newUser.name.first}</div>
+        <div>Вы зарегистрированы в <a href="https://pogrooz.ru">Pogrooz.ru</a>
+         в качестве ${
+           newUser.type === "carrier" ? "перевозчика" : "грузовладельца"
+         }</div>
+        <div>Ваши данные для входа:</div>
+        <div>Логин ${newUser.phone}</div>
+        <div>Пароль ${user.password}</div>
+         `,
+        newUser.email
+      );
       let token = generateToken(newUser.id);
       /*СОздание юзера*/
       if (newUser.type === "carrier") setDemoTariff(newUser._id);
@@ -205,12 +218,18 @@ module.exports = {
 
           existingUserEmail.resetPasswordToken = resetPasswordToken;
           existingUserEmail.resetPasswordExpires = resetPasswordExpires;
-          existingUserEmail.save();
+          await existingUserEmail.save();
+          let infoMail = await Setting.findOne({ key: "email" });
           await sendMailSimple(
-            "Сброс пароля Pogrooz.ru",
-            `<a href="${
+            `Запрос на смену пароля для логина ${
+              existingUserEmail.phone
+            } на портале Pogrooz.ru`,
+            `
+            <div>Нажмите на кнопку, чтобы сменить пароль. <a href="${
               process.env.CLIENT_URL
-            }/reset/${resetPasswordToken}">Ссылка на сброс пароля</a>`,
+            }/reset/${resetPasswordToken}">Сменить пароль</a></div>
+            <div>Если вы не пытались восстановить доступ к аккаунту, просто не обращайте внимания на это письмо.</div>
+            <div>Если у вас появились вопросы или трудности с восстановлением пароля, напишите службе поддержки <a href="mail:${infoMail}">infoMail</a>.</div>`,
             email
           );
           return res.json({
@@ -380,6 +399,7 @@ async function InfoForLogin(user) {
       $match: {
         executors: user._id,
         type: user.type === "cargo" ? "offer" : "order",
+        status: { $gt: 2 },
       },
     },
     {
