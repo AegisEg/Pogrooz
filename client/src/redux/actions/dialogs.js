@@ -607,7 +607,7 @@ export const dialogsOrderGet = (apiToken) => (dispatch) => {
 };
 
 export const dialogOrderGet = (userId, orderId, apiToken) => (dispatch) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {  
     fetch(`${api.urlApi}/api/dialogsOrder/get`, {
       method: "post",
       headers: {
@@ -649,7 +649,7 @@ export const dialogOrderGet = (userId, orderId, apiToken) => (dispatch) => {
           };
           dispatch({
             type: DIALOGSORDER_ADD,
-            payload: {dialog},
+            payload: { dialog },
           });
           resolve();
         }

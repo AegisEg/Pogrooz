@@ -143,7 +143,12 @@ async function mailTemplateFunc(content, title, settingsNew) {
                   <td colspan="2" style="padding: 30px 60px 30px 60px;">
                       <h1 align="center" style="padding: 0 0 0px 0; margin:0 0 30px 0; font-size: 20px;">${title}</h1>
                       <p style="font-size: 14px;">${content}</p>
-                  </td>
+                      <p style="margin-top:20px; font-size:10px;">Вы получили это письмо, потому что являетесь зарегистрированным пользователем Pogrooz.ru.</p>
+                      <p style="margin-top:20px; font-size:10px;">
+                      Если у вас возникли вопросы, ответы можно найти в разделе 
+                      <a href="${settingsNew.helpInFaq}">Помощь</a>
+                      </p>
+                      </td>
               </tr>
               <tr bgcolor="#F9F8F8">
                   <td style="padding: 30px 0 30px 60px;vertical-align: top;">

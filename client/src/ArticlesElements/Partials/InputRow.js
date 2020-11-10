@@ -627,7 +627,7 @@ class InputRow extends React.Component {
       condition: (options) => {
         return options.article.type === "order";
       },
-      action: () => {
+      action: () => {        
         if (this.role === 1)
           this.props.history.push(
             `/dialog-order/${this.props.article._id}/${this.props.article.executors[0]._id}`

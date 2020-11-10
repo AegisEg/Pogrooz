@@ -37,7 +37,7 @@ module.exports = [
   {
     id: 1,
     code: "ARTICLE_NEW_REQUEST",
-    title: (info) => "Новая заявка",
+    title: (info) => "Новая заявка на Pogrooz.ru",
     text: (info) =>
       `
         По <a href="${process.env.CLIENT_URL}/${info.articleType}/${
@@ -50,9 +50,11 @@ module.exports = [
     id: 2,
     code: "ARTICLE_CHANGE_STATUS",
     title: (info) =>
-      `Смена статуса ${
-        info.articleType === "offer" ? "предложения" : "заказа"
-      }`,
+      `По ${info.articleType === "offer" ? "предложению" : "заказу"} №${
+        info.articleId
+      } статус сменился на ${
+        statuses.find((item) => item.id === info.articleStatus).name
+      } на Pogrooz.ru`,
     text: (info) =>
       `
         По
@@ -69,7 +71,8 @@ module.exports = [
   {
     id: 3,
     code: "ARTICLE_SET_EXECUTOR",
-    title: (info) => `Вас выбрали исполнителем`,
+    title: (info) =>
+      `Вас выбрали исполнителем по заказу №${info.articleId} на Pogrooz.ru`,
     text: (info) =>
       ` По
         <a
@@ -83,7 +86,10 @@ module.exports = [
   {
     id: 4,
     code: "ARTICLE_DELETE_EXECUTOR",
-    title: (info) => `Вас исключили из исполнителей`,
+    title: (info) =>
+      `Вас исключили из исполнителей по заказу №${
+        info.articleId
+      } на Pogrooz.ru`,
     text: (info) =>
       ` По
         <a
@@ -97,7 +103,10 @@ module.exports = [
   {
     id: 5,
     code: "ARTICLE_SET_REVIEW",
-    title: (info) => `Новый отзыв`,
+    title: (info) => `О вас написали новый отзыв по  ${
+      info.articleType === "offer" ? "предложению" : "заказу"
+    } № 
+    ${info.articleId} на Pogrooz.ru`,
     text: (info) =>
       ` По
         <a
@@ -112,7 +121,7 @@ module.exports = [
   {
     id: 6,
     code: "SEND_NEW_MESSAGE",
-    title: (info) => `Новое сообщение от пользователя`,
+    title: (info) => `Вам пришло новое сообщение на Pogrooz.ru`,
     text: (info) =>
       `
         Вам написали сообщение, для просмотра перейдите на страницу
@@ -123,9 +132,9 @@ module.exports = [
     id: 7,
     code: "SEND_NEW_MESSAGE_BY_ORDER",
     title: (info) =>
-      `Новое сообщение по ${
+      `Вам пришло новое сообщение по ${
         info.articleType === "offer" ? "предложению" : "заказу"
-      }`,
+      } №${info.articleId} на Pogrooz.ru`,
     text: (info) =>
       `
         По
@@ -142,13 +151,13 @@ module.exports = [
   {
     id: 8,
     code: "PASSPORT_MODERATION",
-    title: (info) => `Фото вашего паспотра прошло модерацию`,
+    title: (info) => `Фото вашего паспотра прошло модерацию на Pogrooz.ru`,
     text: (info) => `Фото паспотра прошло модерацию`,
   },
   {
     id: 9,
     code: "ARTICLE_REQUEST_CANCEL",
-    title: (info) => `Запрос на исключения из исполнителей`,
+    title: (info) => `Запрос на исключения из исполнителей на Pogrooz.ru`,
     text: (info) =>
       ` По
       <a href="${process.env.CLIENT_URL}/${info.articleType}/${info.articleId}"
@@ -163,7 +172,7 @@ module.exports = [
   {
     id: 10,
     code: "ARTICLE_OFFERED_ORDER",
-    title: (info) => `Предложение участия в заказе`,
+    title: (info) => `Предложение участия в заказе на Pogrooz.ru`,
     text: (info) =>
       `
         Грузовладелец <a href="${process.env.CLIENT_URL}/user/${info.author}">${
@@ -178,34 +187,36 @@ module.exports = [
   {
     id: 11,
     code: "BAN_COMMENT_NOTIFY",
-    title: (info) => `Вы заблокированы`,
+    title: (info) => `Вы заблокированы на Pogrooz.ru`,
     text: (info) =>
-      `Вы заблокированы на ${info.duration} дня(дней) по причине: ${info.commentBan}.`,
+      `Вы заблокированы на ${info.duration} дня(дней) по причине: ${
+        info.commentBan
+      }.`,
   },
   {
     id: 11,
     code: "UNBAN_NOTIFY",
-    title: (info) => `Ваш профиль разблокирован`,
+    title: (info) => `Ваш профиль разблокирован на Pogrooz.ru`,
     text: (info) => `Ваш профиль разблокирован.`,
   },
   {
     id: 12,
     code: "PASSPORT_MODERATION_FAIL",
-    title: (info) => `Паспорт не прошел модерацию`,
+    title: (info) => `Паспорт не прошел модерацию на Pogrooz.ru`,
     text: (info) =>
       `Паспорт не прошел модерацию по причине: ${info.commentFail}.`,
   },
   {
     id: 13,
     code: "SYSTEM_NOTIFY",
-    title: (info) => `Системное сообщение`,
+    title: (info) => `Системное сообщение на Pogrooz.ru`,
     text: (info) => `Уведомление от адмнистратора: ${info.commentNotify}.`,
   },
   {
     id: 14,
     code: "ARTICLE_UNPUBLISH",
     title: (info) =>
-      `${info.articleType === "offer" ? "Предложение" : "Заказ"} просрочен`,
+      `${info.articleType === "offer" ? "Предложение" : "Заказ"} просрочен на Pogrooz.ru`,
     text: (info) =>
       `<a href="${process.env.CLIENT_URL}/${info.articleType}/${
         info.articleId
@@ -219,7 +230,7 @@ module.exports = [
   {
     id: 14,
     code: "ARTICLE_REQUEST_GEOLOCATION",
-    title: (info) => "Запрос местоположения",
+    title: (info) => "Запрос местоположения на Pogrooz.ru",
     text: (info) =>
       ` По
       <a href="${process.env.CLIENT_URL}/${info.articleType}/${info.articleId}"
@@ -234,21 +245,21 @@ module.exports = [
   {
     id: 15,
     code: "AUTOPAYMENT_SUCCESS",
-    title: (info) => "Совершен автоплатеж",
+    title: (info) => "Совершен автоплатеж на Pogrooz.ru",
     text: (info) =>
       `Тариф ${info.tariffName} успешно оплачен с помощью автоплатежа.`,
   },
   {
     id: 16,
     code: "AUTOPAYMENT_ERROR",
-    title: (info) => "Неудачный автоплатеж",
+    title: (info) => "Неудачный автоплатеж на Pogrooz.ru",
     text: (info) =>
       `Тариф ${info.tariffName} не удалось оплатить с помощью автоплатежа.`,
   },
   {
     id: 17,
     code: "TARIFF_WILL_CANCEL",
-    title: (info) => "Тариф скоро закончиться",
+    title: (info) => "Тариф скоро закончиться на Pogrooz.ru",
     text: (info) => `Тариф ${info.tariffName} закончиться через 2 дня.`,
   },
 ];

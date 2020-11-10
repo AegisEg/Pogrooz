@@ -159,7 +159,6 @@ export default {
         let dialogs = orderId
           ? store.getState().dialogs.dialogsOrder
           : store.getState().dialogs.dialogsUser;
-        if (!dialogs.isGetted) dialogs = store.getState().dialogs.dialogsALL;
         if (dialogs.dialogs.find((x) => x._id === message.dialogId)) {
           store.dispatch({
             type: orderId ? DIALOGSORDER_SET_TYPER : DIALOGS_SET_TYPER,
@@ -238,7 +237,7 @@ export default {
                 });
             });
         }
-        playNewMessage();
+        if (!isMy) playNewMessage();
       }
     );
     socket.on("readMessagesDialog", ({ dialogId, userId, isOrder }) => {
@@ -306,7 +305,7 @@ export default {
       });
     });
     socket.on("updateStatusMyArticle", ({ lastStatus, article, isTaking }) => {
-      if (isTaking) {
+      if (isTaking) {        
         store.dispatch({
           type: ARTICLE_TAKING_UPDATE_STATUS,
           payload: { lastStatus, article },
@@ -411,12 +410,6 @@ export default {
     );
     socket.on("setExecutor", ({ article, executor, lastStatus, isTaking }) => {
       if (!isTaking) {
-        if (article.type === "order") {
-          store.dispatch({
-            type: ARTICLE_MY_UPDATE_STATUS,
-            payload: { lastStatus, article },
-          });
-        }
         store.dispatch({
           type: ARTICLES_MY_SET_EXECUTOR,
           payload: { article, executor },
