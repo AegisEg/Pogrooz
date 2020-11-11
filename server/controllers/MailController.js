@@ -146,7 +146,7 @@ async function mailTemplateFunc(content, title, settingsNew) {
                       <p style="margin-top:20px; font-size:10px;">Вы получили это письмо, потому что являетесь зарегистрированным пользователем Pogrooz.ru.</p>
                       <p style="font-size:10px;">
                       Если у вас возникли вопросы, ответы можно найти в разделе 
-                      <a href="${settingsNew.helpInFaq}">Помощь</a>
+                      <a href="${settingsNew.helpInFaq}">"Помощь"</a>
                       </p>
                       </td>
               </tr>

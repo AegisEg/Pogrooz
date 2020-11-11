@@ -16,9 +16,26 @@ class Messages extends React.Component {
   state = {
     isFetching: true,
   };
+  componentWillUnmount() {
+    //Отобразить плавающие иконки
+    let hiidenBlock = document.getElementsByClassName("geo-active");
+    if (hiidenBlock.length) hiidenBlock[0].classList.remove("d-none");
+    hiidenBlock = document.getElementsByClassName("cookie-notification");
+    if (hiidenBlock.length) hiidenBlock[0].classList.remove("d-none");
+    hiidenBlock = document.getElementById("jvlabelWrap");
+    if (hiidenBlock) hiidenBlock.classList.remove("d-none");
+    //Отобразить плавающие иконки
+  }
   componentDidMount() {
+    //Скерыть плавающие иконки
+    let hiidenBlock = document.getElementsByClassName("geo-active");
+    if (hiidenBlock.length) hiidenBlock[0].classList.add("d-none");
+    hiidenBlock = document.getElementsByClassName("cookie-notification");
+    if (hiidenBlock.length) hiidenBlock[0].classList.add("d-none");
+    hiidenBlock = document.getElementById("jvlabelWrap");
+    if (hiidenBlock) hiidenBlock.classList.add("d-none");
+    //Скерыть плавающие иконки
     let dialogs = this.props.dialogs.dialogsUser;
-
     if (
       !dialogs.dialogs.find(
         (dialog) => dialog.user._id === this.props.match.params.id

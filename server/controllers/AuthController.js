@@ -221,10 +221,11 @@ module.exports = {
           await existingUserEmail.save();
           let infoMail = await Setting.findOne({ key: "email" });
           await sendMailSimple(
-            `Запрос на смену пароля для логина ${
-              existingUserEmail.phone
-            } на портале Pogrooz.ru`,
+            `Запрос на смену пароля на портале Pogrooz.ru`,
             `
+            <div>Запрос на смену пароля для логина ${
+              existingUserEmail.phone
+            }</div>
             <div>Нажмите на кнопку, чтобы сменить пароль. <a href="${
               process.env.CLIENT_URL
             }/reset/${resetPasswordToken}">Сменить пароль</a></div>
