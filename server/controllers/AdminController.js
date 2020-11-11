@@ -1,4 +1,4 @@
-const AdminBro = require("admin-bro");
+\const AdminBro = require("admin-bro");
 const AdminBroExpress = require("admin-bro-expressjs");
 const AdminBroMongoose = require("admin-bro-mongoose");
 const bcrypt = require("bcryptjs");
@@ -83,7 +83,6 @@ const adminBro = new AdminBro({
       resource: User,
       options: {
         listProperties: [
-          "_id",
           "name.first",
           "name.last",
           "type",
@@ -300,7 +299,7 @@ const adminBro = new AdminBro({
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
           createdAt: {
-            isVisible: { list: true, filter: false, show: false, edit: false },
+            isVisible: { list: true, filter: true, show: false, edit: false },
           },
           online: {
             isVisible: { list: false, filter: false, show: false, edit: false },
