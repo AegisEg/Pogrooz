@@ -1,4 +1,4 @@
-\const AdminBro = require("admin-bro");
+const AdminBro = require("admin-bro");
 const AdminBroExpress = require("admin-bro-expressjs");
 const AdminBroMongoose = require("admin-bro-mongoose");
 const bcrypt = require("bcryptjs");
@@ -90,6 +90,7 @@ const adminBro = new AdminBro({
           "isPassportUploaded",
           "isBan",
           "isTariff",
+	  "createdAt"
         ],
         actions: {
           delete: {
