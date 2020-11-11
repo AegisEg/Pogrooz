@@ -90,7 +90,6 @@ const adminBro = new AdminBro({
           "isPassportUploaded",
           "isBan",
           "isTariff",
-          "createdAt",
         ],
         actions: {
           delete: {
@@ -669,7 +668,7 @@ const adminBro = new AdminBro({
             "name.first": "Имя",
             "name.last": "Фамилия",
             "name.middle": "Отчество",
-            createdAt:"Дата регистрации",
+            createdAt: "Дата регистрации",
             phone: "Телефон",
             isBan: "Заблокирован?",
             isTariff: "Активный тариф?",
