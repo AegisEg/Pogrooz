@@ -83,7 +83,6 @@ const adminBro = new AdminBro({
       resource: User,
       options: {
         listProperties: [
-          "_id",
           "name.first",
           "name.last",
           "type",
@@ -91,7 +90,6 @@ const adminBro = new AdminBro({
           "isPassportUploaded",
           "isBan",
           "isTariff",
-          "createdAt",
         ],
         actions: {
           delete: {
@@ -300,7 +298,7 @@ const adminBro = new AdminBro({
             isVisible: { list: true, filter: true, show: true, edit: true },
           },
           createdAt: {
-            isVisible: { list: true, filter: false, show: false, edit: false },
+            isVisible: { list: true, filter: true, show: false, edit: false },
           },
           online: {
             isVisible: { list: false, filter: false, show: false, edit: false },
@@ -670,7 +668,7 @@ const adminBro = new AdminBro({
             "name.first": "Имя",
             "name.last": "Фамилия",
             "name.middle": "Отчество",
-            createdAt:"Дата регистрации",
+            createdAt: "Дата регистрации",
             phone: "Телефон",
             isBan: "Заблокирован?",
             isTariff: "Активный тариф?",
