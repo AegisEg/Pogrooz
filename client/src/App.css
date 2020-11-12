@@ -126,12 +126,17 @@ input::-ms-clear {
 .action-counter {
   background-color: #a038e3;
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
   border-radius: 14px;
   text-align: center;
 }
-
+@-moz-document url-prefix()
+{
+  .action-counter span {
+    left: -1px!important;
+  }
+}
 .action-counter span {
   font-style: italic;
   font-weight: 900;
@@ -1512,8 +1517,8 @@ textarea {
 }
 
 .header-fast-access .fast-access-btn .action-counter {
-  top: 26px;
-  right: 3px;
+  top: 24px;
+  right: 0px;
 }
 
 /* Header end */
@@ -7134,7 +7139,9 @@ label {
   opacity: 1;
   transform: translateX(46px);
 }
-
+.geo-active a{
+  color: #9509ef;
+}
 .geo-active:hover {
   animation: none;
 }
@@ -7219,9 +7226,9 @@ label {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 220px !important;
+  width: 230px !important;
   background-color: #fff;
-  height: 75px;
+  height: 90px;
   bottom: 0;
   left: 0;
   z-index: 4;

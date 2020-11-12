@@ -32,6 +32,7 @@ class User extends React.Component {
     isFething: true,
     notFound: false,
     countData: {},
+    isGeneralArticles: false,
   };
   componentDidMount() {
     fetch(`${api.urlApi}/api/user/get`, {
@@ -66,6 +67,7 @@ class User extends React.Component {
               isBan,
               currentTab: isBan || isHidden ? false : this.state.currentTab,
               countData: responce.countData,
+              isGeneralArticles: responce.isGeneralArticles,
               isFething: false,
             },
             () => {
@@ -79,7 +81,6 @@ class User extends React.Component {
   }
   renderTabs() {
     let type = this.state.user.type === "cargo" ? "order" : "offer";
-
     return (
       <div className="tab_groups mt-3">
         <span
@@ -396,6 +397,7 @@ class User extends React.Component {
                         {this.props.user.isAuth &&
                           !this.state.isHidden &&
                           !this.state.isBan &&
+                          this.state.user.type !== "cargo" &&
                           this.props.user._id !== this.state.user._id && (
                             <>
                               <Link to={`/dialog/${this.state.user._id}`}>

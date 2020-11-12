@@ -176,7 +176,7 @@ export default [
     id: 12,
     code: "PASSPORT_MODERATION_FAIL",
     text: (info) => (
-      <>Паспорт не прошел модерацию по причине: {info.commentFail}.</>
+      <>Фото паспотра не прошло модерацию по причине: {info.commentFail}.</>
     ),
   },
   {

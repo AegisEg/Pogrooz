@@ -226,12 +226,12 @@ module.exports = {
             <div>Запрос на смену пароля для логина ${
               existingUserEmail.phone
             }</div>
-            <div>Нажмите на кнопку, чтобы сменить пароль. <a href="${
+            <div>Нажмите на кнопку, чтобы сменить пароль. <a style="color:#9509ef;" href="${
               process.env.CLIENT_URL
             }/reset/${resetPasswordToken}">Сменить пароль</a></div>
             <div>Если вы не пытались восстановить доступ к аккаунту, просто не обращайте внимания на это письмо.</div>
             <div>Если у вас появились вопросы или трудности с восстановлением пароля, напишите службе поддержки 
-            <a href="mailto:${infoMail.value}">${infoMail.value}</a>.</div>`,
+            <a style="color:#9509ef;" href="mailto:${infoMail.value}">${infoMail.value}</a>.</div>`,
             email
           );
           return res.json({

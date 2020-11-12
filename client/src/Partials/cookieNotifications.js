@@ -14,12 +14,12 @@ class CookieNotifications extends React.Component {
       >
         {this.props.isVisible && (
           <div className="cookie-notification">
-            <span>Передача файлов куки!</span>
+            <span className="py-2">Передача файлов куки!</span>
             <Button
               lineHeight={"14px"}
               type="fill"
-              paddingVertical={"5px"}
-              paddingHorizontal={"10px"}
+              paddingVertical={"8px"}
+              paddingHorizontal={"15px"}
               onClick={this.props.close}
             >
               Я согласен

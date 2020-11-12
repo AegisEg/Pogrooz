@@ -90,7 +90,7 @@ const adminBro = new AdminBro({
           "isPassportUploaded",
           "isBan",
           "isTariff",
-	  "createdAt"
+          "createdAt",
         ],
         actions: {
           delete: {
@@ -676,7 +676,7 @@ const adminBro = new AdminBro({
             type: "Тип пользователя",
             online: "Онлайн",
             isPassportVerified: "Паспорт одобрен?",
-            isPassportUploaded: "Паспорт загружен?",
+            isPassportUploaded: "Паспорт загружен?",            
           },
         },
         Page: {
@@ -734,9 +734,11 @@ const adminBro = new AdminBro({
       },
       messages: {
         loginWelcome: "Добро пожаловать",
+        from:"От"
       },
       labels: {
         loginWelcome: "Админка Pogrooz.ru",
+        from:"От",
         filters: "Фильтер",
         User: "Пользователи",
         Page: "Страницы",

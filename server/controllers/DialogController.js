@@ -398,9 +398,9 @@ module.exports = {
               "SEND_NEW_MESSAGE_BY_ORDER",
               "system",
               (dialog.orderId.type === "offer" &&
-                toUser.notificationSettings.offer_new_message.push) ||
+                false) ||
                 (dialog.orderId.type === "order" &&
-                  toUser.notificationSettings.order_new_message.push),
+                  false),
               (dialog.orderId.type === "offer" &&
                 toUser.notificationSettings.offer_new_message.mail) ||
                 (dialog.orderId.type === "order" &&
@@ -412,7 +412,7 @@ module.exports = {
               {},
               "SEND_NEW_MESSAGE",
               "system",
-              toUser.notificationSettings.user_new_message.push,
+              false,
               toUser.notificationSettings.user_new_message.mail
             );
         }

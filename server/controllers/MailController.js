@@ -146,7 +146,7 @@ async function mailTemplateFunc(content, title, settingsNew) {
                       <p style="margin-top:20px; font-size:10px;">Вы получили это письмо, потому что являетесь зарегистрированным пользователем Pogrooz.ru.</p>
                       <p style="font-size:10px;">
                       Если у вас возникли вопросы, ответы можно найти в разделе 
-                      <a href="${settingsNew.helpInFaq}">"Помощь"</a>
+                      <a style="color:#9509ef;" href="${settingsNew.helpInFaq}">"Помощь"</a>
                       </p>
                       </td>
               </tr>
@@ -154,12 +154,12 @@ async function mailTemplateFunc(content, title, settingsNew) {
                   <td style="padding: 30px 0 30px 60px;vertical-align: top;">
                       <h2 style="font-size: 18px;">Поисковик попутных перевозок для ваших грузов</h2>
                       <div>
-                      <a href="${process.env.CLIENT_URL}/cargo">
+                      <a style="text-decoration: none;" href="${process.env.CLIENT_URL}/cargo">
                         <img
                           src="${process.env.CLIENT_URL}/mailImgs/button1.png"
                           alt="">
                       </a>
-                      <a href="${process.env.CLIENT_URL}/cargo">
+                      <a href="${process.env.CLIENT_URL}/carrier">
                       <img
                         src="${process.env.CLIENT_URL}/mailImgs/button2.png"
                         alt="">

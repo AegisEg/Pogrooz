@@ -38,6 +38,7 @@ var settingsField = [
     label: "Сообщение по предложению",
     role: "all",
     keyField: "offer_new_message",
+    disable: true,
     type: "offer",
   },
   // {
@@ -74,6 +75,7 @@ var settingsField = [
     label: "Сообщение по заказу",
     role: "all",
     keyField: "order_new_message",
+    disable: true,
     type: "order",
   },
   // {
@@ -86,6 +88,7 @@ var settingsField = [
     label: "Новые сообщение пользователей",
     role: "all",
     keyField: "user_new_message",
+    disable: true,
     type: "common",
   },
   {
@@ -195,13 +198,16 @@ class NotificationsSettings extends React.Component {
                             settings[item.keyField][type] = val;
                             this.setState({ settings });
                           }}
+                          disablePush={item.disable}
                           valueMail={
                             this.state.settings[item.keyField] &&
                             this.state.settings[item.keyField].mail
                           }
                           valuePush={
-                            this.state.settings[item.keyField] &&
-                            this.state.settings[item.keyField].push
+                            item.disable
+                              ? false
+                              : this.state.settings[item.keyField] &&
+                                this.state.settings[item.keyField].push
                           }
                           keyField={item.keyField}
                         />
@@ -228,13 +234,16 @@ class NotificationsSettings extends React.Component {
                             settings[item.keyField][type] = val;
                             this.setState({ settings });
                           }}
+                          disablePush={item.disable}
                           valueMail={
                             this.state.settings[item.keyField] &&
                             this.state.settings[item.keyField].mail
                           }
                           valuePush={
-                            this.state.settings[item.keyField] &&
-                            this.state.settings[item.keyField].push
+                            item.disable
+                              ? false
+                              : this.state.settings[item.keyField] &&
+                                this.state.settings[item.keyField].push
                           }
                           keyField={item.keyField}
                         />
@@ -267,9 +276,12 @@ class NotificationsSettings extends React.Component {
                             this.state.settings[item.keyField] &&
                             this.state.settings[item.keyField].mail
                           }
+                          disablePush={item.disable}
                           valuePush={
-                            this.state.settings[item.keyField] &&
-                            this.state.settings[item.keyField].push
+                            item.disable
+                              ? false
+                              : this.state.settings[item.keyField] &&
+                                this.state.settings[item.keyField].push
                           }
                           keyField={item.keyField}
                         />
