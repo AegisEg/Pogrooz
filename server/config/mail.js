@@ -281,6 +281,6 @@ module.exports = [
     code: "TARIFFF_ACTIVATED",
     title: (info) => "Тариф активирован на Pogrooz.ru",
     text: (info) =>
-      `Тариф {info.tariffName} успешно активирован до {info.dateCancel}.`,
+      `Тариф ${info.tariffName} успешно активирован до ${info.dateCancel}.`,
   },
 ];
