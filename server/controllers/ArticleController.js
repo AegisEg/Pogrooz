@@ -2008,6 +2008,18 @@ module.exports = {
         if (article) {
           article.delivered.push(deliveredUser);
           await article.save();
+          createNotify(
+            deliveredUser,
+            {
+              articleType: article.type,
+              articleId: article.articleId,
+              articleStatus: 10,
+            },
+            "ARTICLE_CHANGE_STATUS",
+            article.type,
+            true,
+            true
+          );
           setDelivered({
             article,
             user: deliveredUser,

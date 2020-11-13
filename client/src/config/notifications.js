@@ -33,6 +33,10 @@ let statuses = [
     id: 1,
     name: "Черновик",
   },
+  {
+    id: 10,
+    name: "Доставлено",
+  },  
 ];
 export default [
   {
