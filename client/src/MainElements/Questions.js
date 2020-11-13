@@ -14,7 +14,8 @@ class Questions extends React.Component {
         answer: (
           <>
             Попутные грузоперевозки с PoGrooz – это шаг в будущее удобных
-            грузоперевозок. Перейти на страницу{" "}
+            грузоперевозок. Здесь Вы легко и быстро можете найти Заказ или
+            Предложение на перевозку груза. Перейти на страницу{" "}
             <Link className="href" to="/questions/about-pogrooz">
               FAQ
             </Link>
