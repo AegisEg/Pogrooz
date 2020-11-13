@@ -31,6 +31,10 @@ let statuses = [
     id: 1,
     name: "Черновик",
   },
+  {
+    id: 10,
+    name: "Доставлено",
+  },  
 ];
 let domain = "pogrooz.ru";
 module.exports = [
