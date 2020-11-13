@@ -246,5 +246,5 @@ export function rus_to_latin(str) {
     );
   }
 
-  return n_str.join("").replace(/\s+/g, '');
+  return n_str.join("").replace(/\s+/g, '_');
 }

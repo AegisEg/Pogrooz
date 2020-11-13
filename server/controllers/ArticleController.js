@@ -102,7 +102,7 @@ module.exports = {
           };
         if (
           !geoNear &&
-          filter.type === "offer" &&
+          filter.type === "cargo" &&
           filter.to.data.geo_lat &&
           filter.to.data.geo_lon &&
           filter.to.data.fias_level === "8"
@@ -1131,6 +1131,24 @@ module.exports = {
             lastStatus: 3,
             article,
           });
+          createNotify(
+            article.author,
+            {
+              articleType: article.type,
+              articleId: article.articleId,
+              articleStatus: article.status,
+            },
+            "ARTICLE_CHANGE_STATUS",
+            article.type,
+            (article.type === "offer" &&
+              article.author.notificationSettings.offer_status.push) ||
+              (article.type === "order" &&
+                article.author.notificationSettings.order_status.push),
+            (article.type === "offer" &&
+              article.author.notificationSettings.offer_status.mail) ||
+              (article.type === "order" &&
+                article.author.notificationSettings.order_status.mail)
+          );
           return res.json({ error: false });
         }
       }
