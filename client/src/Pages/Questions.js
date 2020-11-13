@@ -6,9 +6,10 @@ import Loading from "../Elements/Loading";
 import Meta from "../Elements/Meta";
 import { withRouter } from "react-router-dom";
 import NoMatch from "./NoMatch";
-import { setForceTitle } from "../functions/functions";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { rus_to_latin } from "../controllers/FunctionsController";
+
 const scrollToAnswer = (ref) => {
   ref.current.scrollIntoView({
     behavior: "smooth",
@@ -63,7 +64,6 @@ class Questions extends React.Component {
                 });
             }
           );
-          setForceTitle(partial.title);
         }
       });
   }
@@ -131,7 +131,7 @@ class Questions extends React.Component {
                 </ul>
                 {this.state.partial.questions.map((question, index) => {
                   return (
-                    <div id={question._id} key={index}>
+                    <div id={rus_to_latin(question.title)} key={index}>
                       <h2 ref={question.ref}>{question.title}</h2>
                       <div
                         className="content"

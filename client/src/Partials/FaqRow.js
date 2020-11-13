@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Loading from "../Elements/Loading";
 import { connect } from "react-redux";
+import { rus_to_latin } from "../controllers/FunctionsController";
 import api from "../config/api";
 
 class FaqRow extends React.Component {
@@ -105,7 +106,7 @@ class FaqRow extends React.Component {
                                 this.props.user.isAuth && this.props.type
                                   ? "/lk"
                                   : ""
-                              }/questions/${section.slug}#${question._id}`}
+                              }/questions/${section.slug}#${rus_to_latin(question.title)}`}
                             >
                               {question.title}
                             </Link>
