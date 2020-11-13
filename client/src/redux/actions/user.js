@@ -142,6 +142,7 @@ export const passChange = (passObj, apiToken) => (dispatch) => {
 export const startLocationSent = (apiToken) => (dispatch) => {
   if (navigator.geolocation) {
     let idWatch;
+    let time = 0;
     if ((idWatch = store.getState().user.geolocationId)) {
       navigator.geolocation.clearWatch(idWatch);
       dispatch({ type: USER_SET_LOCATION_ID, payload: { id: false } });
@@ -152,18 +153,18 @@ export const startLocationSent = (apiToken) => (dispatch) => {
           type: USER_SET_GEOLOCATION_ERROR,
           payload: { error: false },
         });
-
-        fetch(`${api.urlApi}/api/article/setLocation`, {
-          method: "post",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiToken}`,
-          },
-          body: JSON.stringify({
-            position: [position.coords.latitude, position.coords.longitude],
-          }),
-        });
+        if (Date.now() > time + 1000 * 60 * 5)
+          fetch(`${api.urlApi}/api/article/setLocation`, {
+            method: "post",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${apiToken}`,
+            },
+            body: JSON.stringify({
+              position: [position.coords.latitude, position.coords.longitude],
+            }),
+          });
       },
       (err) => {
         dispatch({
