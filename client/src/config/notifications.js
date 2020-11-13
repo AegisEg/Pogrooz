@@ -231,6 +231,13 @@ export default [
     ),
   },
   {
+    id: 22,
+    code: "TARIFFF_ACTIVATED",
+    text: (info) => (
+      <>Тариф {info.tariffName} успешно активирован до {info.dateCancel}.</>
+    ),
+  },
+  {
     id: 17,
     code: "TARIFF_WILL_CANCEL",
     text: (info) => <>Тариф {info.tariffName} закончиться через 2 дня.</>,

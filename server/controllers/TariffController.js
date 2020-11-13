@@ -352,6 +352,15 @@ module.exports = {
             tariff: payment.tariff,
             expiriesAt: payment.expiriesAt,
           });
+          createNotify(
+            payment.userId,
+            {
+              tariffName: payment.tariff.name,
+              dateCancel: new Date(payment.expiriesAt).toString("dd.MM.yyyy"),
+            },
+            "TARIFFF_ACTIVATED",
+            "system"
+          );
           res.writeHead(301, {
             Location: `${
               process.env.CLIENT_URL

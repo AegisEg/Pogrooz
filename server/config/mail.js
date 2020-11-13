@@ -34,7 +34,7 @@ let statuses = [
   {
     id: 10,
     name: "Доставлено",
-  },  
+  },
 ];
 let domain = "pogrooz.ru";
 module.exports = [
@@ -44,11 +44,11 @@ module.exports = [
     title: (info) => "Новая заявка на Pogrooz.ru",
     text: (info) =>
       `
-        По <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${info.articleType}/${
-        info.articleId
-      }">${info.articleType === "offer" ? "предложению" : "заказу"} № ${
-        info.articleId
-      }</a> поступила новая заявка`,
+        По <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${
+        info.articleType
+      }/${info.articleId}">${
+        info.articleType === "offer" ? "предложению" : "заказу"
+      } № ${info.articleId}</a> поступила новая заявка`,
   },
   {
     id: 2,
@@ -129,7 +129,9 @@ module.exports = [
     text: (info) =>
       `
         Вам написали сообщение, для просмотра перейдите на страницу
-        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/messages">сообщений</a>
+        <a style="color:#9509ef;" href="${
+          process.env.CLIENT_URL
+        }/messages">сообщений</a>
       `,
   },
   {
@@ -142,15 +144,17 @@ module.exports = [
     text: (info) =>
       `
         По
-        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${info.articleType}/${
-        info.articleId
-      }"
+        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${
+        info.articleType
+      }/${info.articleId}"
         >
           ${info.articleType === "offer" ? "предложению" : "заказу"} № 
           ${info.articleId}
         </a>      
         появилось новое собщение, для просмотра перейдите на страницу.
-        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/messages-by-order">сообщений</a>`,
+        <a style="color:#9509ef;" href="${
+          process.env.CLIENT_URL
+        }/messages-by-order">сообщений</a>`,
   },
   {
     id: 8,
@@ -164,7 +168,9 @@ module.exports = [
     title: (info) => `Запрос на исключения из исполнителей на Pogrooz.ru`,
     text: (info) =>
       ` По
-      <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${info.articleType}/${info.articleId}"
+      <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${
+        info.articleType
+      }/${info.articleId}"
       >
         ${info.articleType === "offer" ? "предложению" : "заказу"} № 
         ${info.articleId}
@@ -179,13 +185,13 @@ module.exports = [
     title: (info) => `Предложение участия в заказе на Pogrooz.ru`,
     text: (info) =>
       `
-        Грузовладелец <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/user/${info.author}">${
-        info.authorFIO
-      }</a>
+        Грузовладелец <a style="color:#9509ef;" href="${
+          process.env.CLIENT_URL
+        }/user/${info.author}">${info.authorFIO}</a>
         предложиил вам участе в
-        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/order/${info.articleId}">заказе №${
+        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/order/${
         info.articleId
-      }</Link>
+      }">заказе №${info.articleId}</Link>
         `,
   },
   {
@@ -220,11 +226,13 @@ module.exports = [
     id: 14,
     code: "ARTICLE_UNPUBLISH",
     title: (info) =>
-      `${info.articleType === "offer" ? "Предложение" : "Заказ"} просрочен на Pogrooz.ru`,
+      `${
+        info.articleType === "offer" ? "Предложение" : "Заказ"
+      } просрочен на Pogrooz.ru`,
     text: (info) =>
-      `<a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${info.articleType}/${
-        info.articleId
-      }">
+      `<a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${
+        info.articleType
+      }/${info.articleId}">
           ${info.articleType === "offer" ? "Предложение" : "Заказ"} № ${
         info.articleId
       }
@@ -237,7 +245,9 @@ module.exports = [
     title: (info) => "Запрос местоположения на Pogrooz.ru",
     text: (info) =>
       ` По
-      <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${info.articleType}/${info.articleId}"
+      <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/${
+        info.articleType
+      }/${info.articleId}"
       >
         ${info.articleType === "offer" ? "предложению" : "заказу"} № 
         ${info.articleId}
@@ -265,5 +275,12 @@ module.exports = [
     code: "TARIFF_WILL_CANCEL",
     title: (info) => "Тариф скоро закончиться на Pogrooz.ru",
     text: (info) => `Тариф ${info.tariffName} закончиться через 2 дня.`,
+  },
+  {
+    id: 22,
+    code: "TARIFFF_ACTIVATED",
+    title: (info) => "Тариф активирован на Pogrooz.ru",
+    text: (info) =>
+      `Тариф {info.tariffName} успешно активирован до {info.dateCancel}.`,
   },
 ];
