@@ -178,7 +178,7 @@ class ArticlePage extends React.Component {
                           <div className="text-center mt-2 py-4">
                             Заявок еще нет
                             {!this.props.user.isAuth && (
-                              <div>
+                              <div className="mt-3">
                                 <Link to="/register">
                                   <Button type="fill">
                                     Добавьте заявку первым
