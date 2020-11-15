@@ -29,6 +29,7 @@ class Articles extends React.Component {
         },
         body: JSON.stringify({
           filter: this.props.filter,
+          sortBy: this.props.sortBy,
           page: page,
         }),
       })
@@ -53,7 +54,10 @@ class Articles extends React.Component {
   render() {
     return (
       <div className="articles-block">
-        <ArticleHeader></ArticleHeader>
+        <ArticleHeader
+          sortChange={this.props.sortChange}
+          sortBy={this.props.sortBy}
+        ></ArticleHeader>
         <Loading isLoading={this.state.isFething}></Loading>
         <CSSTransitionGroup
           transitionName="height-animation-item"
@@ -67,6 +71,7 @@ class Articles extends React.Component {
             return (
               <Article
                 IsManage={this.props.isManage || article.status === 2}
+                statusHide={this.props.statusHide}
                 notControl={this.props.notControl}
                 notLink={this.props.onlyPublic && article.status !== 2}
                 key={i}

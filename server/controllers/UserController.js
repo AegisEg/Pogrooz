@@ -25,76 +25,118 @@ const { InfoForLogin } = require("./AuthController");
 const mail = require("../config/mail");
 let { sendMail } = require("../controllers/MailController");
 module.exports = {
-  // Get user data
-  // generateUser: async (req, res, next) => {
-  //   let user = {
-  //     online: true,
-  //     onlineAt: "2020-11-02T17:58:03.613Z",
-  //     createdAt: "2020-07-05T11:45:29.674Z",
-  //     email: "myjobgoole@1gmail.com",
-  //     phone: "79999999999",
-  //     type: "carrier",
-  //     password: "$2a$12$HxvIdhpgzIYTnVzMq0SMS.5DKHkFlIPCklJz3RghRXBGyIFOby8yu",
-  //     rating: 5,
-  //     address: "Алтайский край",
-  //     name: { first: "Егор", middle: "Васильев", last: "Евгеньевич" },
-  //     contract: {},
-  //     notificationSettings: {
-  //       offer_new_request: { mail: true, push: true },
-  //       offer_you_executor: { mail: true, push: true },
-  //       offer_status: { mail: true, push: true },
-  //       offer_new_review: { mail: true, push: false },
-  //       offer_new_message: { mail: true, push: false },
-  //       order_tracking: { mail: true, push: true },
-  //       order_new_request: { mail: true, push: true },
-  //       order_you_executor: { mail: true, push: false },
-  //       order_status: { mail: true, push: true },
-  //       order_new_review: { mail: true, push: false },
-  //       order_new_message: { mail: true, push: false },
-  //       user_new_message: { mail: true, push: true },
-  //       order_moderation: { mail: true, push: true },
-  //       offer_moderation: { mail: true, push: true },
-  //       system: { mail: true, push: true },
-  //       tarif_ends: { mail: true, push: true },
-  //       tarif_payed: { mail: true, push: true },
-  //     },
-  //     isBan: false,
-  //     isTariffEmpty: false,
-  //     isTariff: true,
-  //     isPassportUploaded: true,
-  //     passportPhoto: {
-  //       path:
-  //         "http://localhost:8000/media/5f01bd59b74edd0724983239/G1x497unYL65ldSyMMfPxvik.png",
-  //       name: "Безымянный.png",
-  //       size: 4390,
-  //     },
-  //     country: 1,
-  //     isEnableAutoPay: false,
-  //     isPassportVerified: false,
-  //     resetPasswordExpires: "0",
-  //     resetPasswordToken: "50eca52af2d1358770894bbfe6c49a00ee6e04ca",
-  //   };
-  //   for (let i = 0; i < 50; i++) {
-  //     let newUser = new User({ ...user });
-  //     newUser.email = "neostar1996" + i + "@mail.ru";
-  //     newUser.phone = "799960062" + i;
-  //     newUser.save(function(err, doc) {
-  //       if (err) return console.error(err);
-  //       console.log("Document inserted succussfully!");
-  //     });
-  //   }
-  //   for (let i = 50; i < 100; i++) {
-  //     let newUser = new User({ ...user });
-  //     newUser.email = "neostar1996" + i + "@mail.ru";
-  //     newUser.phone = "799960062" + i;
-  //     newUser.type = "cargo";
-  //     newUser.save(function(err, doc) {
-  //       if (err) return console.error(err);
-  //       console.log("Document inserted succussfully!");
-  //     });
-  //   }
-  //   return res.json();
-  // },
+  generateUser: async (req, res, next) => {
+    let women = [
+      "Кулагина Кира Павеловна",
+      "Дорохова Ульяна Святославовна",
+      "Лещенко Анна Ивановна",
+      "Деникина Светлана Игоревна",
+      "Форопонова Софья Василиевна",
+      "Мосенцова Полина Фомевна",
+      "Ратаева Агата Федотовна",
+      "Макушева Эльвира Елизаровна",
+      "Сыропоршнева Рада Петровна",
+      "Сизый Агния Алексеевна",
+      "Бушмелева Арина Павеловна",
+      "Кушнарёва Инга Ростиславовна",
+      "Тычкина Александра Ираклиевна",
+      "Тихоненко Марина Иларионовна",
+      "Липова Диана Давидовна",
+      "Луковникова Нона Всеволодовна",
+      "Ясавеева Вероника Феликсовна",
+      "Сьянова Анастасия Леонидовна",
+    ];
+    let men = [
+      "Щербатых Парфен Аполлинариевич",
+      "Меледин Лука Григориевич",
+      "Карамзин Дмитрий Андроникович",
+      "Дроздов Ефрем Зиновиевич",
+      "Невзоров Никифор Леонтиевич",
+      "Венедиктов Никита Иванович",
+      "Лесков Капитон Саввевич",
+      "Яндуткин Андриян Гордеевич",
+      "Гурин Измаил Сигизмундович",
+      "Шлиппенбах Станислав Гаврилевич",
+      "Прокашев Мир Епифанович",
+      "Щедрин Иосиф Глебович",
+      "Черномырдин Евстигней Федотович",
+      "Мигунов Сократ Ипатович",
+      "Подколодный Кир Касьянович",
+      "Рубанов Венедикт Натанович",
+      "Фомичев Август Захарович",
+      "Грачёв Фома Глебович",
+      "Бруевич Данила Демьянович",
+      "Фарест Ираклий Феоктистович",
+      "Локтионов Вадим Даниилович",
+      "Ураков Эдуард Семенович",
+      "Горелов Мирон Эдуардович",
+      "Широких Никон Титович",
+      "Дубинин Венедикт Агапович",
+      "Куджиашвили Агафон Никанорович",
+      "Панарин Виктор Аполлинариевич",
+      "Шеин Лавр Демьянович",
+      "Черномырдин Модест Евгениевич",
+      "Вихорев Борис Сергеевич",
+      "Ямков Лука Мирославович",
+      "Слукин Игорь Григориевич",
+      "Ханцев Вениамин Вадимович",
+      "Бурдаков Денис Ефремович",
+      "Земляков Прокл Федотович",
+      "Бялик Михаил Ипатиевич",
+      "Прибылов Феликс Панкратиевич",
+      "Рощин Алексей Никифорович",
+      "Бонч-Бруевич Феликс Ерофеевич",
+      "Вихров Захар Несторович",
+      "Егоров Платон Моисеевич",
+      "Сопов Никанор Моисеевич",
+      "Качусов Соломон Сергеевич",
+      "Райков Максимильян Владимирович",
+      "Дятлов Харитон Афанасиевич",
+      "Дьячков Борис Тимурович",
+      "Ярцин Онуфрий Яковович",
+      "Дутов Филимон Прокофиевич",
+      "Кодица Борислав Адамович",
+      "Крупнов Евдоким Адрианович",
+      "Сыромятников Артур Егорович",
+      "Бессмертный Дементий Александрович",
+      "Жабкин Тихон Алексеевич",
+      "Кочнев Прохор Юриевич",
+      "Кутяков Прокофий Валерьянович",
+      "Полевщиков Валентин Мирославович",
+      "Малюгин Вадим Родионович",
+      "Яппаров Адам Владимирович",
+      "Брюханов Лавр Ростиславович",
+      "Перевёртов Фома Денисович",
+      "Шушалев Юрий Денисович",
+      "Ерёмин Артём Михаилович",
+      "Ямбаев Глеб Потапович",
+      "Легкодимов Арсений Андронович",
+      "Сочинский Изяслав Филиппович",
+      "Сыров Якуб Маркович",
+      "Калюта Борислав Арсениевич",
+    ];
+    let users = await User.find({ type: "cargo" });
+    women.map((item, index) => {
+      if (users[index]) {
+        let name = item.split(" ");
+        users[index].name.last = name[0];
+        users[index].name.first = name[1];
+        users[index].name.middle = name[2];
+        users[index].save();
+      }
+    });
+    users = await User.find({ type: "carrier" });
+    men.map((item, index) => {
+      if (users[index]) {
+        let name = item.split(" ");
+        users[index].name.last = name[0];
+        users[index].name.first = name[1];
+        users[index].name.middle = name[2];
+        users[index].save();
+      }
+    });
+    return res.json();
+  },
   user: async (req, res, next) => {
     const { userId } = res.locals;
     // try {

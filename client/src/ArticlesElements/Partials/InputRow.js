@@ -1,6 +1,7 @@
 // App
 import React from "react";
 import { withRouter } from "react-router-dom";
+import { withCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as myArticlesActions from "../../redux/actions/myarticles";
@@ -229,12 +230,18 @@ class InputRow extends React.Component {
       label: "Запросить отмену",
       role: 2,
       condition: (options) => {
-        return options.article.executors.find((item) => {
-          return item._id === options.user._id;
-        });
+        const { cookies } = this.props;
+        let cancelRequest = cookies.get("cancelRequest") || [];
+        return (
+          options.article.executors.find((item) => {
+            return item._id === options.user._id;
+          }) && !cancelRequest.find((item) => item === options.article._id)
+        );
       },
       status: [3],
       action: () => {
+        const { cookies } = this.props;
+        let cancelRequest = cookies.get("cancelRequest") || [];
         this.setState({ isFetching: true }, () => {
           this.props.myArticlesActions
             .setRequestCancel(
@@ -243,11 +250,21 @@ class InputRow extends React.Component {
               this.props.user.apiToken
             )
             .then((data) => {
+              cookies.set(
+                "cancelRequest",
+                [...cancelRequest, this.props.article._id],
+                {
+                  path: "/",
+                  maxAge: 60 * 60 * 24 * 360,
+                }
+              );
               this.setState({ isFetching: false });
             });
         });
       },
       mobileAction: () => {
+        const { cookies } = this.props;
+        let cancelRequest = cookies.get("cancelRequest") || [];
         this.setState({ isFetching: true }, () => {
           this.props.myArticlesActions
             .setRequestCancel(
@@ -256,6 +273,14 @@ class InputRow extends React.Component {
               this.props.user.apiToken
             )
             .then((data) => {
+              cookies.set(
+                "cancelRequest",
+                [...cancelRequest, this.props.article._id],
+                {
+                  path: "/",
+                  maxAge: 60 * 60 * 24 * 360,
+                }
+              );
               this.setState({ isFetching: false });
             });
         });
@@ -263,6 +288,26 @@ class InputRow extends React.Component {
       img: Refresh,
       isButton: true,
       ButtonType: "empty",
+    },
+    {
+      id: 5,
+      label: "Отмена запрошена",
+      role: 2,
+      condition: (options) => {
+        const { cookies } = this.props;
+        let cancelRequest = cookies.get("cancelRequest") || [];
+        return (
+          options.article.executors.find((item) => {
+            return item._id === options.user._id;
+          }) && !!cancelRequest.find((item) => item === options.article._id)
+        );
+      },
+      status: [3],
+      action: () => {},
+      mobileAction: () => {},
+      img: Refresh,
+      isButton: true,
+      ButtonType: "empty grey",
     },
     //Отказаться от грузовладельца
     {
@@ -627,7 +672,7 @@ class InputRow extends React.Component {
       condition: (options) => {
         return options.article.type === "order";
       },
-      action: () => {        
+      action: () => {
         if (this.role === 1)
           this.props.history.push(
             `/dialog-order/${this.props.article._id}/${this.props.article.executors[0]._id}`
@@ -1041,4 +1086,7 @@ function mapDispatchToProps(dispatch) {
     myArticlesActions: bindActionCreators(myArticlesActions, dispatch),
   };
 }
-export default connect(null, mapDispatchToProps)(withRouter(InputRow));
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(withCookies(InputRow)));

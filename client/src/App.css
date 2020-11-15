@@ -131,10 +131,9 @@ input::-ms-clear {
   border-radius: 14px;
   text-align: center;
 }
-@-moz-document url-prefix()
-{
+@-moz-document url-prefix() {
   .action-counter span {
-    left: -1px!important;
+    left: -1px !important;
   }
 }
 .action-counter span {
@@ -195,7 +194,28 @@ input::-ms-clear {
   font-size: 14px;
   line-height: 16px;
 }
-
+.articles-header .row > div span {
+  position: relative;
+  width: max-content;
+}
+.articles-header .row > div > span > svg:not(.down):not(.up) {
+  opacity: 0;
+  transition: all 0.3s;
+}
+.articles-header .row > div > span > svg.up {
+  transform: rotate(180deg);
+}
+.articles-header .row > div:hover > span > svg:not(.down):not(.up) {
+  opacity: 1;
+}
+.articles-header .row > div > span > svg {
+  position: absolute;
+  right: -15px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  cursor: pointer;
+}
 @media screen and (min-width: 768px) {
   .search-tabs {
     font-size: 20px;
@@ -204,10 +224,10 @@ input::-ms-clear {
     flex: 0 0 100%;
     max-width: 100%;
   }
-  .articles-header .row > .row > div,
+  /* .articles-header .row > .row > div,
   .article-block .row > .row > div {
     padding: 0 15px;
-  }
+  } */
   .text-premd-right {
     text-align: right;
   }
@@ -1439,7 +1459,7 @@ textarea {
   padding-bottom: 40px;
 }
 .lk-order-page .articles-block {
-  height: 73.5vh;
+  min-height: 73.5vh;
 }
 .more-menu .submenu {
   position: absolute;
@@ -2546,7 +2566,7 @@ a.mail {
 }
 
 .status-label {
-  max-width: 160px;
+  max-width: 320px;
   text-align: left;
 }
 
@@ -2579,7 +2599,8 @@ a.mail {
   word-break: break-all;
 }
 
-.articles-header {
+.articles-header,
+.request-header {
   background-color: #f7f7f7;
   border-top: 1px solid #ddd;
   padding-top: 12px;
@@ -3135,6 +3156,7 @@ a.href.hover:hover {
 
 .search-page {
   min-height: 53vh;
+  padding-bottom: 40px;
 }
 
 .standart-page h1 {
@@ -3889,20 +3911,26 @@ a.href.hover:hover {
 
 @media (max-width: 768px) {
   .public-page ~ .header,
-  .public-page .container-fluid {
+  .public-page .container-fluid,
+  .page-common ~ .header,
+  .page-common .container-fluid {
     padding: 0 20px;
   }
 }
 
 @media (min-width: 769px) {
   .public-page ~ .header,
-  .public-page .container-fluid {
+  .public-page .container-fluid,
+  .page-common ~ .header,
+  .page-common .container-fluid {
     padding: 0 70px;
   }
 }
 
 .public-page ~ .header,
-.public-page .container-fluid {
+.public-page .container-fluid,
+.page-common ~ .header,
+.page-common .container-fluid {
   max-width: 1500px;
   margin: auto;
 }
@@ -4032,7 +4060,9 @@ a.href.hover:hover {
   margin-top: 17px;
   margin-bottom: 40px;
 }
-
+.button-empty.grey::before {
+  transform: scale(8.3) !important;
+}
 /*TARIFT PAGE */
 
 .text-decode {
@@ -7120,7 +7150,7 @@ label {
 .geo-active:hover {
   max-width: 250px;
 }
-.geo-active:hover div{
+.geo-active:hover div {
   pointer-events: all;
 }
 .geo-active div {
@@ -7138,7 +7168,7 @@ label {
   opacity: 1;
   transform: translateX(46px);
 }
-.geo-active a{
+.geo-active a {
   color: #9509ef;
 }
 .geo-active:hover {

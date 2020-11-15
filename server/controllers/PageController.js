@@ -45,7 +45,10 @@ module.exports = {
       xml_content = [
         ...xml_content,
         "  <url>",
-        `    <loc>${process.env.CLIENT_URL}/${item}</loc>`,
+        `    <loc>${process.env.CLIENT_URL}/${item}</loc>
+            <lastmod>${convertDate(new Date())}</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>0.8</priority>`,
         "  </url>",
       ];
     });
@@ -55,7 +58,10 @@ module.exports = {
       xml_content = [
         ...xml_content,
         "  <url>",
-        `    <loc>${process.env.CLIENT_URL}/questions/${item.slug}</loc>`,
+        `    <loc>${process.env.CLIENT_URL}/questions/${item.slug}</loc>
+            <lastmod>${convertDate(new Date())}</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>0.8</priority>`,
         "  </url>",
       ];
     });
@@ -65,7 +71,10 @@ module.exports = {
       xml_content = [
         ...xml_content,
         "  <url>",
-        `    <loc>${process.env.CLIENT_URL}/user/${item._id}</loc>`,
+        `    <loc>${process.env.CLIENT_URL}/user/${item._id}</loc>
+              <lastmod>${convertDate(new Date())}</lastmod>
+              <changefreq>daily</changefreq>
+              <priority>0.8</priority>`,
         "  </url>",
       ];
     });
@@ -74,7 +83,10 @@ module.exports = {
       xml_content = [
         ...xml_content,
         "  <url>",
-        `    <loc>${process.env.CLIENT_URL}/page/${item.slug}</loc>`,
+        `    <loc>${process.env.CLIENT_URL}/page/${item.slug}</loc>
+            <lastmod>${convertDate(new Date())}</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>0.8</priority>`,
         "  </url>",
       ];
     });
@@ -86,7 +98,10 @@ module.exports = {
         "  <url>",
         `    <loc>${process.env.CLIENT_URL}/${item.type}/${
           item.articleId
-        }</loc>`,
+        }</loc>
+            <lastmod>${convertDate(new Date())}</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>0.8</priority>`,
         "  </url>",
       ];
     });
@@ -174,3 +189,12 @@ module.exports = {
     }
   },
 };
+function convertDate(date) {
+  return (
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() > 8 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1)) +
+    "-" +
+    (date.getDate() > 9 ? date.getDate() : "0" + date.getDate())
+  );
+}

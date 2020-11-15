@@ -28,6 +28,7 @@ class ArticlesFilter extends React.Component {
     },
     budget: false,
     rating: false,
+    sortBy: false,
   };
   componentDidUpdate(p, s) {
     let cityPast =
@@ -63,6 +64,7 @@ class ArticlesFilter extends React.Component {
       }
       return 0;
     }
+    this.setState({ sortBy: false });
     this.articles.current.getAricles();
   };
   render() {
@@ -106,6 +108,17 @@ class ArticlesFilter extends React.Component {
             notControl={true}
             ref={this.articles}
             isManage={true}
+            sortChange={(property) => {
+              let sortBy = {};
+              let value =
+                (this.state.sortBy && this.state.sortBy[property]) || -1;
+              sortBy[property] = value * -1;
+              this.setState({ sortBy: sortBy }, () => {
+                this.articles.current.getAricles();
+              });
+            }}
+            sortBy={this.state.sortBy || {}}
+            statusHide={true}
             filter={{ ...this.state }}
           />
         )}

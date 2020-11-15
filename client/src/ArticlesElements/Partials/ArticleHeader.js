@@ -1,6 +1,6 @@
 // App
 import React from "react";
-
+import { ReactComponent as ArrowUp } from "../../img/arrowUp.svg";
 class ArticleHeader extends React.Component {
   render() {
     return (
@@ -24,10 +24,56 @@ class ArticleHeader extends React.Component {
                 <span>Груз</span>
               </div>
               <div className="Date-col">
-                <span>Загрузка</span>
+                <span>
+                  Загрузка
+                  {this.props.sortChange && (
+                    <ArrowUp
+                      className={`${
+                        (!!this.props.sortBy &&
+                          !!this.props.sortBy["startDate.date"] &&
+                          this.props.sortBy["startDate.date"] > 0 &&
+                          "up") ||
+                        ""
+                      }
+                      ${
+                        (!!this.props.sortBy &&
+                          !!this.props.sortBy["startDate.date"] &&
+                          this.props.sortBy["startDate.date"] < 0 &&
+                          "down") ||
+                        ""
+                      }`}
+                      onClick={() => {
+                        this.props.sortChange("startDate.date");
+                      }}
+                    ></ArrowUp>
+                  )}
+                </span>
               </div>
               <div className="Price-col">
-                <span>Цена</span>
+                <span>
+                  Цена
+                  {this.props.sortChange && (
+                    <ArrowUp
+                      className={`${
+                        (!!this.props.sortBy &&
+                          !!this.props.sortBy["budget"] &&
+                          this.props.sortBy["budget"] > 0 &&
+                          "up") ||
+                        ""
+                      }
+                    ${
+                      (!!this.props.sortBy &&
+                        !!this.props.sortBy["budget"] &&
+                        this.props.sortBy["budget"] < 0 &&
+                        "down") ||
+                      ""
+                    }`}
+                      onClick={() => {
+                        this.props.sortChange("budget");
+                      }}
+                    ></ArrowUp>
+                  )}
+                </span>
               </div>
               <div className="More-col">
                 <span>Еще</span>

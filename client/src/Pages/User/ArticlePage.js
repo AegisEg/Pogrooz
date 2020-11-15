@@ -16,6 +16,8 @@ import { connect } from "react-redux";
 import NoMatch from "../NoMatch.js";
 import { withLastLocation } from "react-router-last-location";
 import Loading from "../../Elements/Loading";
+import Button from "../../Elements/Button";
+import { Link } from "react-router-dom";
 import Meta from "../../Elements/Meta";
 import CargoTypeList from "../../config/baseInfo/cargoTypesList";
 import { CSSTransitionGroup } from "react-transition-group";
@@ -47,8 +49,8 @@ class ArticlePage extends React.Component {
             }
             setForceTitle(
               (data.article.type === "offer" ? "Предложение" : "Заказ") +
-              " №" +
-              data.article.articleId
+                " №" +
+                data.article.articleId
             );
             this.setState({
               isFetching: false,
@@ -78,10 +80,15 @@ class ArticlePage extends React.Component {
                     start: this.props.myarticles.currentArticle.from.value,
                     tags: this.props.myarticles.currentArticle.car.additionally,
                     finish: this.props.myarticles.currentArticle.to.value,
-                    cargoTypes:
-                      this.props.myarticles.currentArticle.cargoTypes.map((item, index, all) => {
-                        return CargoTypeList.find((itemX) => itemX.id == item).name + (index > 1 ? ", " : "") + (index === all.length ? "." : "");
-                      }),
+                    cargoTypes: this.props.myarticles.currentArticle.cargoTypes.map(
+                      (item, index, all) => {
+                        return (
+                          CargoTypeList.find((itemX) => itemX.id == item).name +
+                          (index > 1 ? ", " : "") +
+                          (index === all.length ? "." : "")
+                        );
+                      }
+                    ),
                     comment: this.props.myarticles.currentArticle.comment,
                   }}
                 />
@@ -115,7 +122,7 @@ class ArticlePage extends React.Component {
                     singlePage={true}
                     article={this.props.myarticles.currentArticle}
                   />
-                  <div className="articles-header" id="request-header">
+                  <div className="request-header" id="request-header">
                     <div className="container-fluid">
                       <span className="f-16">
                         Заявок по заказу -{" "}
@@ -168,7 +175,18 @@ class ArticlePage extends React.Component {
                       {this.props.myarticles.currentArticle.requests &&
                         !this.props.myarticles.currentArticle.requests
                           .length && (
-                          <div className="text-center mt-2">Заявок еще нет</div>
+                          <div className="text-center mt-2 py-4">
+                            Заявок еще нет
+                            {!this.props.user.isAuth && (
+                              <div>
+                                <Link to="/register">
+                                  <Button type="fill">
+                                    Добавьте заявку первым
+                                  </Button>
+                                </Link>
+                              </div>
+                            )}
+                          </div>
                         )}
                     </div>
                   </div>

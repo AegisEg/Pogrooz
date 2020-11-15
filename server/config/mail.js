@@ -151,10 +151,10 @@ module.exports = [
           ${info.articleType === "offer" ? "предложению" : "заказу"} № 
           ${info.articleId}
         </a>      
-        появилось новое собщение, для просмотра перейдите на страницу.
+        появилось новое собщение, для просмотра перейдите на страницу
         <a style="color:#9509ef;" href="${
           process.env.CLIENT_URL
-        }/messages-by-order">сообщений</a>`,
+        }/messages-by-order">сообщений</a>.`,
   },
   {
     id: 8,
@@ -236,7 +236,8 @@ module.exports = [
           ${info.articleType === "offer" ? "Предложение" : "Заказ"} № ${
         info.articleId
       }
-        </a>перенесен в статус Черновик по причине просрочки
+        </a>перенесен в статус Черновик по причине: просрочкена дата. 
+        Чтобы опубликовать его заново измените дату и нажмите кнопку "Опубликовать".
       `,
   },
   {
@@ -274,7 +275,11 @@ module.exports = [
     id: 17,
     code: "TARIFF_WILL_CANCEL",
     title: (info) => "Тариф скоро закончиться на Pogrooz.ru",
-    text: (info) => `Тариф ${info.tariffName} закончиться через 2 дня.`,
+    text: (info) =>
+      `Тариф ${info.tariffName} закончиться через 2 дня.
+       <a style="color:#9509ef;" href="${
+         process.env.CLIENT_URL
+       }/mytarif">Продлить тариф</a>.`,
   },
   {
     id: 22,

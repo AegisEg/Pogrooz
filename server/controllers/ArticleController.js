@@ -36,7 +36,7 @@ let reviewsCount = 10;
 module.exports = {
   //Articles Geting
   getArticles: async (req, res, next) => {
-    let { filter, page } = req.body;
+    let { filter, page, sortBy } = req.body;
     let geoNear = false;
     let match = {};
     let addFields = false;
@@ -48,34 +48,23 @@ module.exports = {
       if (filter.type) match.type = filter.type;
       if (filter.status) match.status = filter.status;
       if (filter.from) {
-        if (filter.from.data.house_fias_id)
-          match = {
-            ...match,
-            "from.data.house_fias_id": filter.from.data.house_fias_id,
-          };
-        else if (filter.from.data.street_fias_id)
-          match = {
-            ...match,
-            "from.data.street_fias_id": filter.from.data.street_fias_id,
-          };
-        else if (filter.from.data.city_fias_id)
+        if (filter.from.data.city_fias_id)
           match = {
             ...match,
             "from.data.city_fias_id": filter.from.data.city_fias_id,
           };
         if (
           filter.type === "order" &&
-          filter.from.data.geo_lat &&
-          filter.from.data.geo_lon &&
-          filter.from.data.fias_level === "8"
+          !!filter.from.data.geo_lat &&
+          !!filter.from.data.geo_lon
         )
           geoNear = {
             $geoNear: {
               near: {
                 type: "Point",
                 coordinates: [
-                  Number(filter.from.data.geo_lat),
                   Number(filter.from.data.geo_lon),
+                  Number(filter.from.data.geo_lat),
                 ],
               },
               key: "fromLocation",
@@ -83,37 +72,38 @@ module.exports = {
               spherical: true,
             },
           };
+        else {
+          if (filter.from.data.house_fias_id)
+            match = {
+              ...match,
+              "from.data.house_fias_id": filter.from.data.house_fias_id,
+            };
+          else if (filter.from.data.street_fias_id)
+            match = {
+              ...match,
+              "from.data.street_fias_id": filter.from.data.street_fias_id,
+            };
+        }
       }
       if (filter.to) {
-        if (filter.to.data.house_fias_id)
-          match = {
-            ...match,
-            "to.data.house_fias_id": filter.to.data.house_fias_id,
-          };
-        else if (filter.to.data.street_fias_id)
-          match = {
-            ...match,
-            "to.data.street_fias_id": filter.to.data.street_fias_id,
-          };
-        else if (filter.to.data.city_fias_id)
+        if (filter.to.data.city_fias_id)
           match = {
             ...match,
             "to.data.city_fias_id": filter.to.data.city_fias_id,
           };
         if (
           !geoNear &&
-          filter.type === "cargo" &&
-          filter.to.data.geo_lat &&
-          filter.to.data.geo_lon &&
-          filter.to.data.fias_level === "8"
-        )
+          filter.type === "offer" &&
+          !!filter.to.data.geo_lat &&
+          !!filter.to.data.geo_lon
+        ) {
           geoNear = {
             $geoNear: {
               near: {
                 type: "Point",
                 coordinates: [
-                  Number(filter.to.data.geo_lat),
                   Number(filter.to.data.geo_lon),
+                  Number(filter.to.data.geo_lat),
                 ],
               },
               key: "toLocation",
@@ -121,6 +111,18 @@ module.exports = {
               spherical: true,
             },
           };
+        } else {
+          if (filter.to.data.house_fias_id)
+            match = {
+              ...match,
+              "to.data.house_fias_id": filter.to.data.house_fias_id,
+            };
+          else if (filter.to.data.street_fias_id)
+            match = {
+              ...match,
+              "to.data.street_fias_id": filter.to.data.street_fias_id,
+            };
+        }
       }
       //Груз
       if (filter.cargoType) match.cargoTypes = filter.cargoType;
@@ -335,12 +337,18 @@ module.exports = {
         },
       ];
       if (addFields) aggregate.push({ $addFields: addFields });
-
+      if (filter.rating) {
+        aggregate.push({
+          $match: { "author.rating": { $gte: parseInt(filter.rating) } },
+        });
+        sort.rating = 1;
+      }
       if (geoNear) {
         aggregate.unshift(geoNear);
         sort.Distance = 1;
       }
       if (Object.keys(sort).length > 1) delete sort.createdAt;
+      if (sortBy && !!Object.keys(sortBy).length) sort = sortBy;
       aggregate = [
         ...aggregate,
         {
@@ -691,7 +699,7 @@ module.exports = {
         if (article.from.data.geo_lat && article.from.data.geo_lon)
           newArticle.fromLocation = {
             type: "Point",
-            coordinates: [article.from.data.geo_lat, article.from.data.geo_lon],
+            coordinates: [article.from.data.geo_lon, article.from.data.geo_lat],
           };
         else
           newArticle.fromLocation = {
@@ -704,7 +712,7 @@ module.exports = {
         if (article.to.data.geo_lat && article.to.data.geo_lon)
           newArticle.toLocation = {
             type: "Point",
-            coordinates: [article.to.data.geo_lat, article.to.data.geo_lon],
+            coordinates: [article.to.data.geo_lon, article.to.data.geo_lat],
           };
         else
           newArticle.toLocation = {
@@ -791,7 +799,9 @@ module.exports = {
       editArticle = await Article.findOne({
         _id: editingId,
         author: user._id,
-      }).populate("author");
+      })
+        .populate("author")
+        .populate("executors");
       if (
         editArticle &&
         (editArticle.status === 1 || editArticle.status === 2)
@@ -893,7 +903,7 @@ module.exports = {
         if (article.from.data.geo_lat && article.from.data.geo_lon)
           editArticle.fromLocation = {
             type: "Point",
-            coordinates: [article.from.data.geo_lat, article.from.data.geo_lon],
+            coordinates: [article.from.data.geo_lon, article.from.data.geo_lat],
           };
         if (!article.to)
           return res.status(422).json({ error: true, errorType: "to" });
@@ -901,7 +911,7 @@ module.exports = {
         if (article.to.data.geo_lat && article.to.data.geo_lon)
           editArticle.toLocation = {
             type: "Point",
-            coordinates: [article.to.data.geo_lat, article.to.data.geo_lon],
+            coordinates: [article.to.data.geo_lon, article.to.data.geo_lat],
           };
         if (article.startDate && article.startDate.date) {
           article.startDate.date = new Date(article.startDate.date);

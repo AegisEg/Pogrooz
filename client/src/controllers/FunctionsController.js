@@ -105,7 +105,7 @@ export function renderCanvas(ref, id, RecordLine, isAdaptive, color) {
 export function jivoSite() {
   (function () {
     document.jivositeloaded = 0;
-    var widget_id = "DO77oIGITe";
+    var widget_id = "K85qW0fsGa";
     var d = document;
     var w = window;
     function l() {

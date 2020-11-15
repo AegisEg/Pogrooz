@@ -356,7 +356,7 @@ module.exports = {
             payment.userId,
             {
               tariffName: payment.tariff.name,
-              dateCancel: new Date(payment.expiriesAt).toString("dd.MM.yyyy"),
+              dateCancel: convertDate(new Date(payment.expiriesAt)),
             },
             "TARIFFF_ACTIVATED",
             "system"
@@ -386,6 +386,7 @@ module.exports = {
       return next(new Error(error));
     }
   },
+
   setDemoTariff: async function(userId) {
     let demoTariff = await Tariff.findOne({ isDemo: true });
     const payment = new Payment();
@@ -456,6 +457,15 @@ module.exports = {
     }
   },
 };
+function convertDate(date) {
+  return (
+    (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) +
+    "." +
+    (date.getMonth() > 8 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1)) +
+    "." +
+    date.getFullYear()
+  );
+}
 function sendRequest(url, method, params) {
   return new Promise((resolve) => {
     let link = url + "?";
