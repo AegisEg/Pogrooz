@@ -36,7 +36,7 @@ let statuses = [
   {
     id: 10,
     name: "Доставлено",
-  },  
+  },
 ];
 export default [
   {
@@ -169,7 +169,12 @@ export default [
   {
     id: 11,
     code: "BAN_COMMENT_NOTIFY",
-    text: (info) => <>Вы заблокированы на {info.duration} дня(дней) по причине: {info.commentBan}.</>,
+    text: (info) => (
+      <>
+        Вы заблокированы на {info.duration} дня(дней) по причине:{" "}
+        {info.commentBan}.
+      </>
+    ),
   },
   {
     id: 11,
@@ -193,11 +198,12 @@ export default [
     code: "ARTICLE_UNPUBLISH",
     text: (info) => (
       <>
+        У{" "}
         <Link to={`${info.articleType}/${info.articleId}`}>
-          {info.articleType === "offer" ? "Предложение" : "Заказ"} №
+          {info.articleType === "offer" ? "предложения" : "заказа"} №
           {info.articleId}
         </Link>{" "}
-        перенесен в статус Черновик по причине просрочки
+        сменился статус на Черновик по причине: просрочена дата.
       </>
     ),
   },
@@ -220,26 +226,48 @@ export default [
     id: 15,
     code: "AUTOPAYMENT_SUCCESS",
     text: (info) => (
-      <>Тариф {info.tariffName} успешно оплачен с помощью автоплатежа.</>
+      <>
+        {!info.tariffName.toUpperCase().indexOf("ТАРИФ")
+          ? info.tariffName
+          : "Тариф " + info.tariffName}{" "}
+        успешно оплачен с помощью автоплатежа.
+      </>
     ),
   },
   {
     id: 16,
     code: "AUTOPAYMENT_ERROR",
     text: (info) => (
-      <>Тариф {info.tariffName} не удалось оплатить с помощью автоплатежа.</>
+      <>
+        {!info.tariffName.toUpperCase().indexOf("ТАРИФ")
+          ? info.tariffName
+          : "Тариф " + info.tariffName}{" "}
+        не удалось оплатить с помощью автоплатежа.
+      </>
     ),
   },
   {
     id: 22,
     code: "TARIFFF_ACTIVATED",
     text: (info) => (
-      <>Тариф {info.tariffName} успешно активирован до {info.dateCancel}.</>
+      <>
+        {!info.tariffName.toUpperCase().indexOf("ТАРИФ")
+          ? info.tariffName
+          : "Тариф " + info.tariffName}{" "}
+        успешно активирован до {info.dateCancel}.
+      </>
     ),
   },
   {
     id: 17,
     code: "TARIFF_WILL_CANCEL",
-    text: (info) => <>Тариф {info.tariffName} закончиться через 2 дня.</>,
+    text: (info) => (
+      <>
+        {!info.tariffName.toUpperCase().indexOf("ТАРИФ")
+          ? info.tariffName
+          : "Тариф " + info.tariffName}{" "}
+        закончиться через 2 дня.
+      </>
+    ),
   },
 ];
