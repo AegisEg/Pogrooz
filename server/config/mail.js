@@ -91,9 +91,7 @@ module.exports = [
     id: 4,
     code: "ARTICLE_DELETE_EXECUTOR",
     title: (info) =>
-      `Вас исключили из исполнителей по заказу №${
-        info.articleId
-      } на Pogrooz.ru`,
+      `Вас исключили из исполнителей по заказу №${info.articleId} на Pogrooz.ru`,
     text: (info) =>
       ` По
         <a style="color:#9509ef;"
@@ -129,9 +127,7 @@ module.exports = [
     text: (info) =>
       `
         Вам написали сообщение, для просмотра перейдите на страницу
-        <a style="color:#9509ef;" href="${
-          process.env.CLIENT_URL
-        }/messages">сообщений</a>
+        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/messages">сообщений</a>
       `,
   },
   {
@@ -185,13 +181,9 @@ module.exports = [
     title: (info) => `Предложение участия в заказе на Pogrooz.ru`,
     text: (info) =>
       `
-        Грузовладелец <a style="color:#9509ef;" href="${
-          process.env.CLIENT_URL
-        }/user/${info.author}">${info.authorFIO}</a>
+        Грузовладелец <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/user/${info.author}">${info.authorFIO}</a>
         предложиил вам участе в
-        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/order/${
-        info.articleId
-      }">заказе №${info.articleId}</Link>
+        <a style="color:#9509ef;" href="${process.env.CLIENT_URL}/order/${info.articleId}">заказе №${info.articleId}</Link>
         `,
   },
   {
@@ -199,9 +191,7 @@ module.exports = [
     code: "BAN_COMMENT_NOTIFY",
     title: (info) => `Вы заблокированы на Pogrooz.ru`,
     text: (info) =>
-      `Вы заблокированы на ${info.duration} дня(дней) по причине: ${
-        info.commentBan
-      }.`,
+      `Вы заблокированы на ${info.duration} дня(дней) по причине: ${info.commentBan}.`,
   },
   {
     id: 11,
@@ -262,21 +252,33 @@ module.exports = [
     code: "AUTOPAYMENT_SUCCESS",
     title: (info) => "Совершен автоплатеж на Pogrooz.ru",
     text: (info) =>
-      `Тариф ${info.tariffName} успешно оплачен с помощью автоплатежа.`,
+      `${
+        !info.tariffName.toUpperCase().indexOf("ТАРИФ")
+          ? info.tariffName
+          : "Тариф " + info.tariffName
+      } успешно оплачен с помощью автоплатежа.`,
   },
   {
     id: 16,
     code: "AUTOPAYMENT_ERROR",
     title: (info) => "Неудачный автоплатеж на Pogrooz.ru",
     text: (info) =>
-      `Тариф ${info.tariffName} не удалось оплатить с помощью автоплатежа.`,
+      `${
+        !info.tariffName.toUpperCase().indexOf("ТАРИФ")
+          ? info.tariffName
+          : "Тариф " + info.tariffName
+      } не удалось оплатить с помощью автоплатежа.`,
   },
   {
     id: 17,
     code: "TARIFF_WILL_CANCEL",
     title: (info) => "Тариф скоро закончиться на Pogrooz.ru",
     text: (info) =>
-      `Тариф ${info.tariffName} закончиться через 2 дня.
+      `${
+        !info.tariffName.toUpperCase().indexOf("ТАРИФ")
+          ? info.tariffName
+          : "Тариф " + info.tariffName
+      } закончиться через 2 дня.
        <a style="color:#9509ef;" href="${
          process.env.CLIENT_URL
        }/mytarif">Продлить тариф</a>.`,
@@ -286,6 +288,10 @@ module.exports = [
     code: "TARIFFF_ACTIVATED",
     title: (info) => "Тариф активирован на Pogrooz.ru",
     text: (info) =>
-      `Тариф ${info.tariffName} успешно активирован до ${info.dateCancel}.`,
+      `${
+        info.tariffName.toUpperCase().indexOf("ТАРИФ")
+          ? info.tariffName
+          : "Тариф " + info.tariffName
+      } успешно активирован до ${info.dateCancel}.`,
   },
 ];
