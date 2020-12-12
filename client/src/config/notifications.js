@@ -227,7 +227,7 @@ export default [
     code: "AUTOPAYMENT_SUCCESS",
     text: (info) => (
       <>
-        {!info.tariffName.toUpperCase().indexOf("ТАРИФ")
+        {info.tariffName.toUpperCase().indexOf("ТАРИФ") !== -1
           ? info.tariffName
           : "Тариф " + info.tariffName}{" "}
         успешно оплачен с помощью автоплатежа.
@@ -239,7 +239,7 @@ export default [
     code: "AUTOPAYMENT_ERROR",
     text: (info) => (
       <>
-        {!info.tariffName.toUpperCase().indexOf("ТАРИФ")
+        {info.tariffName.toUpperCase().indexOf("ТАРИФ") !== -1
           ? info.tariffName
           : "Тариф " + info.tariffName}{" "}
         не удалось оплатить с помощью автоплатежа.
@@ -251,7 +251,7 @@ export default [
     code: "TARIFFF_ACTIVATED",
     text: (info) => (
       <>
-        {!info.tariffName.toUpperCase().indexOf("ТАРИФ")
+        {info.tariffName.toUpperCase().indexOf("ТАРИФ") !== -1
           ? info.tariffName
           : "Тариф " + info.tariffName}{" "}
         успешно активирован до {info.dateCancel}.
@@ -263,7 +263,7 @@ export default [
     code: "TARIFF_WILL_CANCEL",
     text: (info) => (
       <>
-        {!info.tariffName.toUpperCase().indexOf("ТАРИФ")
+        {info.tariffName.toUpperCase().indexOf("ТАРИФ") !== -1
           ? info.tariffName
           : "Тариф " + info.tariffName}{" "}
         закончиться через 2 дня.
