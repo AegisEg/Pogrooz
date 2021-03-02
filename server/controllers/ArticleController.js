@@ -27,14 +27,60 @@ const Notification = require("../models/Notification");
 const User = require("../models/User");
 const Review = require("../models/Review");
 const { isNeedLocation } = require("../controllers/AuthController");
-const { Error } = require("mongoose");
+const { Error, Mongoose } = require("mongoose");
 let { randomString } = require("../controllers/FileController");
 const mail = require("../config/mail");
 let { sendMail } = require("../controllers/MailController");
 let count = 6;
 let reviewsCount = 10;
+var ObjectId = require("mongoose").Types.ObjectId;
 module.exports = {
   //Articles Geting
+  getUserArticles: async (req, res, next) => {
+    let { filter, page } = req.body;
+    if (filter.author) filter.author = new ObjectId(filter.author);
+    try {
+      let articles = await Article.aggregate([
+        {
+          $match: { ...filter },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "author",
+            foreignField: "_id",
+            as: "author",
+          },
+        },
+        { $unwind: "$author" },
+        {
+          $group: {
+            _id: null,
+            total: { $sum: 1 },
+            results: { $push: "$$ROOT" },
+          },
+        },
+        {
+          $project: {
+            total: 1,
+            results: { $slice: ["$results", page * count, count] },
+          },
+        },
+      ]);
+      if (!!articles.length) articles = articles[0];
+      else
+        articles = {
+          results: [],
+          total: 0,
+        };
+      return res.json({
+        articles: articles.results,
+        pageAll: Math.ceil(articles.total / count),
+      });
+    } catch (e) {
+      return next(new Error(e));
+    }
+  },
   getArticles: async (req, res, next) => {
     let { filter, page, sortBy } = req.body;
     let geoNear = false;

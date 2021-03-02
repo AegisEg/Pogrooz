@@ -58,10 +58,8 @@ class User extends React.Component {
               user: responce.user,
               filter: {
                 type: responce.user.type === "cargo" ? "order" : "offer",
-                status: {
-                  $in: [2, 5, 6],
-                },
-                author: this.state.user._id,
+                
+                author: responce.user._id,
               },
               isHidden,
               isBan,
@@ -76,6 +74,7 @@ class User extends React.Component {
               );
             }
           );
+          console.log(responce.countData);
         }
       });
   }
@@ -114,7 +113,6 @@ class User extends React.Component {
                 currentTab: 1,
                 filter: {
                   type: type,
-
                   author: this.state.user._id,
                 },
               });
@@ -448,6 +446,7 @@ class User extends React.Component {
                     )}
                     {this.state.currentTab !== 6 && (
                       <Articles
+                        isUserPage={true}
                         notControl={true}
                         onlyPublic={true}
                         ref={this.articles}

@@ -21,7 +21,9 @@ class Articles extends React.Component {
   }
   getAricles(page = 0) {
     this.setState({ isFething: true }, () => {
-      fetch(`${configApi.urlApi}/api/article/getArticles`, {
+      let url = "/api/article/getArticles";
+      if (this.props.isUserPage) url = "/api/article/getUserArticles";
+      fetch(configApi.urlApi + url, {
         method: "post",
         headers: {
           Accept: "application/json",

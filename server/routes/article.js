@@ -13,6 +13,7 @@ const ArticleController = require("../controllers/ArticleController");
 router.post("/createArticle", verifyToken, ArticleController.createArticle);
 router.post("/updateArticle", verifyToken, ArticleController.updateArticle);
 router.post("/getArticles", ArticleController.getArticles);
+router.post("/getUserArticles", ArticleController.getUserArticles);
 router.post("/getArticle", ArticleController.getArticle);
 //Get Article для авторизованных
 router.post("/getUserArticle", verifyToken, ArticleController.getUserArticle);
